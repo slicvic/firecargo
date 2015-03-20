@@ -1,7 +1,7 @@
 <div class="row">
-    <h3>Change Password</h3>
+    <h3>Update Profile</h3>
+    <hr>
 </div>
-<hr>
 
 <form data-parsley-validate action="/account/password" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">

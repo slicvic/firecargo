@@ -1,7 +1,6 @@
 <div class="row">
-    <div class="col-md-12">
-        <h1 class="page-header"><i class="fa fa-cube"></i> <?php echo ($warehouse->id ? 'Edit Warehouse # ' . $warehouse->id : 'Create Warehouse'); ?></h1>
-    </div>
+    <h3><i class="fa fa-cube"></i> <?php echo ($warehouse->id) ? 'Edit' : 'Create'; ?> Warehouse</h3>
+    <hr>
 </div>
 
 <div class="row">

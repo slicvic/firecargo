@@ -1,4 +1,4 @@
 <div class="row">
-    <h3>Account Dashboard</h3>
+    <h3>Update Profile</h3>
+    <hr>
 </div>
-<hr>

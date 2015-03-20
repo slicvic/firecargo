@@ -7,7 +7,7 @@ class Role extends BaseModel {
     const LOGIN     = 1;
     const ADMIN     = 2;
     const MERCHANT  = 3;
-    const MEMBER    = 4;
+    const CLIENT    = 4;
 
     protected $table = 'roles';
 

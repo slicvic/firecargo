@@ -65,7 +65,7 @@ class GuestsController extends BaseController {
         {
             // Create user
             $user = User::create($input['user']);
-            $user->attachRoles([\App\Models\Role::MEMBER, \App\Models\Role::LOGIN]);
+            $user->attachRoles([\App\Models\Role::CLIENT, \App\Models\Role::LOGIN]);
 
             // Log 'em in
             Auth::login($user);

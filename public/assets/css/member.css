@@ -33,8 +33,12 @@ legend {
   font-style: normal;
 }
 
+#pad-wrapper {
+  margin-top: 20px;
+}
+
 .alert i {
-    font-size: 27px;
+  font-size: 27px;
   position: relative;
   top: 4px;
   margin-bottom: 8px;

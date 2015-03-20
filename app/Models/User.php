@@ -117,7 +117,7 @@ class User extends BaseModel implements AuthenticatableInterface {
      */
     public function cid()
     {
-        return  $this->company->code . $this->id;
+        return  ($this->company) ? $this->company->code . $this->id : '';
     }
 
     /**
@@ -150,6 +150,16 @@ class User extends BaseModel implements AuthenticatableInterface {
     public function isAdmin()
     {
         return $this->hasRole(Role::ADMIN);
+    }
+
+    /**
+     * Determines if the user is a client.
+     *
+     * @return bool
+     */
+    public function isClient()
+    {
+        return $this->hasRole(Role::CLIENT);
     }
 
     /**
@@ -296,12 +306,12 @@ class User extends BaseModel implements AuthenticatableInterface {
         $auth_user = Auth::user();
 
         if (empty($search_term)) {
-            $users = User::whereRaw($auth_user->isAdmin() ? 1 : 'company_id = ' . $auth_user->company_id);
+            $users = User::whereRaw($auth_user->isAdmin() ? 1 : 'id <> ' . $auth_user ->id. ' AND company_id = ' . $auth_user->company_id);
         }
         else {
             $search_term = '%' . $search_term . '%';
             $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ?)';
-            $where .= $auth_user->isAdmin() ? '' : ' AND company_id = ' . $auth_user->company_id;
+            $where .= $auth_user->isAdmin() ? '' : 'id <> ' . $auth_user ->id . ' AND company_id = ' . $auth_user->company_id;
             $users = User::whereRaw($where, [$search_term, $search_term, $search_term, $search_term, $search_term]);
         }
 

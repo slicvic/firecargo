@@ -1,7 +1,7 @@
 <div class="row">
     <h3>Update Profile</h3>
+    <hr>
 </div>
-<hr>
 
 <div class="row">
     <div class="col-md-12">

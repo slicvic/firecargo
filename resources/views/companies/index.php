@@ -1,7 +1,6 @@
 <div class="row">
-    <div class="col-md-12">
-        <h1 class="page-header"><i class="fa fa-building-o"></i> Companies</h1>
-    </div>
+    <h3><i class="fa fa-building-o"></i> Companies</h3>
+    <hr>
 </div>
 
 <div class="row filter-block">

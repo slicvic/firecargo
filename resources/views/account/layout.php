@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row toppad">
     <div class="col-md-4 text-center">
         <div class="row">
             <img src="/assets/img/avatar.png" class="img-circle">
@@ -13,8 +13,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="col-md-8">
         <?php echo $content; ?>
     </div>

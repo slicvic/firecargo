@@ -1,7 +1,6 @@
 <div class="row">
-	<div class="col-md-12">
-		<h1 class="page-header"><i class="fa fa-user"></i> <?php echo ($user->id ? 'Edit Account # ' . $user->id : 'Create Account'); ?></h1>
-	</div>
+    <h3><i class="fa fa-user"></i> <?php echo ($user->id) ? 'Edit' : 'Create'; ?> Account</h3>
+    <hr>
 </div>
 
 <div class="row">
@@ -142,7 +141,7 @@
 					</div>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-flat primary">Save</button>
+			<button type="submit" class="btn btn-flat primary">Save Changes</button>
         	<a href="/accounts">Cancel</a>
     	</form>
 	</div>
