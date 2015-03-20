@@ -1,0 +1,32 @@
+.alert h4 {
+    margin-bottom: 0px;
+}
+
+#sidebar-nav {
+    padding-top: 0;
+}
+
+.filter-block {
+    margin-bottom: 34px;
+}
+
+#pad-wrapper {
+    margin-top: 0px;
+}
+
+h1.page-header {
+    font-size: 24px;
+    color: #29323d;
+    border-bottom: 0;
+}
+
+legend {
+    color: #696d73;
+    font-size: 18px;
+}
+
+form label.control-label {
+    font-weight: 600;
+    font-size: 12px;
+    text-align: left!important;
+}
