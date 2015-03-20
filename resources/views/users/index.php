@@ -7,7 +7,7 @@
 <div class="row filter-block">
 	<div class="col-md-12">
 		<div class="">
-			<a href="/admin/users/new" class="btn-flat success">
+			<a href="/users/create" class="btn-flat primary">
 				<i class="fa fa-plus"></i>
 				New
 			</a>
@@ -42,7 +42,7 @@ $(function() {
         //'aaSorting': [[ 0, 'desc' ]],
          'processing': true,
         'serverSide': true,
-        'ajax': '/users/ajax-datatable',
+        'ajax': '/users/ajax-index',
     });
 });
 </script>

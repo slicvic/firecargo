@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-md-12">
-        <h1 class="page-header"><i class="fa fa-group"></i> Companies</h1>
+        <h1 class="page-header"><i class="fa fa-group"></i> Shipping Carriers</h1>
     </div>
 </div>
 
 <div class="row filter-block">
     <div class="col-md-12">
         <div class="">
-            <a href="/companies/create" class="btn-flat primary">
+            <a href="/carriers/create" class="btn-flat primary">
                 <i class="fa fa-plus"></i>
                 New
             </a>
@@ -22,17 +22,15 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Code</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($companies as $company): ?>
+                <?php foreach ($carriers as $carrier): ?>
                    <tr>
-                        <td><?php echo $company->id; ?></td>
-                        <td><?php echo $company->name; ?></td>
-                        <td><?php echo $company->code; ?></td>
-                        <td><a href="/companies/edit/<?php echo $company->id; ?>" class="btn btn-flat icon"><i class="fa fa-pencil"></i></a></td>
+                        <td><?php echo $carrier->id; ?></td>
+                        <td><?php echo $carrier->name; ?></td>
+                        <td><a href="/carriers/edit/<?php echo $carrier->id; ?>" class="btn-flat icon"><i class="fa fa-pencil"></i></a></td>
                    </tr>
                 <?php endforeach; ?>
             </tbody>

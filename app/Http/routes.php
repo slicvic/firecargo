@@ -11,4 +11,22 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+// Member
+Route::controller('dashboard', 'DashboardController');
+Route::controller('users', 'UsersController');
+Route::controller('companies', 'CompaniesController');
+Route::controller('roles', 'RolesController');
+Route::controller('ws', 'WarehouseStatusesController');
+Route::controller('carriers', 'ShippingCarriersController');
+
+Route::get('logout', 'UsersController@getLogout');
+
+// Guests
+Route::any('login', 'GuestsController@anyLogin');
+Route::any('signup', 'GuestsController@anySignup');
+Route::any('forgot-password', 'GuestsController@anyForgotPassword');
+Route::any('reset-password', 'GuestsController@anyResetPassword');
+
+Route::get('/', 'GuestsController@anyLogin');
+Route::get('home', 'GuestsController@anyLogin');
+

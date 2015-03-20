@@ -33,7 +33,7 @@ class CompaniesController extends BaseAuthController {
     }
 
     /**
-     * Stores a newly create company.
+     * Stores a newly created company.
      */
     public function postStore(Request $request)
     {

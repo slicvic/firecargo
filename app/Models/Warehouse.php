@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 class Warehouse extends BaseModel {
+
     protected $table = 'warehouses';
 
     public function consignee()

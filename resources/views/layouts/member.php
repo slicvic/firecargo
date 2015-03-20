@@ -68,6 +68,8 @@
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
+                    <li><a href="/account/dashboard">My Account</a></li>
+                    <li class="divider"></li>
                     <li><a href="/logout">Log Out</a></li>
                 </ul>
             </li>
@@ -88,6 +90,7 @@
                     <span>Dashboard</span>
                 </a>
             </li>
+
             <li class="<?php echo (strpos($uri, 'warehouse') !== FALSE ? 'active' : ''); ?>">
                 <a class="dropdown-toggle" href="#">
                     <i class="fa fa-cube"></i>
@@ -96,12 +99,12 @@
                 </a>
                 <ul class="submenu <?php echo (strpos($uri, 'warehouse') !== FALSE ? 'active' : ''); ?>">
                     <li><a href="/warehouses" class="<?php echo (Request::is('warehouses') || Request::is('warehouses/*') ? 'active' : ''); ?>">Warehouses</a></li>
-                    <li><a href="/warehouse-statuses">Statuses</a></li>
+                    <li><a href="/ws">Statuses</a></li>
                     <li><a href="/carriers">Shipping Carriers</a></li>
                 </ul>
             </li>
 
-            <?php if ($user->isAdmin() || $user->isMaster()): ?>
+            <?php if ($user->isMaster()): ?>
                 <li class="<?php echo (strpos($uri, 'warehouse') !== FALSE ? 'active' : ''); ?>">
                     <a class="dropdown-toggle" href="#">
                         <i class="fa fa-cog"></i>
@@ -109,15 +112,23 @@
                         <i class="fa fa-chevron-down icon-chevron-down"></i>
                     </a>
                     <ul class="submenu">
-                        <?php if ($user->isAdmin()): ?>
-                            <li><a href="/users" class="<?php echo (Request::is('users') || Request::is('users/*')  ? 'active' : ''); ?>">Accounts</a></li>
-                            <li><a href="/companies">Company</a></li>
-                        <?php else: ?>
-                            <li><a href="/users" class="<?php echo (Request::is('users') || Request::is('users/*')  ? 'active' : ''); ?>">Accounts</a></li>
-                            <li><a href="/roles">Roles</a></li>
-                            <li><a href="/companies">Companies</a></li>
-                        <?php endif; ?>
+                        <li><a href="/users" class="<?php echo (Request::is('users') || Request::is('users/*')  ? 'active' : ''); ?>">Accounts</a></li>
+                        <li><a href="/roles">Roles</a></li>
+                        <li><a href="/companies">Companies</a></li>
                     </ul>
+                </li>
+            <?php endif; ?>
+
+            <?php if ($user->isAdmin()): ?>
+                <li class="">
+                    <div class="pointer">
+                        <div class="arrow"></div>
+                        <div class="arrow_border"></div>
+                    </div>
+                    <a href="/users">
+                        <i class="fa fa-users"></i>
+                        <span>Accounts</span>
+                    </a>
                 </li>
             <?php endif; ?>
         </ul>

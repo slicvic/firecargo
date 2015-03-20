@@ -33,7 +33,7 @@ class RolesController extends BaseAuthController {
     }
 
     /**
-     * Stores a newly create role.
+     * Stores a newly created role.
      */
     public function postStore(Request $request)
     {

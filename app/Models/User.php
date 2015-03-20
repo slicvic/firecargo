@@ -1,19 +1,18 @@
 <?php namespace App\Models;
 
 use Hash;
+use Auth;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
 class User extends BaseModel implements AuthenticatableInterface {
     use AuthenticableTrait;
 
-    const CID_PREFIX            = 'SSG';
-
     public static $rules = [
         'email' => 'required|email|unique:users,email',
         'password' => 'required',
-        'first_name' => 'required',
-        'last_name' => 'required'
+        'firstname' => 'required',
+        'lastname' => 'required'
     ];
 
     /**
@@ -37,8 +36,8 @@ class User extends BaseModel implements AuthenticatableInterface {
         'id_type_id',
         'id_number',
         'company_name',
-        'first_name',
-        'last_name',
+        'firstname',
+        'lastname',
         'dob',
         'home_phone',
         'cell_phone',
@@ -87,13 +86,18 @@ class User extends BaseModel implements AuthenticatableInterface {
      * ----------------------------------------------------
      */
 
+    /**
+     * Gets the full name.
+     *
+     * @return string
+     */
     public function name()
     {
-        return ucwords(strtolower($this->first_name . ' ' . $this->last_name));
+        return ucwords(strtolower($this->firstname . ' ' . $this->lastname));
     }
 
     /**
-     * Gets list of roles as array.
+     * Gets list of assigned roles as an array.
      *
      * @return array
      */
@@ -107,13 +111,13 @@ class User extends BaseModel implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the Casillero ID aka CID.
+     * Gets the casillero id.
      *
      * @return string
      */
     public function cid()
     {
-        return  self::CID_PREFIX . $this->id;
+        return  $this->company->code . $this->id;
     }
 
     /**
@@ -159,7 +163,7 @@ class User extends BaseModel implements AuthenticatableInterface {
     }
 
     /**
-     * Verifies a given password recovery token against a user.
+     * Determines if a password recovery token is valid.
      *
      * @param  string $token
      * @return bool
@@ -170,7 +174,7 @@ class User extends BaseModel implements AuthenticatableInterface {
     }
 
     /**
-     * Assigns the given Role IDs.
+     * Assigns the specified roles.
      *
      * @param  array  $role_ids
      * @return void
@@ -181,7 +185,7 @@ class User extends BaseModel implements AuthenticatableInterface {
     }
 
     /**
-     * Determines if the user has a given role.
+     * Determines if the user has the given role.
      *
      * @param  int  $role_id
      * @return bool
@@ -204,15 +208,12 @@ class User extends BaseModel implements AuthenticatableInterface {
                 break;
 
             case 'dob':
-                if (is_string($value)) {
+                if (is_string($value))
                     $value = date('Y-m-d', strtotime($value));
-                }
-                else if (is_array($value)) {
+                else if (is_array($value))
                     $value = date('Y-m-d', strtotime($value['year'] . '/' . $value['month'] . '/' . $value['day']));
-                }
-                else {
+                else
                     $value = NULL;
-                }
                 break;
         }
 
@@ -225,6 +226,11 @@ class User extends BaseModel implements AuthenticatableInterface {
      * ----------------------------------------------------
      */
 
+    /**
+     * Generates a plain text password recovery token.
+     *
+     * @return string
+     */
     private function getPlainPasswordRecoveryToken()
     {
         return $this->email . $this->password . $this->created_at;
@@ -237,31 +243,15 @@ class User extends BaseModel implements AuthenticatableInterface {
      */
 
     /**
-     * Extracts User ID from Casillero ID.
-     *
-     * @param  string $cid
-     * @return int
-     */
-    public static function cid2id($cid)
-    {
-        if (empty($cid))
-            return NULL;
-
-        $cid = strtolower(trim($cid));
-        $id = str_replace(strtolower(self::CID_PREFIX), '', $cid);
-        return $id;
-    }
-
-    /**
-     * Validates a username and password.
+     * Validates the specified credentials.
      *
      * @param  string $username
      * @param  string $password
      * @return User|FALSE
      */
-    public static function checkLogin($username, $password)
+    public static function validateCredentials($username, $password)
     {
-        $user = User::where('id', self::cid2id($username))
+        $user = User::where('id', $username)
             ->orWhere('email', $username)
             ->first();
 
@@ -271,31 +261,27 @@ class User extends BaseModel implements AuthenticatableInterface {
         return FALSE;
     }
 
-  /**
-     * Fetches results for a jQuery Autocomplete field.
+    /**
+     * Retrieves a list of users for a jQuery autocomplete field.
      *
-     * @param  string $keyword  A search keyword
+     * @param  string $search_term  A search keyword
      *
      * @return User[]
+     * @uses   Auth
      */
-    public static function getAutocomplete($keyword)
+    public static function getAutocomplete($search_term)
     {
-        $keyword = '%' . $keyword . '%';
-
-        return User::whereRaw('
-            id LIKE ? OR
-            first_name LIKE ? OR
-            last_name LIKE ? OR
-            company LIKE ? OR
-            email LIKE ?',
-            [$keyword, $keyword, $keyword, $keyword, $keyword]
-        )->get();
+        $auth_user = Auth::user();
+        $search_term = '%' . $search_term . '%';
+        $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ?)';
+        $where .= $auth_user->isMaster() ? '' : ' AND company_id = ' . $auth_user->company_id;
+        return User::whereRaw($where, [$search_term, $search_term, $search_term, $search_term, $search_term])->get();
     }
 
     /**
-     * Fetches rows for a jQuery DataTable.
+     * Retrieves a list of users for a jQuery DataTable.
      *
-     * @param  string   $search_value  A search keyword
+     * @param  string   $search_term  A search keyword
      * @param  bool     $count
      * @param  int      $offset
      * @param  int      $limit
@@ -303,18 +289,20 @@ class User extends BaseModel implements AuthenticatableInterface {
      * @param  string   $order
      *
      * @return User[]
+     * @uses   Auth
      */
-    public static function getDatatableData($search_value = NULL, $count = FALSE, $offset = 0, $limit = 10, $order_by = 'id', $order = 'DESC')
+    public static function getDatatable($search_term = NULL, $count = FALSE, $offset = 0, $limit = 10, $order_by = 'id', $order = 'DESC')
     {
-        if (empty($search)) {
-            $users = User::whereRaw(1);
+        $auth_user = Auth::user();
+
+        if (empty($search_term)) {
+            $users = User::whereRaw($auth_user->isMaster() ? 1 : 'company_id = ' . $auth_user->company_id);
         }
         else {
-            $search = '%' . $search . '%';
-            $users = User::whereRaw(
-                'id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR company LIKE ? OR email LIKE ?',
-                [$search, $search, $search, $search, $search]
-            );
+            $search_term = '%' . $search_term . '%';
+            $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ?)';
+            $where .= $auth_user->isMaster() ? '' : ' AND company_id = ' . $auth_user->company_id;
+            $users = User::whereRaw($where, [$search_term, $search_term, $search_term, $search_term, $search_term]);
         }
 
         if ($count) {

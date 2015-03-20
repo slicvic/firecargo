@@ -14,56 +14,48 @@
                     <input type="text" name="user[company]" class="form-control" value="<?php echo $user->company; ?>">
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">First Name<span class="required-field">*</span></label>
                 <div class="col-sm-8">
-                    <input type="text" name="user[first_name]" class="form-control" value="<?php echo $user->first_name; ?>" required>
+                    <input type="text" name="user[firstname]" class="form-control" value="<?php echo $user->firstname; ?>" required>
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">Middle Name</label>
                 <div class="col-sm-8">
                     <input type="text" name="user[middle_name]" class="form-control" value="<?php echo $user->middle_name; ?>">
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">Last Name<span class="required-field">*</span></label>
                 <div class="col-sm-8">
                     <input type="text" name="user[last_name1]" class="form-control" value="<?php echo $user->last_name1; ?>" required>
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">Second Last Name</label>
                 <div class="col-sm-8">
                     <input type="text" name="user[last_name2]" class="form-control" value="<?php echo $user->last_name2; ?>">
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">DOB</label>
                 <div class="col-sm-8">
                     <input type="text" id="dob" name="user[dob]" value="<?php echo (!empty($user->dob) ? date('m/d/Y', strtotime($user->dob)) : ''); ?>" class="form-control" data-inputmask="'alias': 'mm/dd/yyyy'" data-mask="">
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">Email<span class="required-field">*</span></label>
                 <div class="col-sm-8">
                     <input type="email" name="user[email]" class="form-control" value="<?php echo $user->email; ?>" required>
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">Password</label>
                 <div class="col-sm-8">
                     <input type="password" name="user[password]" class="form-control" data-parsley-minlength="<?php echo User::PASSWORD_MIN_LENGTH; ?>">
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">Group</label>
                 <div class="col-sm-8">
@@ -89,7 +81,6 @@
                     <input type="text" name="user[home_phone]" class="form-control" value="<?php echo $user->home_phone; ?>">
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">Mobile</label>
                 <div class="col-sm-8">
@@ -106,35 +97,30 @@
                     <input type="text" name="user[address1]" class="form-control" value="<?php echo $user->address1; ?>">
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2"></label>
                 <div class="col-sm-8">
                     <input type="text" name="user[address2]" class="form-control" value="<?php echo $user->address2; ?>">
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">City</label>
                 <div class="col-sm-8">
                     <input type="text" name="user[city]" class="form-control" value="<?php echo $user->city; ?>">
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">State</label>
                 <div class="col-sm-8">
                     <input type="text" name="user[state]" class="form-control" value="<?php echo $user->state; ?>">
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">Zip</label>
                 <div class="col-sm-8">
                     <input type="text" name="user[zip]" class="form-control" value="<?php echo $user->zip; ?>">
                 </div>
             </div>
-
             <div class="form-group">
                 <label class="control-label col-sm-2">Country</label>
                 <div class="col-sm-8">

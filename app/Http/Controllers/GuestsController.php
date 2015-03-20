@@ -18,7 +18,7 @@ class GuestsController extends BaseController {
      */
     public function anyLogin(Request $request)
     {
-        if ($request->isMethod('post'))
+        if ( ! $request->isMethod('post'))
         {
             return $this->getPageView('guests.login');
         }
@@ -26,7 +26,7 @@ class GuestsController extends BaseController {
         {
             $input = $request->only('username', 'password');
 
-            if ($input['username'] && $input['password'] && $user = User::checkLogin($input['username'], $input['password']))
+            if ($input['username'] && $input['password'] && $user = User::validateCredentials($input['username'], $input['password']))
             {
                 Auth::login($user);
                 return redirect('dashboard');

@@ -1,6 +1,9 @@
 <?php namespace App\Models;
 
+use Auth;
+
 class Role extends BaseModel {
+
     const LOGIN     = 1;
     const MASTER    = 2;
     const ADMIN     = 3;
@@ -13,11 +16,21 @@ class Role extends BaseModel {
     ];
 
     protected $fillable = [
-        'name'
+        'name',
+        'description'
     ];
 
     public static function all($columns = ['*'])
     {
-        return Role::where('id', '<>', self::MASTER)->get($columns);
+        if ( ! Auth::user()->isMaster())
+        {
+            return Role::where('id', '<>', self::MASTER)
+                ->where('id', '<>', self::ADMIN)
+                ->get($columns);
+        }
+        else
+        {
+            return parent::all($columns);
+        }
     }
 }
