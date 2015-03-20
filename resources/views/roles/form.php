@@ -1,10 +1,10 @@
 <div class="row toppad">
     <div class="col-md-12">
-        <form data-parsley-validate action="/roles/<?php echo $role->id ? 'update/' . $role->id : 'store'; ?>" method="post" class="form-horizontal">
+        <form data-parsley-validate action="/roles/<?php echo ($role->id) ? 'update/' . $role->id : 'store'; ?>" method="post" class="form-horizontal">
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4><i class="fa fa-user"></i> <?php echo ($role->id) ? 'Edit' : 'Create'; ?> Role</h4>
+                    <h4><i class="fa fa-male"></i> <?php echo ($role->id) ? 'Edit' : 'Create'; ?> Role</h4>
                 </div>
                 <div class="panel-body">
                     <div class="form-group">

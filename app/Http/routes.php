@@ -13,20 +13,27 @@
 
 // Member
 Route::controller('dashboard', 'DashboardController');
-Route::controller('users', 'UsersController');
+Route::controller('accounts', 'UsersController');
 Route::controller('companies', 'CompaniesController');
 Route::controller('roles', 'RolesController');
-Route::controller('ws', 'WarehouseStatusesController');
+Route::controller('statuses', 'WarehouseStatusesController');
 Route::controller('carriers', 'ShippingCarriersController');
+Route::controller('warehouses', 'WarehousesController');
 
-Route::get('logout', 'UsersController@getLogout');
+Route::controller('account', 'AccountController');
+Route::get('logout', 'AccountController@getLogout');
 
 // Guests
-Route::any('login', 'GuestsController@anyLogin');
-Route::any('signup', 'GuestsController@anySignup');
-Route::any('forgot-password', 'GuestsController@anyForgotPassword');
-Route::any('reset-password', 'GuestsController@anyResetPassword');
+Route::get('login', 'GuestsController@getLogin');
+Route::post('login', 'GuestsController@postLogin');
 
-Route::get('/', 'GuestsController@anyLogin');
-Route::get('home', 'GuestsController@anyLogin');
+Route::get('signup', 'GuestsController@getSignup');
+Route::post('signup', 'GuestsController@postSignup');
+Route::get('forgot-password', 'GuestsController@getForgotPassword');
+Route::post('forgot-password', 'GuestsController@postForgotPassword');
+Route::get('reset-password', 'GuestsController@getResetPassword');
+Route::post('reset-password', 'GuestsController@postResetPassword');
+
+Route::get('/', 'GuestsController@getLogin');
+Route::get('home', 'GuestsController@getLogin');
 

@@ -13,7 +13,7 @@ class ShippingCarriersController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
-        $this->middleware('admin');
+        $this->middleware('merchant');
     }
 
     /**
@@ -22,7 +22,7 @@ class ShippingCarriersController extends BaseAuthController {
     public function getIndex()
     {
         $carriers = ShippingCarrier::where('company_id', '=', Auth::user()->company_id)->get();
-        return $this->getPageView('shipping_carriers.index', ['carriers' => $carriers]);
+        return view('shipping_carriers.index', ['carriers' => $carriers]);
     }
 
     /**
@@ -30,7 +30,7 @@ class ShippingCarriersController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return $this->getPageView('shipping_carriers.form', ['carrier' => new ShippingCarrier()]);
+        return view('shipping_carriers.form', ['carrier' => new ShippingCarrier()]);
     }
 
     /**
@@ -58,7 +58,7 @@ class ShippingCarriersController extends BaseAuthController {
     public function getEdit($id)
     {
         $carrier = ShippingCarrier::findOrFail($id);
-        return $this->getPageView('shipping_carriers.form', ['carrier' => $carrier]);
+        return view('shipping_carriers.form', ['carrier' => $carrier]);
     }
 
     /**

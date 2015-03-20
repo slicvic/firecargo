@@ -12,7 +12,7 @@ class RolesController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
-        $this->middleware('master');
+        $this->middleware('admin');
     }
 
     /**
@@ -21,7 +21,7 @@ class RolesController extends BaseAuthController {
     public function getIndex()
     {
         $roles = Role::all();
-        return $this->getPageView('roles.index', ['roles' => $roles]);
+        return view('roles.index', ['roles' => $roles]);
     }
 
     /**
@@ -29,7 +29,7 @@ class RolesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return $this->getPageView('roles.form', ['role' => new Role()]);
+        return view('roles.form', ['role' => new Role()]);
     }
 
     /**
@@ -56,7 +56,7 @@ class RolesController extends BaseAuthController {
     public function getEdit($id)
     {
         $role = Role::findOrFail($id);
-        return $this->getPageView('roles.form', ['role' => $role]);
+        return view('roles.form', ['role' => $role]);
     }
 
     /**

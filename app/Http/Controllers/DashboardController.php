@@ -2,8 +2,8 @@
 
 class DashboardController extends BaseAuthController {
 
-    public function anyIndex()
+    public function getIndex()
     {
-        return $this->getPageView('dashboard');
+        return view('dashboard.index');
     }
 }

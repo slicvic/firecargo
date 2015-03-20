@@ -2,19 +2,39 @@
 
 class Html {
     /**
-     * Gets flash message.
+     * Gets HTML for the main sidenav pointer arrow.
      *
-     * @param  string $type  [info, success]
-     * @param  mixed $message
      * @return string
      */
-    public static function getFlash($type, $message)
+    public static function sideNavPointer()
     {
-        switch($type) {
-            case 'error':
-                return view('flash_messages.error', ['message' => $message]);
-            default:
-                return view('flash_messages.success', ['message' => $message]);
+        return '<div class="pointer">
+                    <div class="arrow"></div>
+                    <div class="arrow_border"></div>
+                </div>';
+    }
+
+    /**
+     * Converts an array into bootstrap labels.
+     *
+     * @return string
+     */
+    public static function arrayToLabels(array $values)
+    {
+        if (empty($values))
+        {
+            return '';
+        }
+        else
+        {
+            $ret = '';
+
+            foreach($values as $value)
+            {
+                $ret .= ' <span class="badge badge-info">' . ucfirst($value) . '</span>';
+            }
+
+            return $ret;
         }
     }
 }

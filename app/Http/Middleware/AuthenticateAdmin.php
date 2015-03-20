@@ -32,7 +32,7 @@ class AuthenticateAdmin {
      */
     public function handle($request, Closure $next)
     {
-        if ( ! $this->auth->user()->isMaster() && ! $this->auth->user()->isAdmin())
+        if ( ! $this->auth->user()->isAdmin())
         {
             if ($request->ajax())
             {

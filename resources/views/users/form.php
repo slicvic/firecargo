@@ -6,14 +6,33 @@
 
 <div class="row">
 	<div class="col-md-12">
-		<form data-parsley-validate action="/users/<?php echo $user->id ? 'update/' . $user->id : 'store'; ?>" method="post" class="form-horizontal">
+		<form data-parsley-validate action="/accounts/<?php echo ($user->id) ? 'update/' . $user->id : 'store'; ?>" method="post" class="form-horizontal">
 			<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-			<input type="hidden" name="user[company_id]" value="<?php echo Auth::user()->company_id; ?>">
+
+			<?php if (Auth::user()->isAdmin()): ?>
+				<div class="panel panel-default">
+	  				<div class="panel-heading">Master</div>
+	  				<div class="panel-body">
+		    			<div class="form-group">
+	  						<label class="control-label col-sm-2">Company</label>
+							<div class="col-sm-5">
+								<select required class="form-control" name="user[company_id]">
+									<option value="">- Choose -</option>
+									<?php foreach(\App\Models\Company::all() as $company): ?>
+										<option<?php echo ($company->id == Input::old('user.company_id', $user->company_id)) ? ' selected' : ''; ?> value="<?php echo $company->id; ?>"><?php echo $company->name . ' (' . $company->code . ')'; ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+						</div>
+	  				</div>
+	  			</div>
+  			<?php endif; ?>
+
 			<div class="panel panel-default">
   				<div class="panel-heading">Basic Information</div>
   				<div class="panel-body">
 	    			<div class="form-group">
-						<label class="control-label col-sm-2">Company</label>
+						<label class="control-label col-sm-2">Company Name</label>
 						<div class="col-sm-5">
 							<input type="text" name="user[company_name]" placeholder="Company Name" class="form-control" value="<?php echo Input::old('user.company_name', $user->company_name); ?>">
 						</div>
@@ -124,7 +143,7 @@
 				</div>
 			</div>
 			<button type="submit" class="btn btn-flat primary">Save</button>
-        	<a href="/users">Cancel</a>
+        	<a href="/accounts">Cancel</a>
     	</form>
 	</div>
 </div>

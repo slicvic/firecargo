@@ -1,13 +1,13 @@
 <div class="row">
     <div class="col-md-12">
-        <h1 class="page-header"><i class="fa fa-group"></i> Warehouse Statuses</h1>
+        <h1 class="page-header"><i class="fa fa-info-circle"></i> Warehouse Statuses</h1>
     </div>
 </div>
 
 <div class="row filter-block">
     <div class="col-md-12">
         <div class="">
-            <a href="/ws/create" class="btn-flat primary">
+            <a href="/statuses/create" class="btn-flat primary">
                 <i class="fa fa-plus"></i>
                 New
             </a>
@@ -30,7 +30,7 @@
                    <tr>
                         <td><?php echo $status->id; ?></td>
                         <td><?php echo $status->name; ?></td>
-                        <td><a href="/ws/edit/<?php echo $status->id; ?>" class="btn-flat icon"><i class="fa fa-pencil"></i></a></td>
+                        <td><a href="/statuses/edit/<?php echo $status->id; ?>" class="btn-flat icon"><i class="fa fa-pencil"></i></a></td>
                    </tr>
                 <?php endforeach; ?>
             </tbody>

@@ -12,7 +12,7 @@ class CompaniesController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
-        $this->middleware('master');
+        $this->middleware('admin');
     }
 
     /**
@@ -21,7 +21,7 @@ class CompaniesController extends BaseAuthController {
     public function getIndex()
     {
         $companies = Company::all();
-        return $this->getPageView('companies.index', ['companies' => $companies]);
+        return view('companies.index', ['companies' => $companies]);
     }
 
     /**
@@ -29,7 +29,7 @@ class CompaniesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return $this->getPageView('companies.form', ['company' => new Company()]);
+        return view('companies.form', ['company' => new Company()]);
     }
 
     /**
@@ -56,7 +56,7 @@ class CompaniesController extends BaseAuthController {
     public function getEdit($id)
     {
         $company = Company::findOrFail($id);
-        return $this->getPageView('companies.form', ['company' => $company]);
+        return view('companies.form', ['company' => $company]);
     }
 
     /**

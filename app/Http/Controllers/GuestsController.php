@@ -16,145 +16,145 @@ class GuestsController extends BaseController {
     /**
      * Shows the login form.
      */
-    public function anyLogin(Request $request)
+    public function getLogin()
     {
-        if ( ! $request->isMethod('post'))
+        return view('guests.login');
+    }
+
+    /**
+     * Processes the login form.
+     */
+    public function postLogin(Request $request)
+    {
+        $input = $request->only('username', 'password');
+
+        if ($input['username'] && $input['password'] && $user = User::validateCredentials($input['username'], $input['password']))
         {
-            return $this->getPageView('guests.login');
+            Auth::login($user);
+            return redirect('dashboard');
         }
         else
         {
-            $input = $request->only('username', 'password');
-
-            if ($input['username'] && $input['password'] && $user = User::validateCredentials($input['username'], $input['password']))
-            {
-                Auth::login($user);
-                return redirect('dashboard');
-            }
-            else
-            {
-                Flash::error(trans('messages.login_fail'));
-                return redirect()->back()->withInput();
-            }
+            Flash::error(trans('messages.login_fail'));
+            return redirect()->back()->withInput();
         }
     }
 
     /**
      * Shows the signup form.
      */
-    public function anySignup(Request $request)
+    public function getSignup()
     {
-        if ( ! $request->isMethod('post'))
+        return view('guests.signup');
+    }
+
+    /**
+     * Processes the signup form.
+     */
+    public function postSignup(Request $request)
+    {
+        $input = $request->all();
+        $validator = Validator::make($input['user'], User::$rules);
+
+        if ($validator->fails())
         {
-            return $this->getPageView('guests.signup');
+            Flash::error($validator->messages());
+            return redirect()->back()->withInput();
         }
         else
         {
-            $input = $request->all();
+            // Create user
+            $user = User::create($input['user']);
+            $user->attachRoles([\App\Models\Role::MEMBER, \App\Models\Role::LOGIN]);
 
-            $validator = Validator::make($input['user'], User::$rules);
+            // Log 'em in
+            Auth::login($user);
 
-            if ($validator->fails())
-            {
-                Flash::error($validator->messages());
-                return redirect()->back()->withInput();
-            }
-            else
-            {
-                // Create user
-                $user = User::create($input['user']);
-                $user->attachRoles([\App\Models\Role::MEMBER, \App\Models\Role::LOGIN]);
+            // Send welcome email
+            Mailer::sendWelcome($user);
 
-                // Log 'em in
-                Auth::login($user);
-
-                // Send welcome email
-                Mailer::sendWelcome($user);
-
-                // Redirect to dashboard
-                return redirect('dashboard');
-            }
+            // Redirect to dashboard
+            return redirect('dashboard');
         }
     }
 
     /**
      * Shows the password reset form.
      */
-    public function anyResetPassword(Request $request)
+    public function getResetPassword()
     {
-        if ( ! $request->isMethod('post'))
-        {
-            return $this->getPageView('guests.reset_password');
-        }
-        else
-        {
-            $input = $request->only('email', 'token', 'password');
-
-            $validator = Validator::make($input, [
-                'email' => 'required|email',
-                'token' => 'required',
-                'password' => 'required'
-            ]);
-
-            if ($validator->fails())
-            {
-                Flash::error($validator->messages());
-                return redirect()->back();
-            }
-            else
-            {
-                $user = User::where('email', '=', $input['email'])->first();
-
-                if ($user && $user->checkPasswordRecoveryToken($input['token']))
-                {
-                    $user->password = $input['password'];
-                    $user->save();
-                    Flash::success(trans('messages.password_reset_ok'));
-                }
-                else
-                {
-                    Flash::error(trans('messages.password_reset_fail'));
-                }
-            }
-
-            return redirect()->back();
-        }
-
+        return view('guests.reset_password');
     }
 
     /**
-     * Shows the forgot password page.
+     * Processes the password reset form.
      */
-    public function anyForgotPassword(Request $request)
+    public function postResetPassword(Request $request)
     {
-        if ( ! $request->isMethod('post'))
+        $input = $request->only('email', 'token', 'password');
+        $validator = Validator::make($input, [
+            'email' => 'required|email',
+            'token' => 'required',
+            'password' => 'required'
+        ]);
+
+        if ($validator->fails())
         {
-            return $this->getPageView('guests.forgot_password');
+            Flash::error($validator->messages());
+            return redirect()->back();
         }
         else
         {
-            $input = $request->only('email');
+            $user = User::where('email', '=', $input['email'])->first();
 
-            $validator = Validator::make($input, ['email' => 'required|email']);
-
-            if ($validator->fails())
+            if ($user && $user->checkPasswordRecoveryToken($input['token']))
             {
-                Flash::error(trans('messages.password_reset_fail'));
+                $user->password = $input['password'];
+                $user->save();
+                Flash::success(trans('messages.password_reset_ok'));
             }
             else
             {
-                if ($user = User::where('email', '=', $input['email'])->first())
-                {
-                    Mailer::sendPasswordRecovery($user);
-                    Flash::info(trans('messages.password_reset_ok') . '<br><a href="/reset-password?email=' . $user->email . '&token=' . $user->generatePasswordRecoveryToken() . '">Click here to reset your password</a>');
-                }
-                else
-                {
-                    Flash::error(trans('messages.password_reset_fail'));
-                }
+                Flash::error(trans('messages.password_reset_fail'));
             }
-
-            return redirect()->back();
         }
+
+        return redirect()->back();
+    }
+
+    /**
+     * Shows the forgot password form.
+     */
+    public function getForgotPassword()
+    {
+        return view('guests.forgot_password');
+    }
+
+    /**
+     * Processes the forgot password form.
+     */
+    public function postForgotPassword(Request $request)
+    {
+        $input = $request->only('email');
+        $validator = Validator::make($input, ['email' => 'required|email']);
+
+        if ($validator->fails())
+        {
+            Flash::error(trans('messages.password_reset_fail'));
+        }
+        else
+        {
+            if ($user = User::where('email', '=', $input['email'])->first())
+            {
+                Mailer::sendPasswordRecovery($user);
+                Flash::info(trans('messages.password_reset_ok') . '<br><a href="/reset-password?email=' . $user->email . '&token=' . $user->generatePasswordRecoveryToken() . '">Click here to reset your password</a>');
+            }
+            else
+            {
+                Flash::error(trans('messages.password_reset_fail'));
+            }
+        }
+
+        return redirect()->back();
     }
 }

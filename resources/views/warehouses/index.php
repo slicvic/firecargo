@@ -7,9 +7,9 @@
 <div class="row filter-block">
 	<div class="col-md-12">
 		<div class="">
-			<a href="/admin/warehouses/new" class="btn-flat success">
+			<a href="/warehouses/create" class="btn-flat primary">
 				<i class="fa fa-plus"></i>
-				NEW WAREHOUSE
+				New
 			</a>
 		</div>
 	</div>
@@ -32,18 +32,18 @@
 					</tr>
 				</thead>
 				<tbody>
-					<?php foreach (array() as $package): ?>
+					<?php foreach ($warehouses as $warehouse): ?>
 						<tr>
 							<td><input type="checkbox" class="form-control"></td>
-							<td><?php echo $package->id; ?></td>
-							<td><?php echo $package->tracking_number; ?></td>
-							<td><?php echo $package->description; ?></td>
-							<td><?php echo $package->total_units; ?></td>
-							<td><?php echo $package->total_price; ?></td>
-							<td><?php echo $package->arrival_date; ?></td>
+							<td><?php echo $warehouse->id; ?></td>
+							<td><?php echo $warehouse->tracking_number; ?></td>
+							<td><?php echo $warehouse->description; ?></td>
+							<td><?php echo $warehouse->total_units; ?></td>
+							<td><?php echo $warehouse->total_price; ?></td>
+							<td><?php echo $warehouse->arrival_date; ?></td>
 							<td>
-								<a href="/admin/packages/view/<?php echo $package->id; ?>" class="btn btn-default"><i class="fa fa-search-plus"></i></a>
-								<a href="/admin/packages/edit/<?php echo $package->id; ?>" class="btn btn-default"><i class="fa fa-edit"></i></a>
+								<a href="/warehouses/view/<?php echo $warehouse->id; ?>" class="btn btn-default"><i class="fa fa-search-plus"></i></a>
+								<a href="/warehouses/edit/<?php echo $warehouse->id; ?>" class="btn btn-default"><i class="fa fa-edit"></i></a>
 							</td>
 						</tr>
 					<?php endforeach; ?>

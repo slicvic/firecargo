@@ -6,21 +6,21 @@ class Warehouse extends BaseModel {
 
     public function consignee()
     {
-        return $this->belongsTo('User', 'consignee_user_id');
+        return $this->belongsTo('App\Models\User', 'consignee_user_id');
     }
 
     public function shipper()
     {
-        return $this->belongsTo('User', 'shipper_user_id');
+        return $this->belongsTo('App\Models\User', 'shipper_user_id');
     }
 
-    public function deliverer()
+    public function carrier()
     {
-        return $this->belongsTo('WarehouseDeliverer', 'deliverer_id');
+        return $this->belongsTo('App\Models\ShippingCarrier', 'carrier_id');
     }
 
     public function items()
     {
-        return $this->hasMany('WarehouseItem');
+        return $this->hasMany('App\Models\WarehouseItem');
     }
 }

@@ -7,7 +7,7 @@
 <div class="row filter-block">
 	<div class="col-md-12">
 		<div class="">
-			<a href="/users/create" class="btn-flat primary">
+			<a href="/accounts/create" class="btn-flat primary">
 				<i class="fa fa-plus"></i>
 				New
 			</a>
@@ -27,6 +27,7 @@
 					<th>Email</th>
 					<th>Home Phone</th>
 					<th>Cell Phone</th>
+					<th>Groups</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
@@ -42,7 +43,7 @@ $(function() {
         //'aaSorting': [[ 0, 'desc' ]],
          'processing': true,
         'serverSide': true,
-        'ajax': '/users/ajax-index',
+        'ajax': '/accounts/ajax-index',
     });
 });
 </script>

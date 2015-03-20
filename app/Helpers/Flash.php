@@ -61,7 +61,16 @@ class Flash {
     {
         $value = self::get();
 
-        return ($value) ? Html::getFlash($value['type'], $value['message']) : '';
+        if ( ! is_array($value))
+            return '';
+
+        switch($value['type']) {
+            case 'error':
+                return view('flash_messages.error', ['message' => $value['message']]);
+            case 'success':
+            default:
+                return view('flash_messages.success', ['message' => $value['message']]);
+        }
     }
 
     /**

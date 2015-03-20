@@ -13,7 +13,7 @@ class WarehouseStatusesController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
-        $this->middleware('admin');
+        $this->middleware('merchant');
     }
 
     /**
@@ -22,7 +22,7 @@ class WarehouseStatusesController extends BaseAuthController {
     public function getIndex()
     {
         $statuses = WarehouseStatus::where('company_id', '=', Auth::user()->company_id)->get();
-        return $this->getPageView('warehouse_statuses.index', ['statuses' => $statuses]);
+        return view('warehouse_statuses.index', ['statuses' => $statuses]);
     }
 
     /**
@@ -30,7 +30,7 @@ class WarehouseStatusesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return $this->getPageView('warehouse_statuses.form', ['status' => new WarehouseStatus()]);
+        return view('warehouse_statuses.form', ['status' => new WarehouseStatus()]);
     }
 
     /**
@@ -58,7 +58,7 @@ class WarehouseStatusesController extends BaseAuthController {
     public function getEdit($id)
     {
         $status = WarehouseStatus::findOrFail($id);
-        return $this->getPageView('warehouse_statuses.form', ['status' => $status]);
+        return view('warehouse_statuses.form', ['status' => $status]);
     }
 
     /**

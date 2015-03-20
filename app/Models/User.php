@@ -133,6 +133,16 @@ class User extends BaseModel implements AuthenticatableInterface {
     }
 
     /**
+     * Determines if the user is a merchant.
+     *
+     * @return bool
+     */
+    public function isMerchant()
+    {
+        return $this->hasRole(Role::MERCHANT);
+    }
+
+    /**
      * Determines if the user is an admin.
      *
      * @return bool
@@ -140,16 +150,6 @@ class User extends BaseModel implements AuthenticatableInterface {
     public function isAdmin()
     {
         return $this->hasRole(Role::ADMIN);
-    }
-
-    /**
-     * Determines if the user is a master.
-     *
-     * @return bool
-     */
-    public function isMaster()
-    {
-        return $this->hasRole(Role::MASTER);
     }
 
     /**
@@ -271,10 +271,10 @@ class User extends BaseModel implements AuthenticatableInterface {
      */
     public static function getAutocomplete($search_term)
     {
-        $auth_user = Auth::user();
+        //echo $search_term;
         $search_term = '%' . $search_term . '%';
         $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ?)';
-        $where .= $auth_user->isMaster() ? '' : ' AND company_id = ' . $auth_user->company_id;
+        //$where .= ' AND company_id = ' . Auth::user()->company_id;
         return User::whereRaw($where, [$search_term, $search_term, $search_term, $search_term, $search_term])->get();
     }
 
@@ -296,12 +296,12 @@ class User extends BaseModel implements AuthenticatableInterface {
         $auth_user = Auth::user();
 
         if (empty($search_term)) {
-            $users = User::whereRaw($auth_user->isMaster() ? 1 : 'company_id = ' . $auth_user->company_id);
+            $users = User::whereRaw($auth_user->isAdmin() ? 1 : 'company_id = ' . $auth_user->company_id);
         }
         else {
             $search_term = '%' . $search_term . '%';
             $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ?)';
-            $where .= $auth_user->isMaster() ? '' : ' AND company_id = ' . $auth_user->company_id;
+            $where .= $auth_user->isAdmin() ? '' : ' AND company_id = ' . $auth_user->company_id;
             $users = User::whereRaw($where, [$search_term, $search_term, $search_term, $search_term, $search_term]);
         }
 

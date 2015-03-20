@@ -10,8 +10,25 @@ abstract class BaseController extends Controller {
 
     protected $layout;
 
-    protected function getPageView($view, array $data = array())
+    /**
+     * Execute an action on the controller.
+     *
+     * @param  string  $method
+     * @param  array   $parameters
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function callAction($method, $parameters)
     {
-        return view($this->layout, ['content' => view($view, $data)]);
+        $result = call_user_func_array(array($this, $method), $parameters);
+
+        if ($result instanceof \Illuminate\View\View)
+        {
+            // Render layout
+            return view($this->layout, ['content' => $result]);
+        }
+        else
+        {
+            return $result;
+        }
     }
 }

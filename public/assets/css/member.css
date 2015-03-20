@@ -32,3 +32,12 @@ legend {
 #pad-wrapper h4 {
   font-style: normal;
 }
+
+.alert i {
+    font-size: 27px;
+  position: relative;
+  top: 4px;
+  margin-bottom: 8px;
+  margin-right: 17px;
+  display: inline-block;
+}

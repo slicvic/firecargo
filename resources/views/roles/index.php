@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <h1 class="page-header"><i class="fa fa-group"></i> Roles</h1>
+        <h1 class="page-header"><i class="fa fa-male"></i> Roles</h1>
     </div>
 </div>
 

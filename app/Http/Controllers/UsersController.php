@@ -7,22 +7,14 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Helpers\Flash;
+use App\Helpers\Html;
 
 class UsersController extends BaseAuthController {
 
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
-        $this->middleware('admin');
-    }
-
-    /**
-     * Logs out the current user.
-     */
-    public function getLogout()
-    {
-        Auth::logout();
-        return redirect('/');
+        $this->middleware('merchant');
     }
 
     /**
@@ -30,11 +22,11 @@ class UsersController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
-        return $this->getPageView('users.index');
+        return view('users.index');
     }
 
     /**
-     * Gets data for jQuery Datatable.
+     * Retrieves data for the jQuery Datatable.
      *
      * @uses    ajax
      * @return  json
@@ -79,28 +71,11 @@ class UsersController extends BaseAuthController {
                 $user->email,
                 $user->home_phone,
                 $user->cell_phone,
-                sprintf('<a href="/users/edit/%s" class="btn btn-flat icon"><i class="fa fa-pencil"></i></a>', $user->id)
+                Html::arrayToLabels($user->rolesArray()),
+                sprintf('<a href="/accounts/edit/%s" class="btn btn-flat icon"><i class="fa fa-pencil"></i></a>', $user->id)
             );
         }
         return response()->json($response);
-    }
-
-    /**
-     * Displays the given user's profile.
-     *
-     * @uses ajax
-     */
-    public function getView($id)
-    {
-        $user = User::find($id);
-
-        if ($user) {
-            $this->layout = View::make('admin/users/view')
-                ->with('user', $user);;
-        }
-        else {
-            Response::json(['success' => FALSE, 'error_message' => 'User not found']);
-        }
     }
 
     /**
@@ -108,7 +83,7 @@ class UsersController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return $this->getPageView('users.form', ['user' => new User()]);
+        return view('users.form', ['user' => new User()]);
     }
 
     /**
@@ -120,12 +95,19 @@ class UsersController extends BaseAuthController {
 
         $rules = User::$rules;
         unset($rules['password']);
+
         $validator = Validator::make($input['user'], $rules);
 
         if ($validator->fails())
         {
             Flash::error($validator->messages());
             return redirect()->back()->withInput();
+        }
+
+        if ( ! Auth::user()->isAdmin())
+        {
+            // Attach user to the merchant's company
+            $input['company_id'] = Auth::user()->company_id;
         }
 
         $user = User::create($input['user']);
@@ -135,7 +117,7 @@ class UsersController extends BaseAuthController {
             $user->attachRoles($input['roles']);
         }
 
-        return redirect('users');
+        return redirect('accounts');
     }
 
     /**
@@ -144,7 +126,7 @@ class UsersController extends BaseAuthController {
     public function getEdit(Request $request, $id)
     {
         $user = User::findOrFail($id);
-        return $this->getPageView('users.form', ['user' => $user]);
+        return view('users.form', ['user' => $user]);
     }
 
     /**
@@ -158,6 +140,7 @@ class UsersController extends BaseAuthController {
         $rules = User::$rules;
         $rules['email'] .= ',' . $id;
         unset($rules['password']);
+
         $validator = Validator::make($input['user'], $rules);
 
         if ($validator->fails())
@@ -169,6 +152,6 @@ class UsersController extends BaseAuthController {
         $user->update($input['user']);
         $user->attachRoles((isset($input['roles']) ? $input['roles'] : array()));
 
-        return redirect('users');
+        return redirect('accounts');
     }
 }

@@ -5,8 +5,8 @@ use Auth;
 class Role extends BaseModel {
 
     const LOGIN     = 1;
-    const MASTER    = 2;
-    const ADMIN     = 3;
+    const ADMIN     = 2;
+    const MERCHANT  = 3;
     const MEMBER    = 4;
 
     protected $table = 'roles';
@@ -22,10 +22,10 @@ class Role extends BaseModel {
 
     public static function all($columns = ['*'])
     {
-        if ( ! Auth::user()->isMaster())
+        if ( ! Auth::user()->isAdmin())
         {
-            return Role::where('id', '<>', self::MASTER)
-                ->where('id', '<>', self::ADMIN)
+            return Role::where('id', '<>', self::ADMIN)
+                ->where('id', '<>', self::MERCHANT)
                 ->get($columns);
         }
         else
