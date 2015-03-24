@@ -33,7 +33,7 @@ class CompaniesController extends BaseAuthController {
     }
 
     /**
-     * Stores a newly created company.
+     * Creates a new company.
      */
     public function postStore(Request $request)
     {
@@ -46,6 +46,8 @@ class CompaniesController extends BaseAuthController {
         }
 
         Company::create($input);
+
+        Flash::success('Saved');
 
         return redirect('companies');
     }
@@ -60,7 +62,7 @@ class CompaniesController extends BaseAuthController {
     }
 
     /**
-     * Updates the specified user.
+     * Updates a specific company.
      */
     public function postUpdate(Request $request, $id)
     {
@@ -76,6 +78,14 @@ class CompaniesController extends BaseAuthController {
 
         $company->update($input);
 
+        Flash::success('Saved');
+
         return redirect('companies');
+    }
+
+    public function getCompany()
+    {
+        $company = Company::findOrFail($id);
+        return view('companies.form', ['company' => $company]);
     }
 }

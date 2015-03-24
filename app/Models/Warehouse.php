@@ -4,23 +4,31 @@ class Warehouse extends BaseModel {
 
     protected $table = 'warehouses';
 
-    public function consignee()
-    {
-        return $this->belongsTo('App\Models\User', 'consignee_user_id');
-    }
+    public static $rules = [
+        'site_id' => 'required',
+    ];
+
+    protected $fillable = [
+        'site_id',
+    ];
 
     public function shipper()
     {
         return $this->belongsTo('App\Models\User', 'shipper_user_id');
     }
 
-    public function carrier()
+    public function consignee()
     {
-        return $this->belongsTo('App\Models\ShippingCarrier', 'carrier_id');
+        return $this->belongsTo('App\Models\User', 'consignee_user_id');
     }
 
-    public function items()
+    public function deliveredBy()
     {
-        return $this->hasMany('App\Models\WarehouseItem');
+        return $this->belongsTo('App\Models\Courier', 'delivered_by_courier_id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company');
     }
 }

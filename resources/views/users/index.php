@@ -20,12 +20,13 @@
 			<thead>
 				<tr>
 					<th>ID</th>
+                    <th>Site Name</th>
 					<th>Company</th>
 					<th>First Name</th>
 					<th>Last Name</th>
 					<th>Email</th>
-					<th>Home Phone</th>
-					<th>Cell Phone</th>
+					<th>Phone</th>
+					<th>Mobile</th>
 					<th>Groups</th>
 					<th>Actions</th>
 				</tr>
@@ -42,7 +43,7 @@ $(function() {
         //'aaSorting': [[ 0, 'desc' ]],
          'processing': true,
         'serverSide': true,
-        'ajax': '/accounts/ajax-index',
+        'ajax': '/accounts/datatable',
     });
 });
 </script>

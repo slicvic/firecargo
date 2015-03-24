@@ -1,15 +1,16 @@
 <?php namespace App\Models;
 
-class ShippingCarrier extends BaseModel {
+class PackageType extends BaseModel {
 
-    protected $table = 'shipping_carriers';
+    protected $table = 'package_types';
 
     public static $rules = [
+        'site_id' => 'required',
         'name' => 'required'
     ];
 
     protected $fillable = [
-        'company_id',
+        'site_id',
         'name'
     ];
 }

@@ -6,7 +6,7 @@ class Role extends BaseModel {
 
     const LOGIN     = 1;
     const ADMIN     = 2;
-    const MERCHANT  = 3;
+    const AGENT     = 3;
     const CLIENT    = 4;
 
     protected $table = 'roles';
@@ -22,15 +22,14 @@ class Role extends BaseModel {
 
     public static function all($columns = ['*'])
     {
-        if ( ! Auth::user()->isAdmin())
+        if (Auth::user()->isAdmin())
         {
-            return Role::where('id', '<>', self::ADMIN)
-                ->where('id', '<>', self::MERCHANT)
-                ->get($columns);
+            return parent::all($columns);
         }
         else
         {
-            return parent::all($columns);
+            return Role::where('id', '<>', self::ADMIN)
+                ->get($columns);
         }
     }
 }

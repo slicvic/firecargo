@@ -1,5 +1,5 @@
 <div class="alert alert-danger">
-    <i class="fa fa-times-circle"></i>
+    <i class="fa fa-times-circle"></i> Error
     <?php
         if (is_string($message))
         {

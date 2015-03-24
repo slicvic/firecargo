@@ -7,7 +7,7 @@ use App\Helpers\Html;
  * Flash Message Helper.
  */
 class Flash {
-    private static $session_key = 'flash_message';
+    private static $sessionKey = 'flash_message';
 
     /**
      * Sets success message.
@@ -49,7 +49,7 @@ class Flash {
      */
     public static function get()
     {
-        return Session::pull(self::$session_key, NULL);
+        return Session::pull(self::$sessionKey, NULL);
     }
 
     /**
@@ -67,7 +67,6 @@ class Flash {
         switch($value['type']) {
             case 'error':
                 return view('flash_messages.error', ['message' => $value['message']]);
-            case 'success':
             default:
                 return view('flash_messages.success', ['message' => $value['message']]);
         }
@@ -81,6 +80,6 @@ class Flash {
      */
     private static function set($message)
     {
-        Session::flash(self::$session_key, $message);
+        Session::flash(self::$sessionKey, $message);
     }
 }

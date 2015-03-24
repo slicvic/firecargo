@@ -10,15 +10,15 @@
 
 			<?php if (Auth::user()->isAdmin()): ?>
 				<div class="panel panel-default">
-	  				<div class="panel-heading">Master</div>
+	  				<div class="panel-heading">Admin</div>
 	  				<div class="panel-body">
 		    			<div class="form-group">
-	  						<label class="control-label col-sm-2">Company</label>
+	  						<label class="control-label col-sm-2">Site</label>
 							<div class="col-sm-5">
-								<select required class="form-control" name="user[company_id]">
+								<select required class="form-control" name="user[site_id]">
 									<option value="">- Choose -</option>
-									<?php foreach(\App\Models\Company::all() as $company): ?>
-										<option<?php echo ($company->id == Input::old('user.company_id', $user->company_id)) ? ' selected' : ''; ?> value="<?php echo $company->id; ?>"><?php echo $company->name . ' (' . $company->code . ')'; ?></option>
+									<?php foreach(\App\Models\Site::all() as $site): ?>
+										<option<?php echo ($site->id == Input::old('user.site_id', $user->site_id)) ? ' selected' : ''; ?> value="<?php echo $site->id; ?>"><?php echo $site->name; ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
@@ -31,9 +31,9 @@
   				<div class="panel-heading">Basic Information</div>
   				<div class="panel-body">
 	    			<div class="form-group">
-						<label class="control-label col-sm-2">Company Name</label>
+						<label class="control-label col-sm-2">Company</label>
 						<div class="col-sm-5">
-							<input type="text" name="user[company_name]" placeholder="Company Name" class="form-control" value="<?php echo Input::old('user.company_name', $user->company_name); ?>">
+							<input type="text" name="user[company]" placeholder="Company Name" class="form-control" value="<?php echo Input::old('user.company', $user->company); ?>">
 						</div>
 					</div>
 					<div class="form-group">
@@ -82,15 +82,15 @@
   				<div class="panel-heading">Phone</div>
   				<div class="panel-body">
 					<div class="form-group">
-						<label class="control-label col-sm-2">Home</label>
+						<label class="control-label col-sm-2">Phone</label>
 						<div class="col-sm-2">
-							<input type="text" name="user[home_phone]" placeholder="Home Phone" class="phone form-control" value="<?php echo Input::old('user.home_phone', $user->home_phone); ?>">
+							<input type="text" name="user[phone]" placeholder="Phone" class="phone form-control" value="<?php echo Input::old('user.phone', $user->phone); ?>">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-sm-2">Cell</label>
+						<label class="control-label col-sm-2">Mobile</label>
 						<div class="col-sm-2">
-							<input type="text" name="user[cell_phone]" placeholder="Cell Phone" class="phone form-control" value="<?php echo Input::old('user.cell_phone', $user->cell_phone); ?>">
+							<input type="text" name="user[cellphone]" placeholder="Mobile" class="phone form-control" value="<?php echo Input::old('user.cellphone', $user->cellphone); ?>">
 						</div>
 					</div>
 				</div>
@@ -124,9 +124,9 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-sm-2">Zip</label>
+						<label class="control-label col-sm-2">Postal Code</label>
 						<div class="col-sm-2">
-							<input type="text" name="user[zip]" placeholder="Zip Code" class="form-control" value="<?php echo Input::old('user.zip', $user->zip); ?>">
+							<input type="text" name="user[postal_code]" placeholder="Postal Code" class="form-control" value="<?php echo Input::old('user.postal_code', $user->postal_code); ?>">
 						</div>
 					</div>
 					<div class="form-group">

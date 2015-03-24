@@ -1,12 +1,12 @@
 <div class="row">
-    <h3><i class="fa fa-truck"></i> Shipping Carriers</h3>
+    <h3><i class="fa fa-info-circle"></i> Package Types</h3>
     <hr>
 </div>
 
 <div class="row filter-block">
     <div class="col-md-12">
         <div class="">
-            <a href="/carriers/create" class="btn-flat primary">
+            <a href="/package-types/create" class="btn-flat primary">
                 <i class="fa fa-plus"></i>
                 New
             </a>
@@ -25,11 +25,11 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($carriers as $carrier): ?>
+                <?php foreach ($types as $type): ?>
                    <tr>
-                        <td><?php echo $carrier->id; ?></td>
-                        <td><?php echo $carrier->name; ?></td>
-                        <td><a href="/carriers/edit/<?php echo $carrier->id; ?>" class="btn-flat icon"><i class="fa fa-pencil"></i></a></td>
+                        <td><?php echo $type->id; ?></td>
+                        <td><?php echo $type->name; ?></td>
+                        <td><a href="/package-types/edit/<?php echo $type->id; ?>" class="btn-flat icon"><i class="fa fa-pencil"></i></a></td>
                    </tr>
                 <?php endforeach; ?>
             </tbody>

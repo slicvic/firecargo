@@ -10,7 +10,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Company Name</label>
                 <div class="col-sm-5">
-                    <input type="text" name="user[company_name]" placeholder="Company Name" class="form-control" value="<?php echo Input::old('user.company_name', $user->company_name); ?>">
+                    <input type="text" name="user[company]" placeholder="Company Name" class="form-control" value="<?php echo Input::old('user.company', $user->company); ?>">
                 </div>
             </div>
             <div class="form-group">

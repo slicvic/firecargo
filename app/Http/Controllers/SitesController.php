@@ -4,10 +4,10 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Validator;
 
-use App\Models\Role;
+use App\Models\Site;
 use App\Helpers\Flash;
 
-class RolesController extends BaseAuthController {
+class SitesController extends BaseAuthController {
 
     public function __construct(Guard $auth)
     {
@@ -16,28 +16,28 @@ class RolesController extends BaseAuthController {
     }
 
     /**
-     * Displays a list of roles.
+     * Displays a list of sites.
      */
     public function getIndex()
     {
-        $roles = Role::all();
-        return view('roles.index', ['roles' => $roles]);
+        $sites = Site::all();
+        return view('sites.index', ['sites' => $sites]);
     }
 
     /**
-     * Shows the form for creating a new role.
+     * Shows the form for creating a new site.
      */
     public function getCreate()
     {
-        return view('roles.form', ['role' => new Role()]);
+        return view('sites.form', ['site' => new Site()]);
     }
 
     /**
-     * Creates a new role.
+     * Creates a new site.
      */
     public function postStore(Request $request)
     {
-        $validator = Validator::make($input = $request->all(), Role::$rules);
+        $validator = Validator::make($input = $request->all(), Site::$rules);
 
         if ($validator->fails())
         {
@@ -45,28 +45,30 @@ class RolesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        Role::create($input);
+        Site::create($input);
 
-        return redirect('roles');
+        Flash::success('Saved');
+
+        return redirect('sites');
     }
 
     /**
-     * Shows the form for editing a role.
+     * Shows the form for editing a site.
      */
     public function getEdit($id)
     {
-        $role = Role::findOrFail($id);
-        return view('roles.form', ['role' => $role]);
+        $site = Site::findOrFail($id);
+        return view('sites.form', ['site' => $site]);
     }
 
     /**
-     * Updates a specific role.
+     * Updates a specific site.
      */
     public function postUpdate(Request $request, $id)
     {
-        $role = Role::findOrFail($id);
+        $site = Site::findOrFail($id);
 
-        $validator = Validator::make($input = $request->all(), Role::$rules);
+        $validator = Validator::make($input = $request->all(), Site::$rules);
 
         if ($validator->fails())
         {
@@ -74,8 +76,10 @@ class RolesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        $role->update($input);
+        $site->update($input);
 
-        return redirect('roles');
+        Flash::success('Saved');
+
+        return redirect('sites');
     }
 }

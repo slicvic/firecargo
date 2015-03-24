@@ -12,7 +12,7 @@ use App\Helpers\Flash;
 class AccountController extends BaseAuthController {
 
     /**
-     * Logs out the current user.
+     * Logs out the user.
      */
     public function getLogout()
     {
@@ -25,29 +25,28 @@ class AccountController extends BaseAuthController {
      */
     public function getDashboard()
     {
-        $dashboard_view = view('account.dashboard', ['user' => Auth::user()]);
-        return view('account.layout', ['content' => $dashboard_view]);
+        $dashboardView = view('account.dashboard', ['user' => $this->user]);
+        return view('account.layout', ['content' => $dashboardView]);
     }
 
     /**
-     * Displays the form for updating the profile.
+     * Displays the form for updating the user's profile.
      */
     public function getProfile()
     {
-        $profile_view = view('account.profile', ['user' => Auth::user()]);
-        return view('account.layout', ['content' => $profile_view]);
+        $profileView = view('account.profile', ['user' => $this->user]);
+        return view('account.layout', ['content' => $profileView]);
     }
 
     /**
-     * Updates the user profile.
+     * Updates the user's profile.
      */
     public function postProfile(Request $request)
     {
-        $user = Auth::user();
         $input = $request->all();
 
         $rules = User::$rules;
-        $rules['email'] .= ',' . $user->id;
+        $rules['email'] .= ',' . $this->user->id;
         unset($rules['password']);
 
         $validator = Validator::make($input['user'], $rules);
@@ -58,22 +57,22 @@ class AccountController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        $user->update($input['user']);
+        $this->user->update($input['user']);
 
         return redirect()->back();
     }
 
     /**
-     * Displays the form for changing the password.
+     * Displays the form for changing the user's password.
      */
     public function getPassword()
     {
-        $password_view = view('account.password');
-        return view('account.layout', ['content' => $password_view]);
+        $passwordView = view('account.password');
+        return view('account.layout', ['content' => $passwordView]);
     }
 
     /**
-     * Updates the user password.
+     * Updates the user's password.
      */
     public function postPassword(Request $request)
     {
@@ -91,15 +90,13 @@ class AccountController extends BaseAuthController {
         }
         else
         {
-            $user = Auth::user();
-
-            if (Hash::check($input['current'], $user->password) )
+            if (Hash::check($input['current'], $this->user->password) )
             {
                 // Update it only if it differs from the current one
                 if ($input['new'] != $input['current'])
                 {
-                    $user->password = $input['new'];
-                    $user->save();
+                    $this->user->password = $input['new'];
+                    $this->user->save();
                 }
                 Flash::success(trans('messages.password_reset_ok'));
             }

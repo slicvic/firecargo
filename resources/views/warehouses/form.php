@@ -5,18 +5,18 @@
 
 <div class="row">
     <div class="col-md-12">
-        <form data-parsley-validate action="/ware/" method="post" class="form-horizontal">
+        <form data-parsley-validate action="/warehouse/store" method="post" class="form-horizontal">
             <div class="form-group">
                 <label class="control-label col-sm-2">Date</label>
                 <div class="col-sm-2">
                     <div class="input-group">
-                        <input type="text" name="arrival_date" id="arrival_date" class="form-control" value="<?php echo ($warehouse->arrival_date ? date('m/d/Y', strtotime($warehouse->arrival_date)) : date('m/d/Y')); ?>">
+                        <input type="text" name="arrival_date" id="arrival_date" class="form-control" value="<?php echo Input::old('arrival_date', $warehouse->arrived_at ? date('m/d/Y', strtotime($warehouse->arrived_at)) : date('m/d/Y')); ?>">
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                 </div>
                 <div class="col-sm-2">
                     <div class="input-group bootstrap-timepicker">
-                        <input type="text" id="arrival_time" name="arrival_time" value="<?php echo ($warehouse->arrival_date) ? date('g:i A', strtotime($warehouse->arrival_date)) : date('g:i A'); ?>" class="form-control">
+                        <input type="text" id="arrival_time" name="arrival_time" value="<?php echo Input::old('arrival_time', $warehouse->arrived_at ? date('g:i A', strtotime($warehouse->arrived_at)) : date('g:i A')); ?>" class="form-control">
                         <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                     </div>
                 </div>
@@ -40,9 +40,9 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Delivered By</label>
                 <div class="col-sm-5">
-                    <select name="warehouse[carrier_id]" class="form-control">
-                        <?php foreach(\App\Models\ShippingCarrier::all() as $carrier): ?>
-                            <option<?php echo ($warehouse->carrier_id == $carrier->id ? ' selected' : ''); ?> value="<?php echo $carrier->id; ?>"><?php echo $carrier->name; ?></option>
+                    <select name="warehouse[delivered_by_courier_id]" class="form-control">
+                        <?php foreach(\App\Models\Courier::all() as $courier): ?>
+                            <option<?php echo ($warehouse->courier_id == $courier->id ? ' selected' : ''); ?> value="<?php echo $courier->id; ?>"><?php echo $courier->name; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -73,21 +73,21 @@ $(function() {
 
     // Autocomplete
     $('#shipper').autocomplete({
-        source: '/warehouses/autocomplete-user',
+        source: '/accounts/autocomplete',
         minLength: 2,
         select: function(event, ui) {
-            $('#shipper').val(ui.item.company);
+            $('#shipper').val(ui.item.name);
             $('#shipper_id').val(ui.item.id);
             return false;
         }
     }).autocomplete('instance')._renderItem = function(ul, item) {
         return $('<li>')
-            .append('<a>' + item.id  + ' - ' + item.company + '</a>')
+            .append('<a>' + item.id  + ' - ' + item.name + '</a>')
             .appendTo(ul);
     };
 
     $('#consignee').autocomplete({
-        source: '/warehouses/autocomplete-user',
+        source: '/accounts/autocomplete',
         minLength: 2,
         select: function(event, ui) {
             $('#consignee').val(ui.item.name);

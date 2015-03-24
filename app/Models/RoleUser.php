@@ -2,5 +2,5 @@
 
 class UserRole extends BaseModel {
 
-    protected $table = 'user_roles';
+    protected $table = 'roles_users';
 }

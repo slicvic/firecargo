@@ -5,15 +5,15 @@ use Illuminate\Http\Request;
 use Validator;
 use Auth;
 
-use App\Models\WarehouseStatus;
+use App\Models\PackageStatus;
 use App\Helpers\Flash;
 
-class WarehouseStatusesController extends BaseAuthController {
+class PackageStatusesController extends BaseAuthController {
 
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
-        $this->middleware('merchant');
+        $this->middleware('agent');
     }
 
     /**
@@ -21,8 +21,8 @@ class WarehouseStatusesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $statuses = WarehouseStatus::where('company_id', '=', Auth::user()->company_id)->get();
-        return view('warehouse_statuses.index', ['statuses' => $statuses]);
+        $statuses = PackageStatus::where('site_id', '=', $this->user->site_id)->get();
+        return view('package_statuses.index', ['statuses' => $statuses]);
     }
 
     /**
@@ -30,15 +30,18 @@ class WarehouseStatusesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('warehouse_statuses.form', ['status' => new WarehouseStatus()]);
+        return view('package_statuses.form', ['status' => new PackageStatus()]);
     }
 
     /**
-     * Stores a newly created status.
+     * Creates a new status.
      */
     public function postStore(Request $request)
     {
-        $validator = Validator::make($input = $request->all(), WarehouseStatus::$rules);
+        $input = $request->all();
+        $input['site_id'] = $this->user->site_id;
+
+        $validator = Validator::make($input, PackageStatus::$rules);
 
         if ($validator->fails())
         {
@@ -46,10 +49,12 @@ class WarehouseStatusesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        $input['company_id'] = Auth::user()->company_id;
-        WarehouseStatus::create($input);
 
-        return redirect('ws');
+        PackageStatus::create($input);
+
+        Flash::success('Saved');
+
+        return redirect('package-statuses');
     }
 
     /**
@@ -57,18 +62,18 @@ class WarehouseStatusesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $status = WarehouseStatus::findOrFail($id);
-        return view('warehouse_statuses.form', ['status' => $status]);
+        $status = PackageStatus::findOrFail($id);
+        return view('package_statuses.form', ['status' => $status]);
     }
 
     /**
-     * Updates the specified status.
+     * Updates a specific status.
      */
     public function postUpdate(Request $request, $id)
     {
-        $status = WarehouseStatus::findOrFail($id);
+        $status = PackageStatus::findOrFail($id);
 
-        $validator = Validator::make($input = $request->all(), WarehouseStatus::$rules);
+        $validator = Validator::make($input = $request->all(), PackageStatus::$rules);
 
         if ($validator->fails())
         {
@@ -78,6 +83,8 @@ class WarehouseStatusesController extends BaseAuthController {
 
         $status->update($input);
 
-        return redirect('ws');
+        Flash::success('Saved');
+
+        return redirect('package-statuses');
     }
 }

@@ -45,7 +45,7 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label">Nombre de la Empresa</label>
 							<div class="col-md-6">
-								<input type="text" name="user[company_name]" value="<?php echo Input::old('user.company_name'); ?>" class="form-control">
+								<input type="text" name="user[company]" value="<?php echo Input::old('user.company'); ?>" class="form-control">
 							</div>
 						</div>
 					</fieldset>

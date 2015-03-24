@@ -9,6 +9,7 @@ class User extends BaseModel implements AuthenticatableInterface {
     use AuthenticableTrait;
 
     public static $rules = [
+        'site_id',
         'email' => 'required|email|unique:users,email',
         'password' => 'required',
         'firstname' => 'required',
@@ -30,23 +31,21 @@ class User extends BaseModel implements AuthenticatableInterface {
     protected $hidden = ['password', 'remember_token'];
 
     protected $fillable = [
-        'company_id',
+        'site_id',
+        'country_id',
         'email',
         'password',
-        'id_type_id',
-        'id_number',
-        'company_name',
+        'company',
         'firstname',
         'lastname',
         'dob',
-        'home_phone',
-        'cell_phone',
+        'phone',
+        'cellphone',
         'address1',
         'address2',
         'city',
         'state',
-        'zip',
-        'country_id'
+        'postal_code',
     ];
 
     /**
@@ -62,7 +61,7 @@ class User extends BaseModel implements AuthenticatableInterface {
 
     public function roles()
     {
-        return $this->belongsToMany('App\Models\Role', 'user_roles');
+        return $this->belongsToMany('App\Models\Role', 'roles_users');
     }
 
     public function country()
@@ -70,14 +69,9 @@ class User extends BaseModel implements AuthenticatableInterface {
         return $this->belongsTo('App\Models\Country');
     }
 
-    public function company()
+    public function site()
     {
-        return $this->belongsTo('App\Models\Company');
-    }
-
-    public function idtype()
-    {
-        return $this->belongsTo('App\Models\UserIdType', 'id_type_id');
+        return $this->belongsTo('App\Models\Site');
     }
 
     /**
@@ -117,7 +111,7 @@ class User extends BaseModel implements AuthenticatableInterface {
      */
     public function cid()
     {
-        return  ($this->company) ? $this->company->code . $this->id : '';
+        return  '';
     }
 
     /**
@@ -133,13 +127,13 @@ class User extends BaseModel implements AuthenticatableInterface {
     }
 
     /**
-     * Determines if the user is a merchant.
+     * Determines if the user is an agent.
      *
      * @return bool
      */
-    public function isMerchant()
+    public function isAgent()
     {
-        return $this->hasRole(Role::MERCHANT);
+        return $this->hasRole(Role::AGENT);
     }
 
     /**
@@ -153,7 +147,7 @@ class User extends BaseModel implements AuthenticatableInterface {
     }
 
     /**
-     * Determines if the user is a client.
+     * Determines if the user is a store customer.
      *
      * @return bool
      */
@@ -197,12 +191,12 @@ class User extends BaseModel implements AuthenticatableInterface {
     /**
      * Determines if the user has the given role.
      *
-     * @param  int  $role_id
+     * @param  int  $roleId
      * @return bool
      */
-    public function hasRole($role_id)
+    public function hasRole($roleId)
     {
-        return in_array($role_id, array_fetch($this->roles->toArray(), 'id'));
+        return in_array($roleId, array_fetch($this->roles->toArray(), 'id'));
     }
 
     /**
@@ -216,7 +210,6 @@ class User extends BaseModel implements AuthenticatableInterface {
             case 'password':
                 $value = (empty($value)) ? $this->password : Hash::make($value);
                 break;
-
             case 'dob':
                 if (is_string($value))
                     $value = date('Y-m-d', strtotime($value));
@@ -272,55 +265,53 @@ class User extends BaseModel implements AuthenticatableInterface {
     }
 
     /**
-     * Retrieves a list of users for a jQuery autocomplete field.
+     * Retrieves a list of users for a jquery autocomplete field.
      *
-     * @param  string $search_term  A search keyword
-     *
+     * @param  string $query        A search keyword
+     * @param  array  $siteIds      List of site ids
      * @return User[]
-     * @uses   Auth
      */
-    public static function getAutocomplete($search_term)
+    public static function getAutocomplete($query, array $siteIds = NULL)
     {
-        //echo $search_term;
-        $search_term = '%' . $search_term . '%';
-        $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ?)';
-        //$where .= ' AND company_id = ' . Auth::user()->company_id;
-        return User::whereRaw($where, [$search_term, $search_term, $search_term, $search_term, $search_term])->get();
+        $query = '%' . $query . '%';
+        $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
+        $where .= count($siteIds) ? ' AND site_id IN (' . implode(',', $siteIds) . ')' : '';
+        return User::whereRaw($where, [$query, $query, $query, $query, $query, $query, $query])->get();
     }
 
     /**
-     * Retrieves a list of users for a jQuery DataTable.
+     * Retrieves a list of users for a jquery datatable.
      *
-     * @param  string   $search_term  A search keyword
+     * @param  string   $query        A search keyword
+     * @param  array    $siteIds      List of site ids
      * @param  bool     $count
      * @param  int      $offset
      * @param  int      $limit
-     * @param  string   $order_by
+     * @param  string   $orderBy
      * @param  string   $order
      *
      * @return User[]
-     * @uses   Auth
      */
-    public static function getDatatable($search_term = NULL, $count = FALSE, $offset = 0, $limit = 10, $order_by = 'id', $order = 'DESC')
+    public static function getDatatable($query = NULL, array $siteIds = NULL, $count = FALSE, $offset = 0, $limit = 10, $orderBy = 'id', $order = 'DESC')
     {
-        $auth_user = Auth::user();
+        $where = count($siteIds) ? 'site_id IN (' . implode(',', $siteIds) . ')' : '1';
 
-        if (empty($search_term)) {
-            $users = User::whereRaw($auth_user->isAdmin() ? 1 : 'id <> ' . $auth_user ->id. ' AND company_id = ' . $auth_user->company_id);
+        if (empty($query))
+        {
+            $users = User::whereRaw($where);
         }
-        else {
-            $search_term = '%' . $search_term . '%';
-            $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ?)';
-            $where .= $auth_user->isAdmin() ? '' : 'id <> ' . $auth_user ->id . ' AND company_id = ' . $auth_user->company_id;
-            $users = User::whereRaw($where, [$search_term, $search_term, $search_term, $search_term, $search_term]);
+        else
+        {
+            $query = '%' . $query . '%';
+            $where .= ' AND (id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
+            $users = User::whereRaw($where, [$query, $query, $query, $query, $query, $query, $query]);
         }
 
-        if ($count) {
+        if ($count)
             return $users->count();
-        }
 
         return $users
-            ->orderBy($order_by, $order)
+            ->orderBy($orderBy, $order)
             ->limit($limit)
             ->get();
     }

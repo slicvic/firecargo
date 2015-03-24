@@ -6,7 +6,6 @@ use Validator;
 use Auth;
 
 use App\Models\Warehouse;
-use App\Models\User;
 use App\Helpers\Flash;
 
 class WarehousesController extends BaseAuthController {
@@ -14,7 +13,7 @@ class WarehousesController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
-        $this->middleware('merchant');
+        $this->middleware('agent');
     }
 
     /**
@@ -22,7 +21,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $warehouses = Warehouse::where('company_id', '=', Auth::user()->company_id)->get();
+        $warehouses = Warehouse::where('site_id', '=', $this->user->site_id)->get();
         return view('warehouses.index', ['warehouses' => $warehouses]);
     }
 
@@ -32,23 +31,5 @@ class WarehousesController extends BaseAuthController {
     public function getCreate()
     {
         return view('warehouses.form', ['warehouse' => new Warehouse()]);
-    }
-
-    public function getAutocompleteUser(Request $request)
-    {
-        $input = $request->all();
-        $response = array();
-
-        if ( ! empty($input['term'])) {
-            foreach(User::getAutocomplete($input['term']) as $user) {
-                $response[] = array(
-                    'id' => $user->id,
-                    'company' => $user->company_name,
-                    'name' => $user->name()
-                );
-            }
-        }
-
-        return response()->json($response);
     }
 }

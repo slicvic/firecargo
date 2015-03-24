@@ -1,11 +1,9 @@
 <?php $user = Auth::user(); ?>
-<?php $uri = Request::path();
-//echo '<pre>';print_r(Route::currentRouteAction());
-?>
+<?php $uri = Request::path(); ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Detail Admin - Home</title>
+    <title><?php echo APP_NAME; ?></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -58,15 +56,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.html">
-                <b><?php echo APP_NAME; ?></b> Admin
+            <a class="navbar-brand" href="/dashboard">
+                <b><?php echo APP_NAME; ?></b>
             </a>
         </div>
         <ul class="nav navbar-nav pull-right hidden-xs">
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle hidden-xs hidden-sm" data-toggle="dropdown">
-                    <?php echo $user->name(); ?>
+                    <i class="fa fa-user"></i> Howdy, <?php echo $user->name(); ?>
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
@@ -90,8 +88,8 @@
                 </a>
             </li>
 
-            <?php if ($user->isAdmin() || $user->isMerchant()): ?>
-                <li class="<?php $warehouse_menu_active = preg_match('/warehouse|statuses|carriers/', $uri); echo ($warehouse_menu_active) ? 'active' : ''; ?>">
+            <?php if ($user->isAdmin() || $user->isAgent()): ?>
+                <li class="<?php $warehouse_menu_active = preg_match('/warehouse/', $uri); echo ($warehouse_menu_active) ? 'active' : ''; ?>">
                     <?php echo ($warehouse_menu_active) ? \App\Helpers\Html::sideNavPointer() : ''; ?>
                     <a class="dropdown-toggle" href="#">
                         <i class="fa fa-cube"></i>
@@ -100,45 +98,39 @@
                     </a>
                     <ul class="submenu <?php echo ($warehouse_menu_active) ? 'active' : ''; ?>">
                         <li><a href="/warehouses" class="<?php echo (Request::is('warehouses') || Request::is('warehouses/*')) ? 'active' : ''; ?>">Warehouses</a></li>
-                        <li><a href="/statuses" class="<?php echo (Request::is('statuses') || Request::is('statuses/*')) ? 'active' : ''; ?>">Statuses</a></li>
-                        <li><a href="/carriers" class="<?php echo (Request::is('carriers') || Request::is('carriers/*')) ? 'active' : ''; ?>">Shipping Carriers</a></li>
                     </ul>
                 </li>
             <?php endif; ?>
 
-            <?php if ($user->isAdmin()): ?>
-                <li class="<?php $admin_menu_active = preg_match('/accounts|companies|roles/', $uri); echo ($admin_menu_active) ? 'active' : ''; ?>">
-                    <?php echo ($admin_menu_active) ? \App\Helpers\Html::sideNavPointer() : ''; ?>
-                    <a class="dropdown-toggle" href="#">
-                        <i class="fa fa-cog"></i>
-                        <span>Admin</span>
-                        <i class="fa fa-chevron-down icon-chevron-down"></i>
-                    </a>
-                    <ul class="submenu <?php echo ($admin_menu_active) ? 'active' : ''; ?>">
-                        <li><a href="/accounts" class="<?php echo (Request::is('accounts') || Request::is('accounts/*')) ? 'active' : ''; ?>">Accounts</a></li>
-                        <li><a href="/roles" class="<?php echo (Request::is('roles') || Request::is('roles/*')) ? 'active' : ''; ?>">Roles</a></li>
-                        <li><a href="/companies" class="<?php echo (Request::is('companies') || Request::is('companies/*')) ? 'active' : ''; ?>">Companies</a></li>
-                    </ul>
-                </li>
-            <?php endif; ?>
-
-            <?php if ($user->isClient()): ?>
-                <li class="<?php $account_menu_active = (Request::is('account') || Request::is('account/*')); echo ($account_menu_active) ? 'active' : ''; ?>">
-                    <?php echo ($account_menu_active) ? \App\Helpers\Html::sideNavPointer() : ''; ?>
-                    <a href="/account/profile">
-                        <i class="fa fa-users"></i>
-                        <span>My Account</span>
-                    </a>
-                </li>
-            <?php endif; ?>
-
-            <?php if ($user->isMerchant()): ?>
+            <?php if ($user->isAdmin() || $user->isAgent()): ?>
                 <li class="<?php $accounts_menu_active = (Request::is('accounts') || Request::is('accounts/*')); echo ($accounts_menu_active) ? 'active' : ''; ?>">
                     <?php echo ($accounts_menu_active) ? \App\Helpers\Html::sideNavPointer() : ''; ?>
                     <a href="/accounts">
                         <i class="fa fa-users"></i>
                         <span>Accounts</span>
                     </a>
+                </li>
+            <?php endif; ?>
+
+            <?php if ($user->isAdmin() || $user->isAgent()): ?>
+                <li class="<?php $admin_menu_active = preg_match('/couriers|sites|company|package-|companies|roles/', $uri); echo ($admin_menu_active) ? 'active' : ''; ?>">
+                    <?php echo ($admin_menu_active) ? \App\Helpers\Html::sideNavPointer() : ''; ?>
+                    <a class="dropdown-toggle" href="#">
+                        <i class="fa fa-cog"></i>
+                        <span>Settings</span>
+                        <i class="fa fa-chevron-down icon-chevron-down"></i>
+                    </a>
+                    <ul class="submenu <?php echo ($admin_menu_active) ? 'active' : ''; ?>">
+                        <?php if ($user->isAdmin()): ?>
+                            <li><a href="/roles" class="<?php echo (Request::is('roles') || Request::is('roles/*')) ? 'active' : ''; ?>">Roles</a></li>
+                            <li><a href="/companies" class="<?php echo (Request::is('companies') || Request::is('companies/*')) ? 'active' : ''; ?>">Companies</a></li>
+                            <li><a href="/sites" class="<?php echo (Request::is('sites') || Request::is('sites/*')) ? 'active' : ''; ?>">Sites</a></li>
+                            <li><a href="/package-types" class="<?php echo (Request::is('package-types') || Request::is('package-types/*')) ? 'active' : ''; ?>">Package Types</a></li>
+                        <?php endif; ?>
+                        <li><a href="/company/profile" class="<?php echo (Request::is('company') || Request::is('company/*')) ? 'active' : ''; ?>">Company</a></li>
+                        <li><a href="/couriers" class="<?php echo (Request::is('couriers') || Request::is('couriers/*')) ? 'active' : ''; ?>">Couriers</a></li>
+                        <li><a href="/package-statuses" class="<?php echo (Request::is('package-statuses') || Request::is('package-statuses/*')) ? 'active' : ''; ?>">Package Statuses</a></li>
+                    </ul>
                 </li>
             <?php endif; ?>
         </ul>

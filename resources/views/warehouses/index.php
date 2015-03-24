@@ -1,5 +1,5 @@
 <div class="row">
-    <h3><i class="fa fa-info-circle"></i> Warehouses</h3>
+    <h3><i class="fa fa-cube"></i> Warehouses</h3>
     <hr>
 </div>
 

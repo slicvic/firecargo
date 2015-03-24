@@ -3,7 +3,7 @@
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
-class AuthenticateMerchant {
+class AuthenticateAgent {
 
     /**
      * The Guard implementation.
@@ -32,7 +32,7 @@ class AuthenticateMerchant {
      */
     public function handle($request, Closure $next)
     {
-        if ( ! $this->auth->user()->isAdmin() && ! $this->auth->user()->isMerchant())
+        if ( ! $this->auth->user()->isAdmin() && ! $this->auth->user()->isAgent())
         {
             if ($request->ajax())
             {
