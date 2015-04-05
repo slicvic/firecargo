@@ -42,7 +42,7 @@ class UsersController extends BaseAuthController {
             {
                 $response[] = array(
                     'id' => $user->id,
-                    'company' => $user->company,
+                    'company_name' => $user->company_name,
                     'name' => $user->name()
                 );
             }
@@ -90,11 +90,10 @@ class UsersController extends BaseAuthController {
         $response['data'] = array();
 
         foreach($results as $user) {
-            $company = $user->company;
             $response['data'][] = array(
                 $user->id,
                 $user->site->name,
-                $user->company,
+                $user->company_name,
                 $user->firstname,
                 $user->lastname,
                 $user->email,
@@ -152,7 +151,8 @@ class UsersController extends BaseAuthController {
      */
     public function getEdit(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndSiteId($id, $this->user->site_id);
+
         return view('users.form', ['user' => $user]);
     }
 
@@ -161,7 +161,6 @@ class UsersController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $user = User::findOrFail($id);
         $input = $request->all();
 
         $rules = User::$rules;
@@ -177,6 +176,7 @@ class UsersController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndSiteId($id, $this->user->site_id);
         $user->update($input['user']);
         $user->attachRoles((isset($input['roles']) ? $input['roles'] : array()));
 

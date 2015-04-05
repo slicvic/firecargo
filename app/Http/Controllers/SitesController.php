@@ -66,8 +66,6 @@ class SitesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $site = Site::findOrFail($id);
-
         $validator = Validator::make($input = $request->all(), Site::$rules);
 
         if ($validator->fails())
@@ -76,6 +74,7 @@ class SitesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        $site = Site::findOrFail($id);
         $site->update($input);
 
         Flash::success('Saved');

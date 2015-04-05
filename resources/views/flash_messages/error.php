@@ -1,14 +1,13 @@
 <div class="alert alert-danger">
-    <i class="fa fa-times-circle"></i> Error
+    <i class="fa fa-times-circle"></i> The following error(s) occurred:
+    <ul>
     <?php
         if (is_string($message))
         {
-            echo $message;
+            echo '<li>' . $message . '</li>';
         }
         else
         {
-            echo '<ul>';
-
             if (is_array($message))
             {
                 foreach($message as $error)
@@ -27,7 +26,7 @@
                 }
             }
 
-            echo '</ul>';
         }
     ?>
+    </ul>
 </div>

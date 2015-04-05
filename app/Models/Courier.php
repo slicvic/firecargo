@@ -1,8 +1,6 @@
 <?php namespace App\Models;
 
-use Auth;
-
-class Courier extends BaseModel {
+class Courier extends BaseRestrictedAccess {
 
     protected $table = 'couriers';
 
@@ -15,10 +13,4 @@ class Courier extends BaseModel {
         'site_id',
         'name'
     ];
-
-    public static function all($columns = ['*'])
-    {
-        return Courier::where('site_id', '=', Auth::user()->site_id)
-            ->get($columns);
-    }
 }

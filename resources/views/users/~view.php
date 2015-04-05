@@ -4,7 +4,7 @@
 </div>
 <div class="modal-body">
     <div class="row">
-        <div class="col-xs-3"><b>Company</b></div><div class="col-xs-6"><?php echo ($user->company ? $user->company : '-'); ?></div>
+        <div class="col-xs-3"><b>Company</b></div><div class="col-xs-6"><?php echo ($user->company_name ? $user->company : '-'); ?></div>
     </div>
     <div class="row">
         <div class="col-xs-3"><b>Name</b></div><div class="col-xs-6"><?php echo $user->name(); ?></div>

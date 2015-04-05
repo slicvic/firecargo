@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-class UserRole extends BaseModel {
+class UserRole extends Base {
 
     protected $table = 'roles_users';
 }

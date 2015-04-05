@@ -5,11 +5,13 @@ use Auth;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
-class User extends BaseModel implements AuthenticatableInterface {
+class User extends BaseRestrictedAccess implements AuthenticatableInterface {
+
     use AuthenticableTrait;
 
     public static $rules = [
-        'site_id',
+        'site_id' => 'required',
+        'company_name' => 'required',
         'email' => 'required|email|unique:users,email',
         'password' => 'required',
         'firstname' => 'required',
@@ -35,7 +37,7 @@ class User extends BaseModel implements AuthenticatableInterface {
         'country_id',
         'email',
         'password',
-        'company',
+        'company_name',
         'firstname',
         'lastname',
         'dob',
@@ -81,13 +83,20 @@ class User extends BaseModel implements AuthenticatableInterface {
      */
 
     /**
-     * Gets the full name.
+     * Gets the fullname or company name.
      *
      * @return string
      */
     public function name()
     {
-        return ucwords(strtolower($this->firstname . ' ' . $this->lastname));
+        if ( ! empty($this->firstname) || ! empty($this->lastname))
+        {
+            return ucwords(strtolower($this->firstname . ' ' . $this->lastname));
+        }
+        else
+        {
+            return $this->company_name;
+        }
     }
 
     /**
@@ -121,6 +130,7 @@ class User extends BaseModel implements AuthenticatableInterface {
      */
     public function afterLogin()
     {
+        // TODO
         $this->logins += 1;
         $this->last_login = date('Y-m-d H:i:s');
         $this->save();
@@ -274,7 +284,7 @@ class User extends BaseModel implements AuthenticatableInterface {
     public static function getAutocomplete($query, array $siteIds = NULL)
     {
         $query = '%' . $query . '%';
-        $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
+        $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
         $where .= count($siteIds) ? ' AND site_id IN (' . implode(',', $siteIds) . ')' : '';
         return User::whereRaw($where, [$query, $query, $query, $query, $query, $query, $query])->get();
     }
@@ -303,7 +313,7 @@ class User extends BaseModel implements AuthenticatableInterface {
         else
         {
             $query = '%' . $query . '%';
-            $where .= ' AND (id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
+            $where .= ' AND (id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
             $users = User::whereRaw($where, [$query, $query, $query, $query, $query, $query, $query]);
         }
 

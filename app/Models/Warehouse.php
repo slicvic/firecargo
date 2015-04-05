@@ -1,15 +1,23 @@
 <?php namespace App\Models;
 
-class Warehouse extends BaseModel {
+class Warehouse extends BaseRestrictedAccess {
 
     protected $table = 'warehouses';
 
     public static $rules = [
         'site_id' => 'required',
+        'shipper_user_id' => 'required',
+        'consignee_user_id' => 'required',
+        'delivered_by_courier_id' => 'required',
+        'arrived_at' => 'required'
     ];
 
     protected $fillable = [
         'site_id',
+        'shipper_user_id',
+        'consignee_user_id',
+        'delivered_by_courier_id',
+        'arrived_at'
     ];
 
     public function shipper()
@@ -30,5 +38,73 @@ class Warehouse extends BaseModel {
     public function company()
     {
         return $this->belongsTo('App\Models\Company');
+    }
+
+    public function packages()
+    {
+        return $this->hasMany('App\Models\Package');
+    }
+
+    public function site()
+    {
+        return $this->belongsTo('App\Models\Site');
+    }
+
+    /**
+     * Retrieves a list of untrashed packages.
+     *
+     * @return Package[]
+     */
+    public function getPackages()
+    {
+        return Package::where('warehouse_id', $this->id)
+            ->where('trashed', '<>', 1)
+            ->get();
+    }
+
+    /**
+     * Counts untrashed packages.
+     *
+     * @return int
+     */
+    public function countPackages()
+    {
+        return Package::where('warehouse_id', $this->id)
+            ->where('trashed', '<>', 1)
+            ->count();
+    }
+
+    /**
+     * Calculates the weight.
+     *
+     * @return float
+     */
+    public function calculateWeight()
+    {
+        $total = 0;
+
+        foreach ($this->getPackages() as $package)
+        {
+            $total += $package->weight;
+        }
+
+        return $total;
+    }
+
+    /**
+     * Calculates the volumne.
+     *
+     * @return float
+     */
+    public function calculateVolume()
+    {
+        $total = 0;
+
+        foreach ($this->getPackages() as $package)
+        {
+            $total += $package->calculateVolume();
+        }
+
+        return $total;
     }
 }

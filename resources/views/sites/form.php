@@ -14,6 +14,12 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="control-label col-sm-2">Display Name</label>
+                <div class="col-sm-4">
+                    <input required type="text" name="display_name" placeholder="Name" class="form-control" value="<?php echo Input::old('display_name', $site->display_name); ?>">
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="control-label col-sm-2">Company</label>
                 <div class="col-sm-5">
                     <select required class="form-control" name="company_id">

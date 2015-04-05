@@ -25,6 +25,8 @@
 						</div>
 	  				</div>
 	  			</div>
+	  		<?php else: ?>
+            	<input type="hidden" name="user[site_id]" value="<?php echo ($user->id) ? $user->site_id : Auth::user()->site_id; ?>">
   			<?php endif; ?>
 
 			<div class="panel panel-default">
@@ -33,7 +35,7 @@
 	    			<div class="form-group">
 						<label class="control-label col-sm-2">Company</label>
 						<div class="col-sm-5">
-							<input type="text" name="user[company]" placeholder="Company Name" class="form-control" value="<?php echo Input::old('user.company', $user->company); ?>">
+							<input type="text" name="user[company_name]" placeholder="Company Name" class="form-control" value="<?php echo Input::old('user.company_name', $user->company_name); ?>">
 						</div>
 					</div>
 					<div class="form-group">

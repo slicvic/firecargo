@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
-class Company extends BaseModel {
+class Company extends Base {
+
     protected $table = 'companies';
 
     public static $rules = [

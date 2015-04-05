@@ -25,7 +25,7 @@
     <link href="/assets/libs/datatables/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" type="text/css" href="/assets/libs/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/css/member.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/user.css" />
 
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="/assets/libs/templates/detail/js/bootstrap.min.js"></script>
@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="/assets/libs/parsleyjs/parsley.css">
     <script src="/assets/libs/parsleyjs/parsley.min.js"></script>
 
-    <script src="/assets/js/member.js"></script>
+    <script src="/assets/js/user.js"></script>
     <script>
         $(function() {
             app.init();
@@ -87,6 +87,16 @@
                     <span>Dashboard</span>
                 </a>
             </li>
+
+            <?php if ($user->isClient()): ?>
+                <li class="<?php echo ('account/profile' == $uri || 'account/password' == $uri) ? 'active' : ''; ?>">
+                    <?php echo ('account/profile' == $uri || 'account/password' == $uri) ? \App\Helpers\Html::sideNavPointer() : ''; ?>
+                    <a href="/account/profile">
+                        <i class="fa fa-user"></i>
+                        <span>My Account</span>
+                    </a>
+                </li>
+            <?php endif; ?>
 
             <?php if ($user->isAdmin() || $user->isAgent()): ?>
                 <li class="<?php $warehouse_menu_active = preg_match('/warehouse/', $uri); echo ($warehouse_menu_active) ? 'active' : ''; ?>">

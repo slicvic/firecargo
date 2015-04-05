@@ -21,7 +21,7 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $types = PackageType::whereIn('site_id', [1, $this->user->site_id])->get();
+        $types = PackageType::all();
         return view('package_types.index', ['types' => $types]);
     }
 
@@ -39,7 +39,6 @@ class PackageTypesController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
-        $input['site_id'] = $this->user->site_id;
 
         $validator = Validator::make($input, PackageType::$rules);
 
@@ -61,7 +60,7 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $type = PackageType::findOrFail($id);
+        $type = PackageType::findOrFailByIdAndSiteId($id, $this->user->site_id);
         return view('package_types.form', ['type' => $type]);
     }
 
@@ -70,9 +69,9 @@ class PackageTypesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $type = PackageType::findOrFail($id);
+        $input = $request->all();
 
-        $validator = Validator::make($input = $request->all(), PackageType::$rules);
+        $validator = Validator::make($input, PackageType::$rules);
 
         if ($validator->fails())
         {
@@ -80,6 +79,7 @@ class PackageTypesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        $type = PackageType::findOrFailByIdAndSiteId($id, $this->user->site_id);
         $type->update($input);
 
         Flash::success('Saved');

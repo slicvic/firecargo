@@ -7,6 +7,7 @@
     <div class="col-md-12">
         <form data-parsley-validate action="/package-types/<?php echo ($type->id) ? 'update/' . $type->id : 'store'; ?>" method="post" class="form-horizontal">
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+            <input type="hidden" name="site_id" value="<?php echo ($type->id) ? $type->site_id : Auth::user()->site_id; ?>">
             <div class="form-group">
                 <label class="control-label col-sm-2">Name</label>
                 <div class="col-sm-4">

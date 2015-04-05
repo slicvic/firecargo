@@ -1,17 +1,19 @@
 <?php namespace App\Models;
 
-class Site extends BaseModel {
-    const ONE = 1;
+class Site extends Base {
+
     protected $table = 'sites';
 
     public static $rules = [
         'company_id' => 'required',
-        'name' => 'required'
+        'name' => 'required',
+        'display_name' => 'required'
     ];
 
     protected $fillable = [
         'company_id',
-        'name'
+        'name',
+        'display_name'
     ];
 
     public function company()

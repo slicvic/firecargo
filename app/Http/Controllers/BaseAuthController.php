@@ -3,7 +3,7 @@
 use Illuminate\Contracts\Auth\Guard;
 
 abstract class BaseAuthController extends BaseController {
-    protected $layout = 'layouts.member';
+    protected $layout = 'layouts.user';
     protected $auth;
     protected $user;
 

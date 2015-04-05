@@ -21,7 +21,7 @@ class CouriersController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $couriers = Courier::whereIn('site_id', [1, $this->user->site_id])->get();
+        $couriers = Courier::all();
         return view('couriers.index', ['couriers' => $couriers]);
     }
 
@@ -39,7 +39,6 @@ class CouriersController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
-        $input['site_id'] = $this->user->site_id;
 
         $validator = Validator::make($input, Courier::$rules);
 
@@ -61,7 +60,7 @@ class CouriersController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $courier = Courier::findOrFail($id);
+        $courier = Courier::findOrFailByIdAndSiteId($id, $this->user->site_id);
         return view('couriers.form', ['courier' => $courier]);
     }
 
@@ -70,9 +69,9 @@ class CouriersController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $courier = Courier::findOrFail($id);
+        $input = $request->all();
 
-        $validator = Validator::make($input = $request->all(), Courier::$rules);
+        $validator = Validator::make($input, Courier::$rules);
 
         if ($validator->fails())
         {
@@ -80,6 +79,7 @@ class CouriersController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        $courier = Courier::findOrFailByIdAndSiteId($id, $this->user->site_id);
         $courier->update($input);
 
         Flash::success('Saved');

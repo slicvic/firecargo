@@ -1,14 +1,60 @@
 <?php namespace App\Models;
 
-class Package extends BaseModel {
+class Package extends Base {
 
     protected $table = 'packages';
 
     public static $rules = [
-        'site_id' => 'required',
+        'warehouse_id' => 'required',
+        /*'type_id' => 'required',
+        'length' => 'required',
+        'width' => 'required',
+        'height' => 'required',
+        'weight' => 'required',
+        'description' => 'required',
+        'invoice_number' => 'required',
+        'invoice_amount' => 'required',
+        'tracking_number' => 'required'*/
     ];
 
     protected $fillable = [
-        'site_id',
+        'warehouse_id',
+        'type_id',
+        'length',
+        'width',
+        'height',
+        'weight',
+        'description',
+        'invoice_number',
+        'invoice_amount',
+        'tracking_number',
+        'trashed',
+        'roll'
     ];
+
+    public function warehouse()
+    {
+        return $this->belongsTo('App\Models\Warehouse');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo('App\Models\PackageType', 'type_id');
+    }
+
+    public function site()
+    {
+        return $this->belongsTo('App\Models\Site');
+    }
+
+    /**
+     * Calculates the volumne.
+     *
+     * @return float
+     */
+    public function calculateVolume()
+    {
+        $volume = ($this->length * $this->width * $this->height);
+        return $volume;
+    }
 }

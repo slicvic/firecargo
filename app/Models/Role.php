@@ -2,7 +2,7 @@
 
 use Auth;
 
-class Role extends BaseModel {
+class Role extends Base {
 
     const LOGIN     = 1;
     const ADMIN     = 2;

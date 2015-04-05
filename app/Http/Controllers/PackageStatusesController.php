@@ -21,7 +21,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $statuses = PackageStatus::where('site_id', '=', $this->user->site_id)->get();
+        $statuses = PackageStatus::all();
         return view('package_statuses.index', ['statuses' => $statuses]);
     }
 
@@ -39,7 +39,6 @@ class PackageStatusesController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
-        $input['site_id'] = $this->user->site_id;
 
         $validator = Validator::make($input, PackageStatus::$rules);
 
@@ -48,7 +47,6 @@ class PackageStatusesController extends BaseAuthController {
             Flash::error($validator->messages());
             return redirect()->back()->withInput();
         }
-
 
         PackageStatus::create($input);
 
@@ -62,7 +60,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $status = PackageStatus::findOrFail($id);
+        $status = PackageStatus::findOrFailByIdAndSiteId($id, $this->user->site_id);
         return view('package_statuses.form', ['status' => $status]);
     }
 
@@ -71,9 +69,9 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $status = PackageStatus::findOrFail($id);
+        $input = $request->all();
 
-        $validator = Validator::make($input = $request->all(), PackageStatus::$rules);
+        $validator = Validator::make($input, PackageStatus::$rules);
 
         if ($validator->fails())
         {
@@ -81,6 +79,7 @@ class PackageStatusesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        $status = PackageStatus::findOrFailByIdAndSiteId($id, $this->user->site_id);
         $status->update($input);
 
         Flash::success('Saved');

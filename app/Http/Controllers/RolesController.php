@@ -64,8 +64,6 @@ class RolesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $role = Role::findOrFail($id);
-
         $validator = Validator::make($input = $request->all(), Role::$rules);
 
         if ($validator->fails())
@@ -74,6 +72,7 @@ class RolesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        $role = Role::findOrFail($id);
         $role->update($input);
 
         return redirect('roles');

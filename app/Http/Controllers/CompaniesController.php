@@ -66,8 +66,6 @@ class CompaniesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $company = Company::findOrFail($id);
-
         $validator = Validator::make($input = $request->all(), Company::$rules);
 
         if ($validator->fails())
@@ -76,6 +74,7 @@ class CompaniesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        $company = Company::findOrFail($id);
         $company->update($input);
 
         Flash::success('Saved');

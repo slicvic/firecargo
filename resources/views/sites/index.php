@@ -20,7 +20,8 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Site Name</th>
+                    <th>Name</th>
+                    <th>Display Name</th>
                     <th>Company Name</th>
                     <th>Actions</th>
                 </tr>
@@ -30,6 +31,7 @@
                    <tr>
                         <td><?php echo $site->id; ?></td>
                         <td><?php echo $site->name; ?></td>
+                        <td><?php echo $site->display_name; ?></td>
                         <td><?php echo ($site->company) ? $site->company->name : ''; ?></td>
                         <td><a href="/sites/edit/<?php echo $site->id; ?>" class="btn btn-flat icon"><i class="fa fa-pencil"></i></a></td>
                    </tr>

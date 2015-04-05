@@ -45,7 +45,7 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label">Nombre de la Empresa</label>
 							<div class="col-md-6">
-								<input type="text" name="user[company]" value="<?php echo Input::old('user.company'); ?>" class="form-control">
+								<input type="text" name="user[company_name]" value="<?php echo Input::old('user.company_name'); ?>" class="form-control">
 							</div>
 						</div>
 					</fieldset>
@@ -67,13 +67,13 @@
 						<div class="form-group-inline">
 							<label class="col-md-2 control-label">Teléfono Fijo</label>
 							<div class="col-md-2">
-								<input type="text" name="user[home_phone]" class="form-control" value="<?php echo Input::old('user.home_phone'); ?>">
+								<input type="text" name="user[phone]" class="form-control" value="<?php echo Input::old('user.phone'); ?>">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label">Teléfono Celular<span class="required-field">*</span></label>
 							<div class="col-md-2">
-								<input type="text" name="user[cell_phone]" class="form-control" value="<?php echo Input::old('user.cell_phone'); ?>" required>
+								<input type="text" name="user[cellphone]" class="form-control" value="<?php echo Input::old('user.cellphone'); ?>" required>
 							</div>
 						</div>
 					</fieldset>

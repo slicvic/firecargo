@@ -10,7 +10,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Company Name</label>
                 <div class="col-sm-5">
-                    <input type="text" name="user[company]" placeholder="Company Name" class="form-control" value="<?php echo Input::old('user.company', $user->company); ?>">
+                    <input type="text" name="user[company_name]" placeholder="Company Name" class="form-control" value="<?php echo Input::old('user.company_name', $user->company_name); ?>">
                 </div>
             </div>
             <div class="form-group">
@@ -32,15 +32,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2">Home</label>
+                <label class="control-label col-sm-2">phone</label>
                 <div class="col-sm-2">
-                    <input type="text" name="user[home_phone]" placeholder="Home Phone" class="phone form-control" value="<?php echo Input::old('user.home_phone', $user->home_phone); ?>">
+                    <input type="text" name="user[phone]" placeholder="Phone" class="phone form-control" value="<?php echo Input::old('user.phone', $user->phone); ?>">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Cell</label>
                 <div class="col-sm-2">
-                    <input type="text" name="user[cell_phone]" placeholder="Cell Phone" class="phone form-control" value="<?php echo Input::old('user.cell_phone', $user->cell_phone); ?>">
+                    <input type="text" name="user[cellphone]" placeholder="Cell Phone" class="phone form-control" value="<?php echo Input::old('user.cellphone', $user->cellphone); ?>">
                 </div>
             </div>
             <div class="form-group">

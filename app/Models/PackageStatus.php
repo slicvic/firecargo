@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-class PackageStatus extends BaseModel {
+class PackageStatus extends BaseRestrictedAccess {
 
     protected $table = 'package_statuses';
 
