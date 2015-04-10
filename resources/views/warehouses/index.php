@@ -27,7 +27,6 @@
 						<th>Volume</th>
 						<th>Shipper</th>
 						<th>Consignee</th>
-						<th>Tracking</th>
 						<th>Company</th>
 						<th>Actions</th>
 					</tr>
@@ -35,14 +34,13 @@
 				<tbody>
 					<?php foreach ($warehouses as $warehouse): ?>
 						<tr>
-							<td><?php echo $warehouse->id; ?></td>
+							<td><?php echo $warehouse->trackingNumber(); ?></td>
 							<td><?php echo $warehouse->arrived_at; ?></td>
 							<td><?php echo $warehouse->countPackages(); ?></td>
 							<td><?php echo $warehouse->calculateWeight(); ?></td>
 							<td><?php echo $warehouse->calculateVolume(); ?></td>
 							<td><?php echo $warehouse->shipper->name(); ?></td>
 							<td><?php echo $warehouse->consignee->name(); ?></td>
-							<td>???</td>
 							<td><?php echo $warehouse->site->company->name; ?></td>
 							<td>
 								<a href="/warehouses/view/<?php echo $warehouse->id; ?>" class="btn btn-default"><i class="fa fa-eye"></i></a>

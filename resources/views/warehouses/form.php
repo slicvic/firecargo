@@ -79,7 +79,7 @@
                 </tbody>
             </table>
 
-            <?php echo view('warehouses._form_packages', ['packages' => $warehouse->getPackages()]); ?>
+            <?php echo view('warehouses._form_packages', ['packages' => $warehouse->packages()]); ?>
 
             <button type="submit" class="btn btn-flat primary">Save Changes</button>
             <a href="/warehouses">Cancel</a>

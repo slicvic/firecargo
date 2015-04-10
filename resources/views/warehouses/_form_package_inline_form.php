@@ -1,6 +1,5 @@
 <?php $package_id = ($package->id) ? $package->id : 0; ?>
 <tr<?php echo ($package_id == 0) ? ' class="template"' : ''; ?>>
-
     <td>
         <button type="button" class="cloneRowBtn btn btn-default">Clone</button>
         <button type="button" class="removeRowBtn btn btn-danger "><i class="fa fa-times"></i></button>

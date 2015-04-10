@@ -40,14 +40,14 @@ class Warehouse extends BaseRestrictedAccess {
         return $this->belongsTo('App\Models\Company');
     }
 
-    public function packages()
-    {
-        return $this->hasMany('App\Models\Package');
-    }
-
     public function site()
     {
         return $this->belongsTo('App\Models\Site');
+    }
+
+    public function trackingNumber()
+    {
+        return 'WR-' . $this->id;
     }
 
     /**
@@ -55,7 +55,7 @@ class Warehouse extends BaseRestrictedAccess {
      *
      * @return Package[]
      */
-    public function getPackages()
+    public function packages()
     {
         return Package::where('warehouse_id', $this->id)
             ->where('trashed', '<>', 1)
@@ -83,7 +83,7 @@ class Warehouse extends BaseRestrictedAccess {
     {
         $total = 0;
 
-        foreach ($this->getPackages() as $package)
+        foreach ($this->packages() as $package)
         {
             $total += $package->weight;
         }
@@ -100,7 +100,7 @@ class Warehouse extends BaseRestrictedAccess {
     {
         $total = 0;
 
-        foreach ($this->getPackages() as $package)
+        foreach ($this->packages() as $package)
         {
             $total += $package->calculateVolume();
         }
