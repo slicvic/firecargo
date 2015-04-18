@@ -20,17 +20,8 @@ class AccountController extends BaseAuthController {
         return redirect('/');
     }
 
-   /**
-     * Displays account dashboard.
-     */
-    public function getDashboard()
-    {
-        $dashboardView = view('account.dashboard', ['user' => $this->user]);
-        return view('account.layout', ['content' => $dashboardView]);
-    }
-
     /**
-     * Displays the form for updating the user's profile.
+     * Shows the form for updating the user's profile.
      */
     public function getProfile()
     {
@@ -43,9 +34,9 @@ class AccountController extends BaseAuthController {
      */
     public function postProfile(Request $request)
     {
-        $input = $request->all();
+        $input = $request->only('user');
 
-        $rules = User::$rules;
+        $rules = User::$signupRules;
         $rules['email'] .= ',' . $this->user->id;
         unset($rules['password']);
 
@@ -53,7 +44,7 @@ class AccountController extends BaseAuthController {
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
@@ -63,7 +54,7 @@ class AccountController extends BaseAuthController {
     }
 
     /**
-     * Displays the form for changing the user's password.
+     * Shows the form for changing the user's password.
      */
     public function getPassword()
     {
@@ -85,25 +76,26 @@ class AccountController extends BaseAuthController {
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
         else
         {
-            if (Hash::check($input['current'], $this->user->password) )
+            if (Hash::check($input['current'], $this->user->password))
             {
-                // Update it only if it differs from the current one
                 if ($input['new'] != $input['current'])
                 {
+                    // Update the password only if it differs from the current one
                     $this->user->password = $input['new'];
                     $this->user->save();
                 }
-                Flash::success(trans('messages.password_reset_ok'));
+
+                Flash::success('Your password was changed successfully!');
             }
             else
             {
-                // Current password doesnt't match
-                Flash::error(trans('messages.invalid_current_password'));
+                // Current password doesn't match
+                Flash::error('The password you entered does not match your current one.');
             }
         }
 

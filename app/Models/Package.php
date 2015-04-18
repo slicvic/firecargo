@@ -28,9 +28,15 @@ class Package extends Base {
         'invoice_number',
         'invoice_amount',
         'tracking_number',
-        'trashed',
+        'deleted',
         'roll'
     ];
+
+    /**
+     * ----------------------------------------------------
+     * Relationships
+     * ----------------------------------------------------
+     */
 
     public function warehouse()
     {
@@ -48,7 +54,13 @@ class Package extends Base {
     }
 
     /**
-     * Calculates the volumne.
+     * ----------------------------------------------------
+     * /Relationships
+     * ----------------------------------------------------
+     */
+
+    /**
+     * Calculates the volume of the package.
      *
      * @return float
      */

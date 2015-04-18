@@ -22,10 +22,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $warehouses = Warehouse::where('site_id', '=', $this->user->site_id)
-            ->orderBy('id', 'desc')
-            ->get();
-
+        $warehouses = Warehouse::allByCurrentSiteId();
         return view('warehouses.index', ['warehouses' => $warehouses]);
     }
 
@@ -53,12 +50,11 @@ class WarehousesController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
-
         $validator = Validator::make($input['warehouse'], Warehouse::$rules);
 
         if ($validator->fails())
         {
-            $view = view('flash_messages.error', ['message' => $validator->messages()])->render();
+            $view = view('flash_messages.error', ['message' => $validator])->render();
             return response()->json(['status' => 'error', 'message' => $view]);
         }
         else
@@ -74,6 +70,7 @@ class WarehousesController extends BaseAuthController {
                 foreach ($input['package'] as $package)
                 {
                     $package['warehouse_id'] = $warehouse->id;
+                    $package['status'] = $input['status_id'];
                     Package::create($package);
                 }
             }
@@ -97,12 +94,11 @@ class WarehousesController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
-
         $validator = Validator::make($input['warehouse'], Warehouse::$rules);
 
         if ($validator->fails())
         {
-            $view = view('flash_messages.error', ['message' => $validator->messages()])->render();
+            $view = view('flash_messages.error', ['message' => $validator])->render();
             return response()->json(['status' => 'error', 'message' => $view]);
         }
         else
@@ -120,14 +116,14 @@ class WarehousesController extends BaseAuthController {
             $warehouse->update($input['warehouse']);
 
             // Update packages
-            Package::where('warehouse_id', '=', $warehouse->id)->update(['trashed' => 1]);
+            Package::where('warehouse_id', '=', $warehouse->id)->update(['deleted' => 1]);
 
             if (isset($input['package']) && count($input['package']))
             {
                 foreach ($input['package'] as $package_id => $packageData)
                 {
                     $packageData['warehouse_id'] = $warehouse->id;
-                    $packageData['trashed'] = 0;
+                    $packageData['deleted'] = 0;
                     Package::firstOrCreate(['id' => $package_id])->update($packageData);
                 }
             }

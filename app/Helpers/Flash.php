@@ -17,7 +17,7 @@ class Flash {
      */
     public static function success($message)
     {
-        self::set(['type' => 'success', 'message' => $message]);
+        self::set(['level' => 'success', 'message' => $message]);
     }
 
     /**
@@ -28,18 +28,34 @@ class Flash {
      */
     public static function info($message)
     {
-        self::set(['type' => 'info', 'message' => $message]);
+        self::set(['level' => 'info', 'message' => $message]);
     }
 
     /**
      * Sets error message.
      *
-     * @param  string|array|Illuminate\Support\MessageBag $message
+     * @param  string|array|\Illuminate\Validation\Validator $message
      * @return void
      */
     public static function error($message)
     {
-        self::set(['type' => 'error', 'message' => $message]);
+        if ($message instanceof \Illuminate\Validation\Validator)
+        {
+            // Convert MessageBag to array
+            $messages = $message->messages()->getMessages();
+            $message = [];
+
+            foreach ($messages as $errors)
+            {
+                foreach ($errors as $error)
+                {
+                    $message[] = $error;
+                }
+            }
+
+        }
+
+        self::set(['level' => 'error', 'message' => $message]);
     }
 
     /**
@@ -64,7 +80,7 @@ class Flash {
         if ( ! is_array($value))
             return '';
 
-        switch($value['type']) {
+        switch($value['level']) {
             case 'error':
                 return view('flash_messages.error', ['message' => $value['message']]);
             default:

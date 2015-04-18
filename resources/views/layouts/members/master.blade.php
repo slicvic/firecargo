@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?php echo APP_NAME; ?></title>
+    <title>App</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -25,7 +25,7 @@
     <link href="/assets/libs/datatables/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" type="text/css" href="/assets/libs/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/css/user.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/members.css" />
 
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="/assets/libs/templates/detail/js/bootstrap.min.js"></script>
@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="/assets/libs/parsleyjs/parsley.css">
     <script src="/assets/libs/parsleyjs/parsley.min.js"></script>
 
-    <script src="/assets/js/user.js"></script>
+    <script src="/assets/js/members.js"></script>
     <script>
         $(function() {
             app.init();
@@ -57,7 +57,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="/dashboard">
-                <b><?php echo APP_NAME; ?></b>
+                <b><?php echo $user->site->name; ?></b>
             </a>
         </div>
         <ul class="nav navbar-nav pull-right hidden-xs">
@@ -150,7 +150,7 @@
     <div class="content">
         <div id="pad-wrapper">
             <?php echo \App\Helpers\Flash::html(); ?>
-            <?php echo $content; ?>
+            @yield('content')
         </div>
     </div>
 </body>

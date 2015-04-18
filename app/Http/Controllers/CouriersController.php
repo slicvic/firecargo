@@ -21,7 +21,7 @@ class CouriersController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $couriers = Courier::all();
+        $couriers = Courier::allByCurrentSiteId();
         return view('couriers.index', ['couriers' => $couriers]);
     }
 
@@ -39,12 +39,11 @@ class CouriersController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
-
         $validator = Validator::make($input, Courier::$rules);
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
@@ -70,12 +69,11 @@ class CouriersController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
-
         $validator = Validator::make($input, Courier::$rules);
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
@@ -83,6 +81,23 @@ class CouriersController extends BaseAuthController {
         $courier->update($input);
 
         Flash::success('Saved');
+
+        return redirect('couriers');
+    }
+
+    /**
+     * Deletes a specific courier.
+     */
+    public function getDelete(Request $request, $id)
+    {
+        $courier = Courier::findByIdAndSiteId($id, $this->user->site_id);
+
+        if ($courier && $courier->site_id == $this->user->site_id)
+        {
+            $courier->update(['deleted' => 1]);
+        }
+
+        Flash::success('Deleted');
 
         return redirect('couriers');
     }

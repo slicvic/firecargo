@@ -21,7 +21,7 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $types = PackageType::all();
+        $types = PackageType::allByCurrentSiteId();
         return view('package_types.index', ['types' => $types]);
     }
 
@@ -39,12 +39,11 @@ class PackageTypesController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
-
         $validator = Validator::make($input, PackageType::$rules);
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
@@ -70,12 +69,11 @@ class PackageTypesController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
-
         $validator = Validator::make($input, PackageType::$rules);
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 

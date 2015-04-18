@@ -6,7 +6,7 @@
     </td>
     <td>
         <select name="package[<?php echo $package_id; ?>][type_id]" class="form-control">
-            <?php foreach(\App\Models\PackageType::all() as $type): ?>
+            <?php foreach(\App\Models\PackageType::allByCurrentSiteId() as $type): ?>
                 <option<?php echo ($package->type_id == $type->id) ? ' selected' : ''; ?> value="<?php echo $type->id; ?>"><?php echo $type->name; ?></option>
             <?php endforeach; ?>
         </select>

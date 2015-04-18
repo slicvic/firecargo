@@ -5,18 +5,28 @@ use Auth;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
-class User extends BaseRestrictedAccess implements AuthenticatableInterface {
+class User extends BaseSiteSpecific implements AuthenticatableInterface {
 
     use AuthenticableTrait;
 
-    public static $rules = [
+    public static $signupRules = [
         'site_id' => 'required',
-        'company_name' => 'required',
         'email' => 'required|email|unique:users,email',
-        'password' => 'required',
+        'password' => 'required|min:6',
         'firstname' => 'required',
         'lastname' => 'required'
     ];
+
+    /*
+    public static $rules = [
+        'site_id' => 'required',
+        'company_name' => 'required_without:firstname,lastname',
+        'email' => 'sometimes|required|email|unique:users,email',
+        'password' => 'sometimes|required|min:6',
+        'firstname' => 'required_without:company_name',
+        'lastname' => 'required_without:company_name'
+    ];
+    */
 
     /**
      * The database table used by the model.
@@ -41,6 +51,7 @@ class User extends BaseRestrictedAccess implements AuthenticatableInterface {
         'firstname',
         'lastname',
         'dob',
+        'nin',
         'phone',
         'cellphone',
         'address1',
@@ -78,25 +89,18 @@ class User extends BaseRestrictedAccess implements AuthenticatableInterface {
 
     /**
      * ----------------------------------------------------
-     * Public Methods
+     * /Relationships
      * ----------------------------------------------------
      */
 
     /**
-     * Gets the fullname or company name.
+     * Gets the user's full name.
      *
      * @return string
      */
     public function name()
     {
-        if ( ! empty($this->firstname) || ! empty($this->lastname))
-        {
-            return ucwords(strtolower($this->firstname . ' ' . $this->lastname));
-        }
-        else
-        {
-            return $this->company_name;
-        }
+        return trim(ucwords(strtolower($this->firstname . ' ' . $this->lastname)));
     }
 
     /**
@@ -118,7 +122,7 @@ class User extends BaseRestrictedAccess implements AuthenticatableInterface {
      *
      * @return string
      */
-    public function cid()
+    public function trackingId()
     {
         return  '';
     }
@@ -130,7 +134,7 @@ class User extends BaseRestrictedAccess implements AuthenticatableInterface {
      */
     public function afterLogin()
     {
-        // TODO
+        // @TODO: call this on login event
         $this->logins += 1;
         $this->last_login = date('Y-m-d H:i:s');
         $this->save();
@@ -157,7 +161,7 @@ class User extends BaseRestrictedAccess implements AuthenticatableInterface {
     }
 
     /**
-     * Determines if the user is a store customer.
+     * Determines if the user is a client.
      *
      * @return bool
      */
@@ -171,9 +175,19 @@ class User extends BaseRestrictedAccess implements AuthenticatableInterface {
      *
      * @return string
      */
-    public function generatePasswordRecoveryToken()
+    public function makePasswordRecoveryToken()
     {
-        return urlencode(base64_encode(Hash::make($this->getPlainPasswordRecoveryToken())));
+        return urlencode(base64_encode(Hash::make($this->makePlainPasswordRecoveryToken())));
+    }
+
+    /**
+     * Generates a plain text password recovery token.
+     *
+     * @return string
+     */
+    private function makePlainPasswordRecoveryToken()
+    {
+        return $this->email . ':' . $this->password . ':' . $this->created_at;
     }
 
     /**
@@ -184,11 +198,11 @@ class User extends BaseRestrictedAccess implements AuthenticatableInterface {
      */
     public function checkPasswordRecoveryToken($token)
     {
-        return Hash::check($this->getPlainPasswordRecoveryToken(), base64_decode(urldecode($token)));
+        return Hash::check($this->makePlainPasswordRecoveryToken(), base64_decode(urldecode($token)));
     }
 
     /**
-     * Assigns the specified roles.
+     * Assigns the specified roles to the user.
      *
      * @param  array  $role_ids
      * @return void
@@ -210,7 +224,7 @@ class User extends BaseRestrictedAccess implements AuthenticatableInterface {
     }
 
     /**
-     * Overrides parent method to add password and DOB formatting.
+     * Overrides parent method to sanitize certain attributes.
      *
      * @see parent::setAttribute()
      */
@@ -218,7 +232,7 @@ class User extends BaseRestrictedAccess implements AuthenticatableInterface {
     {
         switch ($key) {
             case 'password':
-                $value = (empty($value)) ? $this->password : Hash::make($value);
+                $value = empty($value) ? $this->password : Hash::make($value);
                 break;
             case 'dob':
                 if (is_string($value))
@@ -227,33 +241,10 @@ class User extends BaseRestrictedAccess implements AuthenticatableInterface {
                     $value = date('Y-m-d', strtotime($value['year'] . '/' . $value['month'] . '/' . $value['day']));
                 else
                     $value = NULL;
-                break;
         }
 
         return parent::setAttribute($key, $value);
     }
-
-    /**
-     * ----------------------------------------------------
-     * Private Methods
-     * ----------------------------------------------------
-     */
-
-    /**
-     * Generates a plain text password recovery token.
-     *
-     * @return string
-     */
-    private function getPlainPasswordRecoveryToken()
-    {
-        return $this->email . $this->password . $this->created_at;
-    }
-
-    /**
-     * ----------------------------------------------------
-     * Static Methods
-     * ----------------------------------------------------
-     */
 
     /**
      * Validates the specified credentials.
@@ -275,54 +266,55 @@ class User extends BaseRestrictedAccess implements AuthenticatableInterface {
     }
 
     /**
-     * Retrieves a list of users for a jquery autocomplete field.
+     * Retrieves a list of users for a jQuery Autocomplete input field.
      *
-     * @param  string $query        A search keyword
-     * @param  array  $siteIds      List of site ids
+     * @param  string $searchTerm  A search query
+     * @param  array  $siteIds     List of site ids
      * @return User[]
      */
-    public static function getAutocomplete($query, array $siteIds = NULL)
+    public static function getUsersForAutocomplete($searchTerm, array $siteIds = NULL)
     {
-        $query = '%' . $query . '%';
+        $searchTerm = '%' . $searchTerm . '%';
         $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
         $where .= count($siteIds) ? ' AND site_id IN (' . implode(',', $siteIds) . ')' : '';
-        return User::whereRaw($where, [$query, $query, $query, $query, $query, $query, $query])->get();
+        return User::whereRaw($where, [$searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm])->get();
     }
 
     /**
-     * Retrieves a list of users for a jquery datatable.
+     * Retrieves a list of users for a jQuery Datatable plugin.
      *
-     * @param  string   $query        A search keyword
-     * @param  array    $siteIds      List of site ids
-     * @param  bool     $count
+     * @param  string   $criteria     Lists of criterias
      * @param  int      $offset
      * @param  int      $limit
      * @param  string   $orderBy
      * @param  string   $order
      *
-     * @return User[]
+     * @return [total => X, users => User[]]
      */
-    public static function getDatatable($query = NULL, array $siteIds = NULL, $count = FALSE, $offset = 0, $limit = 10, $orderBy = 'id', $order = 'DESC')
+    public static function getUsersForDatatable(array $criteria = [], $offset = 0, $limit = 10, $orderBy = 'id', $order = 'DESC')
     {
-        $where = count($siteIds) ? 'site_id IN (' . implode(',', $siteIds) . ')' : '1';
+        $sql = '1';
+        $bindings = [];
 
-        if (empty($query))
+        if (isset($criteria['site_id']) && is_array($criteria['site_id']) && count($criteria['site_id']))
         {
-            $users = User::whereRaw($where);
-        }
-        else
-        {
-            $query = '%' . $query . '%';
-            $where .= ' AND (id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
-            $users = User::whereRaw($where, [$query, $query, $query, $query, $query, $query, $query]);
+            $sql .= ' AND site_id IN (' . implode(',', $criteria['site_id']) . ')';
         }
 
-        if ($count)
-            return $users->count();
+        if ( ! empty($criteria['search_term']))
+        {
+            $searchTerm = '%' . $criteria['search_term'] . '%';
+            $sql .= ' AND (id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
+            $bindings = [$searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm];
+        }
 
-        return $users
+        $query = User::whereRaw($sql, $bindings);
+        $total = $query->count();
+        $results = $query
             ->orderBy($orderBy, $order)
             ->limit($limit)
             ->get();
+
+        return ['total' => $total, 'users' => $results];
     }
 }

@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-class Courier extends BaseRestrictedAccess {
+class Courier extends BaseSiteSpecific {
 
     protected $table = 'couriers';
 
@@ -11,6 +11,7 @@ class Courier extends BaseRestrictedAccess {
 
     protected $fillable = [
         'site_id',
-        'name'
+        'name',
+        'deleted'
     ];
 }

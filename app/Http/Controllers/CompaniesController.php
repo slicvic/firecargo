@@ -41,7 +41,7 @@ class CompaniesController extends BaseAuthController {
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
@@ -66,11 +66,12 @@ class CompaniesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $validator = Validator::make($input = $request->all(), Company::$rules);
+        $input = $request->all();
+        $validator = Validator::make($input, Company::$rules);
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 

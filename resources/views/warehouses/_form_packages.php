@@ -1,4 +1,4 @@
-<table class="table packagesTbl">
+<table class="table packagesTable">
     <thead>
         <tr>
             <th></th>
@@ -15,10 +15,8 @@
     </thead>
     <tbody>
         <?php echo view('warehouses._form_package_inline_form', ['package' => new \App\Models\Package()]); ?>
-        <?php if (count($packages)): ?>
-            <?php foreach ($packages as $package): ?>
-                <?php echo view('warehouses._form_package_inline_form', ['package' => $package]); ?>
-            <?php endforeach; ?>
-        <?php endif; ?>
+        <?php foreach ($packages as $package): ?>
+            <?php echo view('warehouses._form_package_inline_form', ['package' => $package]); ?>
+        <?php endforeach; ?>
     </tbody>
 </table>

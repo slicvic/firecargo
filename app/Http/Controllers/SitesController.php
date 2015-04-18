@@ -37,11 +37,12 @@ class SitesController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $validator = Validator::make($input = $request->all(), Site::$rules);
+        $input = $request->all();
+        $validator = Validator::make($input, Site::$rules);
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
@@ -66,11 +67,12 @@ class SitesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $validator = Validator::make($input = $request->all(), Site::$rules);
+        $input = $request->all();
+        $validator = Validator::make($input, Site::$rules);
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 

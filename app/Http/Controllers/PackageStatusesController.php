@@ -21,7 +21,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $statuses = PackageStatus::all();
+        $statuses = PackageStatus::allByCurrentSiteId();
         return view('package_statuses.index', ['statuses' => $statuses]);
     }
 
@@ -39,12 +39,11 @@ class PackageStatusesController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
-
         $validator = Validator::make($input, PackageStatus::$rules);
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
@@ -70,12 +69,11 @@ class PackageStatusesController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
-
         $validator = Validator::make($input, PackageStatus::$rules);
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
@@ -83,6 +81,23 @@ class PackageStatusesController extends BaseAuthController {
         $status->update($input);
 
         Flash::success('Saved');
+
+        return redirect('package-statuses');
+    }
+
+    /**
+     * Deletes a specific status.
+     */
+    public function getDelete(Request $request, $id)
+    {
+        $status = PackageStatus::findByIdAndSiteId($id, $this->user->site_id);
+
+        if ($status && $status->site_id == $this->user->site_id)
+        {
+            $status->update(['deleted' => 1]);
+        }
+
+        Flash::success('Deleted');
 
         return redirect('package-statuses');
     }

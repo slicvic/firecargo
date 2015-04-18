@@ -33,18 +33,23 @@ class UsersController extends BaseAuthController {
      */
     public function getAutocomplete(Request $request)
     {
-        $input = $request->all();
-        $response = array();
+        $input = $request->only('term');
+        $response = [];
 
-        if ( ! empty($input['term']))
+        if (strlen($input['term']) > 1)
         {
-            foreach(User::getAutocomplete($input['term'], array($this->user->site_id)) as $user)
+            foreach(User::getUsersForAutocomplete($input['term'], [$this->user->site_id]) as $user)
             {
-                $response[] = array(
+                $label = [];
+                if ($user->company_name)
+                    $label[] = $user->company_name;
+                if ( ! empty($name = $user->name()))
+                    $label[] = $name;
+
+                $response[] = [
                     'id' => $user->id,
-                    'company_name' => $user->company_name,
-                    'name' => $user->name()
-                );
+                    'label' => implode(' - ', $label)
+                ];
             }
         }
 
@@ -61,12 +66,12 @@ class UsersController extends BaseAuthController {
     {
         $input = $request->all();
 
-        // Get limit and offset
+        // Limit/Offset
         $limit = isset($input['length']) ? (int) $input['length'] : 10;
         $offset = isset($input['start']) ? (int) $input['start'] : 0;
 
-        // Get sort order
-        $columns = array(
+        // Sort order
+        $columns = [
             'id',
             'company',
             'firstname',
@@ -74,23 +79,24 @@ class UsersController extends BaseAuthController {
             'email',
             'phone',
             'cellphone'
-        );
+        ];
         $orderBy = isset($input['order'][0]) && isset($columns[$input['order'][0]['column']]) ? $columns[$input['order'][0]['column']] : 'id';
         $order = isset($input['order'][0]) ? $input['order'][0]['dir'] : 'desc';
-        $query = empty($input['search']['value']) ? NULL : $input['search']['value'];
 
-        // Retrieve users
-        $siteIds = ($this->user->isAdmin()) ? NULL : array($this->user->site_id);
-        $results = User::getDatatable($query, $siteIds, FALSE, $offset, $limit, $orderBy, $order);
-        $total = User::getDatatable($query, $siteIds, TRUE);
+        // Criteria
+        $filters['search_term'] = empty($input['search']['value']) ? NULL : $input['search']['value'];
+        $filters['site_id'] = ($this->user->isAdmin()) ? NULL : [$this->user->site_id];
+
+        // Retrieve results
+        $results = User::getUsersForDatatable($filters, $offset, $limit, $orderBy, $order);
 
         // Process response
-        $response = array();
-        $response['recordsFiltered'] = $total;
-        $response['data'] = array();
+        $response = [];
+        $response['recordsFiltered'] = $results['total'];
+        $response['data'] = [];
 
-        foreach($results as $user) {
-            $response['data'][] = array(
+        foreach($results['users'] as $user) {
+            $response['data'][] = [
                 $user->id,
                 $user->site->name,
                 $user->company_name,
@@ -101,8 +107,9 @@ class UsersController extends BaseAuthController {
                 $user->cellphone,
                 Html::arrayToLabels($user->rolesArray()),
                 sprintf('<a href="/accounts/edit/%s" class="btn btn-flat icon"><i class="fa fa-pencil"></i></a>', $user->id)
-            );
+            ];
         }
+
         return response()->json($response);
     }
 
@@ -119,20 +126,28 @@ class UsersController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $request->all();
+        $input = $request->only('user', 'roles');
+        $rules = [];
 
-        $rules = User::$rules;
-        unset($rules['password']);
+        if ( ! empty($input['user']['password']))
+        {
+            $rules['password'] = 'min:6';
+        }
+
+        if ( ! empty($input['user']['email']))
+        {
+            $rules['email'] = 'email|unique:users,email';
+        }
 
         $validator = Validator::make($input['user'], $rules);
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
-        $input['site_id'] = ($this->user->isAdmin()) ? $input['site_id'] : $this->user->site_id;
+        $input['user']['site_id'] = ($this->user->isAdmin()) ? $input['user']['site_id'] : $this->user->site_id;
 
         $user = User::create($input['user']);
 
@@ -161,24 +176,30 @@ class UsersController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->all();
+        $input = $request->only('user', 'roles');
+        $rules = [];
 
-        $rules = User::$rules;
-        $rules['email'] .= ',' . $id;
-        // Ignore empty passwords
-        unset($rules['password']);
+        if ( ! empty($input['user']['password']))
+        {
+            $rules['password'] = 'min:6';
+        }
+
+        if ( ! empty($input['user']['email']))
+        {
+            $rules['email'] = 'email|unique:users,email,' . $id;
+        }
 
         $validator = Validator::make($input['user'], $rules);
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
         $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndSiteId($id, $this->user->site_id);
         $user->update($input['user']);
-        $user->attachRoles((isset($input['roles']) ? $input['roles'] : array()));
+        $user->attachRoles(isset($input['roles']) ? $input['roles'] : []);
 
         Flash::success('Saved');
 

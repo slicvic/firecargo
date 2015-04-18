@@ -23,12 +23,11 @@ class CompanyController extends BaseAuthController {
     public function postProfile(Request $request)
     {
         $input = $request->all();
-
         $validator = Validator::make($input, Company::$rules);
 
         if ($validator->fails())
         {
-            Flash::error($validator->messages());
+            Flash::error($validator);
             return redirect()->back()->withInput();
         }
 

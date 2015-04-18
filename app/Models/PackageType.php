@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-class PackageType extends BaseRestrictedAccess {
+class PackageType extends BaseSiteSpecific {
 
     protected $table = 'package_types';
 

@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-class PackageStatus extends BaseRestrictedAccess {
+class PackageStatus extends BaseSiteSpecific {
 
     protected $table = 'package_statuses';
 
@@ -11,6 +11,7 @@ class PackageStatus extends BaseRestrictedAccess {
 
     protected $fillable = [
         'site_id',
-        'name'
+        'name',
+        'deleted'
     ];
 }

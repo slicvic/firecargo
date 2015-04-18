@@ -24,7 +24,8 @@ abstract class BaseController extends Controller {
         if ($result instanceof \Illuminate\View\View)
         {
             // Render layout
-            return view($this->layout, ['content' => $result]);
+            return $result;
+            //return view($this->layout, ['content' => $result]);
         }
         else
         {

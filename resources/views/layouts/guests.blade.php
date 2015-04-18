@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><?php echo APP_NAME; ?></title>
+    <title>{{ APP_NAME }}</title>
 
     <!-- Bootstrap core CSS -->
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
@@ -30,8 +30,8 @@
 
     <link rel="stylesheet" href="/assets/libs/bootstrap.vertical-tabs.min.css">
 
-    <link rel="stylesheet" href="/assets/css/guest/main.css">
-    <script src="/assets/js/guest.js"></script>
+    <link rel="stylesheet" href="/assets/css/guests/main.css">
+    <script src="/assets/js/guests.js"></script>
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -46,29 +46,16 @@
     <div class="container">
         <div class="masthead">
             <div class="user-nav text-right">
-                <a href="/login" class="btn btn-lg btn-primary"><i class="fa fa-user"></i> <?php echo Lang::get('messages.login'); ?></a>
-                <a href="/signup" class="btn btn-lg btn-warning"><?php echo Lang::get('messages.signup'); ?></a>
+                <a href="/login" class="btn btn-lg btn-default"><i class="fa fa-user"></i> Log In</a>
+                <a href="/signup" class="btn btn-lg btn-primary">Register</a>
             </div>
 
-            <h3 class="text-muted"><?php echo APP_NAME; ?></h3>
-
-            <nav>
-                <ul class="nav nav-justified">
-                    <li class=""><a href="#">Inicio</a></li>
-                    <li><a href="#">Empresa</a></li>
-                    <li><a href="#">Servicios</a></li>
-                    <li><a href="#">Contacto</a></li>
-                </ul>
-            </nav>
         </div>
 
-        <?php echo \App\Helpers\Flash::html(); ?>
+        {!! \App\Helpers\Flash::html() !!}
 
-        <?php echo $content; ?>
+        @yield('content')
 
-        <footer class="footer">
-            <p>&copy; <?php echo APP_NAME; ?> 2015</p>
-        </footer>
     </div>
     <script>
         $(function() {

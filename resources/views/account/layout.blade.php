@@ -1,9 +1,12 @@
+@extends('layouts.members.master')
+
+@section('content')
 <div class="row toppad">
     <div class="col-md-4 text-center">
         <div class="row">
             <img src="/assets/img/avatar.png" class="img-circle">
-            <h3><?php echo Auth::user()->name(); ?></h3>
-            <h5>Casillero ID: <?php echo Auth::user()->cid(); ?></h5>
+            <h3>{{ Auth::user()->name() }}</h3>
+            <h5>Casillero ID: {{ Auth::user()->trackingId() }}</h5>
             <div class="panel panel-default">
                 <div class="panel-heading"><strong>Account</strong></div>
                 <div class="list-group">
@@ -14,6 +17,7 @@
         </div>
     </div>
     <div class="col-md-8">
-        <?php echo $content; ?>
+        {!! $content !!}
     </div>
 </div>
+@stop

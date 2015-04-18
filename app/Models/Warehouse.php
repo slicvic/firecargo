@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-class Warehouse extends BaseRestrictedAccess {
+class Warehouse extends BaseSiteSpecific {
 
     protected $table = 'warehouses';
 
@@ -19,6 +19,12 @@ class Warehouse extends BaseRestrictedAccess {
         'delivered_by_courier_id',
         'arrived_at'
     ];
+
+    /**
+     * ----------------------------------------------------
+     * Relationships
+     * ----------------------------------------------------
+     */
 
     public function shipper()
     {
@@ -45,37 +51,43 @@ class Warehouse extends BaseRestrictedAccess {
         return $this->belongsTo('App\Models\Site');
     }
 
-    public function trackingNumber()
+    public function trackingId()
     {
         return 'WR-' . $this->id;
     }
 
     /**
-     * Retrieves a list of untrashed packages.
+     * ----------------------------------------------------
+     * /Relationships
+     * ----------------------------------------------------
+     */
+
+    /**
+     * Retrieves a list of un-deleted packages.
      *
      * @return Package[]
      */
     public function packages()
     {
         return Package::where('warehouse_id', $this->id)
-            ->where('trashed', '<>', 1)
+            ->where('deleted', '<>', 1)
             ->get();
     }
 
     /**
-     * Counts untrashed packages.
+     * Counts un-deleted packages.
      *
      * @return int
      */
     public function countPackages()
     {
         return Package::where('warehouse_id', $this->id)
-            ->where('trashed', '<>', 1)
+            ->where('deleted', '<>', 1)
             ->count();
     }
 
     /**
-     * Calculates the weight.
+     * Calculates the weight of the warehouse.
      *
      * @return float
      */
@@ -92,7 +104,7 @@ class Warehouse extends BaseRestrictedAccess {
     }
 
     /**
-     * Calculates the volumne.
+     * Calculates the volume of the warehouse.
      *
      * @return float
      */
