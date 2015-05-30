@@ -64,7 +64,7 @@
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle hidden-xs hidden-sm" data-toggle="dropdown">
-                    <i class="fa fa-user"></i> Howdy, <?php echo $user->name(); ?>
+                    <i class="fa fa-user"></i> Howdy, <?php echo $user->fullname(); ?>
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">

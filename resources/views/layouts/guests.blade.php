@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="/assets/libs/font-awesome/css/font-awesome.min.css">
 
     <!-- Custom styles for this template -->
-    <link href="/assets/css/guest/justified-nav.css" rel="stylesheet">
+    <link href="/assets/css/guests/justified-nav.css" rel="stylesheet">
 
     <link rel="stylesheet" href="/assets/libs/parsleyjs/parsley.css">
     <script src="/assets/libs/parsleyjs/parsley.min.js"></script>

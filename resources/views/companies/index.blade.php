@@ -12,7 +12,6 @@
 @section('thead')
 <th>ID</th>
 <th>Name</th>
-<th>Code</th>
 <th>Actions</th>
 @stop
 
@@ -21,7 +20,6 @@
        <tr>
             <td>{{ $company->id }}</td>
             <td>{{ $company->name }}</td>
-            <td>{{ $company->code }}</td>
             <td><a href="/companies/edit/{{ $company->id }}" class="btn btn-flat icon"><i class="fa fa-pencil"></i></a></td>
        </tr>
     @endforeach

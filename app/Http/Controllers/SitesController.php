@@ -16,7 +16,7 @@ class SitesController extends BaseAuthController {
     }
 
     /**
-     * Displays a list of sites.
+     * Shows a list of sites.
      */
     public function getIndex()
     {
@@ -48,7 +48,7 @@ class SitesController extends BaseAuthController {
 
         Site::create($input);
 
-        Flash::success('Saved');
+        Flash::success('Record created successfully.');
 
         return redirect('sites');
     }
@@ -79,7 +79,7 @@ class SitesController extends BaseAuthController {
         $site = Site::findOrFail($id);
         $site->update($input);
 
-        Flash::success('Saved');
+        Flash::success('Record updated successfully.');
 
         return redirect('sites');
     }

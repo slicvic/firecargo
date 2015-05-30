@@ -1,10 +1,12 @@
 <?php namespace App\Http\Controllers;
 
+use \App\Models\User;
+use Auth;
+
 class DashboardController extends BaseAuthController {
 
     public function getIndex()
     {
-
         if ($this->user->isAdmin())
         {
             // TODO

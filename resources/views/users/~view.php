@@ -1,13 +1,13 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title"><i class="fa fa-user"></i> <?php echo $user->name(); ?></h4>
+    <h4 class="modal-title"><i class="fa fa-user"></i> <?php echo $user->fullname(); ?></h4>
 </div>
 <div class="modal-body">
     <div class="row">
         <div class="col-xs-3"><b>Company</b></div><div class="col-xs-6"><?php echo ($user->company_name ? $user->company : '-'); ?></div>
     </div>
     <div class="row">
-        <div class="col-xs-3"><b>Name</b></div><div class="col-xs-6"><?php echo $user->name(); ?></div>
+        <div class="col-xs-3"><b>Name</b></div><div class="col-xs-6"><?php echo $user->fullname(); ?></div>
     </div>
 
     <h2 class="page-header"></h2>

@@ -21,9 +21,9 @@
             <td>{{ $courier->id }}</td>
             <td>{{ $courier->name }}</td>
             <td>
-                <a href="/couriers/edit/{{ $courier->id }}" class="btn-flat icon"><i class="fa fa-pencil"></i></a>
-                @if ((int) $courier->site_id == (int) Auth::user()->site_id)
-                    <a onclick="if (!confirm('Are you sure you want to delete this item?')) return false;" href="/couriers/delete/{{ $courier->id }}" class="btn-flat icon"><i class="fa fa-times"></i></a>
+                @if ($courier->site_id == Auth::user()->site_id)
+                    <a href="/couriers/edit/{{ $courier->id }}" class="btn-flat icon"><i class="fa fa-pencil"></i></a>
+                    <a href="/couriers/delete/{{ $courier->id }}" class="btn-flat icon delete-btn"><i class="fa fa-times"></i></a>
                 @endif
             </td>
        </tr>

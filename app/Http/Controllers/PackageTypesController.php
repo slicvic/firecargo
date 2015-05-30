@@ -17,7 +17,7 @@ class PackageTypesController extends BaseAuthController {
     }
 
     /**
-     * Displays a list of types.
+     * Shows a list of types.
      */
     public function getIndex()
     {
@@ -49,7 +49,7 @@ class PackageTypesController extends BaseAuthController {
 
         PackageType::create($input);
 
-        Flash::success('Saved');
+        Flash::success('Record created successfully.');
 
         return redirect('package-types');
     }
@@ -59,7 +59,7 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $type = PackageType::findOrFailByIdAndSiteId($id, $this->user->site_id);
+        $type = PackageType::findOrFailByIdAndCurrentSiteId($id);
         return view('package_types.form', ['type' => $type]);
     }
 
@@ -77,10 +77,30 @@ class PackageTypesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        $type = PackageType::findOrFailByIdAndSiteId($id, $this->user->site_id);
+        $type = PackageType::findOrFailByIdAndCurrentSiteId($id);
         $type->update($input);
 
-        Flash::success('Saved');
+        Flash::success('Record updated successfully.');
+
+        return redirect('package-types');
+    }
+
+    /**
+     * Deletes a specific type.
+     */
+    public function getDelete(Request $request, $id)
+    {
+        $type = PackageType::findByIdAndCurrentSiteId($id);
+
+        if ($type)
+        {
+            $type->softDelete();
+            Flash::success('Record deleted successfully.');
+        }
+        else
+        {
+            Flash::error('Record not found.');
+        }
 
         return redirect('package-types');
     }

@@ -82,7 +82,7 @@
                         <div class="col-sm-3">
                             <select name="user[country_id]" class="form-control">
                                 <?php foreach (\App\Models\Country::all() as $country): ?>
-                                    <option value="<?php echo $country->id; ?>"><?php echo $country->name; ?></option>
+                                    <option<?php echo ($country->id == $user->country_id) ? ' selected' : ''; ?> value="<?php echo $country->id; ?>"><?php echo $country->name; ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

@@ -17,7 +17,7 @@ class CouriersController extends BaseAuthController {
     }
 
     /**
-     * Displays a list of couriers.
+     * Shows a list of couriers.
      */
     public function getIndex()
     {
@@ -49,7 +49,7 @@ class CouriersController extends BaseAuthController {
 
         Courier::create($input);
 
-        Flash::success('Saved');
+        Flash::success('Record created successfully.');
 
         return redirect('couriers');
     }
@@ -59,7 +59,7 @@ class CouriersController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $courier = Courier::findOrFailByIdAndSiteId($id, $this->user->site_id);
+        $courier = Courier::findOrFailByIdAndCurrentSiteId($id);
         return view('couriers.form', ['courier' => $courier]);
     }
 
@@ -77,10 +77,10 @@ class CouriersController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        $courier = Courier::findOrFailByIdAndSiteId($id, $this->user->site_id);
+        $courier = Courier::findOrFailByIdAndCurrentSiteId($id);
         $courier->update($input);
 
-        Flash::success('Saved');
+        Flash::success('Record updated successfully.');
 
         return redirect('couriers');
     }
@@ -90,14 +90,17 @@ class CouriersController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        $courier = Courier::findByIdAndSiteId($id, $this->user->site_id);
+        $courier = Courier::findByIdAndCurrentSiteId($id);
 
-        if ($courier && $courier->site_id == $this->user->site_id)
+        if ($courier)
         {
-            $courier->update(['deleted' => 1]);
+            $courier->softDelete();
+            Flash::success('Record deleted successfully.');
         }
-
-        Flash::success('Deleted');
+        else
+        {
+            Flash::error('Record not found.');
+        }
 
         return redirect('couriers');
     }

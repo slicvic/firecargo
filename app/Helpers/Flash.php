@@ -1,7 +1,7 @@
 <?php namespace App\Helpers;
 
 use Session;
-use App\Helpers\Html;
+use Illuminate\Validation\Validator;
 
 /**
  * Flash Message Helper.
@@ -39,7 +39,7 @@ class Flash {
      */
     public static function error($message)
     {
-        if ($message instanceof \Illuminate\Validation\Validator)
+        if ($message instanceof Validator)
         {
             // Convert MessageBag to array
             $messages = $message->messages()->getMessages();

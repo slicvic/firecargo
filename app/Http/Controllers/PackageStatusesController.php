@@ -17,7 +17,7 @@ class PackageStatusesController extends BaseAuthController {
     }
 
     /**
-     * Displays a list of statuses.
+     * Shows a list of statuses.
      */
     public function getIndex()
     {
@@ -49,7 +49,7 @@ class PackageStatusesController extends BaseAuthController {
 
         PackageStatus::create($input);
 
-        Flash::success('Saved');
+        Flash::success('Record created successfully.');
 
         return redirect('package-statuses');
     }
@@ -59,7 +59,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $status = PackageStatus::findOrFailByIdAndSiteId($id, $this->user->site_id);
+        $status = PackageStatus::findOrFailByIdAndCurrentSiteId($id);
         return view('package_statuses.form', ['status' => $status]);
     }
 
@@ -77,10 +77,10 @@ class PackageStatusesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        $status = PackageStatus::findOrFailByIdAndSiteId($id, $this->user->site_id);
+        $status = PackageStatus::findOrFailByIdAndCurrentSiteId($id);
         $status->update($input);
 
-        Flash::success('Saved');
+        Flash::success('Record updated successfully.');
 
         return redirect('package-statuses');
     }
@@ -90,14 +90,17 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        $status = PackageStatus::findByIdAndSiteId($id, $this->user->site_id);
+        $status = PackageStatus::findByIdAndCurrentSiteId($id);
 
-        if ($status && $status->site_id == $this->user->site_id)
+        if ($status)
         {
-            $status->update(['deleted' => 1]);
+            $status->softDelete();
+            Flash::success('Record deleted successfully.');
         }
-
-        Flash::success('Deleted');
+        else
+        {
+            Flash::error('Record not found.');
+        }
 
         return redirect('package-statuses');
     }

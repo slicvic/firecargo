@@ -11,6 +11,14 @@ class Company extends Base {
 
     protected $fillable = [
         'name',
-        'code'
+        'email',
+        'phone',
+        'fax',
+        'address1',
+        'address2',
+        'city',
+        'state',
+        'postal_code',
+        'country_id'
     ];
 }

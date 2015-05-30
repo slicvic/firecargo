@@ -18,7 +18,7 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Displays a list of warehouses.
+     * Shows a list of warehouses.
      */
     public function getIndex()
     {
@@ -27,11 +27,11 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Displays a specific warehouse.
+     * Shows a specific warehouse.
      */
     public function getView(Request $request, $id)
     {
-        $warehouse = Warehouse::findOrFailByIdAndSiteId($id, $this->user->site_id);
+        $warehouse = Warehouse::findOrFailByIdAndCurrentSiteId($id);
 
         return view('warehouses.view', ['warehouse' => $warehouse]);
     }
@@ -57,26 +57,23 @@ class WarehousesController extends BaseAuthController {
             $view = view('flash_messages.error', ['message' => $validator])->render();
             return response()->json(['status' => 'error', 'message' => $view]);
         }
-        else
+
+        // Create warehouse
+        $input['warehouse']['arrived_at'] = date('Y-m-d H:i:s', strtotime($input['warehouse']['arrived_at']['date'] . ' ' . $input['warehouse']['arrived_at']['time']));
+        $warehouse = Warehouse::create($input['warehouse']);
+
+        // Create packages
+        if (isset($input['package']) && count($input['package']))
         {
-            // Create warehouse
-            $input['warehouse']['arrived_at'] = date('Y-m-d H:i:s', strtotime($input['warehouse']['arrived_at']['date'] . ' ' . $input['warehouse']['arrived_at']['time']));
-
-            $warehouse = Warehouse::create($input['warehouse']);
-
-            // Create packages
-            if (isset($input['package']) && count($input['package']))
+            foreach ($input['package'] as $package)
             {
-                foreach ($input['package'] as $package)
-                {
-                    $package['warehouse_id'] = $warehouse->id;
-                    $package['status'] = $input['status_id'];
-                    Package::create($package);
-                }
+                $package['warehouse_id'] = $warehouse->id;
+                $package['status_id'] = $input['status_id'];
+                Package::create($package);
             }
-
-            return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/view/' . $warehouse->id]);
         }
+
+        return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/view/' . $warehouse->id]);
     }
 
     /**
@@ -84,7 +81,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $warehouse = Warehouse::findOrFailByIdAndSiteId($id, $this->user->site_id);
+        $warehouse = Warehouse::findOrFailByIdAndCurrentSiteId($id);
         return view('warehouses.form', ['warehouse' => $warehouse]);
     }
 
@@ -101,34 +98,31 @@ class WarehousesController extends BaseAuthController {
             $view = view('flash_messages.error', ['message' => $validator])->render();
             return response()->json(['status' => 'error', 'message' => $view]);
         }
-        else
+
+        // Update warehouse
+        $warehouse = Warehouse::findByIdAndCurrentSiteId($id);
+
+        if ( ! $warehouse)
         {
-            // Update warehouse
-            $warehouse = Warehouse::findOrFailByIdAndSiteId($id, $this->user->site_id);
-
-            if ( ! $warehouse)
-            {
-                return response()->json(['status' => 'error', 'message' => 'Invalid warehouse ID.']);
-            }
-
-            $input['warehouse']['arrived_at'] = date('Y-m-d H:i:s', strtotime($input['warehouse']['arrived_at']['date'] . ' ' . $input['warehouse']['arrived_at']['time']));
-
-            $warehouse->update($input['warehouse']);
-
-            // Update packages
-            Package::where('warehouse_id', '=', $warehouse->id)->update(['deleted' => 1]);
-
-            if (isset($input['package']) && count($input['package']))
-            {
-                foreach ($input['package'] as $package_id => $packageData)
-                {
-                    $packageData['warehouse_id'] = $warehouse->id;
-                    $packageData['deleted'] = 0;
-                    Package::firstOrCreate(['id' => $package_id])->update($packageData);
-                }
-            }
-
-            return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/view/' . $warehouse->id]);
+            return response()->json(['status' => 'error', 'message' => 'Invalid warehouse ID.']);
         }
+
+        $input['warehouse']['arrived_at'] = date('Y-m-d H:i:s', strtotime($input['warehouse']['arrived_at']['date'] . ' ' . $input['warehouse']['arrived_at']['time']));
+        $warehouse->update($input['warehouse']);
+
+        // Update packages
+        Package::where('warehouse_id', '=', $warehouse->id)->update(['deleted' => 1]);
+
+        if (isset($input['package']) && count($input['package']))
+        {
+            foreach ($input['package'] as $package_id => $packageData)
+            {
+                $packageData['warehouse_id'] = $warehouse->id;
+                $packageData['deleted'] = 0;
+                Package::firstOrCreate(['id' => $package_id])->update($packageData);
+            }
+        }
+
+        return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/view/' . $warehouse->id]);
     }
 }

@@ -34,7 +34,7 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label">Password<span class="required-field">*</span></label>
 							<div class="col-md-6">
-								<input id="password" type="password" name="user[password]" class="form-control" value="{{ Input::old('user.password') }}" data-parsley-minlength="6" required>
+								<input id="password" type="password" name="user[password]" class="form-control" value="{{ Input::old('user.password') }}" data-parsley-minlength="2" required>
 							</div>
 						</div>
 						<div class="form-group">

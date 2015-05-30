@@ -20,6 +20,7 @@ class Package extends Base {
     protected $fillable = [
         'warehouse_id',
         'type_id',
+        'status_id',
         'length',
         'width',
         'height',
@@ -28,8 +29,7 @@ class Package extends Base {
         'invoice_number',
         'invoice_amount',
         'tracking_number',
-        'deleted',
-        'roll'
+        'deleted'
     ];
 
     /**
@@ -51,6 +51,11 @@ class Package extends Base {
     public function site()
     {
         return $this->belongsTo('App\Models\Site');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo('App\Models\PackageStatus');
     }
 
     /**

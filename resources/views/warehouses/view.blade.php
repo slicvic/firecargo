@@ -17,11 +17,11 @@
     </tr>
     <tr>
         <th>Shipper</th>
-        <td>{{ $warehouse->shipper ? $warehouse->shipper->name() : '' }}</td>
+        <td>{{ $warehouse->shipper ? $warehouse->shipper->fullname() : '' }}</td>
     </tr>
     <tr>
         <th>Consignee</th>
-        <td>{{ $warehouse->consignee ? $warehouse->consignee->name() : '' }}</td>
+        <td>{{ $warehouse->consignee ? $warehouse->consignee->fullname() : '' }}</td>
     </tr>
     <tr>
         <th>Delivered By</th>
@@ -34,6 +34,7 @@
     <tr>
         <th>ID</th>
         <th>Tracking #</th>
+        <th>Status</th>
         <th>Type</th>
         <th>Length</th>
         <th>Width</th>
@@ -47,6 +48,7 @@
         <tr>
             <td>{{ $package->id }}</td>
             <td>{{ $package->tracking_number }}</td>
+            <td>{{ $package->status->name }}</td>
             <td>{{ $package->type->name }}</td>
             <td>{{ $package->length }}</td>
             <td>{{ $package->width }}</td>

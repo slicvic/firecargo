@@ -11,6 +11,7 @@ class PackageType extends BaseSiteSpecific {
 
     protected $fillable = [
         'site_id',
-        'name'
+        'name',
+        'deleted'
     ];
 }

@@ -98,7 +98,7 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
      *
      * @return string
      */
-    public function name()
+    public function fullname()
     {
         return trim(ucwords(strtolower($this->firstname . ' ' . $this->lastname)));
     }
@@ -124,7 +124,7 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
      */
     public function trackingId()
     {
-        return  '';
+        return '';
     }
 
     /**
@@ -181,7 +181,7 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
     }
 
     /**
-     * Generates a plain text password recovery token.
+     * Generates a plain-text password recovery token.
      *
      * @return string
      */

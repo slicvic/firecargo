@@ -16,7 +16,7 @@ class RolesController extends BaseAuthController {
     }
 
     /**
-     * Displays a list of roles.
+     * Shows a list of roles.
      */
     public function getIndex()
     {
@@ -77,6 +77,16 @@ class RolesController extends BaseAuthController {
         $role = Role::findOrFail($id);
         $role->update($input);
 
+        return redirect('roles');
+    }
+
+    /**
+     * Deletes a specific role.
+     */
+    public function getDelete(Request $request, $id)
+    {
+        $role = Role::findOrFail($id);
+        $role->delete();
         return redirect('roles');
     }
 }

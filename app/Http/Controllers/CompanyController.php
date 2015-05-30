@@ -33,7 +33,8 @@ class CompanyController extends BaseAuthController {
 
         $this->user->site->company->update($input);
 
-        Flash::success('Saved');
+        Flash::success('Record updated successfully.');
+
         return redirect()->back();
     }
 }

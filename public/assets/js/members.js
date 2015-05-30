@@ -6,6 +6,12 @@ var app = {
 	initEvents: function() {
 		var self = this;
 		$('#createWarehouseForm').on('submit', self.submitCreateWarehouseForm);
+		$('table').on('click', '.delete-btn', function() {
+		    if (!confirm('Are you sure you want to delete this item?')) {
+	            event.preventDefault();
+	            return false;
+		    }
+		});
 	},
 
 	submitCreateWarehouseForm: function() {
@@ -19,7 +25,7 @@ var app = {
 
 		$.post($form.attr('action'), $form.serialize(), function(data) {
 			$submit.attr('disabled', false);
-			console.log(data);
+
 			if (data.status == 'ok') {
 				window.location = data.redirect_to;
 			} else {

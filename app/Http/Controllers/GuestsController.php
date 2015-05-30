@@ -7,12 +7,12 @@ use Validator;
 
 use App\Models\User;
 use App\Models\Site;
+use App\Models\Role;
 use App\Helpers\Mailer;
 use App\Helpers\Html;
 use App\Helpers\Flash;
 
 class GuestsController extends BaseController {
-    protected $layout = 'layouts.guest';
 
     /**
      * Shows the login form.
@@ -23,20 +23,31 @@ class GuestsController extends BaseController {
     }
 
     /**
-     * Processes the login form.
+     * Handles a login request.
      */
     public function postLogin(Request $request)
     {
         $input = $request->only('username', 'password');
 
-        if ($input['username'] && $input['password'] && $user = User::validateCredentials($input['username'], $input['password']))
+        $validator = Validator::make($input, [
+            'username' => 'required',
+            'password' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+            Flash::error($validator);
+            return redirect()->back()->withInput();
+        }
+
+        if ($user = User::validateCredentials($input['username'], $input['password']))
         {
             Auth::login($user);
             return redirect('dashboard');
         }
         else
         {
-            Flash::error('Incorrect email or password.');
+            Flash::error('The email or password your entered is incorrect.');
             return redirect()->back()->withInput();
         }
     }
@@ -50,11 +61,19 @@ class GuestsController extends BaseController {
     }
 
     /**
-     * Processes the signup form.
+     * Handles a signup request.
      */
     public function postSignup(Request $request)
     {
         $input = $request->only('user');
+
+        // Validate site ID
+        if ( ! Site::find($input['user']['site_id']))
+        {
+            Flash::error('Your site ID is invalid.');
+            return redirect()->back()->withInput();
+        }
+
         $validator = Validator::make($input['user'], User::$signupRules);
 
         // Validate form
@@ -64,16 +83,9 @@ class GuestsController extends BaseController {
             return redirect()->back()->withInput();
         }
 
-        // Validate site ID
-        if ( ! Site::find($input['user']['site_id']))
-        {
-            Flash::error('Your site ID is invalid.');
-            return redirect()->back()->withInput();
-        }
-
         // Create user
         $user = User::create($input['user']);
-        $user->attachRoles([\App\Models\Role::CLIENT, \App\Models\Role::LOGIN]);
+        $user->attachRoles([Role::CLIENT, Role::LOGIN]);
 
         Auth::login($user);
         Mailer::sendWelcome($user);
@@ -90,7 +102,7 @@ class GuestsController extends BaseController {
     }
 
     /**
-     * Processes the forgot password form.
+     * Handles forgot password request.
      */
     public function postForgotPassword(Request $request)
     {
@@ -109,10 +121,10 @@ class GuestsController extends BaseController {
                 // @TODO: change message
                 Flash::info('<a href="/reset-password?email=' . $user->email . '&token=' . $user->makePasswordRecoveryToken() . '">Click here to reset your password</a>');
             }
-            else
-            {
-                Flash::info('An email with instructions on how to reset your password has been sent.');
-            }
+
+            // Show success message regardless
+            // @TODO: uncomment
+            //Flash::info('An email with instructions on how to reset your password has been sent.');
         }
 
         return redirect()->back();
@@ -127,7 +139,7 @@ class GuestsController extends BaseController {
     }
 
     /**
-     * Processes the password reset form.
+     * Handles a password reset request.
      */
     public function postResetPassword(Request $request)
     {
@@ -144,23 +156,20 @@ class GuestsController extends BaseController {
             Flash::error($validator);
             return redirect()->back();
         }
+
+        $user = User::where('email', '=', $input['email'])->first();
+
+        if ($user && $user->checkPasswordRecoveryToken($input['token']))
+        {
+            $user->password = $input['password'];
+            $user->save();
+            Flash::success('Your password has been reset successfully.');
+            return redirect('login');
+        }
         else
         {
-            $user = User::where('email', '=', $input['email'])->first();
-
-            if ($user && $user->checkPasswordRecoveryToken($input['token']))
-            {
-                $user->password = $input['password'];
-                $user->save();
-
-                Flash::success('Your password has been reset successfully!');
-                return redirect('login');
-            }
-            else
-            {
-                Flash::error('Password reset failed.');
-                return redirect()->back();
-            }
+            Flash::error('Password reset failed.');
+            return redirect()->back();
         }
     }
 }

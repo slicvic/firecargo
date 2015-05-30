@@ -22,7 +22,10 @@
             <td>{{ $role->id }}</td>
             <td>{{ $role->name }}</td>
             <td>{{ $role->description }}</td>
-            <td><a href="/roles/edit/{{ $role->id }}" class="btn btn-flat icon"><i class="fa fa-pencil"></i></a></td>
+            <td>
+                <a href="/roles/edit/{{ $role->id }}" class="btn btn-flat icon"><i class="fa fa-pencil"></i></a>
+                <a href="/roles/delete/{{ $role->id }}" class="btn btn-flat icon delete-btn"><i class="fa fa-times"></i></a>
+            </td>
         </tr>
     @endforeach
 @stop

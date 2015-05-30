@@ -20,7 +20,12 @@
        <tr>
             <td>{{ $type->id }}</td>
             <td>{{ $type->name }}</td>
-            <td><a href="/package-types/edit/{{ $type->id }}" class="btn-flat icon"><i class="fa fa-pencil"></i></a></td>
+            <td>
+                @if ($type->site_id == Auth::user()->site_id)
+                    <a href="/package-types/edit/{{ $type->id }}" class="btn-flat icon"><i class="fa fa-pencil"></i></a>
+                    <a href="/package-types/delete/{{ $type->id }}" class="btn-flat icon"><i class="fa fa-times delete-btn"></i></a>
+                @endif
+            </td>
        </tr>
     @endforeach
 </tbody>

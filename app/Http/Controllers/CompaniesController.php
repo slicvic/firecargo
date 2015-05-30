@@ -16,7 +16,7 @@ class CompaniesController extends BaseAuthController {
     }
 
     /**
-     * Displays a list of companies.
+     * Shows a list of companies.
      */
     public function getIndex()
     {
@@ -47,7 +47,7 @@ class CompaniesController extends BaseAuthController {
 
         Company::create($input);
 
-        Flash::success('Saved');
+        Flash::success('Record created successfully.');
 
         return redirect('companies');
     }
@@ -78,14 +78,8 @@ class CompaniesController extends BaseAuthController {
         $company = Company::findOrFail($id);
         $company->update($input);
 
-        Flash::success('Saved');
+        Flash::success('Record updated successfully.');
 
         return redirect('companies');
-    }
-
-    public function getCompany()
-    {
-        $company = Company::findOrFail($id);
-        return view('companies.form', ['company' => $company]);
     }
 }

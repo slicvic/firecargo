@@ -11,7 +11,7 @@
 
 	@if (Auth::user()->isAdmin())
 		<div class="panel panel-default">
-			<div class="panel-heading">Admin</div>
+			<div class="panel-heading">Administration</div>
 			<div class="panel-body">
 				<div class="form-group">
 					<label class="control-label col-sm-2">Site</label>
@@ -91,13 +91,13 @@
 			<div class="form-group">
 				<label class="control-label col-sm-2">Address</label>
 				<div class="col-sm-5">
-					<input type="text" name="user[address1]" placeholder="Address Line 1" class="form-control" value="{{ Input::old('user.address1', $user->address1) }}">
+					<input type="text" name="user[address1]" placeholder="Address" class="form-control" value="{{ Input::old('user.address1', $user->address1) }}">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-2">Apt / Unit</label>
 				<div class="col-sm-5">
-					<input type="text" name="user[address2]" placeholder="Address Line 2" placeholder="Company" class="form-control" value="{{ Input::old('user.address2', $user->address2) }}">
+					<input type="text" name="user[address2]" placeholder="Apt / Unit" placeholder="Company" class="form-control" value="{{ Input::old('user.address2', $user->address2) }}">
 				</div>
 			</div>
 			<div class="form-group">

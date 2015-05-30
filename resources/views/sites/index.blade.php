@@ -13,7 +13,7 @@
 <th>ID</th>
 <th>Name</th>
 <th>Display Name</th>
-<th>Company Name</th>
+<th>Company</th>
 <th>Actions</th>
 @stop
 

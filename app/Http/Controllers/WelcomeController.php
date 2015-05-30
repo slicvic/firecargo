@@ -26,7 +26,7 @@ class WelcomeController extends BaseController {
 	}
 
 	/**
-	 * Show the application welcome screen to the user.
+	 * Shows the application welcome screen to the user.
 	 *
 	 * @return Response
 	 */

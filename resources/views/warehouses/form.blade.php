@@ -29,7 +29,7 @@
     <div class="form-group">
         <label class="control-label col-sm-2">Shipper</label>
         <div class="col-sm-5">
-            <input required type="text" id="shipperName" name="shipper_name" class="form-control" value="{{ ($warehouse->shipper) ? $warehouse->shipper->name() : '' }}">
+            <input required type="text" id="shipperName" name="shipper_name" class="form-control" value="{{ ($warehouse->shipper) ? $warehouse->shipper->fullname() : '' }}">
             <input type="hidden" id="shipperId" name="warehouse[shipper_user_id]" value="{{ $warehouse->shipper_user_id }}">
         </div>
     </div>
@@ -37,7 +37,7 @@
     <div class="form-group">
         <label class="control-label col-sm-2">Consignee</label>
         <div class="col-sm-5">
-            <input required  type="text" id="consigneeName" name="consignee_name" class="form-control" value="{{ ($warehouse->consignee) ? $warehouse->consignee->name() : '' }}">
+            <input required  type="text" id="consigneeName" name="consignee_name" class="form-control" value="{{ ($warehouse->consignee) ? $warehouse->consignee->fullname() : '' }}">
             <input type="hidden" id="consigneeId" name="warehouse[consignee_user_id]" value="{{ $warehouse->consignee_user_id }}">
         </div>
     </div>
@@ -76,17 +76,17 @@
         <thead>
             <tr>
                 <th>Pieces</th>
-                <th>Gross Weight (pounds)</th>
-                <th>Volume (cubic feet)</th>
+                <th>Real Weight (pounds)</th>
+                <th>Volume Weight (pounds)</th>
                 <th>Charge Weight (pounds)</th>
             </tr>
         </thead>
         <tbody>
            <tr>
                 <td><span id="totalPieces" style="font-weight: bold;">0</span></td>
-                <td><span id="totalWeight" style="font-weight: bold;">0</span></td>
-                <td><span id="totalVolume" style="font-weight: bold;">0</span></td>
-                <td><span id="totalChargeWeight" style="font-weight: bold;">0</span></td>
+                <td><span id="grossWeight" style="font-weight: bold;">0</span></td>
+                <td><span id="volumeWeight" style="font-weight: bold;">0</span></td>
+                <td><span id="chargeWeight" style="font-weight: bold;">0</span></td>
             </tr>
         </tbody>
     </table>
@@ -101,60 +101,100 @@
 <script src="/assets/libs/jquery-ui/jquery-ui.min.js"></script>
 <script>
 $(function() {
-    var $trTemplate = $('.packagesTable > tbody > tr.template').clone();
-    $('.packagesTable > tbody > tr.template').remove();
+    var Packages = {
+        $trTemplate: null,
 
-    updateTotals();
+        init: function() {
+            this.initEvents();
+            this.updateTotals();
+        },
 
-    // Bind clone button
-    $('.packagesTable').on('click', '.cloneRowBtn', function() {
-        var rowCount = packageCount();
-        var $trClone = $(this).parent().parent().clone();
-        $trClone.find('input.unique').val('');
+        initEvents: function() {
+            var self = this;
+            self.$trTemplate = $('.packagesTable > tbody > tr:first-child').clone();
+            $('.packagesTable').on('click', '.cloneRowBtn', self.clonePackage);
+            $('.packagesTable').on('click', '.removeRowBtn', self.removePackage);
+            $('.addRowBtn').on('click', self.newPackage);
+            $('.packagesTable').on('keyup', '.metric', self.updateTotals);
+        },
 
-        $trClone.find('input, select').each(function() {
-            $(this).attr('name', $(this).attr('name').replace(/\[(-?[-0-9]+)\]/, '[' + (-1*rowCount) + ']'));
-        });
+        clonePackage: function() {
+            var rowCount = Packages.countPackages();
+            var $trClone = $(this).parent().parent().clone();
+            var idx;
 
-        $('.packagesTable > tbody').append($trClone);
-        $('#totalPieces').html(1 + rowCount);
+            $trClone.find('input.unique').val('');
 
-        updateTotals();
-    });
+            $trClone.find('input, select').each(function() {
+                idx = -1 * rowCount;
+                $(this).attr('name', 'package[' + idx + '][' + $(this).attr('data-name') + ']');
+            });
 
-    // Bind add button
-    $('.addRowBtn').click(function() {
-        var rowCount = packageCount();
-        var $trNew = $trTemplate.clone();
+            $('.packagesTable > tbody').append($trClone);
+            $('#totalPieces').html(1 + rowCount);
 
-        $trNew.find('input, select').each(function() {
-            $(this).val('');
-            $(this).attr('name', $(this).attr('name').replace(/\[(-?[0-9]+)\]/, '[' + (-1*rowCount) + ']'));
-        });
+            Packages.updateTotals();
+        },
 
-        $('.packagesTable > tbody').append($trNew);
-        $('#totalPieces').html(1 + rowCount);
+        newPackage: function() {
+            var rowCount = Packages.countPackages();
+            var $trNew = Packages.$trTemplate.clone();
+            var idx;
 
-        updateTotals();
-    });
+            $trNew.find('input, select').each(function() {
+                idx = -1 * rowCount;
+                $(this).val('');
+                $(this).attr('name', 'package[' + idx + '][' + $(this).attr('data-name') + ']');
+            });
 
-    // Bind remove button
-    $('.packagesTable').on('click', '.removeRowBtn', function() {
-        $(this).parent().parent().remove();
-        updateTotals();
-    });
+            $('.packagesTable > tbody').append($trNew);
+            $('#totalPieces').html(1 + rowCount);
 
-    // Bind field keyup
-    $('.packagesTable').on('keyup', '.metric', function() {
-        updateTotals();
-    });
+            Packages.updateTotals();
+        },
+
+        removePackage: function() {
+            $(this).parent().parent().remove();
+            Packages.updateTotals();
+        },
+
+        countPackages: function() {
+            return $('.packagesTable > tbody > tr').length;
+        },
+
+        updateTotals: function() {
+            var grossWeight = 0;
+            var volumeWeight = 0;
+
+            $('.packagesTable > tbody > tr').each(function() {
+                var $tr = $(this);
+
+                var length = parseInt($tr.find('input[data-name="length"]').val()) || 0;
+                var width = parseInt($tr.find('input[data-name="width"]').val()) || 0;
+                var height = parseInt($tr.find('input[data-name="height"]').val()) || 0;
+                var weight = parseInt($tr.find('input[data-name="weight"]').val()) || 0;
+
+                grossWeight += weight;
+                volumeWeight += (length * width * height) / 366;
+            });
+
+            volumeWeight = Math.round(volumeWeight);
+
+            $('#totalPieces').html(Packages.countPackages());
+            $('#grossWeight').html(grossWeight);
+            $('#volumeWeight').html(volumeWeight);
+            $('#chargeWeight').html(grossWeight > volumeWeight ? grossWeight : volumeWeight);
+        }
+    };
+
+    Packages.init();
 
     // Bind shipper autocomplete
     $('#shipperName').autocomplete({
         source: '/accounts/autocomplete',
         minLength: 2,
         select: function(event, ui) {
-            $('#shipperName').val(ui.item.name);
+            $('#shipperName').val(ui.item.label);
             $('#shipperId').val(ui.item.id);
             return false;
         }
@@ -169,7 +209,7 @@ $(function() {
         source: '/accounts/autocomplete',
         minLength: 2,
         select: function(event, ui) {
-            $('#consigneeName').val(ui.item.name);
+            $('#consigneeName').val(ui.item.label);
             $('#consigneeId').val(ui.item.id);
             return false;
         }
@@ -178,36 +218,6 @@ $(function() {
             .append('<a>' + item.id  + ' - ' + item.label + '</a>')
             .appendTo(ul);
     };
-
-    function packageCount()
-    {
-        return $('.packagesTable > tbody > tr').length;
-    }
-
-    function updateTotals()
-    {
-        var totalWeight = 0;
-        var totalVolume = 0;
-        var totalChargeWeight = 0;
-
-         $('.packagesTable > tbody > tr').each(function() {
-            var $tr = $(this);
-
-            var length = parseInt($tr.find('input[data-metric="length"]').val()) || 0;
-            var width = parseInt($tr.find('input[data-metric="width"]').val()) || 0;
-            var height = parseInt($tr.find('input[data-metric="height"]').val()) || 0;
-            var weight = parseInt($tr.find('input[data-metric="weight"]').val()) || 0;
-
-            totalWeight += weight;
-            totalVolume += (length * width * height);
-            totalChargeWeight += weight;
-        });
-
-        $('#totalPieces').html(packageCount());
-        $('#totalWeight').html(totalWeight);
-        $('#totalVolume').html(totalVolume).html();
-        $('#totalChargeWeight').html(totalChargeWeight).html();
-    }
 });
 </script>
 @stop

@@ -18,7 +18,7 @@ class UsersController extends BaseAuthController {
     }
 
     /**
-     * Displays a list of users.
+     * Shows a list of users.
      */
     public function getIndex(Request $request)
     {
@@ -26,7 +26,7 @@ class UsersController extends BaseAuthController {
     }
 
     /**
-     * Returns a list of users for a jquery autocomple field.
+     * Returns a list of users for a jQuery autocomple field.
      *
      * @uses    ajax
      * @return  json
@@ -41,10 +41,16 @@ class UsersController extends BaseAuthController {
             foreach(User::getUsersForAutocomplete($input['term'], [$this->user->site_id]) as $user)
             {
                 $label = [];
+
                 if ($user->company_name)
+                {
                     $label[] = $user->company_name;
-                if ( ! empty($name = $user->name()))
+                }
+
+                if ( ! empty($name = $user->fullname()))
+                {
                     $label[] = $name;
+                }
 
                 $response[] = [
                     'id' => $user->id,
@@ -156,7 +162,7 @@ class UsersController extends BaseAuthController {
             $user->attachRoles($input['roles']);
         }
 
-        Flash::success('Saved');
+        Flash::success('Record created successfully.');
 
         return redirect('accounts');
     }
@@ -166,7 +172,7 @@ class UsersController extends BaseAuthController {
      */
     public function getEdit(Request $request, $id)
     {
-        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndSiteId($id, $this->user->site_id);
+        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentSiteId($id);
 
         return view('users.form', ['user' => $user]);
     }
@@ -197,11 +203,11 @@ class UsersController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndSiteId($id, $this->user->site_id);
+        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentSiteId($id);
         $user->update($input['user']);
         $user->attachRoles(isset($input['roles']) ? $input['roles'] : []);
 
-        Flash::success('Saved');
+        Flash::success('Record updated successfully.');
 
         return redirect('accounts');
     }

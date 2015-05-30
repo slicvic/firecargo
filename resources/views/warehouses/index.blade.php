@@ -17,7 +17,6 @@
 <th>Volume</th>
 <th>Shipper</th>
 <th>Consignee</th>
-<th>Company</th>
 <th>Actions</th>
 @stop
 
@@ -29,9 +28,8 @@
 		<td>{{ $warehouse->countPackages() }}</td>
 		<td>{{ $warehouse->calculateWeight() }}</td>
 		<td>{{ $warehouse->calculateVolume() }}</td>
-		<td>{{ $warehouse->shipper ? $warehouse->shipper->name() : '' }}</td>
-		<td>{{ $warehouse->consignee ? $warehouse->consignee->name() : '' }}</td>
-		<td>{{ $warehouse->site && $warehouse->site->company ? $warehouse->site->company->name : '' }}</td>
+		<td>{{ $warehouse->shipper ? $warehouse->shipper->fullname() : '' }}</td>
+		<td>{{ $warehouse->consignee ? $warehouse->consignee->fullname() : '' }}</td>
 		<td>
 			<a href="/warehouses/view/{{ $warehouse->id }}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 			<a href="/warehouses/edit/{{ $warehouse->id }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>

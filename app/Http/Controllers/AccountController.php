@@ -79,24 +79,16 @@ class AccountController extends BaseAuthController {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
+
+        if (Hash::check($input['current'], $this->user->password))
+        {
+            $this->user->password = $input['new'];
+            $this->user->save();
+            Flash::success('Your password was changed successfully.');
+        }
         else
         {
-            if (Hash::check($input['current'], $this->user->password))
-            {
-                if ($input['new'] != $input['current'])
-                {
-                    // Update the password only if it differs from the current one
-                    $this->user->password = $input['new'];
-                    $this->user->save();
-                }
-
-                Flash::success('Your password was changed successfully!');
-            }
-            else
-            {
-                // Current password doesn't match
-                Flash::error('The password you entered does not match your current one.');
-            }
+            Flash::error('The password you entered does not match your current one.');
         }
 
         return redirect()->back();
