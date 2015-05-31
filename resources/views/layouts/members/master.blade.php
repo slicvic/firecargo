@@ -107,7 +107,8 @@
                         <i class="fa fa-chevron-down icon-chevron-down"></i>
                     </a>
                     <ul class="submenu <?php echo ($warehouse_menu_active) ? 'active' : ''; ?>">
-                        <li><a href="/warehouses" class="<?php echo (Request::is('warehouses') || Request::is('warehouses/*')) ? 'active' : ''; ?>">Warehouses</a></li>
+                        <li><a href="/warehouses" class="<?php echo (Request::is('warehouses')) ? 'active' : ''; ?>">Warehouses</a></li>
+                        <li><a href="/warehouses/create" class="<?php echo (Request::is('warehouses/create')) ? 'active' : ''; ?>">Create Warehouse</a></li>
                     </ul>
                 </li>
             <?php endif; ?>

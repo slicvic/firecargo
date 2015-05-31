@@ -1,8 +1,9 @@
-<table class="table packagesTable">
+<?php $packages = $warehouse->packages(); ?>
+<table id="packagesTable" class="table table-bordered table-striped table-condensed">
     <thead>
         <tr>
-            <th></th>
             <th>Type</th>
+            <th>Status</th>
             <th>Length</th>
             <th>Width</th>
             <th>Height</th>
@@ -11,6 +12,7 @@
             <th>Invoice #</th>
             <th>Invoice $</th>
             <th>Tracking #</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>

@@ -6,7 +6,6 @@
         <div class="row">
             <img src="/assets/img/avatar.png" class="img-circle">
             <h3>{{ Auth::user()->fullname() }}</h3>
-            <h5>Casillero ID: {{ Auth::user()->trackingId() }}</h5>
             <div class="panel panel-default">
                 <div class="panel-heading"><strong>Account</strong></div>
                 <div class="list-group">

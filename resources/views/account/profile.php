@@ -36,10 +36,34 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="control-label col-sm-2">Home Phone</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="user[phone]" placeholder="Home Phone" class="form-control" value="<?php echo Input::old('user.phone', $user->phone); ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Cell Phone</label>
+                        <div class="col-sm-4">
+                            <input type="text" name="user[cellphone]" placeholder="Cell Phone" class="form-control" value="<?php echo Input::old('user.cellphone', $user->cellphone); ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-2 control-label">ID / RUT</label>
                         <div class="col-md-6">
                             <input type="text" name="user[nin]" class="form-control" value="<?php echo Input::old('user.nin', $user->nin); ?>">
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">Packages</div>
+                <div class="panel-body">
+                    <div class="form-group">
+                            <label class="col-md-2 control-label">Autoroll?</label>
+                            <div class="col-md-6">
+                                <input type="checkbox" name="user[autoroll_packages]" class="form-control" value="1"<?php echo Input::old('user.autoroll_packages', $user->autoroll_packages) ? ' checked' : ''; ?>>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -87,25 +111,13 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Home Phone</label>
-                        <div class="col-sm-4">
-                            <input type="text" name="user[phone]" placeholder="Home Phone" class="form-control" value="<?php echo Input::old('user.phone', $user->phone); ?>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Cell Phone</label>
-                        <div class="col-sm-4">
-                            <input type="text" name="user[cellphone]" placeholder="Cell Phone" class="form-control" value="<?php echo Input::old('user.cellphone', $user->cellphone); ?>">
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-8">
+                <div class="col-sm-12">
                     <button type="submit" class="btn btn-flat primary">Save Changes</button>
-                    <a href="/account/dashboard">Cancel</a>
+                    <a href="/account/profile">Cancel</a>
                 </div>
             </div>
         </form>

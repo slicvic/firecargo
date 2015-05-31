@@ -7,92 +7,85 @@
 
 @section('form')
 <form data-parsley-validate action="/warehouses/{{ ($warehouse->id) ? 'update/' . $warehouse->id : 'store' }}" method="post" id="createWarehouseForm" class="form-horizontal">
-   <div class="flashError"></div>
-    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <input type="hidden" name="warehouse[site_id]" value="{{ ($warehouse->id) ? $warehouse->site_id : Auth::user()->site_id }}">
+    <div class="flashError"></div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Warehouse Information</div>
+        <div class="panel-body">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="warehouse[site_id]" value="{{ ($warehouse->id) ? $warehouse->site_id : Auth::user()->site_id }}">
 
-    <div class="form-group">
-        <label class="control-label col-sm-2">Date</label>
-        <div class="col-sm-2">
-            <div class="input-group">
-                <input required type="text" name="warehouse[arrived_at][date]" class="form-control" value="{{ ($warehouse->arrived_at) ? date('m/d/Y', strtotime($warehouse->arrived_at)) : date('m/d/Y') }}">
-                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Date</label>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input required type="text" name="warehouse[arrived_at][date]" class="form-control" value="{{ ($warehouse->arrived_at) ? date('m/d/Y', strtotime($warehouse->arrived_at)) : date('m/d/Y') }}">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="input-group bootstrap-timepicker">
+                        <input required type="text" name="warehouse[arrived_at][time]" class="form-control" value="{{ ($warehouse->arrived_at) ? date('g:i A', strtotime($warehouse->arrived_at)) : date('g:i A') }}">
+                        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Shipper</label>
+                <div class="col-sm-5">
+                    <input required type="text" id="shipperName" name="shipper_name" class="form-control" value="{{ ($warehouse->shipper) ? $warehouse->shipper->fullname() : '' }}">
+                    <input type="hidden" id="shipperId" name="warehouse[shipper_user_id]" value="{{ $warehouse->shipper_user_id }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Consignee</label>
+                <div class="col-sm-5">
+                    <input required  type="text" id="consigneeName" name="consignee_name" class="form-control" value="{{ ($warehouse->consignee) ? $warehouse->consignee->fullname() : '' }}">
+                    <input type="hidden" id="consigneeId" name="warehouse[consignee_user_id]" value="{{ $warehouse->consignee_user_id }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Delivered By</label>
+                <div class="col-sm-5">
+                    <select required name="warehouse[delivered_by_courier_id]" class="form-control">
+                        @foreach (\App\Models\Courier::allByCurrentSiteId() as $courier)
+                            <option{{ ($warehouse->courier_id == $courier->id) ? ' selected' : '' }} value="{{ $courier->id }}">{{ $courier->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
-        <div class="col-sm-2">
-            <div class="input-group bootstrap-timepicker">
-                <input required type="text" name="warehouse[arrived_at][time]" class="form-control" value="{{ ($warehouse->arrived_at) ? date('g:i A', strtotime($warehouse->arrived_at)) : date('g:i A') }}">
-                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Packages</div>
+        <div class="panel-body">
+            <div class="alert alert-warning">
+                <i class="fa fa-exclamation-triangle"></i> Warehouse is setup in US SYSTEM - using inches and pounds
             </div>
+            <button type="button" id="newPkgBtn" class="btn btn-success"><i class="fa fa-plus"></i> New</button>
+            <br><br>
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Pieces</th>
+                        <th>Gross Weight</th>
+                        <th>Volume Weight</th>
+                        <th>Charge Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   <tr>
+                        <td><span id="totalPieces">0</span></td>
+                        <td><span id="actualWeight">0</span></td>
+                        <td><span id="volumeWeight">0</span></td>
+                        <td><span id="chargeWeight">0</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {!! view('warehouses._form_packages', ['warehouse' => $warehouse]) !!}
         </div>
     </div>
-    <div class="form-group">
-        <label class="control-label col-sm-2">Shipper</label>
-        <div class="col-sm-5">
-            <input required type="text" id="shipperName" name="shipper_name" class="form-control" value="{{ ($warehouse->shipper) ? $warehouse->shipper->fullname() : '' }}">
-            <input type="hidden" id="shipperId" name="warehouse[shipper_user_id]" value="{{ $warehouse->shipper_user_id }}">
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="control-label col-sm-2">Consignee</label>
-        <div class="col-sm-5">
-            <input required  type="text" id="consigneeName" name="consignee_name" class="form-control" value="{{ ($warehouse->consignee) ? $warehouse->consignee->fullname() : '' }}">
-            <input type="hidden" id="consigneeId" name="warehouse[consignee_user_id]" value="{{ $warehouse->consignee_user_id }}">
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="control-label col-sm-2">Status</label>
-        <div class="col-sm-5">
-            <select class="form-control" name="status_id">
-                @foreach (\App\Models\PackageStatus::allByCurrentSiteId() as $type)
-                    <option value="{{ $type->id }}">{{ $type->name }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="control-label col-sm-2">Delivered By</label>
-        <div class="col-sm-5">
-            <select required name="warehouse[delivered_by_courier_id]" class="form-control">
-                @foreach (\App\Models\Courier::allByCurrentSiteId() as $courier)
-                    <option{{ ($warehouse->courier_id == $courier->id) ? ' selected' : '' }} value="{{ $courier->id }}">{{ $courier->name }}</option>
-                @endforeach
-            </select>
-        </div>
-    </div>
-
-    <h4>Packages</h4>
-
-    <br>
-
-    <button type="button" class="addRowBtn btn btn-success"><i class="fa fa-plus"></i> Add</button>
-
-    <br><br>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Pieces</th>
-                <th>Real Weight (pounds)</th>
-                <th>Volume Weight (pounds)</th>
-                <th>Charge Weight (pounds)</th>
-            </tr>
-        </thead>
-        <tbody>
-           <tr>
-                <td><span id="totalPieces" style="font-weight: bold;">0</span></td>
-                <td><span id="grossWeight" style="font-weight: bold;">0</span></td>
-                <td><span id="volumeWeight" style="font-weight: bold;">0</span></td>
-                <td><span id="chargeWeight" style="font-weight: bold;">0</span></td>
-            </tr>
-        </tbody>
-    </table>
-
-    {!! view('warehouses._form_packages', ['packages' => $warehouse->packages()]) !!}
-
     <button type="submit" class="btn btn-flat primary">Save Changes</button>
     <a href="/warehouses">Cancel</a>
 </form>
@@ -111,11 +104,11 @@ $(function() {
 
         initEvents: function() {
             var self = this;
-            self.$trTemplate = $('.packagesTable > tbody > tr:first-child').clone();
-            $('.packagesTable').on('click', '.cloneRowBtn', self.clonePackage);
-            $('.packagesTable').on('click', '.removeRowBtn', self.removePackage);
-            $('.addRowBtn').on('click', self.newPackage);
-            $('.packagesTable').on('keyup', '.metric', self.updateTotals);
+            self.$trTemplate = $('#packagesTable > tbody > tr:first-child').clone();
+            $('#packagesTable').on('click', '.clonePkgBtn', self.clonePackage);
+            $('#packagesTable').on('click', '.removePkgBtn', self.removePackage);
+            $('#newPkgBtn').on('click', self.newPackage);
+            $('#packagesTable').on('keyup', '.metric', self.updateTotals);
         },
 
         clonePackage: function() {
@@ -130,7 +123,7 @@ $(function() {
                 $(this).attr('name', 'package[' + idx + '][' + $(this).attr('data-name') + ']');
             });
 
-            $('.packagesTable > tbody').append($trClone);
+            $('#packagesTable > tbody').append($trClone);
             $('#totalPieces').html(1 + rowCount);
 
             Packages.updateTotals();
@@ -147,7 +140,7 @@ $(function() {
                 $(this).attr('name', 'package[' + idx + '][' + $(this).attr('data-name') + ']');
             });
 
-            $('.packagesTable > tbody').append($trNew);
+            $('#packagesTable > tbody').append($trNew);
             $('#totalPieces').html(1 + rowCount);
 
             Packages.updateTotals();
@@ -159,14 +152,15 @@ $(function() {
         },
 
         countPackages: function() {
-            return $('.packagesTable > tbody > tr').length;
+            return $('#packagesTable > tbody > tr').length;
         },
 
         updateTotals: function() {
-            var grossWeight = 0;
+            var actualWeight = 0;
             var volumeWeight = 0;
+            var volumeWeightDivisor = <?php echo \App\Models\Package::VOLUME_WEIGHT_DIVISOR; ?>;
 
-            $('.packagesTable > tbody > tr').each(function() {
+            $('#packagesTable > tbody > tr').each(function() {
                 var $tr = $(this);
 
                 var length = parseInt($tr.find('input[data-name="length"]').val()) || 0;
@@ -174,16 +168,16 @@ $(function() {
                 var height = parseInt($tr.find('input[data-name="height"]').val()) || 0;
                 var weight = parseInt($tr.find('input[data-name="weight"]').val()) || 0;
 
-                grossWeight += weight;
-                volumeWeight += (length * width * height) / 366;
+                actualWeight += weight;
+                volumeWeight += (length * width * height) / volumeWeightDivisor;
             });
 
-            volumeWeight = Math.round(volumeWeight);
+            volumeWeight = Math.round(volumeWeight * 100) / 100;
 
             $('#totalPieces').html(Packages.countPackages());
-            $('#grossWeight').html(grossWeight);
-            $('#volumeWeight').html(volumeWeight);
-            $('#chargeWeight').html(grossWeight > volumeWeight ? grossWeight : volumeWeight);
+            $('#actualWeight').html(actualWeight + ' lb(s)');
+            $('#volumeWeight').html(volumeWeight + ' lb(s)');
+            $('#chargeWeight').html((volumeWeight > actualWeight ? volumeWeight : actualWeight) + ' lb(s)');
         }
     };
 

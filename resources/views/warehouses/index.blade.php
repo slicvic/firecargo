@@ -23,11 +23,11 @@
 @section('tbody')
 	@foreach ($warehouses as $warehouse)
 	<tr>
-		<td>{{ $warehouse->trackingId() }}</td>
-		<td>{{ $warehouse->arrived_at }}</td>
+		<td>{{ $warehouse->prettyId() }}</td>
+		<td>{{ $warehouse->prettyArrivedAt() }}</td>
 		<td>{{ $warehouse->countPackages() }}</td>
-		<td>{{ $warehouse->calculateWeight() }}</td>
-		<td>{{ $warehouse->calculateVolume() }}</td>
+		<td>{{ $warehouse->calculateGrossWeight() }} lb(s)</td>
+		<td>{{ $warehouse->calculateVolumeWeight() }} lb(s)</td>
 		<td>{{ $warehouse->shipper ? $warehouse->shipper->fullname() : '' }}</td>
 		<td>{{ $warehouse->consignee ? $warehouse->consignee->fullname() : '' }}</td>
 		<td>
@@ -42,11 +42,12 @@
 $(function() {
 	$('table').dataTable({
 		'bPaginate': true,
-		'bLengthChange': false,
-		'bFilter': false,
+		'bLengthChange': true,
+		'bFilter': true,
 		'bSort': true,
-		'bInfo': true,
-		'bAutoWidth': false
+		'bInfo': false,
+		'bAutoWidth': false,
+		'order': [[ 1, 'desc' ]]
 	});
 });
 @stop

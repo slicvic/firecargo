@@ -20,12 +20,6 @@ class Warehouse extends BaseSiteSpecific {
         'arrived_at'
     ];
 
-    /**
-     * ----------------------------------------------------
-     * Relationships
-     * ----------------------------------------------------
-     */
-
     public function shipper()
     {
         return $this->belongsTo('App\Models\User', 'shipper_user_id');
@@ -51,16 +45,25 @@ class Warehouse extends BaseSiteSpecific {
         return $this->belongsTo('App\Models\Site');
     }
 
-    public function trackingId()
+    /**
+     * Gets a friendly arrival datetime.
+     *
+     * @return string
+     */
+    public function prettyArrivedAt()
     {
-        return 'WR-' . $this->id;
+        return date('D, M j, Y h:i A', strtotime($this->arrived_at));
     }
 
     /**
-     * ----------------------------------------------------
-     * /Relationships
-     * ----------------------------------------------------
+     * Gets a friendly tracking ID.
+     *
+     * @return string
      */
+    public function prettyId()
+    {
+        return 'WR-' . $this->id;
+    }
 
     /**
      * Retrieves a list of un-deleted packages.
@@ -91,7 +94,7 @@ class Warehouse extends BaseSiteSpecific {
      *
      * @return float
      */
-    public function calculateWeight()
+    public function calculateGrossWeight()
     {
         $total = 0;
 
@@ -100,7 +103,7 @@ class Warehouse extends BaseSiteSpecific {
             $total += $package->weight;
         }
 
-        return $total;
+        return round($total, 2);
     }
 
     /**
@@ -108,15 +111,28 @@ class Warehouse extends BaseSiteSpecific {
      *
      * @return float
      */
-    public function calculateVolume()
+    public function calculateVolumeWeight()
     {
         $total = 0;
 
         foreach ($this->packages() as $package)
         {
-            $total += $package->calculateVolume();
+            $total += $package->calculateVolumeWeight();
         }
 
-        return $total;
+        return round($total, 2);
+    }
+
+
+    /**
+     * Calculates the charge weight of the warehouse.
+     *
+     * @return float
+     */
+    public function calculateChargeWeight()
+    {
+        $grossWeight = $this->calculateGrossWeight();
+        $volumeWeight = $this->calculateVolumeWeight();
+        return ($grossWeight > $volumeWeight) ? $grossWeight : $volumeWeight;
     }
 }

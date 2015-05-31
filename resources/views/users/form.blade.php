@@ -62,6 +62,18 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label class="control-label col-sm-2">Home Phone</label>
+				<div class="col-sm-2">
+					<input type="text" name="user[phone]" placeholder="Home Phone" class="phone form-control" value="{{ Input::old('user.phone', $user->phone) }}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">Cell Phone</label>
+				<div class="col-sm-2">
+					<input type="text" name="user[cellphone]" placeholder="Cell Phone" class="phone form-control" value="{{ Input::old('user.cellphone', $user->cellphone) }}">
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="col-md-2 control-label">ID / RUT<span class="required-field">*</span></label>
 				<div class="col-md-6">
 					<input type="text" name="user[nin]" class="form-control" value="{{ Input::old('user.nin', $user->nin) }}" required>
@@ -126,18 +138,6 @@
 							<option value="{{ $country->id }}">{{ $country->name }}</option>
 						@endforeach
 					</select>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-sm-2">Home Phone</label>
-				<div class="col-sm-2">
-					<input type="text" name="user[phone]" placeholder="Home Phone" class="phone form-control" value="{{ Input::old('user.phone', $user->phone) }}">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-sm-2">Cell Phone</label>
-				<div class="col-sm-2">
-					<input type="text" name="user[cellphone]" placeholder="Cell Phone" class="phone form-control" value="{{ Input::old('user.cellphone', $user->cellphone) }}">
 				</div>
 			</div>
 		</div>

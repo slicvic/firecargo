@@ -2,6 +2,8 @@
 
 class Package extends Base {
 
+    const VOLUME_WEIGHT_DIVISOR = 166; // Pounds (Kg = 366)
+
     protected $table = 'packages';
 
     public static $rules = [
@@ -29,14 +31,9 @@ class Package extends Base {
         'invoice_number',
         'invoice_amount',
         'tracking_number',
-        'deleted'
+        'deleted',
+        'roll'
     ];
-
-    /**
-     * ----------------------------------------------------
-     * Relationships
-     * ----------------------------------------------------
-     */
 
     public function warehouse()
     {
@@ -59,19 +56,16 @@ class Package extends Base {
     }
 
     /**
-     * ----------------------------------------------------
-     * /Relationships
-     * ----------------------------------------------------
-     */
-
-    /**
-     * Calculates the volume of the package.
+     * Calculates the volume weight of the package.
+     *
+     * @param bool $round  Whether or not to round the result.
      *
      * @return float
      */
-    public function calculateVolume()
+    public function calculateVolumeWeight($round = FALSE)
     {
-        $volume = ($this->length * $this->width * $this->height);
-        return $volume;
+        $weight = ($this->length * $this->width * $this->height) / self::VOLUME_WEIGHT_DIVISOR;
+
+        return ($round) ? round($weight, 2) : $weight;
     }
 }

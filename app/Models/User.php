@@ -44,7 +44,6 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
 
     protected $fillable = [
         'site_id',
-        'country_id',
         'email',
         'password',
         'company_name',
@@ -59,13 +58,9 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
         'city',
         'state',
         'postal_code',
+        'country_id',
+        'autoroll_packages'
     ];
-
-    /**
-     * ----------------------------------------------------
-     * Relationships
-     * ----------------------------------------------------
-     */
 
     public function packages()
     {
@@ -86,12 +81,6 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
     {
         return $this->belongsTo('App\Models\Site');
     }
-
-    /**
-     * ----------------------------------------------------
-     * /Relationships
-     * ----------------------------------------------------
-     */
 
     /**
      * Gets the user's full name.
@@ -115,16 +104,6 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
             $roles[$role->id] = $role->name;
         }
         return $roles;
-    }
-
-    /**
-     * Gets the casillero id.
-     *
-     * @return string
-     */
-    public function trackingId()
-    {
-        return '';
     }
 
     /**

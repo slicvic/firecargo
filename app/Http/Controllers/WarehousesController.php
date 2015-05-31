@@ -7,6 +7,7 @@ use Auth;
 
 use App\Models\Warehouse;
 use App\Models\Package;
+use App\Models\User;
 use App\Helpers\Flash;
 
 class WarehousesController extends BaseAuthController {
@@ -58,6 +59,8 @@ class WarehousesController extends BaseAuthController {
             return response()->json(['status' => 'error', 'message' => $view]);
         }
 
+        $consignee = User::find($input['warehouse']['consignee_user_id']);
+
         // Create warehouse
         $input['warehouse']['arrived_at'] = date('Y-m-d H:i:s', strtotime($input['warehouse']['arrived_at']['date'] . ' ' . $input['warehouse']['arrived_at']['time']));
         $warehouse = Warehouse::create($input['warehouse']);
@@ -68,7 +71,7 @@ class WarehousesController extends BaseAuthController {
             foreach ($input['package'] as $package)
             {
                 $package['warehouse_id'] = $warehouse->id;
-                $package['status_id'] = $input['status_id'];
+                $package['roll'] = $consignee->autoroll_packages;
                 Package::create($package);
             }
         }

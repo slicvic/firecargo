@@ -48,6 +48,8 @@ class AccountController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        $input['user']['autoroll_packages'] = isset($input['user']['autoroll_packages']);
+
         $this->user->update($input['user']);
 
         return redirect()->back();
