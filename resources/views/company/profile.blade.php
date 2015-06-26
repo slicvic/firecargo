@@ -1,4 +1,4 @@
-@extends('layouts.members.form')
+@extends('layouts.admin.form')
 
 @section('icon', 'building-o')
 @section('title', 'Company Profile')
@@ -6,6 +6,18 @@
 @section('form')
 <form data-parsley-validate action="/company/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Company Logo</div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div id="logoPreview">
+                    <img src="" style="width:100px;height:100px;">
+                </div>
+                <button type="button" id="changeLogo" class="btn">Change Logo</button>
+            </div>
+        </div>
+    </div>
 
     <div class="panel panel-default">
         <div class="panel-heading">Company Information</div>
@@ -96,4 +108,27 @@
         </div>
     </div>
 </form>
+
+<script src="/assets/vendor/dropzone/dropzone.min.js"></script>
+<link rel="stylesheet" href="/assets/vendor/dropzone/dropzone.min.css">
+<script>
+$(function() {
+    $('#changeLogo').dropzone({
+        url: '/company/upload-logo',
+        maxFiles: 1,
+        maxFileSize: 2,
+        acceptedFiles: 'image/*',
+        parallelUploads: 1,
+        previewsContainer: null,
+        previewTemplate: '<div><span class="preview"><img data-dz-thumbnail /></span></div>',
+        addedfile: function(file) {
+            file.previewElement = Dropzone.createElement(this.options.previewTemplate);
+            $('#logoPreview').html(file.previewElement);
+        },
+        sending: function(file, xhr, formData) {
+            formData.append("_token", $('[name=_token').val());
+        }
+    });
+});
+</script>
 @stop

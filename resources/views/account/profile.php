@@ -12,9 +12,9 @@
                 <div class="panel-heading">Personal Information</div>
                 <div class="panel-body">
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Company Name</label>
+                        <label class="control-label col-sm-2">Busines Name</label>
                         <div class="col-sm-5">
-                            <input type="text" name="user[company_name]" placeholder="Company Name" class="form-control" value="<?php echo Input::old('user.company_name', $user->company_name); ?>">
+                            <input type="text" name="user[business_name]" placeholder="Business Name" class="form-control" value="<?php echo Input::old('user.business_name', $user->business_name); ?>">
                         </div>
                     </div>
                     <div class="form-group">

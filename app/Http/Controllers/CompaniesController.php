@@ -7,6 +7,11 @@ use Validator;
 use App\Models\Company;
 use App\Helpers\Flash;
 
+/**
+ * CompaniesController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class CompaniesController extends BaseAuthController {
 
     public function __construct(Guard $auth)

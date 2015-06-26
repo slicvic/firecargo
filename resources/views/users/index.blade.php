@@ -1,4 +1,4 @@
-@extends('layouts.members.index')
+@extends('layouts.admin.index')
 
 @section('icon', 'group')
 @section('title', 'Accounts')
@@ -12,14 +12,14 @@
 @section('thead')
 <th>ID</th>
 <th>Site Name</th>
-<th>Company</th>
+<th>Business Name</th>
 <th>First Name</th>
 <th>Last Name</th>
 <th>Email</th>
 <th>Phone</th>
 <th>Mobile</th>
 <th>Groups</th>
-<th>Actions</th>
+<th>Action</th>
 @stop
 
 @section('script')
@@ -28,7 +28,7 @@ $(function() {
         //'aaSorting': [[ 0, 'desc' ]],
          'processing': true,
         'serverSide': true,
-        'ajax': '/accounts/datatable',
+        'ajax': '/accounts/ajax-datatable',
     });
 });
 @stop

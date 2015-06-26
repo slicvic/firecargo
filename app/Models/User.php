@@ -5,9 +5,16 @@ use Auth;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
+/**
+ * User
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class User extends BaseSiteSpecific implements AuthenticatableInterface {
 
     use AuthenticableTrait;
+
+    protected $table = 'users';
 
     public static $signupRules = [
         'site_id' => 'required',
@@ -17,40 +24,15 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
         'lastname' => 'required'
     ];
 
-    /*
-    public static $rules = [
-        'site_id' => 'required',
-        'company_name' => 'required_without:firstname,lastname',
-        'email' => 'sometimes|required|email|unique:users,email',
-        'password' => 'sometimes|required|min:6',
-        'firstname' => 'required_without:company_name',
-        'lastname' => 'required_without:company_name'
-    ];
-    */
-
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'users';
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = ['password', 'remember_token'];
-
     protected $fillable = [
         'site_id',
         'email',
         'password',
-        'company_name',
+        'business_name',
         'firstname',
         'lastname',
         'dob',
-        'nin',
+        'id_number',
         'phone',
         'cellphone',
         'address1',
@@ -62,42 +44,54 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
         'autoroll_packages'
     ];
 
+    /**
+     * Gets the packages.
+     */
     public function packages()
     {
         return $this->hasMany('App\Models\Package');
     }
 
+    /**
+     * Gets the roles.
+     */
     public function roles()
     {
         return $this->belongsToMany('App\Models\Role', 'roles_users');
     }
 
+    /**
+     * Gets the country.
+     */
     public function country()
     {
         return $this->belongsTo('App\Models\Country');
     }
 
+    /**
+     * Gets the site.
+     */
     public function site()
     {
         return $this->belongsTo('App\Models\Site');
     }
 
     /**
-     * Gets the user's full name.
+     * Gets the full name.
      *
      * @return string
      */
-    public function fullname()
+    public function getFullName()
     {
-        return trim(ucwords(strtolower($this->firstname . ' ' . $this->lastname)));
+        return $this->firstname . ' ' . $this->lastname;
     }
 
     /**
-     * Gets list of assigned roles as an array.
+     * Gets the roles as an array.
      *
      * @return array
      */
-    public function rolesArray()
+    public function getRolesAsArray()
     {
         $roles = [];
         foreach ($this->roles as $role) {
@@ -210,6 +204,10 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
     public function setAttribute($key, $value)
     {
         switch ($key) {
+            case 'firstname':
+            case 'lastname':
+                $value = ucwords(strtolower(trim($value)));
+                break;
             case 'password':
                 $value = empty($value) ? $this->password : Hash::make($value);
                 break;
@@ -254,7 +252,7 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
     public static function getUsersForAutocomplete($searchTerm, array $siteIds = NULL)
     {
         $searchTerm = '%' . $searchTerm . '%';
-        $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
+        $where = '(id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR business_name LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
         $where .= count($siteIds) ? ' AND site_id IN (' . implode(',', $siteIds) . ')' : '';
         return User::whereRaw($where, [$searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm])->get();
     }
@@ -283,7 +281,7 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
         if ( ! empty($criteria['search_term']))
         {
             $searchTerm = '%' . $criteria['search_term'] . '%';
-            $sql .= ' AND (id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
+            $sql .= ' AND (id LIKE ? OR firstname LIKE ? OR lastname LIKE ? OR business_name LIKE ? OR email LIKE ? OR phone LIKE ? or cellphone LIKE ?)';
             $bindings = [$searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm];
         }
 
@@ -295,5 +293,16 @@ class User extends BaseSiteSpecific implements AuthenticatableInterface {
             ->get();
 
         return ['total' => $total, 'users' => $results];
+    }
+
+    /**
+     * Register the listeners for the subscriber.
+     *
+     * @param  Illuminate\Events\Dispatcher  $events
+     * @return void
+     */
+    public function subscribe($events)
+    {
+        $events->listen('App\Events\UserLoggedIn', 'UserEventHandler@onUserLogin');
     }
 }

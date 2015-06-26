@@ -8,30 +8,30 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{{ APP_NAME }}</title>
+    <title>{{ env('APP_NAME') }}</title>
 
     <!-- Bootstrap core CSS -->
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 
-    <link rel="stylesheet" href="/assets/libs/bootstrap/bootstrap.min.css">
-    <script src="/assets/libs/bootstrap/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
+    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="/assets/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/vendor/font-awesome/css/font-awesome.min.css">
 
     <!-- Custom styles for this template -->
-    <link href="/assets/css/guests/justified-nav.css" rel="stylesheet">
+    <link href="/assets/site/css/justified-nav.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="/assets/libs/parsleyjs/parsley.css">
-    <script src="/assets/libs/parsleyjs/parsley.min.js"></script>
-    <script src="/assets/libs/parsleyjs/es.js"></script>
+    <link rel="stylesheet" href="/assets/vendor/parsleyjs/parsley.css">
+    <script src="/assets/vendor/parsleyjs/parsley.min.js"></script>
+    <script src="/assets/vendor/parsleyjs/es.js"></script>
 
-    <link rel="stylesheet" href="/assets/libs/datatables/css/jquery.dataTables.min.css">
-    <script src="/assets/libs/datatables/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="/assets/vendor/datatables/css/jquery.dataTables.min.css">
+    <script src="/assets/vendor/datatables/js/jquery.dataTables.min.js"></script>
 
-    <link rel="stylesheet" href="/assets/libs/bootstrap.vertical-tabs.min.css">
+    <link rel="stylesheet" href="/assets/vendor/bootstrap.vertical-tabs.min.css">
 
-    <link rel="stylesheet" href="/assets/css/guests/main.css">
-    <script src="/assets/js/guests.js"></script>
+    <link rel="stylesheet" href="/assets/site/css/main.css">
+    <script src="/assets/site/js/main.js"></script>
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->

@@ -5,8 +5,11 @@ use Illuminate\Validation\Validator;
 
 /**
  * Flash Message Helper.
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
  */
 class Flash {
+
     private static $sessionKey = 'flash_message';
 
     /**

@@ -7,6 +7,11 @@ use Validator;
 use App\Models\Role;
 use App\Helpers\Flash;
 
+/**
+ * RolesController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class RolesController extends BaseAuthController {
 
     public function __construct(Guard $auth)

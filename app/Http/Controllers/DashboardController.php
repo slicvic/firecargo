@@ -1,8 +1,14 @@
 <?php namespace App\Http\Controllers;
 
-use \App\Models\User;
+use App\Models\User;
 use Auth;
+use App\Pdf\Warehouse as WarehousePdf;
 
+/**
+ * DashboardController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class DashboardController extends BaseAuthController {
 
     public function getIndex()

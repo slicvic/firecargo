@@ -8,6 +8,11 @@ use Auth;
 use App\Models\PackageStatus;
 use App\Helpers\Flash;
 
+/**
+ * PackageStatusesController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class PackageStatusesController extends BaseAuthController {
 
     public function __construct(Guard $auth)
@@ -47,10 +52,13 @@ class PackageStatusesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        if (isset($input['is_default']))
+        {
+            PackageStatus::unsetDefaultBySiteId($this->user->site_id);
+        }
+
         PackageStatus::create($input);
-
         Flash::success('Record created successfully.');
-
         return redirect('package-statuses');
     }
 
@@ -78,10 +86,14 @@ class PackageStatusesController extends BaseAuthController {
         }
 
         $status = PackageStatus::findOrFailByIdAndCurrentSiteId($id);
+
+        if (isset($input['is_default']) && ! $status->is_default)
+        {
+            PackageStatus::unsetDefaultBySiteId($this->user->site_id);
+        }
+
         $status->update($input);
-
         Flash::success('Record updated successfully.');
-
         return redirect('package-statuses');
     }
 

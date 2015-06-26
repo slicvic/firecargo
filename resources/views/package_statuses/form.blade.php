@@ -1,4 +1,4 @@
-@extends('layouts.members.form')
+@extends('layouts.admin.form')
 
 @section('icon', 'info-circle')
 @section('title')
@@ -13,6 +13,18 @@
         <label class="control-label col-sm-2">Name</label>
         <div class="col-sm-4">
             <input required type="text" name="name" placeholder="e.g. Processing" class="form-control" value="{{ Input::old('name', $status->name) }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2">Color</label>
+        <div class="col-sm-4">
+            <input type="color" name="color" class="form-control" value="{{ Input::old('color', $status->color) }}">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-2">Default?</label>
+        <div class="col-sm-4">
+            <input type="checkbox" name="is_default" class="form-control" value="1"<?php echo Input::old('is_default', $status->is_default) ? ' checked' : ''; ?>>
         </div>
     </div>
     <div class="form-group">

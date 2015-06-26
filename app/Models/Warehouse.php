@@ -1,5 +1,10 @@
 <?php namespace App\Models;
 
+/**
+ * Warehouse
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class Warehouse extends BaseSiteSpecific {
 
     protected $table = 'warehouses';
@@ -8,7 +13,7 @@ class Warehouse extends BaseSiteSpecific {
         'site_id' => 'required',
         'shipper_user_id' => 'required',
         'consignee_user_id' => 'required',
-        'delivered_by_courier_id' => 'required',
+        'courier_id' => 'required',
         'arrived_at' => 'required'
     ];
 
@@ -16,53 +21,78 @@ class Warehouse extends BaseSiteSpecific {
         'site_id',
         'shipper_user_id',
         'consignee_user_id',
-        'delivered_by_courier_id',
-        'arrived_at'
+        'courier_id',
+        'arrived_at',
+        'description'
     ];
 
+    public static $sortColumns = [
+        'id' => 'id',
+        'date' => 'arrived_at'
+    ];
+
+    /**
+     * Gets the shipper.
+     */
     public function shipper()
     {
         return $this->belongsTo('App\Models\User', 'shipper_user_id');
     }
 
+    /**
+     * Gets the consignee.
+     */
     public function consignee()
     {
         return $this->belongsTo('App\Models\User', 'consignee_user_id');
     }
 
-    public function deliveredBy()
+    /**
+     * Gets the courier.
+     */
+    public function courier()
     {
-        return $this->belongsTo('App\Models\Courier', 'delivered_by_courier_id');
+        return $this->belongsTo('App\Models\Courier', 'courier_id');
     }
 
+    /**
+     * Gets the company.
+     */
     public function company()
     {
         return $this->belongsTo('App\Models\Company');
     }
 
+    /**
+     * Gets the site.
+     */
     public function site()
     {
         return $this->belongsTo('App\Models\Site');
     }
 
     /**
-     * Gets a friendly arrival datetime.
+     * Gets the friendly arrival datetime.
      *
+     * @param  $withTime
      * @return string
      */
-    public function prettyArrivedAt()
+    public function prettyArrivedAt($withTime = TRUE)
     {
-        return date('D, M j, Y h:i A', strtotime($this->arrived_at));
+        $dateFormat = 'n/j/Y';
+        if ($withTime)
+            return date($dateFormat . ' g:i A', strtotime($this->arrived_at));
+        return date($dateFormat, strtotime($this->arrived_at));
     }
 
     /**
-     * Gets a friendly tracking ID.
+     * Gets the friendly ID.
      *
      * @return string
      */
     public function prettyId()
     {
-        return 'WR-' . $this->id;
+        return $this->id;
     }
 
     /**
@@ -90,11 +120,12 @@ class Warehouse extends BaseSiteSpecific {
     }
 
     /**
-     * Calculates the weight of the warehouse.
+     * Calculates the actual weight of the warehouse in pounds.
      *
+     * @param  int $precision
      * @return float
      */
-    public function calculateGrossWeight()
+    public function calculateGrossWeight($precision = 2)
     {
         $total = 0;
 
@@ -103,36 +134,71 @@ class Warehouse extends BaseSiteSpecific {
             $total += $package->weight;
         }
 
-        return round($total, 2);
+        return round($total, $precision);
     }
 
     /**
-     * Calculates the volume of the warehouse.
+     * Calculates the volume weight of the warehouse in pounds.
      *
+     * @param  int $precision
      * @return float
      */
-    public function calculateVolumeWeight()
+    public function calculateVolumeWeight($precision = 2)
     {
         $total = 0;
 
         foreach ($this->packages() as $package)
         {
-            $total += $package->calculateVolumeWeight();
+            $total += $package->calculateVolumeWeight(5);
         }
 
-        return round($total, 2);
+        return round($total, $precision);
     }
 
-
     /**
-     * Calculates the charge weight of the warehouse.
+     * Calculates the cubic feet.
      *
      * @return float
      */
-    public function calculateChargeWeight()
+    public function calculateCubicFeet()
     {
-        $grossWeight = $this->calculateGrossWeight();
-        $volumeWeight = $this->calculateVolumeWeight();
+        $total = 0;
+
+        foreach ($this->packages() as $package)
+        {
+            $total += $package->calculateCubicFeet();
+        }
+
+        return round($total, 3);
+    }
+
+    /**
+     * Calculates the cubic meter.
+     *
+     * @return float
+     */
+    public function calculateCubicMeter()
+    {
+        $total = 0;
+
+        foreach ($this->packages() as $package)
+        {
+            $total += $package->calculateCubicMeter();
+        }
+
+        return round($total, 3);
+    }
+
+    /**
+     * Calculates the charge weight of the warehouse in pounds.
+     *
+     * @param  int $precision
+     * @return float
+     */
+    public function calculateChargeWeight($precision = 2)
+    {
+        $grossWeight = $this->calculateGrossWeight($precision);
+        $volumeWeight = $this->calculateVolumeWeight($precision);
         return ($grossWeight > $volumeWeight) ? $grossWeight : $volumeWeight;
     }
 }

@@ -8,6 +8,11 @@ use Auth;
 use App\Models\PackageType;
 use App\Helpers\Flash;
 
+/**
+ * PackageTypesController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class PackageTypesController extends BaseAuthController {
 
     public function __construct(Guard $auth)

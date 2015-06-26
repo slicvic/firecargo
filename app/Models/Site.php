@@ -1,5 +1,10 @@
 <?php namespace App\Models;
 
+/**
+ * Site
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class Site extends Base {
 
     protected $table = 'sites';
@@ -16,6 +21,9 @@ class Site extends Base {
         'display_name'
     ];
 
+    /**
+     * Gets the company.
+     */
     public function company()
     {
         return $this->belongsTo('App\Models\Company');

@@ -1,5 +1,10 @@
 <?php namespace App\Models;
 
+/**
+ * PackageType
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class PackageType extends BaseSiteSpecific {
 
     protected $table = 'package_types';

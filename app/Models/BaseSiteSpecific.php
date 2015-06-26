@@ -3,6 +3,11 @@
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 
+/**
+ * BaseSiteSpecific
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 abstract class BaseSiteSpecific extends Base {
 
     /**
@@ -64,27 +69,31 @@ abstract class BaseSiteSpecific extends Base {
      * Finds all records by the site ID.
      *
      * @param  array   $siteId
+     * @param  string  $perPage
      * @param  string  $orderBy
      * @param  string  $order
      * @param  array   $columns
      * @return Model[]
      */
-    public static function allBySiteId(array $siteId, $orderBy = 'id', $order = 'desc', $columns = ['*'])
+    public static function allBySiteId(array $siteId, $orderBy = 'id', $order = 'DESC', $columns = ['*'])
     {
-        return self::whereIn('site_id', $siteId)
+        $model = self::whereIn('site_id', $siteId)
             ->where('deleted', '<>', 1)
-            ->get($columns);
+            ->orderBy($orderBy, $order);
+
+        return $model->get($columns);
     }
 
     /**
      * Finds all records by the current site ID.
      *
+     * @param  string  $perPage
      * @param  string  $orderBy
      * @param  string  $order
      * @param  array   $columns
      * @return Model[]
      */
-    public static function allByCurrentSiteId($orderBy = 'id', $order = 'desc', $columns = ['*'])
+    public static function allByCurrentSiteId($orderBy = 'id', $order = 'DESC', $columns = ['*'])
     {
         return self::allBySiteId([0, Auth::user()->site_id], $orderBy, $order, $columns);
     }

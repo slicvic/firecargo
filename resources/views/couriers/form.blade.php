@@ -1,4 +1,4 @@
-@extends('layouts.members.form')
+@extends('layouts.admin.form')
 
 @section('icon', 'truck')
 @section('title')

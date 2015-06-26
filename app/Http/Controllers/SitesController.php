@@ -7,6 +7,11 @@ use Validator;
 use App\Models\Site;
 use App\Helpers\Flash;
 
+/**
+ * SitesController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class SitesController extends BaseAuthController {
 
     public function __construct(Guard $auth)

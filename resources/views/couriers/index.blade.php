@@ -1,4 +1,4 @@
-@extends('layouts.members.index')
+@extends('layouts.admin.index')
 
 @section('icon', 'truck')
 @section('title', 'Couriers')
@@ -12,7 +12,7 @@
 @section('thead')
 <th>ID</th>
 <th>Name</th>
-<th>Actions</th>
+<th>Action</th>
 @stop
 
 @section('tbody')

@@ -9,6 +9,11 @@ use App\Models\User;
 use App\Helpers\Flash;
 use App\Helpers\Html;
 
+/**
+ * UsersController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class UsersController extends BaseAuthController {
 
     public function __construct(Guard $auth)
@@ -26,49 +31,12 @@ class UsersController extends BaseAuthController {
     }
 
     /**
-     * Returns a list of users for a jQuery autocomple field.
-     *
-     * @uses    ajax
-     * @return  json
-     */
-    public function getAutocomplete(Request $request)
-    {
-        $input = $request->only('term');
-        $response = [];
-
-        if (strlen($input['term']) > 1)
-        {
-            foreach(User::getUsersForAutocomplete($input['term'], [$this->user->site_id]) as $user)
-            {
-                $label = [];
-
-                if ($user->company_name)
-                {
-                    $label[] = $user->company_name;
-                }
-
-                if ( ! empty($name = $user->fullname()))
-                {
-                    $label[] = $name;
-                }
-
-                $response[] = [
-                    'id' => $user->id,
-                    'label' => implode(' - ', $label)
-                ];
-            }
-        }
-
-        return response()->json($response);
-    }
-
-    /**
      * Returns a list of users for a jquery datatable.
      *
      * @uses    ajax
      * @return  json
      */
-    public function getDatatable(Request $request)
+    public function getAjaxDatatable(Request $request)
     {
         $input = $request->all();
 
@@ -105,13 +73,13 @@ class UsersController extends BaseAuthController {
             $response['data'][] = [
                 $user->id,
                 $user->site->name,
-                $user->company_name,
+                $user->business_name,
                 $user->firstname,
                 $user->lastname,
                 $user->email,
                 $user->phone,
                 $user->cellphone,
-                Html::arrayToLabels($user->rolesArray()),
+                Html::arrayToBadges($user->getRolesAsArray()),
                 sprintf('<a href="/accounts/edit/%s" class="btn btn-flat icon"><i class="fa fa-pencil"></i></a>', $user->id)
             ];
         }

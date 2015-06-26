@@ -54,10 +54,10 @@ return [
 
 		'mysql' => [
 			'driver'    => 'mysql',
-			'host'      => 'localhost', //env('DB_HOST', 'localhost'),
-			'database'  => 'ssg', //env('DB_DATABASE', 'ssg'),
-			'username'  => 'root', //env('DB_USERNAME', 'root'),
-			'password'  => 'root', //env('DB_PASSWORD', 'root'),
+			'host'      => env('DB_HOST', 'localhost'),
+			'database'  => env('DB_DATABASE', 'homestead'),
+			'username'  => env('DB_USERNAME', 'homestead'),
+			'password'  => env('DB_PASSWORD', 'secret'),
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

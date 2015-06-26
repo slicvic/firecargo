@@ -7,6 +7,11 @@ use Validator;
 use App\Models\Company;
 use App\Helpers\Flash;
 
+/**
+ * CompanyController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class CompanyController extends BaseAuthController {
 
     public function __construct(Guard $auth)
@@ -36,5 +41,15 @@ class CompanyController extends BaseAuthController {
         Flash::success('Record updated successfully.');
 
         return redirect()->back();
+    }
+
+    public function postUploadLogo(Request $request)
+    {
+        if ($request->hasFile('file') && $request->file('file')->isValid())
+        {
+            //  Request::file('photo')->move($destinationPath, $fileName);
+            //$request->file('file')->move(__DIR__)
+            echo __DIR__ . '../../uploads/';exit;
+        }
     }
 }

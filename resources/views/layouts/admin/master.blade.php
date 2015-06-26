@@ -7,36 +7,36 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="/assets/libs/templates/detail/css/bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="/assets/libs/templates/detail/css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
+    <link href="/assets/vendor/templates/detail/css/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="/assets/vendor/templates/detail/css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet" />
 
-    <link href="/assets/libs/templates/detail/css/lib/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/vendor/templates/detail/css/lib/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />
 
-    <link rel="stylesheet" type="text/css" href="/assets/libs/templates/detail/css/compiled/layout.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/libs/templates/detail/css/compiled/elements.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/libs/templates/detail/css/compiled/form-showcase.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/templates/detail/css/compiled/layout.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/templates/detail/css/compiled/elements.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/templates/detail/css/compiled/form-showcase.css" />
 
-    <link rel="stylesheet" href="/assets/libs/templates/detail/css/compiled/index.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/assets/vendor/templates/detail/css/compiled/index.css" type="text/css" media="screen" />
 
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css' />
 
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css' />
 
-    <link href="/assets/libs/datatables/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
 
-    <link rel="stylesheet" type="text/css" href="/assets/libs/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/css/members.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/vendor/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/admin/css/main.css" />
 
     <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script src="/assets/libs/templates/detail/js/bootstrap.min.js"></script>
-    <script src="/assets/libs/templates/detail/js/jquery-ui-1.10.2.custom.min.js"></script>
-    <script src="/assets/libs/templates/detail/js/theme.js"></script>
-    <script src="/assets/libs/datatables/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="/assets/vendor/templates/detail/js/bootstrap.min.js"></script>
+    <script src="/assets/vendor/templates/detail/js/jquery-ui-1.10.2.custom.min.js"></script>
+    <script src="/assets/vendor/templates/detail/js/theme.js"></script>
+    <script src="/assets/vendor/datatables/js/jquery.dataTables.min.js" type="text/javascript"></script>
 
-    <link rel="stylesheet" href="/assets/libs/parsleyjs/parsley.css">
-    <script src="/assets/libs/parsleyjs/parsley.min.js"></script>
+    <link rel="stylesheet" href="/assets/vendor/parsleyjs/parsley.css">
+    <script src="/assets/vendor/parsleyjs/parsley.min.js"></script>
 
-    <script src="/assets/js/members.js"></script>
+    <script src="/assets/admin/js/main.js"></script>
     <script>
         $(function() {
             app.init();
@@ -64,7 +64,7 @@
 
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle hidden-xs hidden-sm" data-toggle="dropdown">
-                    <i class="fa fa-user"></i> Howdy, <?php echo $user->fullname(); ?>
+                    <i class="fa fa-user"></i> Howdy, <?php echo $user->getFullName(); ?>
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">

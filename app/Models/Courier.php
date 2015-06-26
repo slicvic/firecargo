@@ -1,5 +1,10 @@
 <?php namespace App\Models;
 
+/**
+ * Courier
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class Courier extends BaseSiteSpecific {
 
     protected $table = 'couriers';

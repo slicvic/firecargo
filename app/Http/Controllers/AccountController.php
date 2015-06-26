@@ -9,6 +9,11 @@ use Hash;
 use App\Models\User;
 use App\Helpers\Flash;
 
+/**
+ * AccountController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class AccountController extends BaseAuthController {
 
     /**

@@ -1,4 +1,4 @@
-@extends('layouts.members.form')
+@extends('layouts.admin.form')
 
 @section('icon', 'user')
 @section('title')
@@ -32,9 +32,9 @@
 		<div class="panel-heading">Personal Information</div>
 		<div class="panel-body">
 			<div class="form-group">
-				<label class="control-label col-sm-2">Company</label>
+				<label class="control-label col-sm-2">Business Name</label>
 				<div class="col-sm-5">
-					<input type="text" name="user[company_name]" placeholder="Company Name" class="form-control" value="{{ Input::old('user.company_name', $user->company_name) }}">
+					<input type="text" name="user[business_name]" placeholder="Business Name" class="form-control" value="{{ Input::old('user.business_name', $user->business_name) }}">
 				</div>
 			</div>
 			<div class="form-group">
@@ -76,19 +76,19 @@
 			<div class="form-group">
 				<label class="col-md-2 control-label">ID / RUT<span class="required-field">*</span></label>
 				<div class="col-md-6">
-					<input type="text" name="user[nin]" class="form-control" value="{{ Input::old('user.nin', $user->nin) }}" required>
+					<input type="text" name="user[id_number]" class="form-control" value="{{ Input::old('user.id_number', $user->id_number) }}">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-2">Group</label>
 				<div class="col-sm-5">
 					<?php
-						$user_roles = $user->rolesArray();
+						$userRoles = $user->getRolesAsArray();
 						foreach (\App\Models\Role::all() as $role):
 					?>
 						<div class="row checkbox">
 							<label class="control-label">
-								<input {{ isset($user_roles[$role->id]) ? 'checked ' : ''}}type="checkbox" name="roles[]" value="{{ $role->id }}"> {{ ucwords($role->name) }}
+								<input {{ isset($userRoles[$role->id]) ? 'checked ' : ''}}type="checkbox" name="roles[]" value="{{ $role->id }}"> {{ ucwords($role->name) }}
 							</label>
 						</div>
 					<?php endforeach; ?>

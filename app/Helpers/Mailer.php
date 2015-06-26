@@ -1,7 +1,14 @@
 <?php namespace App\Helpers;
 
 use App\Models\User;
+
+/**
+ * Mailer
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class Mailer {
+
     public static function sendPasswordRecovery(User $user)
     {
         //echo $code;

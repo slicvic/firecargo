@@ -8,6 +8,11 @@ use Auth;
 use App\Models\Courier;
 use App\Helpers\Flash;
 
+/**
+ * CouriersController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class CouriersController extends BaseAuthController {
 
     public function __construct(Guard $auth)

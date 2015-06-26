@@ -2,6 +2,11 @@
 
 use Auth;
 
+/**
+ * Role
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class Role extends Base {
 
     const LOGIN     = 1;
@@ -25,7 +30,7 @@ class Role extends Base {
      * user level.
      *
      * @param  array $columns
-     * @return [][]
+     * @return Role[]
      */
     public static function all($columns = ['*'])
     {

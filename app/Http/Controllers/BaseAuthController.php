@@ -2,6 +2,11 @@
 
 use Illuminate\Contracts\Auth\Guard;
 
+/**
+ * BaseAuthController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 abstract class BaseAuthController extends BaseController {
 
     protected $auth;

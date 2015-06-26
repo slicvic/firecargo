@@ -4,6 +4,11 @@ use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
+/**
+ * BaseController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 abstract class BaseController extends Controller {
 
 	use DispatchesCommands, ValidatesRequests;

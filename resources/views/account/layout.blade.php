@@ -1,11 +1,11 @@
-@extends('layouts.members.master')
+@extends('layouts.admin.master')
 
 @section('content')
 <div class="row toppad">
     <div class="col-md-4 text-center">
         <div class="row">
             <img src="/assets/img/avatar.png" class="img-circle">
-            <h3>{{ Auth::user()->fullname() }}</h3>
+            <h3>{{ Auth::user()->getFullName() }}</h3>
             <div class="panel panel-default">
                 <div class="panel-heading"><strong>Account</strong></div>
                 <div class="list-group">

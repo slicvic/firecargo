@@ -1,4 +1,4 @@
-@extends('layouts.members.form')
+@extends('layouts.admin.form')
 
 @section('icon', 'cube')
 @section('title')
@@ -32,25 +32,31 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Shipper</label>
                 <div class="col-sm-5">
-                    <input required type="text" id="shipperName" name="shipper_name" class="form-control" value="{{ ($warehouse->shipper) ? $warehouse->shipper->fullname() : '' }}">
+                    <input required type="text" id="shipperName" name="shipper_name" class="form-control" value="{{ ($warehouse->shipper) ? $warehouse->shipper->business_name : '' }}">
                     <input type="hidden" id="shipperId" name="warehouse[shipper_user_id]" value="{{ $warehouse->shipper_user_id }}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Consignee</label>
                 <div class="col-sm-5">
-                    <input required  type="text" id="consigneeName" name="consignee_name" class="form-control" value="{{ ($warehouse->consignee) ? $warehouse->consignee->fullname() : '' }}">
+                    <input required  type="text" id="consigneeName" name="consignee_name" class="form-control" value="{{ ($warehouse->consignee) ? $warehouse->consignee->getFullName() : '' }}">
                     <input type="hidden" id="consigneeId" name="warehouse[consignee_user_id]" value="{{ $warehouse->consignee_user_id }}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Delivered By</label>
                 <div class="col-sm-5">
-                    <select required name="warehouse[delivered_by_courier_id]" class="form-control">
+                    <select required name="warehouse[courier_id]" class="form-control">
                         @foreach (\App\Models\Courier::allByCurrentSiteId() as $courier)
                             <option{{ ($warehouse->courier_id == $courier->id) ? ' selected' : '' }} value="{{ $courier->id }}">{{ $courier->name }}</option>
                         @endforeach
                     </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Description</label>
+                <div class="col-sm-5">
+                    <textarea class="form-control" name="warehouse[description]">{{ $warehouse->description }}</textarea>
                 </div>
             </div>
         </div>
@@ -62,7 +68,7 @@
             <div class="alert alert-warning">
                 <i class="fa fa-exclamation-triangle"></i> Warehouse is setup in US SYSTEM - using inches and pounds
             </div>
-            <button type="button" id="newPkgBtn" class="btn btn-success"><i class="fa fa-plus"></i> New</button>
+            <button type="button" id="btnNewPackage" class="btn btn-success"><i class="fa fa-plus"></i> New</button>
             <br><br>
             <table class="table table-condensed">
                 <thead>
@@ -83,15 +89,15 @@
                 </tbody>
             </table>
 
-            {!! view('warehouses._form_packages', ['warehouse' => $warehouse]) !!}
+            {!! view('warehouses.form.packages', ['warehouse' => $warehouse]) !!}
         </div>
     </div>
     <button type="submit" class="btn btn-flat primary">Save Changes</button>
     <a href="/warehouses">Cancel</a>
 </form>
 
-<link rel="stylesheet" href="/assets/libs/jquery-ui/jquery-ui.min.css">
-<script src="/assets/libs/jquery-ui/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/assets/vendor/jquery-ui/jquery-ui.min.css">
+<script src="/assets/vendor/jquery-ui/jquery-ui.min.js"></script>
 <script>
 $(function() {
     var Packages = {
@@ -104,11 +110,14 @@ $(function() {
 
         initEvents: function() {
             var self = this;
-            self.$trTemplate = $('#packagesTable > tbody > tr:first-child').clone();
-            $('#packagesTable').on('click', '.clonePkgBtn', self.clonePackage);
-            $('#packagesTable').on('click', '.removePkgBtn', self.removePackage);
-            $('#newPkgBtn').on('click', self.newPackage);
-            $('#packagesTable').on('keyup', '.metric', self.updateTotals);
+            // Use first package a template
+            self.$trTemplate = $('#packages > tbody:first').clone();
+
+            $('#packages').on('click', '.btn-clone-package', self.clonePackage);
+            $('#packages').on('click', '.btn-remove-package', self.removePackage);
+            $('#btnNewPackage').on('click', self.newPackage);
+            $('#packages').on('keyup', '.metric', self.updateTotals);
+            console.log(self.$trTemplate);
         },
 
         clonePackage: function() {
@@ -116,14 +125,14 @@ $(function() {
             var $trClone = $(this).parent().parent().clone();
             var idx;
 
-            $trClone.find('input.unique').val('');
+            $trClone.find('input.unique').val(null);
 
             $trClone.find('input, select').each(function() {
                 idx = -1 * rowCount;
                 $(this).attr('name', 'package[' + idx + '][' + $(this).attr('data-name') + ']');
             });
 
-            $('#packagesTable > tbody').append($trClone);
+            $('#packages').append($trClone);
             $('#totalPieces').html(1 + rowCount);
 
             Packages.updateTotals();
@@ -136,11 +145,11 @@ $(function() {
 
             $trNew.find('input, select').each(function() {
                 idx = -1 * rowCount;
-                $(this).val('');
+                $(this).val(null);
                 $(this).attr('name', 'package[' + idx + '][' + $(this).attr('data-name') + ']');
             });
 
-            $('#packagesTable > tbody').append($trNew);
+            $('#packages').append($trNew);
             $('#totalPieces').html(1 + rowCount);
 
             Packages.updateTotals();
@@ -152,7 +161,7 @@ $(function() {
         },
 
         countPackages: function() {
-            return $('#packagesTable > tbody > tr').length;
+            return $('#packages > tbody').length;
         },
 
         updateTotals: function() {
@@ -160,7 +169,7 @@ $(function() {
             var volumeWeight = 0;
             var volumeWeightDivisor = <?php echo \App\Models\Package::VOLUME_WEIGHT_DIVISOR; ?>;
 
-            $('#packagesTable > tbody > tr').each(function() {
+            $('#packages > tbody > tr').each(function() {
                 var $tr = $(this);
 
                 var length = parseInt($tr.find('input[data-name="length"]').val()) || 0;
@@ -185,14 +194,15 @@ $(function() {
 
     // Bind shipper autocomplete
     $('#shipperName').autocomplete({
-        source: '/accounts/autocomplete',
+        source: '/warehouses/ajax-autocomplete-account?type=shipper',
         minLength: 2,
         select: function(event, ui) {
             $('#shipperName').val(ui.item.label);
             $('#shipperId').val(ui.item.id);
             return false;
         }
-    }).autocomplete('instance')._renderItem = function(ul, item) {
+    })
+    .autocomplete('instance')._renderItem = function(ul, item) {
         return $('<li>')
             .append('<a>' + item.id  + ' - ' + item.label + '</a>')
             .appendTo(ul);
@@ -200,14 +210,15 @@ $(function() {
 
     // Bind consignee autocomplete
     $('#consigneeName').autocomplete({
-        source: '/accounts/autocomplete',
+        source: '/warehouses/ajax-autocomplete-account?type=consignee',
         minLength: 2,
         select: function(event, ui) {
             $('#consigneeName').val(ui.item.label);
             $('#consigneeId').val(ui.item.id);
             return false;
         }
-    }).autocomplete('instance')._renderItem = function(ul, item) {
+    })
+    .autocomplete('instance')._renderItem = function(ul, item) {
         return $('<li>')
             .append('<a>' + item.id  + ' - ' + item.label + '</a>')
             .appendTo(ul);

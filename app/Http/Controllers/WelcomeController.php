@@ -2,6 +2,11 @@
 
 use App\Models\User as User;
 
+/**
+ * WelcomeController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class WelcomeController extends BaseController {
 
 	/*

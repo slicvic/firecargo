@@ -1,4 +1,4 @@
-@extends('layouts.guests')
+@extends('layouts.site.master')
 
 @section('content')
 <div class="row">

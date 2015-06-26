@@ -1,6 +1,12 @@
 <?php namespace App\Helpers;
 
+/**
+ * Html
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class Html {
+
     /**
      * Gets HTML for the main sidenav pointer arrow.
      *
@@ -19,22 +25,17 @@ class Html {
      *
      * @return string
      */
-    public static function arrayToLabels(array $values)
+    public static function arrayToBadges(array $values)
     {
         if (empty($values))
-        {
             return '';
-        }
-        else
-        {
-            $ret = '';
 
-            foreach($values as $value)
-            {
-                $ret .= ' <span class="badge badge-info">' . ucfirst($value) . '</span>';
-            }
+        $str = '';
 
-            return $ret;
+        foreach($values as $value) {
+            $str .= ' <span class="badge badge-info">' . ucfirst($value) . '</span>';
         }
+
+        return $str;
     }
 }

@@ -12,14 +12,19 @@ use App\Helpers\Mailer;
 use App\Helpers\Html;
 use App\Helpers\Flash;
 
-class GuestsController extends BaseController {
+/**
+ * AuthController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
+class AuthController extends BaseController {
 
     /**
      * Shows the login form.
      */
     public function getLogin()
     {
-        return view('guests.login');
+        return view('auth.login');
     }
 
     /**
@@ -57,7 +62,7 @@ class GuestsController extends BaseController {
      */
     public function getSignup()
     {
-        return view('guests.signup');
+        return view('auth.signup');
     }
 
     /**
@@ -98,7 +103,7 @@ class GuestsController extends BaseController {
      */
     public function getForgotPassword()
     {
-        return view('guests.forgot_password');
+        return view('auth.forgot_password');
     }
 
     /**
@@ -135,7 +140,7 @@ class GuestsController extends BaseController {
      */
     public function getResetPassword()
     {
-        return view('guests.reset_password');
+        return view('auth.reset_password');
     }
 
     /**

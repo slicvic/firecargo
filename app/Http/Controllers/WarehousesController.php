@@ -10,6 +10,14 @@ use App\Models\Package;
 use App\Models\User;
 use App\Helpers\Flash;
 
+use Illuminate\Pagination\Paginator;
+use App\Pdf\Warehouse as WarehousePdf;
+
+/**
+ * WarehousesController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class WarehousesController extends BaseAuthController {
 
     public function __construct(Guard $auth)
@@ -21,10 +29,26 @@ class WarehousesController extends BaseAuthController {
     /**
      * Shows a list of warehouses.
      */
-    public function getIndex()
+    public function getIndex(Request $request)
     {
-        $warehouses = Warehouse::allByCurrentSiteId();
-        return view('warehouses.index', ['warehouses' => $warehouses]);
+        $perPage = $request->input('limit', 10);
+        $searchTerm = $request->input('q');
+        $sortBy = $request->input('sortby', 'id');
+        $sortOrder = $request->input('order', 'desc');
+
+        $warehouses = Warehouse::where('site_id', '=', $this->user->site_id)
+            ->where('deleted', '<>', 1)
+           // ->join('users u1', 'w.consignee_user_id', '=', 'u1.id')
+           // ->whereRaw('w.id > 0 AND w.id < ?', [2])
+            ->orderBy(array_key_exists($sortBy, Warehouse::$sortColumns) ? Warehouse::$sortColumns[$sortBy] : 'id', $sortOrder)
+            ->paginate($perPage);
+
+        return view('warehouses.index', [
+            'warehouses' => $warehouses,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
+            'reverseSortOrder' => ($sortOrder === 'asc' ? 'desc' : 'asc'),
+        ]);
     }
 
     /**
@@ -66,7 +90,7 @@ class WarehousesController extends BaseAuthController {
         $warehouse = Warehouse::create($input['warehouse']);
 
         // Create packages
-        if (isset($input['package']) && count($input['package']))
+        if ( ! empty($input['package']))
         {
             foreach ($input['package'] as $package)
             {
@@ -116,16 +140,68 @@ class WarehousesController extends BaseAuthController {
         // Update packages
         Package::where('warehouse_id', '=', $warehouse->id)->update(['deleted' => 1]);
 
-        if (isset($input['package']) && count($input['package']))
+        if ( ! empty($input['package']))
         {
-            foreach ($input['package'] as $package_id => $packageData)
+            foreach ($input['package'] as $packageId => $packageData)
             {
                 $packageData['warehouse_id'] = $warehouse->id;
                 $packageData['deleted'] = 0;
-                Package::firstOrCreate(['id' => $package_id])->update($packageData);
+                Package::firstOrCreate(['id' => $packageId])->update($packageData);
             }
         }
 
         return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/view/' . $warehouse->id]);
+    }
+
+    /**
+     * Displays the warehouse receipt PDF.
+     */
+    public function getPrintReceipt(Request $request, $warehouseId)
+    {
+        $warehouse = Warehouse::findOrFail($warehouseId);
+        WarehousePdf::getReceipt($warehouseId);
+    }
+
+    /**
+     * Displays the warehouse shipping label PDF.
+     */
+    public function getPrintLabel(Request $request, $warehouseId)
+    {
+        $warehouse = Warehouse::findOrFail($warehouseId);
+        WarehousePdf::getLabel($warehouseId);
+    }
+
+    /**
+     * Retrieves a list of packages by warehouse ID.
+     */
+    public function getAjaxPackages(Request $request, $warehouseId)
+    {
+        $warehouse = Warehouse::findOrFail($warehouseId);
+        return view('warehouses.index.packages', ['packages' => $warehouse->packages()]);
+    }
+
+    /**
+     * Returns a list of users for a jQuery autocomple field.
+     *
+     * @uses    ajax
+     * @return  json
+     */
+    public function getAjaxAutocompleteAccount(Request $request)
+    {
+        $input = $request->only('term', 'type');
+        $response = [];
+
+        if (strlen($input['term']) > 1)
+        {
+            foreach(User::getUsersForAutocomplete($input['term'], [$this->user->site_id]) as $user)
+            {
+                $response[] = [
+                    'id' => $user->id,
+                    'label' => ($input['type'] == 'shipper') ? $user->business_name : $user->getFullName()
+                ];
+            }
+        }
+
+        return response()->json($response);
     }
 }
