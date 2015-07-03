@@ -14,15 +14,12 @@ class Warehouse {
     /**
      * Generates a warehouse receipt.
      *
-     * @param  int $warehouseId
+     * @param  WarehouseModel $warehouse
      * @return PDF
      */
-    public static function getReceipt($warehouseId)
+    public static function getReceipt(WarehouseModel $warehouse)
     {
-        $warehouse = WarehouseModel::find($warehouseId);
-        $packages = $warehouse->packages();
-
-        $barcode = new TCPDFBarcode($warehouseId, 'C128');
+        $barcode = new TCPDFBarcode($warehouse->id, 'C128');
         $barcodeBase64 = base64_encode($barcode->getBarcodePngData(2, 30));
 
         $pdf = new TCPDF('P', 'mm', 'A4', TRUE, 'UTF-8', FALSE);
@@ -31,29 +28,27 @@ class Warehouse {
         $pdf->SetFont('helvetica', '', 10);
         $pdf->AddPage();
 
-        $html = view('pdf/warehouse/receipt', [
+        $html = view('pdfs/warehouse/receipt', [
             'warehouse' => $warehouse,
-            'packages' => $packages,
             'barcodeBase64' => $barcodeBase64
         ])->render();
 
         $pdf->writeHTML($html, TRUE, FALSE, TRUE, FALSE, '');
 
-        return $pdf->Output('warehouse-receipt-' . $warehouseId . '.pdf', 'I');
+        return $pdf->Output('warehouse-receipt-' . $warehouse->id . '.pdf', 'I');
     }
 
     /**
      * Generates a warehouse shipping label.
      *
-     * @param  int $warehouseId
+     * @param  WarehouseModel $warehouse
      * @return PDF
      */
-    public static function getLabel($warehouseId)
+    public static function getLabel(WarehouseModel $warehouse)
     {
-        $warehouse = WarehouseModel::find($warehouseId);
-        $packages = $warehouse->packages();
-
-        $barcode = new TCPDFBarcode($warehouseId, 'C128');
+        $packages = $warehouse->packages;
+        $totalPackages = count($packages);
+        $barcode = new TCPDFBarcode($warehouse->id, 'C128');
         $barcodeBase64 = base64_encode($barcode->getBarcodePngData(2, 30));
 
         $pdf = new TCPDF('P', 'mm', 'A4', TRUE, 'UTF-8', FALSE);
@@ -61,25 +56,20 @@ class Warehouse {
         $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
         $pdf->SetFont('helvetica', '', 10);
 
-         $stickerNumber = 1;
+        $html = view('pdfs/warehouse/label', [
+            'warehouse' => $warehouse,
+            'packages' => $packages,
+            'totalPackages' => $totalPackages,
+            'barcodeBase64' => $barcodeBase64
+        ])->render();
 
-        foreach ($warehouse->packages() as $package)
+        for ($i = 1; $i <= $totalPackages; $i++)
         {
-            $pdf->AddPage();
-
-            $html = view('pdf/warehouse/label', [
-                'warehouse' => $warehouse,
-                'packages' => $packages,
-                'barcodeBase64' => $barcodeBase64,
-                'stickerNumber' => $stickerNumber
-            ])->render();
-
-            $pdf->writeHTML($html, TRUE, FALSE, TRUE, FALSE, '');
-
-            $stickerNumber++;
+            $pdf->AddPage('P', 'A6');
+            $pdf->writeHTML(str_replace('%%STICKER_NUMBER%%', $i, $html), TRUE, FALSE, TRUE, FALSE, '');
         }
 
-        return $pdf->Output('warehouse-label-' . $warehouseId . '.pdf', 'I');
+        return $pdf->Output('warehouse-label-' . $warehouse->id . '.pdf', 'I');
     }
 }
 

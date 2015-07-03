@@ -62,7 +62,7 @@ class Flash {
     }
 
     /**
-     * Gets plain message.
+     * Gets the plain message.
      *
      * @return array|NULL
      */
@@ -72,11 +72,11 @@ class Flash {
     }
 
     /**
-     * Gets HTML message.
+     * Gets the HTML message.
      *
      * @return string|NULL
      */
-    public static function html()
+    public static function getHTML()
     {
         $value = self::get();
 

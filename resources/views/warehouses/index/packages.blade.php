@@ -15,8 +15,8 @@
         @foreach ($packages as $package)
             <tr>
                 <td>{{ $package->id }}</td>
-                <td>{{ ($type = $package->type) ? $type->name: '' }}</td>
-                <td>{{ ($status = $package->status) ? $status->name : '' }}</td>
+                <td>{{ ($package->type_id) ? $package->type->name: '' }}</td>
+                <td>{{ ($package->status_id) ? $package->status->name : '' }}</td>
                 <td>{{ $package->length . ' x ' . $package->width . ' x ' . $package->height }}</td>
                 <td>{{ $package->weight }} lb(s)</td>
                 <td>{{ $package->tracking_number }}</td>

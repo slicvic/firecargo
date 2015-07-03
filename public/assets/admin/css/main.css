@@ -1,4 +1,4 @@
-.alert h4 {
+/*.alert h4 {
     margin-bottom: 0px;
 }
 
@@ -67,4 +67,20 @@ legend {
 
 .parsley-required {
     color: red;
+}*/
+
+.tag-list .tag-item {
+    background: #f3f3f4;
+    padding: 2px 6px;
+    font-size: 10px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.dataTables_filter .input-sm {
+    margin-left: 2px;
+}
+
+.alert h4 {
+    margin-bottom: 0;
 }

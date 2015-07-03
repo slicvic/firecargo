@@ -45,14 +45,14 @@ class RolesController extends BaseAuthController {
         $input = $request->all();
         $validator = Validator::make($input, Role::$rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
         Role::create($input);
 
+        Flash::success('New role created.');
         return redirect('roles');
     }
 
@@ -73,8 +73,7 @@ class RolesController extends BaseAuthController {
         $input = $request->all();
         $validator = Validator::make($input, Role::$rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
@@ -82,7 +81,8 @@ class RolesController extends BaseAuthController {
         $role = Role::findOrFail($id);
         $role->update($input);
 
-        return redirect('roles');
+        Flash::success('Role updated.');
+        return redirect()->back();
     }
 
     /**

@@ -1,3 +1,5 @@
+<?php $packages = $warehouse->packages; ?>
+
 @extends('layouts.admin.master')
 
 @section('content')
@@ -18,23 +20,23 @@
         <table class="table warehouse-info-table">
             <tr>
                 <th class="col-sm-2">Date</th>
-                <td>{{ $warehouse->prettyArrivedAt() }}</td>
+                <td>{{ $warehouse->getArrivalDate() }}</td>
             </tr>
             <tr>
                 <th>Shipper</th>
-                <td>{{ $warehouse->shipper ? $warehouse->shipper->business_name : '' }}</td>
+                <td>{{ $warehouse->shipper_id ? $warehouse->shipper->business_name : '' }}</td>
             </tr>
             <tr>
                 <th>Consignee</th>
-                <td>{{ $warehouse->consignee ? $warehouse->consignee->getFullName() : '' }}</td>
+                <td>{{ $warehouse->consignee_id ? $warehouse->consignee->getFullName() : '' }}</td>
             </tr>
             <tr>
                 <th>Delivered By</th>
-                <td>{{ $warehouse->courier ? $warehouse->courier->name : '' }}</td>
+                <td>{{ $warehouse->courier_id ? $warehouse->courier->name : '' }}</td>
             </tr>
             <tr>
                 <th>Pieces</th>
-                <td>{{ $warehouse->countPackages() }}</td>
+                <td>{{ count($packages) }}</td>
             </tr>
             <tr>
                 <th>Gross Weight</th>
@@ -42,11 +44,11 @@
             </tr>
             <tr>
                 <th>Volume Weight</th>
-                <td>{{ $warehouse->calculateVolumeWeight() }} lb(s)</td>
+                <td>{{ round($warehouse->calculateVolumeWeight()) }} lb(s)</td>
             </tr>
             <tr>
                 <th>Charge Weight</th>
-                <td>{{ $warehouse->calculateChargeWeight() }} lb(s)</td>
+                <td>{{ round($warehouse->calculateChargeWeight()) }} lb(s)</td>
             </tr>
             <tr>
                 <th>Description</th>
@@ -76,11 +78,11 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($warehouse->packages() as $package)
+                @foreach ($packages as $package)
                     <tr>
                         <td>{{ $package->id }}</td>
-                        <td>{{ ($type = $package->type) ? $type->name: '' }}</td>
-                        <td>{{ ($status = $package->status) ? $status->name : '' }}</td>
+                        <td>{{ ($package->type_id) ? $package->type->name: '' }}</td>
+                        <td>{{ ($package->status_id) ? $package->status->name : '' }}</td>
                         <td>{{ $package->length . ' x ' . $package->width . ' x ' . $package->height }}</td>
                         <td>{{ $package->weight }} lb(s)</td>
                         <td>{{ $package->description }}</td>

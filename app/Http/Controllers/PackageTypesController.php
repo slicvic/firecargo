@@ -46,16 +46,14 @@ class PackageTypesController extends BaseAuthController {
         $input = $request->all();
         $validator = Validator::make($input, PackageType::$rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
         PackageType::create($input);
 
-        Flash::success('Record created successfully.');
-
+        Flash::success('New package type created.');
         return redirect('package-types');
     }
 
@@ -76,8 +74,7 @@ class PackageTypesController extends BaseAuthController {
         $input = $request->all();
         $validator = Validator::make($input, PackageType::$rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
@@ -85,9 +82,8 @@ class PackageTypesController extends BaseAuthController {
         $type = PackageType::findOrFailByIdAndCurrentSiteId($id);
         $type->update($input);
 
-        Flash::success('Record updated successfully.');
-
-        return redirect('package-types');
+        Flash::success('Package type updated.');
+        return redirect()->back();
     }
 
     /**
@@ -97,14 +93,12 @@ class PackageTypesController extends BaseAuthController {
     {
         $type = PackageType::findByIdAndCurrentSiteId($id);
 
-        if ($type)
-        {
-            $type->softDelete();
-            Flash::success('Record deleted successfully.');
+        if ($type) {
+            $type->delete();
+            Flash::success('Package type deleted.');
         }
-        else
-        {
-            Flash::error('Record not found.');
+        else {
+            Flash::error('Package type not found.');
         }
 
         return redirect('package-types');

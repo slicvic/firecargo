@@ -1,17 +1,13 @@
 <?php namespace App\Models;
 
+use App\Helpers\Math;
+
 /**
  * Package
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
 class Package extends Base {
-
-    /**
-     * Divisor use to calculate volume weight.
-     * For pounds use 166, otherwise 366 for kilos.
-     */
-    const VOLUME_WEIGHT_DIVISOR = 166;
 
     protected $table = 'packages';
 
@@ -31,7 +27,6 @@ class Package extends Base {
         'invoice_number',
         'invoice_amount',
         'tracking_number',
-        'deleted',
         'roll'
     ];
 
@@ -73,11 +68,9 @@ class Package extends Base {
      * @param  int $precision
      * @return float
      */
-    public function calculateVolumeWeight($precision = 2)
+    public function calculateVolumeWeight()
     {
-        $weight = ($this->length * $this->width * $this->height) / self::VOLUME_WEIGHT_DIVISOR;
-
-        return round($weight, $precision);
+        return Math::calculateVolumeWeight($this->length, $this->width, $this->height);
     }
 
     /**
@@ -87,8 +80,7 @@ class Package extends Base {
      */
     public function calculateCubicFeet()
     {
-
-        return ($this->length * $this->width * $this->height) * 0.00057870;
+        return Math::calculateCubicFeet($this->length, $this->width, $this->height);
     }
 
     /**
@@ -98,6 +90,6 @@ class Package extends Base {
      */
     public function calculateCubicMeter()
     {
-        return $this->calculateCubicFeet() / 35.315;
+        return Math::calculateCubicMeter($this->length, $this->width, $this->height);
     }
 }

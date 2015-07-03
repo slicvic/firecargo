@@ -1,4 +1,4 @@
-@extends('layouts.site.master')
+@extends('layouts.frontend.master')
 
 @section('content')
 <div class="row">
@@ -14,15 +14,15 @@
 					<fieldset>
 						<legend>Personal Information</legend>
 						<div class="form-group-inline">
-							<label class="col-md-2 control-label">Name<span class="required-field">*</span></label>
+							<label class="col-md-2 control-label">First Name<span class="required-field">*</span></label>
 							<div class="col-md-2">
-								<input type="text" name="user[firstname]" class="form-control" value="{{ Input::old('user.firstname') }}" required>
+								<input type="text" name="user[first_name]" class="form-control" value="{{ Input::old('user.first_name') }}" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label">Last Name<span class="required-field">*</span></label>
 							<div class="col-md-2">
-								<input type="text" name="user[lastname]" class="form-control" value="{{ Input::old('user.lastname') }}" required>
+								<input type="text" name="user[last_name]" class="form-control" value="{{ Input::old('user.last_name') }}" required>
 							</div>
 						</div>
 						<div class="form-group">
@@ -100,9 +100,9 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-2 control-label">Cell Phone<span class="required-field">*</span></label>
+							<label class="col-md-2 control-label">Mobile Phone<span class="required-field">*</span></label>
 							<div class="col-md-2">
-								<input type="text" name="user[cellphone]" class="form-control" value="{{ Input::old('user.cellphone') }}" required>
+								<input type="text" name="user[mobile_phone]" class="form-control" value="{{ Input::old('user.mobile_phone') }}" required>
 							</div>
 						</div>
 					</fieldset>

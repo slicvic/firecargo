@@ -1,11 +1,17 @@
 <?php namespace App\Models;
 
+use DB;
+use App\Helpers\Math;
+use App\Models\SiteTrait;
+
 /**
  * Warehouse
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Warehouse extends BaseSiteSpecific {
+class Warehouse extends Base {
+
+    use SiteTrait;
 
     protected $table = 'warehouses';
 
@@ -72,12 +78,20 @@ class Warehouse extends BaseSiteSpecific {
     }
 
     /**
-     * Gets the friendly arrival datetime.
+     * Gets the packages.
+     */
+    public function packages()
+    {
+        return $this->hasMany('App\Models\Package');
+    }
+
+    /**
+     * Gets the human readable arrival date and time.
      *
      * @param  $withTime
      * @return string
      */
-    public function prettyArrivedAt($withTime = TRUE)
+    public function getArrivalDate($withTime = TRUE)
     {
         $dateFormat = 'n/j/Y';
         if ($withTime)
@@ -86,73 +100,47 @@ class Warehouse extends BaseSiteSpecific {
     }
 
     /**
-     * Gets the friendly ID.
-     *
-     * @return string
-     */
-    public function prettyId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Retrieves a list of un-deleted packages.
-     *
-     * @return Package[]
-     */
-    public function packages()
-    {
-        return Package::where('warehouse_id', $this->id)
-            ->where('deleted', '<>', 1)
-            ->get();
-    }
-
-    /**
-     * Counts un-deleted packages.
-     *
-     * @return int
-     */
-    public function countPackages()
-    {
-        return Package::where('warehouse_id', $this->id)
-            ->where('deleted', '<>', 1)
-            ->count();
-    }
-
-    /**
      * Calculates the actual weight of the warehouse in pounds.
      *
-     * @param  int $precision
      * @return float
      */
-    public function calculateGrossWeight($precision = 2)
+    public function calculateGrossWeight()
     {
+        $packages = DB::table('packages')
+            ->where('warehouse_id', $this->id)
+            ->select(['weight'])
+            ->get();
+
         $total = 0;
 
-        foreach ($this->packages() as $package)
+        foreach ($packages as $package)
         {
             $total += $package->weight;
         }
 
-        return round($total, $precision);
+        return $total;
     }
 
     /**
      * Calculates the volume weight of the warehouse in pounds.
      *
-     * @param  int $precision
      * @return float
      */
-    public function calculateVolumeWeight($precision = 2)
+    public function calculateVolumeWeight()
     {
+        $packages = DB::table('packages')
+            ->where('warehouse_id', $this->id)
+            ->select(['length', 'width', 'height'])
+            ->get();
+
         $total = 0;
 
-        foreach ($this->packages() as $package)
+        foreach ($packages as $package)
         {
-            $total += $package->calculateVolumeWeight(5);
+            $total += Math::calculateVolumeWeight($package->length, $package->width, $package->height);
         }
 
-        return round($total, $precision);
+        return $total;
     }
 
     /**
@@ -164,9 +152,16 @@ class Warehouse extends BaseSiteSpecific {
     {
         $total = 0;
 
-        foreach ($this->packages() as $package)
+        $packages = DB::table('packages')
+            ->where('warehouse_id', $this->id)
+            ->select(['length', 'width', 'height'])
+            ->get();
+
+        $total = 0;
+
+        foreach ($packages as $package)
         {
-            $total += $package->calculateCubicFeet();
+            $total += Math::calculateCubicFeet($package->length, $package->width, $package->height);
         }
 
         return round($total, 3);
@@ -179,11 +174,16 @@ class Warehouse extends BaseSiteSpecific {
      */
     public function calculateCubicMeter()
     {
+        $packages = DB::table('packages')
+            ->where('warehouse_id', $this->id)
+            ->select(['length', 'width', 'height'])
+            ->get();
+
         $total = 0;
 
-        foreach ($this->packages() as $package)
+        foreach ($packages as $package)
         {
-            $total += $package->calculateCubicMeter();
+            $total += Math::calculateCubicMeter($package->length, $package->width, $package->height);
         }
 
         return round($total, 3);
@@ -192,13 +192,12 @@ class Warehouse extends BaseSiteSpecific {
     /**
      * Calculates the charge weight of the warehouse in pounds.
      *
-     * @param  int $precision
      * @return float
      */
-    public function calculateChargeWeight($precision = 2)
+    public function calculateChargeWeight()
     {
-        $grossWeight = $this->calculateGrossWeight($precision);
-        $volumeWeight = $this->calculateVolumeWeight($precision);
+        $grossWeight = $this->calculateGrossWeight();
+        $volumeWeight = $this->calculateVolumeWeight();
         return ($grossWeight > $volumeWeight) ? $grossWeight : $volumeWeight;
     }
 }

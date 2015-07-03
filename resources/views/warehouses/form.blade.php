@@ -1,4 +1,4 @@
-@extends('layouts.admin.form')
+@extends('layouts.admin.model.form')
 
 @section('icon', 'cube')
 @section('title')
@@ -6,8 +6,8 @@
 @stop
 
 @section('form')
-<form data-parsley-validate action="/warehouses/{{ ($warehouse->id) ? 'update/' . $warehouse->id : 'store' }}" method="post" id="createWarehouseForm" class="form-horizontal">
-    <div class="flashError"></div>
+<form data-parsley-validate action="/warehouses/{{ ($warehouse->id) ? 'update/' . $warehouse->id : 'store' }}" method="post" class="form-horizontal">
+    <div id="flashError"></div>
     <div class="panel panel-default">
         <div class="panel-heading">Warehouse Information</div>
         <div class="panel-body">
@@ -46,7 +46,8 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Delivered By</label>
                 <div class="col-sm-5">
-                    <select required name="warehouse[courier_id]" class="form-control">
+                    <select name="warehouse[courier_id]" class="form-control" required>
+                        <option value=""></option>
                         @foreach (\App\Models\Courier::allByCurrentSiteId() as $courier)
                             <option{{ ($warehouse->courier_id == $courier->id) ? ' selected' : '' }} value="{{ $courier->id }}">{{ $courier->name }}</option>
                         @endforeach
@@ -82,7 +83,7 @@
                 <tbody>
                    <tr>
                         <td><span id="totalPieces">0</span></td>
-                        <td><span id="actualWeight">0</span></td>
+                        <td><span id="grossWeight">0</span></td>
                         <td><span id="volumeWeight">0</span></td>
                         <td><span id="chargeWeight">0</span></td>
                     </tr>
@@ -98,131 +99,5 @@
 
 <link rel="stylesheet" href="/assets/vendor/jquery-ui/jquery-ui.min.css">
 <script src="/assets/vendor/jquery-ui/jquery-ui.min.js"></script>
-<script>
-$(function() {
-    var Packages = {
-        $trTemplate: null,
-
-        init: function() {
-            this.initEvents();
-            this.updateTotals();
-        },
-
-        initEvents: function() {
-            var self = this;
-            // Use first package a template
-            self.$trTemplate = $('#packages > tbody:first').clone();
-
-            $('#packages').on('click', '.btn-clone-package', self.clonePackage);
-            $('#packages').on('click', '.btn-remove-package', self.removePackage);
-            $('#btnNewPackage').on('click', self.newPackage);
-            $('#packages').on('keyup', '.metric', self.updateTotals);
-            console.log(self.$trTemplate);
-        },
-
-        clonePackage: function() {
-            var rowCount = Packages.countPackages();
-            var $trClone = $(this).parent().parent().clone();
-            var idx;
-
-            $trClone.find('input.unique').val(null);
-
-            $trClone.find('input, select').each(function() {
-                idx = -1 * rowCount;
-                $(this).attr('name', 'package[' + idx + '][' + $(this).attr('data-name') + ']');
-            });
-
-            $('#packages').append($trClone);
-            $('#totalPieces').html(1 + rowCount);
-
-            Packages.updateTotals();
-        },
-
-        newPackage: function() {
-            var rowCount = Packages.countPackages();
-            var $trNew = Packages.$trTemplate.clone();
-            var idx;
-
-            $trNew.find('input, select').each(function() {
-                idx = -1 * rowCount;
-                $(this).val(null);
-                $(this).attr('name', 'package[' + idx + '][' + $(this).attr('data-name') + ']');
-            });
-
-            $('#packages').append($trNew);
-            $('#totalPieces').html(1 + rowCount);
-
-            Packages.updateTotals();
-        },
-
-        removePackage: function() {
-            $(this).parent().parent().remove();
-            Packages.updateTotals();
-        },
-
-        countPackages: function() {
-            return $('#packages > tbody').length;
-        },
-
-        updateTotals: function() {
-            var actualWeight = 0;
-            var volumeWeight = 0;
-            var volumeWeightDivisor = <?php echo \App\Models\Package::VOLUME_WEIGHT_DIVISOR; ?>;
-
-            $('#packages > tbody > tr').each(function() {
-                var $tr = $(this);
-
-                var length = parseInt($tr.find('input[data-name="length"]').val()) || 0;
-                var width = parseInt($tr.find('input[data-name="width"]').val()) || 0;
-                var height = parseInt($tr.find('input[data-name="height"]').val()) || 0;
-                var weight = parseInt($tr.find('input[data-name="weight"]').val()) || 0;
-
-                actualWeight += weight;
-                volumeWeight += (length * width * height) / volumeWeightDivisor;
-            });
-
-            volumeWeight = Math.round(volumeWeight * 100) / 100;
-
-            $('#totalPieces').html(Packages.countPackages());
-            $('#actualWeight').html(actualWeight + ' lb(s)');
-            $('#volumeWeight').html(volumeWeight + ' lb(s)');
-            $('#chargeWeight').html((volumeWeight > actualWeight ? volumeWeight : actualWeight) + ' lb(s)');
-        }
-    };
-
-    Packages.init();
-
-    // Bind shipper autocomplete
-    $('#shipperName').autocomplete({
-        source: '/warehouses/ajax-autocomplete-account?type=shipper',
-        minLength: 2,
-        select: function(event, ui) {
-            $('#shipperName').val(ui.item.label);
-            $('#shipperId').val(ui.item.id);
-            return false;
-        }
-    })
-    .autocomplete('instance')._renderItem = function(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.id  + ' - ' + item.label + '</a>')
-            .appendTo(ul);
-    };
-
-    // Bind consignee autocomplete
-    $('#consigneeName').autocomplete({
-        source: '/warehouses/ajax-autocomplete-account?type=consignee',
-        minLength: 2,
-        select: function(event, ui) {
-            $('#consigneeName').val(ui.item.label);
-            $('#consigneeId').val(ui.item.id);
-            return false;
-        }
-    })
-    .autocomplete('instance')._renderItem = function(ul, item) {
-        return $('<li>')
-            .append('<a>' + item.id  + ' - ' + item.label + '</a>')
-            .appendTo(ul);
-    };
-});
-</script>
+<script src="/assets/admin/js/warehouses/create-edit-page.js"></script>
 @stop

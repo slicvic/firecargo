@@ -33,4 +33,21 @@ class Company extends Base {
     {
         return $this->belongsTo('App\Models\Country');
     }
+
+    /**
+     * Gets the logo URL.
+     *
+     * @param  string $size sm|md|lg
+     * @return string
+     */
+    public function getLogoUrl($size = 'sm')
+    {
+        $path = 'uploads/companies/' . $this->id . '/images/logo/' . $size . '.png';
+
+        if (file_exists(public_path() . '/' . $path)) {
+            return asset($path);
+        }
+
+        return NULL;
+    }
 }

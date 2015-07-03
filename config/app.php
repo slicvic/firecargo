@@ -195,7 +195,7 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 
 		'Fpdf'      => 'Anouar\Fpdf\Fpdf',
-
 	],
 
+	'upload_path' => public_path() . '/uploads'
 ];

@@ -12,21 +12,15 @@
                 <div class="panel-heading">Personal Information</div>
                 <div class="panel-body">
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Busines Name</label>
+                        <label class="control-label col-sm-2">First Name</label>
                         <div class="col-sm-5">
-                            <input type="text" name="user[business_name]" placeholder="Business Name" class="form-control" value="<?php echo Input::old('user.business_name', $user->business_name); ?>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Name</label>
-                        <div class="col-sm-5">
-                            <input type="text" name="user[firstname]" placeholder="First Name" class="form-control" value="<?php echo Input::old('user.firstname', $user->firstname); ?>">
+                            <input type="text" name="user[first_name]" placeholder="First Name" class="form-control" value="<?php echo Input::old('user.first_name', $user->first_name); ?>">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Last Name</label>
                         <div class="col-sm-5">
-                            <input type="text" name="user[lastname]" placeholder="Last Name" class="form-control" value="<?php echo Input::old('user.lastname', $user->lastname); ?>">
+                            <input type="text" name="user[last_name]" placeholder="Last Name" class="form-control" value="<?php echo Input::old('user.last_name', $user->last_name); ?>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -44,7 +38,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Cell Phone</label>
                         <div class="col-sm-4">
-                            <input type="text" name="user[cellphone]" placeholder="Cell Phone" class="form-control" value="<?php echo Input::old('user.cellphone', $user->cellphone); ?>">
+                            <input type="text" name="user[mobile_phone]" placeholder="Cell Phone" class="form-control" value="<?php echo Input::old('user.mobile_phone', $user->mobile_phone); ?>">
                         </div>
                     </div>
                     <div class="form-group">

@@ -1,11 +1,15 @@
 <?php namespace App\Models;
 
+use App\Models\SiteTrait;
+
 /**
  * PackageType
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class PackageType extends BaseSiteSpecific {
+class PackageType extends Base {
+
+    use SiteTrait;
 
     protected $table = 'package_types';
 
@@ -17,6 +21,5 @@ class PackageType extends BaseSiteSpecific {
     protected $fillable = [
         'site_id',
         'name',
-        'deleted'
     ];
 }

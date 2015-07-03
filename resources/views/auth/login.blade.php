@@ -1,4 +1,4 @@
-@extends('layouts.site.master')
+@extends('layouts.frontend.master')
 
 @section('content')
 <div class="row">

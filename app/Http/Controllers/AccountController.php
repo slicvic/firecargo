@@ -41,18 +41,22 @@ class AccountController extends BaseAuthController {
     {
         $input = $request->only('user');
 
-        $rules = User::$signupRules;
-        $rules['email'] .= ',' . $this->user->id;
-        unset($rules['password']);
+        // Validate input
+        $rules = [
+            'site_id' => 'required',
+            'email' => 'required|email|unique:users,email,' . $this->user->id,
+            'first_name' => 'required',
+            'last_name' => 'required'
+        ];
 
         $validator = Validator::make($input['user'], $rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
+        // Update profile
         $input['user']['autoroll_packages'] = isset($input['user']['autoroll_packages']);
 
         $this->user->update($input['user']);
@@ -76,25 +80,24 @@ class AccountController extends BaseAuthController {
     {
         $input = $request->all();
 
+        // Validate input
         $validator = Validator::make($input, [
             'current' => 'required',
             'new' => 'required'
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
-        if (Hash::check($input['current'], $this->user->password))
-        {
+        // Change password
+        if (Hash::check($input['current'], $this->user->password)) {
             $this->user->password = $input['new'];
             $this->user->save();
             Flash::success('Your password was changed successfully.');
         }
-        else
-        {
+        else {
             Flash::error('The password you entered does not match your current one.');
         }
 

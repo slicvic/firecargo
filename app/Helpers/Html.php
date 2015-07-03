@@ -8,33 +8,23 @@
 class Html {
 
     /**
-     * Gets HTML for the main sidenav pointer arrow.
-     *
-     * @return string
-     */
-    public static function sideNavPointer()
-    {
-        return '<div class="pointer">
-                    <div class="arrow"></div>
-                    <div class="arrow_border"></div>
-                </div>';
-    }
-
-    /**
      * Converts an array into bootstrap labels.
      *
+     * @param  array $values
      * @return string
      */
-    public static function arrayToBadges(array $values)
+    public static function arrayToTags(array $values)
     {
         if (empty($values))
             return '';
 
-        $str = '';
+        $str = '<div class="tag-list">';
 
         foreach($values as $value) {
-            $str .= ' <span class="badge badge-info">' . ucfirst($value) . '</span>';
+            $str .= '<div class="tag-item">' . ucfirst($value) . '</div>';
         }
+
+        $str .= '</div>';
 
         return $str;
     }

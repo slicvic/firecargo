@@ -1,19 +1,18 @@
-@extends('layouts.admin.index')
+@extends('layouts.admin.model.index')
 
 @section('icon', 'male')
 @section('title', 'Roles')
+@section('subtitle', 'Manage Account Roles')
 
 @section('actions')
-<a href="/roles/create" class="btn-flat primary">
-    <i class="fa fa-plus"></i> New
-</a>
+    <a href="/roles/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Role</a>
 @stop
 
 @section('thead')
-<th>ID</th>
-<th>Name</th>
-<th>Description</th>
-<th>Action</th>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Action</th>
 @stop
 
 @section('tbody')
@@ -23,8 +22,10 @@
             <td>{{ $role->name }}</td>
             <td>{{ $role->description }}</td>
             <td>
-                <a href="/roles/edit/{{ $role->id }}" class="btn btn-flat icon"><i class="fa fa-pencil"></i></a>
-                <a href="/roles/delete/{{ $role->id }}" class="btn btn-flat icon delete-btn"><i class="fa fa-times"></i></a>
+                <div class="btn-group">
+                    <a href="/roles/edit/{{ $role->id }}" class="btn-white btn btn-sm">Edit</a>
+                    <a href="/roles/delete/{{ $role->id }}" class="btn-white btn btn-sm">Delete</a>
+                </div>
             </td>
         </tr>
     @endforeach

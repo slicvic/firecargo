@@ -45,16 +45,14 @@ class SitesController extends BaseAuthController {
         $input = $request->all();
         $validator = Validator::make($input, Site::$rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
         Site::create($input);
 
-        Flash::success('Record created successfully.');
-
+        Flash::success('New site created.');
         return redirect('sites');
     }
 
@@ -75,8 +73,7 @@ class SitesController extends BaseAuthController {
         $input = $request->all();
         $validator = Validator::make($input, Site::$rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
@@ -84,8 +81,7 @@ class SitesController extends BaseAuthController {
         $site = Site::findOrFail($id);
         $site->update($input);
 
-        Flash::success('Record updated successfully.');
-
-        return redirect('sites');
+        Flash::success('Site updated.');
+        return redirect()->back();
     }
 }

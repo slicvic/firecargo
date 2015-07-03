@@ -44,16 +44,14 @@ class CompaniesController extends BaseAuthController {
     {
         $validator = Validator::make($input = $request->all(), Company::$rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
         Company::create($input);
 
-        Flash::success('Record created successfully.');
-
+        Flash::success('New company created.');
         return redirect('companies');
     }
 
@@ -74,8 +72,7 @@ class CompaniesController extends BaseAuthController {
         $input = $request->all();
         $validator = Validator::make($input, Company::$rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
@@ -83,8 +80,7 @@ class CompaniesController extends BaseAuthController {
         $company = Company::findOrFail($id);
         $company->update($input);
 
-        Flash::success('Record updated successfully.');
-
-        return redirect('companies');
+        Flash::success('Company updated.');
+        return redirect()->back();
     }
 }

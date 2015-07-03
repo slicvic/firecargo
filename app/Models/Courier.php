@@ -1,11 +1,15 @@
 <?php namespace App\Models;
 
+use App\Models\SiteTrait;
+
 /**
  * Courier
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Courier extends BaseSiteSpecific {
+class Courier extends Base {
+
+    use SiteTrait;
 
     protected $table = 'couriers';
 
@@ -17,6 +21,5 @@ class Courier extends BaseSiteSpecific {
     protected $fillable = [
         'site_id',
         'name',
-        'deleted'
     ];
 }

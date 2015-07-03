@@ -46,16 +46,14 @@ class CouriersController extends BaseAuthController {
         $input = $request->all();
         $validator = Validator::make($input, Courier::$rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
         Courier::create($input);
 
-        Flash::success('Record created successfully.');
-
+        Flash::success('New courier created.');
         return redirect('couriers');
     }
 
@@ -76,8 +74,7 @@ class CouriersController extends BaseAuthController {
         $input = $request->all();
         $validator = Validator::make($input, Courier::$rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
@@ -85,9 +82,8 @@ class CouriersController extends BaseAuthController {
         $courier = Courier::findOrFailByIdAndCurrentSiteId($id);
         $courier->update($input);
 
-        Flash::success('Record updated successfully.');
-
-        return redirect('couriers');
+        Flash::success('Courier updated.');
+        return redirect()->back();
     }
 
     /**
@@ -97,14 +93,12 @@ class CouriersController extends BaseAuthController {
     {
         $courier = Courier::findByIdAndCurrentSiteId($id);
 
-        if ($courier)
-        {
-            $courier->softDelete();
-            Flash::success('Record deleted successfully.');
+        if ($courier) {
+            $courier->delete();
+            Flash::success('Courier deleted.');
         }
-        else
-        {
-            Flash::error('Record not found.');
+        else {
+            Flash::error('Courier not found.');
         }
 
         return redirect('couriers');

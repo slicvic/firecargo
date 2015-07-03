@@ -44,21 +44,23 @@ class PackageStatusesController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
+
+        // Validate input
         $validator = Validator::make($input, PackageStatus::$rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
-        if (isset($input['is_default']))
-        {
+        // Create status
+        if (isset($input['is_default'])) {
             PackageStatus::unsetDefaultBySiteId($this->user->site_id);
         }
 
         PackageStatus::create($input);
-        Flash::success('Record created successfully.');
+
+        Flash::success('New package status created.');
         return redirect('package-statuses');
     }
 
@@ -77,24 +79,26 @@ class PackageStatusesController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
+
+        // Validate input
         $validator = Validator::make($input, PackageStatus::$rules);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
+        // Update status
         $status = PackageStatus::findOrFailByIdAndCurrentSiteId($id);
 
-        if (isset($input['is_default']) && ! $status->is_default)
-        {
+        if (isset($input['is_default']) && ! $status->is_default) {
             PackageStatus::unsetDefaultBySiteId($this->user->site_id);
         }
 
         $status->update($input);
-        Flash::success('Record updated successfully.');
-        return redirect('package-statuses');
+
+        Flash::success('Package status updated.');
+        return redirect()->back();
     }
 
     /**
@@ -104,14 +108,12 @@ class PackageStatusesController extends BaseAuthController {
     {
         $status = PackageStatus::findByIdAndCurrentSiteId($id);
 
-        if ($status)
-        {
-            $status->softDelete();
-            Flash::success('Record deleted successfully.');
+        if ($status) {
+            $status->delete();
+            Flash::success('Package status deleted.');
         }
-        else
-        {
-            Flash::error('Record not found.');
+        else {
+            Flash::error('Package status not found.');
         }
 
         return redirect('package-statuses');

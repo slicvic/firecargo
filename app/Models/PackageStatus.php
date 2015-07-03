@@ -1,11 +1,15 @@
 <?php namespace App\Models;
 
+use App\Models\SiteTrait;
+
 /**
  * PackageStatus
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class PackageStatus extends BaseSiteSpecific {
+class PackageStatus extends Base {
+
+    use SiteTrait;
 
     protected $table = 'package_statuses';
 
@@ -17,8 +21,6 @@ class PackageStatus extends BaseSiteSpecific {
     protected $fillable = [
         'site_id',
         'name',
-        'deleted',
-        'color',
         'is_default'
     ];
 

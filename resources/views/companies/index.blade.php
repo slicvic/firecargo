@@ -1,18 +1,17 @@
-@extends('layouts.admin.index')
+@extends('layouts.admin.model.index')
 
 @section('icon', 'building-o')
 @section('title', 'Companies')
+@section('subtitle', 'Manage Companies')
 
 @section('actions')
-<a href="/companies/create" class="btn-flat primary">
-    <i class="fa fa-plus"></i> New
-</a>
+    <a href="/companies/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Company</a>
 @stop
 
 @section('thead')
-<th>ID</th>
-<th>Name</th>
-<th>Action</th>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Action</th>
 @stop
 
 @section('tbody')
@@ -20,7 +19,11 @@
        <tr>
             <td>{{ $company->id }}</td>
             <td>{{ $company->name }}</td>
-            <td><a href="/companies/edit/{{ $company->id }}" class="btn btn-flat icon"><i class="fa fa-pencil"></i></a></td>
+            <td>
+                <div class="btn-group">
+                    <a href="/companies/edit/{{ $company->id }}" class="btn-white btn btn-sm"><i class="fa fa-pencil"></i> Edit</a>
+                </div>
+            </td>
        </tr>
     @endforeach
 @stop

@@ -29,7 +29,7 @@
         <table class="datatable table table-striped">
             <thead>
                 <tr>
-					<th><button class="expand-all-btn btn btn-default"><i class="fa fa-plus"></i></button></th>
+					<th></th>
 					<th><a href="/warehouses?sortby=id&order={{ $reverseSortOrder }}">ID {!! $sortBy == 'id' ? '<i class="fa fa-angle-' . ($sortOrder == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
                     <th><a href="/warehouses?sortby=date&order={{ $reverseSortOrder }}">Date {!! $sortBy == 'date' ? '<i class="fa fa-angle-' . ($sortOrder == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
 					<th>Pieces</th>
@@ -44,13 +44,13 @@
 				@foreach ($warehouses as $warehouse)
 				<tr>
 					<td><button class="expand-row-btn btn btn-default" data-warehouse-id="{{ $warehouse->id }}"><i class="fa fa-plus"></i></button></td>
-					<td>{{ $warehouse->prettyId() }}</td>
-					<td>{{ $warehouse->prettyArrivedAt(FALSE) }}</td>
-					<td><span class="badge badge-default">{{ $warehouse->countPackages() }}</span></td>
+					<td>{{ $warehouse->id }}</td>
+					<td>{{ $warehouse->getArrivalDate(FALSE) }}</td>
+					<td><span class="badge badge-default">{{ $warehouse->packages->count() }}</span></td>
 					<td>{{ $warehouse->calculateGrossWeight() }} lb(s)</td>
 					<td>{{ $warehouse->calculateVolumeWeight() }} lb(s)</td>
-					<td>{{ $warehouse->shipper ? $warehouse->shipper->business_name : '' }}</td>
-					<td>{{ $warehouse->consignee ? $warehouse->consignee->getFullName() : '' }}</td>
+					<td>{{ $warehouse->shipper_id ? $warehouse->shipper->business_name : '' }}</td>
+					<td>{{ $warehouse->consignee_id ? $warehouse->consignee->getFullName() : '' }}</td>
 					<td>
 						<a href="/warehouses/view/{{ $warehouse->id }}" class="btn btn-default"><i class="fa fa-eye"></i></a>
 						<a href="/warehouses/edit/{{ $warehouse->id }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
@@ -68,10 +68,6 @@
 
 <script>
     $(function() {
-		$('.expand-all-btn').click(function() {
-			$('.expand-row-btn').click();
-		});
-
 		/*
 		$('table').dataTable({
 			'bPaginate': true,

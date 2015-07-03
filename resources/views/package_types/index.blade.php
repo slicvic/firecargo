@@ -1,18 +1,17 @@
-@extends('layouts.admin.index')
+@extends('layouts.admin.model.index')
 
 @section('icon', 'info-circle')
 @section('title', 'Package Types')
+@section('subtitle', 'Manage Package Types')
 
 @section('actions')
-<a href="/package-types/create" class="btn-flat primary">
-    <i class="fa fa-plus"></i> New
-</a>
+    <a href="/package-types/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New</a>
 @stop
 
 @section('thead')
-<th>ID</th>
-<th>Name</th>
-<th>Action</th>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Action</th>
 @stop
 
 @section('tbody')
@@ -22,8 +21,10 @@
             <td>{{ $type->name }}</td>
             <td>
                 @if ($type->site_id == Auth::user()->site_id)
-                    <a href="/package-types/edit/{{ $type->id }}" class="btn-flat icon"><i class="fa fa-pencil"></i></a>
-                    <a href="/package-types/delete/{{ $type->id }}" class="btn-flat icon"><i class="fa fa-times delete-btn"></i></a>
+                    <div class="btn-group">
+                        <a href="/package-types/edit/{{ $type->id }}" class="btn-white btn btn-sm">Edit</a>
+                        <a href="/package-types/delete/{{ $type->id }}" class="btn-white btn btn-sm">Delete</a>
+                    </div>
                 @endif
             </td>
        </tr>
