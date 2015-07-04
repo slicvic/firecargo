@@ -209,6 +209,33 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
+     * Gets the profile photo URL.
+     *
+     * @param  string $size sm|md
+     * @return string
+     */
+    public function getProfilePhotoUrl($size = 'sm')
+    {
+        $path = 'uploads/users/' . $this->id . '/images/profile/' . $size . '.png';
+
+        if (file_exists(public_path() . '/' . $path)) {
+            return asset($path) . '?cb=' . time();
+        }
+
+        return NULL;
+    }
+
+    /**
+     * Gets the default profile photo URL.
+     *
+     * @return string
+     */
+    public function getDefaultProfilePhotoUrl()
+    {
+        return asset('assets/admin/img/avatar.png');
+    }
+
+    /**
      * Validates the specified credentials.
      *
      * @param  string $username

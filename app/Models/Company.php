@@ -45,9 +45,19 @@ class Company extends Base {
         $path = 'uploads/companies/' . $this->id . '/images/logo/' . $size . '.png';
 
         if (file_exists(public_path() . '/' . $path)) {
-            return asset($path);
+            return asset($path) . '?cb=' . time();
         }
 
         return NULL;
+    }
+
+    /**
+     * Gets the default logo URL.
+     *
+     * @return string
+     */
+    public function getDefaultLogoUrl()
+    {
+        return asset('assets/admin/img/avatar.png');
     }
 }

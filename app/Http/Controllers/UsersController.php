@@ -124,7 +124,7 @@ class UsersController extends BaseAuthController {
     }
 
     /**
-     * Returns a list of users for a jquery datatable.
+     * Returns a list of users for a jQuery DataTable.
      *
      * @uses    ajax
      * @return  json

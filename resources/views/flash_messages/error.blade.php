@@ -1,5 +1,5 @@
 <div class="alert alert-danger">
-    <h4><i class="fa fa-times-circle"></i> Oops! Some error(s) occurred:</h4>
+    <h4><i class="fa fa-times-circle"></i> Whoops! There was an error:</h4>
     <ul>
         <?php
             if (is_string($message))

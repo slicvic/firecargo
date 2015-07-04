@@ -10,29 +10,29 @@
 
     <title>{{ env('APP_NAME')}}</title>
 
-    <link href="/assets/vendor/inspinia/Static_Full_Version/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/inspinia/Static_Full_Version/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/inspinia/Static_Seed_Project/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <link href="/assets/vendor/inspinia/Static_Full_Version/css/animate.css" rel="stylesheet">
-    <link href="/assets/vendor/inspinia/Static_Full_Version/css/style.css" rel="stylesheet">
+    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/animate.css" rel="stylesheet">
+    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/style.css" rel="stylesheet">
 
     <!-- Mainly scripts -->
-    <script src="/assets/vendor/inspinia/Static_Full_Version/js/jquery-2.1.1.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Full_Version/js/bootstrap.min.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Full_Version/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Full_Version/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/jquery-2.1.1.js"></script>
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/bootstrap.min.js"></script>
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="/assets/vendor/inspinia/Static_Full_Version/js/inspinia.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Full_Version/js/plugins/pace/pace.min.js"></script>
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/inspinia.js"></script>
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/pace/pace.min.js"></script>
 
     <!-- DataTables -->
-    <link href="/assets/vendor/inspinia/Static_Full_Version/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
-    <link href="/assets/vendor/inspinia/Static_Full_Version/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
-    <script src="/assets/vendor/inspinia/Static_Full_Version/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Full_Version/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Full_Version/js/plugins/dataTables/dataTables.responsive.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Full_Version/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.responsive.js"></script>
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
 
     <!-- Parsley Validation -->
     <link rel="stylesheet" href="/assets/vendor/parsleyjs/parsley.css">
@@ -51,7 +51,7 @@
                 <ul class="nav metismenu" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="img/profile_small.jpg" /></span>
+                            <span><img alt="image" class="img-circle" src="{{ Auth::user()->getProfilePhotoUrl() ?: Auth::user()->getDefaultProfilePhotoUrl() }}" style="width:48;height:48"></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                     <span class="block m-t-xs"><strong class="font-bold">{{ $user->getFullName() }}</strong> <b class="caret"></b></span>

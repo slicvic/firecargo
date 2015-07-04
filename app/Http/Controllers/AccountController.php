@@ -8,6 +8,7 @@ use Hash;
 
 use App\Models\User;
 use App\Helpers\Flash;
+use Intervention\Image\ImageManagerStatic as Image;
 
 /**
  * AccountController
@@ -102,5 +103,51 @@ class AccountController extends BaseAuthController {
         }
 
         return redirect()->back();
+    }
+
+    /**
+     * Uploads the user's photo.
+     *
+     * @uses    ajax
+     * @return  json
+     */
+    public function postAjaxUploadPhoto(Request $request)
+    {
+        $input = $request->only('file');
+
+        // Validate input
+        $maxKb = 10000; // 10 MB
+        $validator = Validator::make($input, [
+            'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . $maxKb
+        ]);
+
+        if ($validator->fails()) {
+           return response()->json($validator->messages()->toArray(), 500);
+        }
+
+        // Create destination directory
+        $destination = public_path() . '/uploads/users/' . $this->user->id . '/images/profile/';
+        if ( ! file_exists($destination)) {
+            mkdir($destination, 0775, TRUE);
+        }
+
+        // Make thumbnails
+        $dimensions = [
+            'sm' => 48,
+            'md' => 200
+        ];
+
+        foreach ($dimensions as $filename => $dimension) {
+            Image::make($input['file']->getPathName())
+                ->orientate()
+                ->resize($dimension, $dimension, function($constraint) {
+                    //$constraint->aspectRatio();
+                    //$constraint->upsize();
+                })
+                ->save($destination . $filename . '.png');
+        }
+
+        unlink($input['file']->getPathName());
+        return response()->json([]);
     }
 }

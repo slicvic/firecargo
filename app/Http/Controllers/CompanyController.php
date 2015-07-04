@@ -22,11 +22,28 @@ class CompanyController extends BaseAuthController {
         $this->middleware('agent');
     }
 
+    /**
+     * Displays the company's profile.
+     */
     public function getProfile()
     {
-        return view('company.profile', ['company' => $this->user->site->company]);
+        $content = view('company.show');
+        return view('company.layout', ['company' => $this->user->site->company, 'content' => $content]);
     }
 
+    /**
+     * Displays the form for editing a company's profile.
+     */
+    public function getEdit()
+    {
+        $company = $this->user->site->company;
+        $content = view('company.edit', ['company' => $company]);
+        return view('company.layout', ['company' => $company, 'content' => $content]);
+    }
+
+    /**
+     * Updates the company's profile.
+     */
     public function postProfile(Request $request)
     {
         $input = $request->all();
@@ -43,23 +60,33 @@ class CompanyController extends BaseAuthController {
         return redirect()->back();
     }
 
-    public function postUploadLogo(Request $request)
+    /**
+     * Uploads the company's logo.
+     *
+     * @uses    ajax
+     * @return  json
+     */
+    public function postAjaxUploadLogo(Request $request)
     {
         $input = $request->only('file');
 
         // Validate input
         $maxKb = 10000; // 10 MB
         $validator = Validator::make($input, [
-            'file' => 'required|mimes:gif,jpg,jpeg,png|max:' . $maxKb
+            'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . $maxKb
         ]);
 
         if ($validator->fails()) {
            return response()->json($validator->messages()->toArray(), 500);
         }
 
-        // Save file
-        $file = $input['file'];
+        // Create destination directory
         $destination = public_path() . '/uploads/companies/' . $this->user->site->company->id . '/images/logo/';
+        if ( ! file_exists($destination)) {
+            mkdir($destination, 0775, TRUE);
+        }
+
+        // Make thumbnails
         $dimensions = [
             'sm' => 100,
             'md' => 200,
@@ -67,7 +94,7 @@ class CompanyController extends BaseAuthController {
         ];
 
         foreach ($dimensions as $filename => $dimension) {
-            Image::make($file->getPathName())
+            Image::make($input['file']->getPathName())
                 ->orientate()
                 ->resize($dimension, NULL, function($constraint) {
                     $constraint->aspectRatio();
@@ -76,7 +103,7 @@ class CompanyController extends BaseAuthController {
                 ->save($destination . $filename . '.png');
         }
 
-        unlink($file->getPathName());
-        return response()->json(['status' => 'ok']);
+        unlink($input['file']->getPathName());
+        return response()->json([]);
     }
 }
