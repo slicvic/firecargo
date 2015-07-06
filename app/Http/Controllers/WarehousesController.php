@@ -53,10 +53,10 @@ class WarehousesController extends BaseAuthController {
     /**
      * Shows a specific warehouse.
      */
-    public function getView(Request $request, $id)
+    public function getShow(Request $request, $id)
     {
         $warehouse = Warehouse::findOrFailByIdAndCurrentSiteId($id);
-        return view('warehouses.view', ['warehouse' => $warehouse]);
+        return view('warehouses.show', ['warehouse' => $warehouse]);
     }
 
     /**
@@ -83,15 +83,16 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Create warehouse
-        $consignee = User::find($input['warehouse']['consignee_user_id']);
         $input['warehouse']['arrived_at'] = date('Y-m-d H:i:s', strtotime($input['warehouse']['arrived_at']['date'] . ' ' . $input['warehouse']['arrived_at']['time']));
         $warehouse = Warehouse::create($input['warehouse']);
 
         // Create packages
+        $consignee = User::find($input['warehouse']['consignee_user_id']);
+
         if ( ! empty($input['package'])) {
             foreach ($input['package'] as $package) {
                 $package['warehouse_id'] = $warehouse->id;
-                $package['roll'] = $consignee->autoroll_packages;
+                $package['ship'] = $consignee->autoship_packages;
                 Package::create($package);
             }
         }
@@ -143,7 +144,7 @@ class WarehousesController extends BaseAuthController {
             }
         }
 
-        return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/view/' . $warehouse->id]);
+        return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/edit/' . $warehouse->id]);
     }
 
     /**
@@ -171,7 +172,7 @@ class WarehousesController extends BaseAuthController {
     public function getAjaxPackages(Request $request, $warehouseId)
     {
         $warehouse = Warehouse::findOrFail($warehouseId);
-        return view('warehouses.index.packages', ['packages' => $warehouse->packages()]);
+        return view('warehouses.index.packages', ['packages' => $warehouse->packages]);
     }
 
     /**
@@ -187,13 +188,12 @@ class WarehousesController extends BaseAuthController {
 
         if (strlen($input['term']) > 1)
         {
-            foreach(User::getUsersForAutocomplete($input['term'], [$this->user->site_id]) as $user)
-            {
+            foreach(User::getUsersForAutocomplete($input['term'], [$this->user->site_id]) as $user) {
                 if ($input['type'] == 'shipper') {
-                    $label = $user->business_name ?: 'No Company Name';
+                    $label = $user->business_name ?: 'Blank Company Name';
                 }
                 else {
-                    $label = (trim($user->getFullName()) != '') ? $user->getFullName() : 'No Name';
+                    $label = trim($user->present()->fullName()) ?: 'Blank Name';
                 }
 
                 $response[] = [

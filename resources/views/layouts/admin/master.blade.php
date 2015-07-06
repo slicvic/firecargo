@@ -51,10 +51,10 @@
                 <ul class="nav metismenu" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="{{ Auth::user()->getProfilePhotoUrl() ?: Auth::user()->getDefaultProfilePhotoUrl() }}" style="width:48;height:48"></span>
+                            <span><img alt="image" class="img-circle" src="{{ Auth::user()->present()->profilePhotoURL() }}" style="width:48px;height:48px"></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                                    <span class="block m-t-xs"><strong class="font-bold">{{ $user->getFullName() }}</strong> <b class="caret"></b></span>
+                                    <span class="block m-t-xs"><strong class="font-bold">{{ $user->present()->fullName() }}</strong> <b class="caret"></b></span>
                                 </span>
                                 </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">

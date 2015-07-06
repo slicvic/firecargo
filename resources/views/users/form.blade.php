@@ -79,7 +79,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-2 control-label">ID / RUT<span class="required-field"></span></label>
+									<label class="col-md-2 control-label">ID Number<span class="required-field"></span></label>
 									<div class="col-md-6">
 										<input type="text" name="user[id_number]" class="form-control" value="{{ Input::old('user.id_number', $user->id_number) }}">
 									</div>
@@ -88,7 +88,7 @@
 									<label class="control-label col-sm-2">Group</label>
 									<div class="col-sm-5">
 										<?php
-											$userRoles = $user->getRolesAsArray();
+											$userRoles = $user->present()->rolesAsArray();
 											foreach (\App\Models\Role::all() as $role):
 										?>
 											<div class="row checkbox">

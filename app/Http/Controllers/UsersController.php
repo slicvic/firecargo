@@ -173,7 +173,7 @@ class UsersController extends BaseAuthController {
                 $user->email,
                 $user->phone,
                 $user->mobile_phone,
-                Html::arrayToTags($user->getRolesAsArray()),
+                Html::arrayToTags($user->present()->rolesAsArray()),
                 sprintf('<a href="/accounts/edit/%s" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a>', $user->id)
             ];
         }

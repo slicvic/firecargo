@@ -7,13 +7,10 @@
     <tr>
         <td width="50"><img width="50" height="50" src="/assets/img/avatar.png"></td>
         <td>
-            {{ strtoupper($company->name) }}<br>
-            {{ strtoupper($company->address1) }}<br>
-            {!! ($company->address2) ? strtoupper($company->address2) . '<br>' : '' !!}
-            {{ strtoupper($company->city . ', ' . $company->state . ' ' . $company->postal_code) }}<br>
-            {{ ($company->country_id) ? strtoupper($company->country->name) : '' }}<br>
-            TEL: {{ $company->phone }}<br>
-            EMAIL: {{ $company->email }}
+{{ strtoupper($company->name) }}<br>
+{!! strtoupper($company->present()->addressAsString()) !!}<br>
+TEL: {{ $company->phone }}<br>
+EMAIL: {{ $company->email }}
         </td>
         <td><br><br><h2>Sticker # %%STICKER_NUMBER%% / {{ $totalPackages }}</h2></td>
     </tr>
@@ -31,22 +28,16 @@
     <tr>
         <td width="10%">FROM:</td>
         <td>
-            <b>{{ strtoupper($warehouse->shipper->business_name) }}</b><br>
-            {{ strtoupper($shipper->address1) }}<br>
-            {!! ($shipper->address2) ? strtoupper($shipper->address2) . '<br>' : '' !!}
-            {{ strtoupper($shipper->city . ', ' . $shipper->state . ' ' . $shipper->postal_code) }}<br>
-            {{ ($country = $shipper->country) ? strtoupper($country->name) : '' }}
-            <br>
+<b>{{ strtoupper($warehouse->present()->shipperName()) }}</b><br>
+{!! strtoupper($shipper->present()->addressAsString()) !!}<br>
+<br>
         </td>
     </tr>
     <tr>
         <td width="10%">TO:</td>
         <td>
-            <b>{{ strtoupper($consignee->getFullName()) }}</b><br>
-            {{ strtoupper($consignee->address1) }}<br>
-            {!! ($consignee->address2) ? strtoupper($consignee->address2) . '<br>' : '' !!}
-            {{ strtoupper($consignee->city . ', ' . $consignee->state . ' ' . $consignee->postal_code) }}<br>
-            {{ ($consignee->country_id) ? strtoupper($consignee->country->name) : '' }}<br>
+<b>{{ strtoupper($consignee->present()->fullName()) }}</b><br>
+{!! strtoupper($consignee->present()->addressAsString()) !!}<br>
         </td>
     </tr>
 </table>

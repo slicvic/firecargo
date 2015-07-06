@@ -3,18 +3,12 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:8889
--- Generation Time: Jun 24, 2015 at 03:30 PM
+-- Generation Time: Jul 06, 2015 at 02:52 PM
 -- Server version: 5.5.34
 -- PHP Version: 5.5.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `ssg`
@@ -41,15 +35,18 @@ CREATE TABLE `companies` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `companies`
 --
 
 INSERT INTO `companies` (`id`, `name`, `phone`, `fax`, `email`, `address1`, `address2`, `city`, `state`, `postal_code`, `country_id`, `created_at`, `updated_at`) VALUES
-(1, 'Lantigua Group', '4074318518', '111', 'xxxmanuel185@gmail.com', '6320 nw 114th ave', 'apt 1237', 'doral', 'FL', '33178', 2, '2015-03-23 22:58:37', '2015-05-30 15:39:14'),
-(2, 'Sion Services Group', '', '', '', '', '', '', '', '', 0, '2015-03-23 22:59:07', '2015-03-23 23:05:58');
+(1, 'Lantigua Group', '1234567', '7654321', 'hello@gmail.com', '6320 NW 114TH AVE', 'APT 1237', 'City', 'State', '33178', 1, '2015-03-23 22:58:37', '2015-07-05 20:22:18'),
+(2, 'Sion Services Group', '', '', '', '', '', '', '', '', 0, '2015-03-23 22:59:07', '2015-03-23 23:05:58'),
+(3, 'TEST COMpany', '', '', '', '', '', '', '', '', 0, '2015-07-02 17:14:09', '2015-07-02 17:14:09'),
+(4, 'test23', '', '', '', '', '', '', '', '', 0, '2015-07-02 17:14:25', '2015-07-02 17:14:25'),
+(5, 'new test', '', '', '', '', '', '', '', '', 0, '2015-07-02 17:48:24', '2015-07-02 17:48:24');
 
 -- --------------------------------------------------------
 
@@ -81,23 +78,23 @@ CREATE TABLE `couriers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` bigint(20) unsigned NOT NULL,
   `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `deleted` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `couriers`
 --
 
-INSERT INTO `couriers` (`id`, `site_id`, `name`, `deleted`, `created_at`, `updated_at`) VALUES
-(1, 0, 'UPS', 0, '0000-00-00 00:00:00', '2015-03-26 03:30:34'),
-(2, 0, 'USPS', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 0, 'FedEx', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(13, 2, 'LaserShip', 1, '2015-03-23 02:28:36', '2015-04-29 18:13:00'),
-(14, 2, 'LaserShip', 0, '2015-04-29 18:13:08', '2015-04-29 18:13:08'),
-(15, 1, 'xxxx22', 1, '2015-05-29 14:41:14', '2015-05-29 14:41:27');
+INSERT INTO `couriers` (`id`, `site_id`, `name`, `created_at`, `updated_at`) VALUES
+(16, 0, 'UPS', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(17, 0, 'USPS', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(18, 0, 'FedEx', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(19, 0, 'LaserShip', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(20, 1, 'dd22', '2015-07-02 17:27:38', '2015-07-02 17:31:06'),
+(21, 1, 'xx', '2015-07-02 17:31:00', '2015-07-02 17:31:00'),
+(22, 1, 'new test', '2015-07-02 17:49:38', '2015-07-02 17:49:38');
 
 -- --------------------------------------------------------
 
@@ -108,8 +105,8 @@ INSERT INTO `couriers` (`id`, `site_id`, `name`, `deleted`, `created_at`, `updat
 CREATE TABLE `packages` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `warehouse_id` bigint(20) unsigned NOT NULL,
-  `type_id` bigint(20) unsigned NOT NULL,
-  `status_id` bigint(20) unsigned NOT NULL,
+  `type_id` bigint(20) unsigned DEFAULT NULL,
+  `status_id` bigint(20) unsigned DEFAULT NULL,
   `length` float NOT NULL,
   `width` float NOT NULL,
   `height` float NOT NULL,
@@ -118,51 +115,22 @@ CREATE TABLE `packages` (
   `invoice_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `invoice_amount` decimal(12,4) NOT NULL,
   `tracking_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `roll` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `deleted` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `ship` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `warehouse_id` (`warehouse_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
+  KEY `warehouse_id` (`warehouse_id`),
+  KEY `type_id` (`type_id`),
+  KEY `status_id` (`status_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=58 ;
 
 --
 -- Dumping data for table `packages`
 --
 
-INSERT INTO `packages` (`id`, `warehouse_id`, `type_id`, `status_id`, `length`, `width`, `height`, `weight`, `description`, `invoice_number`, `invoice_amount`, `tracking_number`, `roll`, `deleted`, `created_at`, `updated_at`) VALUES
-(7, 1, 1, 0, 1, 1, 1, 1, 'dfsdfsdfsdf\r\ndsfsdf', '', 0.0000, '', 1, 1, '2015-05-27 18:21:56', '2015-05-30 18:36:08'),
-(8, 5, 1, 0, 16, 10, 20, 6, 'test desc', '123', 100.0000, '1234567', 1, 0, '2015-05-28 23:13:36', '2015-05-28 23:13:36'),
-(9, 5, 0, 0, 16, 10, 20, 6, 'test desc', '123', 100.0000, '', 1, 0, '2015-05-28 23:13:36', '2015-05-28 23:13:36'),
-(10, 5, 0, 0, 16, 10, 20, 6, 'test desc', '123', 100.0000, '', 1, 0, '2015-05-28 23:13:36', '2015-05-28 23:13:36'),
-(11, 6, 1, 0, 16, 10, 20, 6, 'test desc', '123', 100.0000, '1234567', 1, 0, '2015-05-28 23:13:50', '2015-05-28 23:13:50'),
-(12, 7, 1, 0, 16, 10, 10, 6, 'desc', '12313', 100.0000, '12345566', 1, 0, '2015-05-28 23:14:19', '2015-05-28 23:15:51'),
-(15, 7, 1, 0, 16, 10, 10, 6, 'desc', '12313', 100.0000, '', 1, 0, '2015-05-28 23:15:51', '2015-05-28 23:15:51'),
-(16, 8, 1, 0, 16, 10, 10, 6, 'desc', '123', 100.0000, '123456', 1, 0, '2015-05-29 01:13:10', '2015-05-29 01:13:10'),
-(17, 8, 1, 0, 16, 10, 10, 6, 'desc', '123', 100.0000, '', 1, 0, '2015-05-29 01:13:10', '2015-05-29 01:13:10'),
-(18, 9, 1, 0, 16, 10, 10, 6, 'desc', '123', 100.0000, '123456', 1, 0, '2015-05-29 01:20:23', '2015-05-29 01:20:23'),
-(19, 10, 1, 1, 16, 10, 10, 6, 'desc', '123', 100.0000, '123456', 1, 0, '2015-05-29 01:24:24', '2015-05-29 01:24:24'),
-(20, 11, 1, 1, 16, 10, 10, 6, 'desc', '123', 100.0000, '123456', 1, 0, '2015-05-29 01:24:32', '2015-05-29 01:24:32'),
-(21, 12, 1, 2, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:42:02', '2015-05-30 18:42:31'),
-(22, 12, 1, 1, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:42:02', '2015-05-30 18:42:31'),
-(23, 12, 1, 1, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:42:02', '2015-05-30 18:42:31'),
-(24, 13, 1, 1, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:42:46', '2015-05-30 18:42:46'),
-(25, 13, 1, 2, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:42:46', '2015-05-30 18:42:46'),
-(26, 13, 1, 1, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:42:46', '2015-05-30 18:42:46'),
-(27, 14, 1, 1, 20, 20, 20, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:45:46', '2015-05-30 18:49:46'),
-(28, 14, 1, 4, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:45:46', '2015-05-30 18:49:46'),
-(29, 14, 1, 5, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:45:46', '2015-05-30 18:49:46'),
-(30, 14, 1, 5, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:45:46', '2015-05-30 18:49:46'),
-(31, 15, 1, 1, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:46:16', '2015-05-30 18:46:16'),
-(32, 15, 1, 2, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:46:16', '2015-05-30 18:46:16'),
-(33, 15, 1, 3, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:46:16', '2015-05-30 18:46:16'),
-(34, 15, 1, 4, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:46:16', '2015-05-30 18:46:16'),
-(35, 15, 1, 5, 0, 0, 0, 0, '', '', 0.0000, '', 1, 0, '2015-05-30 18:46:16', '2015-05-30 18:46:16'),
-(36, 16, 1, 0, 10, 10, 10, 6, 'item1', 'inv1', 21.0000, '111', 1, 0, '2015-05-31 19:30:23', '2015-05-31 19:32:25'),
-(37, 16, 1, 0, 10, 10, 10, 6, 'item2', 'inv2', 22.0000, '222', 1, 0, '2015-05-31 19:30:23', '2015-05-31 19:32:25'),
-(38, 17, 1, 0, 1, 1, 1, 0, '', '', 0.0000, '', 1, 0, '2015-05-31 21:23:30', '2015-05-31 21:23:30'),
-(39, 18, 1, 0, 1, 1, 1, 0, '', '', 0.0000, '', 0, 0, '2015-05-31 21:24:35', '2015-05-31 21:24:35'),
-(40, 19, 1, 8, 1, 1, 1, 0, '', '', 0.0000, '', 0, 0, '2015-05-31 21:26:13', '2015-06-01 12:56:39');
+INSERT INTO `packages` (`id`, `warehouse_id`, `type_id`, `status_id`, `length`, `width`, `height`, `weight`, `description`, `invoice_number`, `invoice_amount`, `tracking_number`, `ship`, `created_at`, `updated_at`) VALUES
+(52, 21, 10, 1, 0, 0, 0, 0, '', '', 0.0000, '', 1, '2015-06-26 19:28:29', '2015-06-26 19:28:29'),
+(57, 22, 10, 10, 16, 10, 10, 6, '', '', 0.0000, '123123123123', 1, '2015-07-05 21:40:48', '2015-07-05 21:40:48');
 
 -- --------------------------------------------------------
 
@@ -174,27 +142,27 @@ CREATE TABLE `package_statuses` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` int(10) unsigned NOT NULL,
   `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `color` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `is_default` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `deleted` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `package_statuses`
 --
 
-INSERT INTO `package_statuses` (`id`, `site_id`, `name`, `color`, `is_default`, `deleted`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Recibido USA', '', 0, 0, '0000-00-00 00:00:00', '2015-04-12 18:55:50'),
-(2, 2, 'En proceso de despacho USA', '', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 2, 'Despachado desde USA', '', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 2, 'Recibido Colombia', '', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 2, 'En reparto Nacional', '', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(8, 1, 'Status 1', '#ff40ff', 0, 1, '2015-06-01 12:25:26', '2015-06-01 13:46:49'),
-(9, 1, 'Status 1', '#ff8ad8', 0, 0, '2015-06-01 12:25:31', '2015-06-01 13:46:49'),
-(10, 1, 'Status 2', '#000000', 1, 0, '2015-06-01 12:25:36', '2015-06-01 13:46:49');
+INSERT INTO `package_statuses` (`id`, `site_id`, `name`, `is_default`, `created_at`, `updated_at`) VALUES
+(1, 2, 'Recibido USA', 0, '0000-00-00 00:00:00', '2015-04-12 18:55:50'),
+(2, 2, 'En proceso de despacho USA', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(3, 2, 'Despachado desde USA', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(4, 2, 'Recibido Colombia', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(5, 2, 'En reparto Nacional', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(8, 1, 'Status 1', 0, '2015-06-01 12:25:26', '2015-07-02 17:35:16'),
+(9, 1, 'Status 1', 0, '2015-06-01 12:25:31', '2015-06-01 13:46:49'),
+(10, 1, 'Status 2', 1, '2015-06-01 12:25:36', '2015-06-01 13:46:49'),
+(11, 1, 'resdasd', 0, '2015-07-02 17:35:41', '2015-07-02 17:35:41'),
+(12, 1, 'new test', 0, '2015-07-02 17:49:54', '2015-07-02 17:49:54');
 
 -- --------------------------------------------------------
 
@@ -206,31 +174,32 @@ CREATE TABLE `package_types` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `site_id` int(10) unsigned NOT NULL,
   `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `deleted` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `package_types`
 --
 
-INSERT INTO `package_types` (`id`, `site_id`, `name`, `deleted`, `created_at`, `updated_at`) VALUES
-(1, 0, 'Box', 0, '2015-03-23 01:29:12', '2015-04-12 19:02:06'),
-(2, 0, 'Piece', 0, '2015-03-23 02:10:00', '2015-03-26 03:30:45'),
-(3, 0, 'Bundle', 0, '2015-03-23 02:10:07', '2015-03-26 03:30:50'),
-(4, 0, 'Carton', 0, '2015-03-23 02:11:07', '2015-03-26 03:30:54'),
-(5, 0, 'Roll', 0, '2015-03-23 02:11:19', '2015-03-26 03:30:59'),
-(6, 0, 'Crate', 0, '2015-03-23 02:11:31', '2015-03-26 03:31:03'),
-(7, 0, 'Pallet', 0, '2015-03-23 02:11:39', '2015-03-23 02:11:39'),
-(8, 0, 'Drum', 0, '2015-03-23 02:11:42', '2015-03-26 03:31:28'),
-(9, 0, 'Tube', 0, '2015-03-23 02:11:48', '2015-03-23 02:11:48'),
-(10, 0, 'Envelope', 0, '2015-03-23 02:11:52', '2015-03-26 03:31:37'),
-(11, 1, 'adasd', 1, '2015-05-29 14:23:44', '2015-05-29 14:36:17'),
-(12, 1, 'xx', 1, '2015-05-29 14:33:27', '2015-05-29 14:35:58'),
-(13, 1, '2323', 1, '2015-05-29 14:36:30', '2015-05-29 14:36:36'),
-(14, 1, 'xxx', 1, '2015-05-29 14:36:51', '2015-05-29 14:44:34');
+INSERT INTO `package_types` (`id`, `site_id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 0, 'Box', '2015-03-23 01:29:12', '2015-04-12 19:02:06'),
+(2, 0, 'Piece', '2015-03-23 02:10:00', '2015-03-26 03:30:45'),
+(3, 0, 'Bundle', '2015-03-23 02:10:07', '2015-03-26 03:30:50'),
+(4, 0, 'Carton', '2015-03-23 02:11:07', '2015-03-26 03:30:54'),
+(5, 0, 'Roll', '2015-03-23 02:11:19', '2015-03-26 03:30:59'),
+(6, 0, 'Crate', '2015-03-23 02:11:31', '2015-03-26 03:31:03'),
+(7, 0, 'Pallet', '2015-03-23 02:11:39', '2015-03-23 02:11:39'),
+(8, 0, 'Drum', '2015-03-23 02:11:42', '2015-03-26 03:31:28'),
+(9, 0, 'Tube', '2015-03-23 02:11:48', '2015-03-23 02:11:48'),
+(10, 0, 'Envelope', '2015-03-23 02:11:52', '2015-03-26 03:31:37'),
+(11, 1, 'adasdxx2', '2015-05-29 14:23:44', '2015-07-02 17:25:56'),
+(12, 1, 'xx', '2015-05-29 14:33:27', '2015-05-29 14:35:58'),
+(13, 1, '2323', '2015-05-29 14:36:30', '2015-05-29 14:36:36'),
+(14, 1, 'xxx', '2015-05-29 14:36:51', '2015-05-29 14:44:34'),
+(15, 1, 'sdsd', '2015-07-02 17:26:06', '2015-07-02 17:26:06'),
+(16, 1, 'new test', '2015-07-02 17:49:21', '2015-07-02 17:49:21');
 
 -- --------------------------------------------------------
 
@@ -246,19 +215,28 @@ CREATE TABLE `roles` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `roles`
 --
 
 INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'login', 'Login privileges', '0000-00-00 00:00:00', '2015-04-12 19:12:37'),
+(1, 'login', 'Login privileges', '0000-00-00 00:00:00', '2015-07-02 17:16:48'),
 (2, 'admin', 'Administrative user, has access to everything.', '0000-00-00 00:00:00', '2015-03-21 17:34:02'),
 (3, 'agent', 'A registered company or business', '0000-00-00 00:00:00', '2015-03-24 03:18:46'),
 (4, 'client', 'A client of a company or business', '0000-00-00 00:00:00', '2015-03-24 03:19:00'),
 (6, 'consignee', 'A consignee', '0000-00-00 00:00:00', '2015-05-29 18:24:21'),
-(7, 'shipper', 'A shipper', '0000-00-00 00:00:00', '2015-05-29 18:24:29');
+(7, 'shipper', 'A shipper', '0000-00-00 00:00:00', '2015-05-29 18:24:29'),
+(8, 'test1', 'test1 desc', '2015-07-02 17:00:50', '2015-07-02 17:00:50'),
+(9, 'sss', 'eqwew', '2015-07-02 17:06:31', '2015-07-02 17:06:31'),
+(10, 'tssdf', 'asd', '2015-07-02 17:07:29', '2015-07-02 17:07:29'),
+(13, 'sadasd', 'asd', '2015-07-02 17:07:55', '2015-07-02 17:07:55'),
+(14, 'saasd', 'asdasd', '2015-07-02 17:08:30', '2015-07-02 17:08:30'),
+(16, 'ASD', 'SADA', '2015-07-02 17:09:16', '2015-07-02 17:09:16'),
+(17, 'test', 'wewe', '2015-07-02 17:16:56', '2015-07-02 17:16:56'),
+(18, 'new test', '', '2015-07-02 17:48:02', '2015-07-02 17:48:02'),
+(19, 'zxcz', 'zxc', '2015-07-02 17:51:02', '2015-07-02 17:51:02');
 
 -- --------------------------------------------------------
 
@@ -278,7 +256,7 @@ CREATE TABLE `roles_users` (
 
 INSERT INTO `roles_users` (`user_id`, `role_id`) VALUES
 (1003, 1),
-(1003, 3),
+(1003, 2),
 (1004, 1),
 (1004, 4),
 (1005, 4),
@@ -312,16 +290,24 @@ INSERT INTO `roles_users` (`user_id`, `role_id`) VALUES
 (1021, 4),
 (1022, 1),
 (1022, 4),
-(1023, 1),
-(1023, 4),
-(1024, 1),
+(1023, 7),
 (1024, 4),
+(1025, 1),
+(1025, 4),
 (1026, 1),
 (1026, 4),
 (1027, 1),
 (1027, 3),
 (1028, 1),
-(1028, 3);
+(1028, 3),
+(1033, 1),
+(1033, 4),
+(1034, 1),
+(1034, 4),
+(1035, 1),
+(1035, 4),
+(1036, 1),
+(1036, 4);
 
 -- --------------------------------------------------------
 
@@ -337,7 +323,7 @@ CREATE TABLE `sites` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `sites`
@@ -345,7 +331,9 @@ CREATE TABLE `sites` (
 
 INSERT INTO `sites` (`id`, `company_id`, `name`, `display_name`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Master', 'Master', '2015-03-23 23:20:35', '2015-04-16 12:48:30'),
-(2, 2, 'SionBox', 'SionBox Display Name', '2015-03-23 23:05:44', '2015-03-29 17:21:02');
+(2, 2, 'SionBox', 'SionBox Display Name', '2015-03-23 23:05:44', '2015-03-29 17:21:02'),
+(3, 1, 'test', 'test2', '2015-07-02 17:18:47', '2015-07-02 17:18:47'),
+(4, 1, 'new test', 'new test', '2015-07-02 17:49:01', '2015-07-02 17:49:01');
 
 -- --------------------------------------------------------
 
@@ -359,50 +347,50 @@ CREATE TABLE `users` (
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `business_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `firstname` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `lastname` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `first_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `dob` date NOT NULL,
   `id_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `phone` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `cellphone` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `mobile_phone` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `fax` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `address1` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `address2` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `city` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `state` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `postal_code` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `country_id` int(10) unsigned NOT NULL,
-  `autoroll_packages` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `autoship_packages` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `remember_token` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `logins` int(10) unsigned NOT NULL DEFAULT '0',
   `last_login` datetime NOT NULL,
-  `deleted` tinyint(1) unsigned NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1023 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1037 ;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `site_id`, `email`, `password`, `business_name`, `firstname`, `lastname`, `dob`, `id_number`, `phone`, `cellphone`, `address1`, `address2`, `city`, `state`, `postal_code`, `country_id`, `autoroll_packages`, `remember_token`, `logins`, `last_login`, `deleted`, `created_at`, `updated_at`) VALUES
-(1003, 2, 'agent@gmail.com', '$2y$10$FtActDLxelaBV0JilSUllutHMZ7Vv9syyBvIIR0Q0lt/RSxQUTo2m', '', 'Agent', 'Jose', '2011-11-11', '0', '', '', '6320 nw 114th ave', '', '', '', '', 0, 1, 'gDSoVruinsDIw8PDfs5FO0iirdlGiti1Q6M58eS23gWeUnZHET6467JZklbN', 59, '2015-03-17 02:42:12', 0, '2015-01-29 04:41:09', '2015-05-28 23:19:01'),
-(1004, 2, 'client@gmail.com', '$2y$10$DKPhhl46ZzQU/nPw1AOhTu/N7XkdbXzDK8t3YOB4dg.y3Lg6EQsRy', '', 'Client', 'John', '1922-06-14', '', '', '', '', '', '', '', '', 0, 1, 'UXvH3FdK6HAbEm9mD3Q9hEKFmV9rH4SZKe8aEMeFI7IhaZHd1uPQFbMZnRP5', 13, '2015-02-24 02:22:43', 0, '2015-01-30 01:35:49', '2015-04-16 12:43:13'),
-(1020, 1, 'admin@gmail.com', '$2y$10$tgDN1MnZDWxeCBhptgK4qOgereq0pKGV5W6eBtsXFc7YXw7TqxkA.', '', 'Admin', 'Vic', '2011-11-11', '', '', '', '', '', '', '', '', 1, 1, 'p8lKpwUIopkjm3Sq6x9zYlte3O9Es8jOd3pDd4FLMJxnrO0GuUqCuFBHEn97', 59, '2015-03-17 02:43:56', 0, '2015-01-29 04:41:09', '2015-05-31 21:26:49'),
-(1021, 2, 'vmlantigua@gmail.com', '$2y$10$iYmOEtQojXlztxsFf4y/We3T2CiMPWHDmzi8I1.66sPc0u.Ygus06', '', 'victor', 'lantigua', '0000-00-00', 'sdasdasd', '4074318518', '4074318518', '6320 nw 114th ave', 'apt 1237', 'doral', 'FL', '33178', 0, 1, 'UP3gKWE6n7zMVQOxQQT0J5anPJhfvRQP7uSkv6X6io0s0yvmovRjFsCnbgog', 0, '0000-00-00 00:00:00', 0, '2015-05-28 23:22:21', '2015-05-29 22:46:57'),
-(1022, 2, 'jose@lara.com', '$2y$10$hGtzf6gzsuPrUVlqzi0cVOjszmaUX3guaAd7F8C5FWrx32h260lEG', 'xx', 'jose', 'lara', '0000-00-00', '3378', '3053609673', '3053609673', '12374 nw 97 ct', 'apt 2324', 'hialeah gardens', 'Florida', '33018', 1, 1, NULL, 0, '0000-00-00 00:00:00', 0, '2015-05-29 22:55:29', '2015-06-01 14:02:05');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user_settings`
---
-
-CREATE TABLE `user_settings` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `autoroll_packages` tinyint(11) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+INSERT INTO `users` (`id`, `site_id`, `email`, `password`, `business_name`, `first_name`, `last_name`, `dob`, `id_number`, `phone`, `mobile_phone`, `fax`, `address1`, `address2`, `city`, `state`, `postal_code`, `country_id`, `autoship_packages`, `remember_token`, `logins`, `last_login`, `created_at`, `updated_at`) VALUES
+(1003, 2, 'agent@gmail.com', '$2y$10$FtActDLxelaBV0JilSUllutHMZ7Vv9syyBvIIR0Q0lt/RSxQUTo2m', 'agent jose b', 'Agent', 'Jose', '2011-11-11', '', '', '', '', '6320 nw 114th ave', '', '', '', '', 1, 1, 'gDSoVruinsDIw8PDfs5FO0iirdlGiti1Q6M58eS23gWeUnZHET6467JZklbN', 60, '2015-06-26 19:26:53', '2015-01-29 04:41:09', '2015-06-26 19:26:53'),
+(1004, 2, 'client@gmail.com', '$2y$10$DKPhhl46ZzQU/nPw1AOhTu/N7XkdbXzDK8t3YOB4dg.y3Lg6EQsRy', '', 'Jane', 'Doe', '1922-06-14', '', '', '', '', '', '', '', '', '', 1, 1, 'UXvH3FdK6HAbEm9mD3Q9hEKFmV9rH4SZKe8aEMeFI7IhaZHd1uPQFbMZnRP5', 13, '2015-02-24 02:22:43', '2015-01-30 01:35:49', '2015-06-25 21:07:40'),
+(1020, 1, 'admin@gmail.com', '$2y$10$bmFFlOhyrPGRKEwAUuD01ON7u3Xe70MEOf8ORAReaPnTSnpFX.NP2', '', 'Admin', 'Vic', '2011-11-11', '13212121212', '1234567', '7654321', '', 'LINE 1', 'LINE 2', 'City', 'State', '12345', 1, 1, 'vjC1HcYjSusMC6m83bayfxQfYaI7JRlOHZF0L8pmvRQ5ElHUcVq75zHidQmB', 93, '2015-07-06 11:45:08', '2015-01-29 04:41:09', '2015-07-06 12:24:10'),
+(1023, 1, '', NULL, 'Amazon', '', '', '0000-00-00', '', '', '', '', '1200 12th Ave', '', 'Seattle', 'WA', '98144', 1, 1, NULL, 0, '0000-00-00 00:00:00', '2015-06-25 21:03:57', '2015-06-30 13:08:24'),
+(1024, 1, '', NULL, '', '', '', '0000-00-00', '', '', '', '323', '3535 NW 87th Ave', 'Apt 12345', 'Doral', 'FL', '3312', 1, 1, NULL, 0, '0000-00-00 00:00:00', '2015-06-25 21:13:24', '2015-06-30 13:08:36'),
+(1025, 1, 'michaeljordan@gmail.com', '$2y$10$Kws9jtAzFLdRfelc2RzGueywtXNlscILXderdbVfLV2yfUa6sHbL2', '', 'Michael', 'Jordan', '0000-00-00', '', '3053626016', '7863214567', '', '1234 Ave 18th Ct', 'Apt 66', 'Chicago', 'IL', '23455', 1, 1, 'HmPphVnWwG5NRSxyYSXAVJ8xW2lIjxpfOw8nkzxmdSS3daiytaJctSaK6DXw', 0, '0000-00-00 00:00:00', '2015-06-26 12:18:23', '2015-06-26 12:24:04'),
+(1026, 1, '', NULL, 'test', '', '', '0000-00-00', '', '', '', '', '', '', '', '', '', 1, 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-02 15:52:24', '2015-07-02 15:52:24'),
+(1027, 1, '', NULL, 'test', '', '', '0000-00-00', '', '', '', '', '', '', '', '', '', 1, 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-02 16:12:17', '2015-07-02 16:12:17'),
+(1028, 1, '', NULL, 'test2', '', '', '0000-00-00', '', '', '', '', '', '', '', '', '', 1, 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-02 16:31:13', '2015-07-02 16:31:13'),
+(1029, 1, '', NULL, 'test55', '', '', '0000-00-00', '', '', '', '', '', '', '', '', '', 1, 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-02 16:32:03', '2015-07-02 16:32:03'),
+(1030, 1, '', NULL, 'test3333', '', '', '0000-00-00', '', '', '', '', '', '', '', '', '', 1, 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-02 16:49:38', '2015-07-02 16:49:38'),
+(1031, 1, '', NULL, 'asd', '', '', '0000-00-00', '', '', '', '', '', '', '', '', '', 1, 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-02 16:50:52', '2015-07-02 16:50:52'),
+(1032, 2, '', NULL, 'new test', '', '', '0000-00-00', '', '', '', '', '', '', '', '', '', 1, 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-02 17:47:32', '2015-07-02 17:47:32'),
+(1033, 1, 'asdas@gmail.com', '$2y$10$Erj8KjBAKVHUbpk.cuA9cuWDL/rZrMCXQTICJqnWcveeTBiQ1WPNS', '', 'Sdasd', 'Cscas', '0000-00-00', '', '', '23', '', 'sd', '', 'Asd', 'asd', 'sdfs', 1, 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-02 21:18:27', '2015-07-02 21:18:27'),
+(1034, 1, 'asdxxxxxas@gmail.com', '$2y$10$z/YfDqu9Bqc8cQ755j/.fuMh3v/fIJ21BivwaITnRjNd4PfnW562C', '', 'Sdasd', 'Cscas', '0000-00-00', '', '', '23', '', 'sd', '', 'Asd', 'asd', 'sdfs', 1, 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-02 21:19:04', '2015-07-02 21:19:04'),
+(1035, 1, 'adklknlkknlmin@gmail.com', '$2y$10$wp4cduKcsyoT3qFH7B.o2OBVIJKqmof1Wwq09/te3QZ69jCO61Tva', '', 'Sadasd', 'Jkhkj', '0000-00-00', '', '', '23', '', 'asdasd', '', 'Asdas', 'asd', '3234', 1, 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-02 21:22:38', '2015-07-02 21:22:38'),
+(1036, 1, 'adklknlkkkkkknlmin@gmail.com', '$2y$10$yGdh9yOH5LzBMo4jtG0w4.CvtcQMzYTPgFqUJAp4YuFVkFMK/6Qcq', '', 'Sadasd', 'Jkhkj', '0000-00-00', '', '', '23', '', 'asdasd', '', 'Asdas', 'asd', '3234', 1, 1, '4uT8th5B6OY9mYUEQL6YQcyW7Xk6b1fUakGUCFZMaYzVec1zDQngZ3CDrQjK', 0, '0000-00-00 00:00:00', '2015-07-02 21:24:39', '2015-07-02 21:24:47');
 
 -- --------------------------------------------------------
 
@@ -415,38 +403,37 @@ CREATE TABLE `warehouses` (
   `site_id` int(10) unsigned NOT NULL,
   `shipper_user_id` bigint(20) unsigned NOT NULL,
   `consignee_user_id` bigint(20) unsigned NOT NULL,
-  `courier_id` int(10) unsigned NOT NULL,
+  `courier_id` int(10) unsigned DEFAULT NULL,
+  `description` varchar(1000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `arrived_at` datetime NOT NULL,
-  `deleted` tinyint(1) unsigned NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+  PRIMARY KEY (`id`),
+  KEY `courier_id` (`courier_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `warehouses`
 --
 
-INSERT INTO `warehouses` (`id`, `site_id`, `shipper_user_id`, `consignee_user_id`, `courier_id`, `arrived_at`, `deleted`, `created_at`, `updated_at`) VALUES
-(1, 1, 1020, 1020, 1, '1970-01-01 00:00:00', 0, '0000-00-00 00:00:00', '2015-05-27 18:21:56'),
-(3, 1, 1020, 1020, 1, '2015-05-28 22:33:00', 0, '2015-05-28 22:34:29', '2015-05-28 22:34:29'),
-(4, 1, 1020, 1020, 1, '2015-05-28 22:42:00', 0, '2015-05-28 22:43:21', '2015-05-28 22:43:21'),
-(5, 2, 1003, 1004, 1, '2015-05-28 23:12:00', 0, '2015-05-28 23:13:36', '2015-05-28 23:13:36'),
-(6, 2, 1003, 1004, 1, '2015-05-28 23:12:00', 0, '2015-05-28 23:13:50', '2015-05-28 23:13:50'),
-(7, 2, 1003, 1004, 1, '2015-05-28 23:13:00', 0, '2015-05-28 23:14:19', '2015-05-28 23:14:19'),
-(8, 2, 1003, 1021, 1, '2015-05-29 01:12:00', 0, '2015-05-29 01:13:10', '2015-05-29 01:13:10'),
-(9, 2, 1003, 1021, 1, '2015-05-29 01:12:00', 0, '2015-05-29 01:20:23', '2015-05-29 01:20:23'),
-(10, 2, 1003, 1021, 1, '2015-05-29 01:12:00', 0, '2015-05-29 01:24:24', '2015-05-29 01:24:24'),
-(11, 2, 1003, 1021, 1, '2015-05-29 01:12:00', 0, '2015-05-29 01:24:32', '2015-05-29 01:24:32'),
-(12, 1, 1020, 1020, 1, '2015-05-30 18:40:00', 0, '2015-05-30 18:42:01', '2015-05-30 18:42:01'),
-(13, 1, 1020, 1020, 1, '2015-05-30 18:42:00', 0, '2015-05-30 18:42:46', '2015-05-30 18:42:46'),
-(14, 1, 1020, 1020, 1, '2015-05-30 18:45:00', 0, '2015-05-30 18:45:45', '2015-05-30 18:45:45'),
-(15, 1, 1020, 1020, 1, '2015-05-30 18:45:00', 0, '2015-05-30 18:46:16', '2015-05-30 18:46:16'),
-(16, 1, 1020, 1020, 1, '2015-05-31 19:29:00', 0, '2015-05-31 19:30:22', '2015-05-31 19:30:22'),
-(17, 1, 1020, 1020, 1, '2015-05-31 21:23:00', 0, '2015-05-31 21:23:30', '2015-05-31 21:23:30'),
-(18, 1, 1020, 1020, 1, '2015-05-31 21:24:00', 0, '2015-05-31 21:24:35', '2015-05-31 21:24:35'),
-(19, 1, 1020, 1020, 1, '2015-05-31 21:26:00', 0, '2015-05-31 21:26:13', '2015-05-31 21:26:13');
+INSERT INTO `warehouses` (`id`, `site_id`, `shipper_user_id`, `consignee_user_id`, `courier_id`, `description`, `arrived_at`, `created_at`, `updated_at`) VALUES
+(21, 2, 1003, 1003, NULL, '', '2015-06-26 19:27:00', '2015-06-26 19:28:29', '2015-06-26 19:28:29'),
+(22, 1, 1023, 1025, 19, 'hi there', '2015-06-27 04:10:00', '2015-06-27 04:11:52', '2015-07-05 21:38:05');
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `packages`
+--
+ALTER TABLE `packages`
+  ADD CONSTRAINT `fk_packages_packagestatuses_statusid` FOREIGN KEY (`status_id`) REFERENCES `package_statuses` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_packages_packagetypes_typeid` FOREIGN KEY (`type_id`) REFERENCES `package_types` (`id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_packages_warehouses_warehouseid` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `warehouses`
+--
+ALTER TABLE `warehouses`
+  ADD CONSTRAINT `fk_warehouses_couriers_courierid` FOREIGN KEY (`courier_id`) REFERENCES `couriers` (`id`) ON DELETE SET NULL;

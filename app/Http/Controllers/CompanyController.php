@@ -27,18 +27,19 @@ class CompanyController extends BaseAuthController {
      */
     public function getProfile()
     {
-        $content = view('company.show');
-        return view('company.layout', ['company' => $this->user->site->company, 'content' => $content]);
+        $company = $this->user->site->company;
+        $view = view('company.show', ['company' => $company]);
+        return view('company.layout', ['company' => $company, 'content' => $view]);
     }
 
     /**
      * Displays the form for editing a company's profile.
      */
-    public function getEdit()
+    public function getEditProfile()
     {
         $company = $this->user->site->company;
-        $content = view('company.edit', ['company' => $company]);
-        return view('company.layout', ['company' => $company, 'content' => $content]);
+        $view = view('company.edit', ['company' => $company]);
+        return view('company.layout', ['company' => $company, 'content' => $view]);
     }
 
     /**
@@ -57,7 +58,7 @@ class CompanyController extends BaseAuthController {
         $this->user->site->company->update($input);
 
         Flash::success('Profile updated.');
-        return redirect()->back();
+        return redirect('/company/profile');
     }
 
     /**

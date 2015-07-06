@@ -46,7 +46,7 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label">ID / RUT<span class="required-field">*</span></label>
 							<div class="col-md-6">
-								<input type="text" name="user[nin]" class="form-control" value="{{ Input::old('user.nin') }}" required>
+								<input type="text" name="user[id_number]" class="form-control" value="{{ Input::old('user.id_number') }}" required>
 							</div>
 						</div>
 					</fieldset>

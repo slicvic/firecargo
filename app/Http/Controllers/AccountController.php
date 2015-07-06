@@ -27,12 +27,21 @@ class AccountController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for updating the user's profile.
+     * Displays the user's profile.
      */
     public function getProfile()
     {
-        $profileView = view('account.profile', ['user' => $this->user]);
-        return view('account.layout', ['content' => $profileView]);
+        $view = view('account.show', ['user' => $this->user]);
+        return view('account.layout', ['content' => $view]);
+    }
+
+    /**
+     * Shows the form for updating the user's profile.
+     */
+    public function getEditProfile()
+    {
+        $view = view('account.edit', ['user' => $this->user]);
+        return view('account.layout', ['content' => $view]);
     }
 
     /**
@@ -58,17 +67,17 @@ class AccountController extends BaseAuthController {
         }
 
         // Update profile
-        $input['user']['autoroll_packages'] = isset($input['user']['autoroll_packages']);
-
+        $input['user']['autoship_packages'] = isset($input['user']['autoship_packages']);
         $this->user->update($input['user']);
 
+        Flash::success('Your profile was updated.');
         return redirect()->back();
     }
 
     /**
      * Shows the form for changing the user's password.
      */
-    public function getPassword()
+    public function getChangePassword()
     {
         $passwordView = view('account.password');
         return view('account.layout', ['content' => $passwordView]);
@@ -77,7 +86,7 @@ class AccountController extends BaseAuthController {
     /**
      * Updates the user's password.
      */
-    public function postPassword(Request $request)
+    public function postChangePassword(Request $request)
     {
         $input = $request->all();
 

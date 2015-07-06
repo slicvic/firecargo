@@ -3,6 +3,7 @@
 use DB;
 use App\Helpers\Math;
 use App\Models\SiteTrait;
+use App\Presenters\PresentableTrait;
 
 /**
  * Warehouse
@@ -11,7 +12,9 @@ use App\Models\SiteTrait;
  */
 class Warehouse extends Base {
 
-    use SiteTrait;
+    use SiteTrait, PresentableTrait;
+
+    protected $presenter = 'App\Presenters\Warehouse';
 
     protected $table = 'warehouses';
 
@@ -83,20 +86,6 @@ class Warehouse extends Base {
     public function packages()
     {
         return $this->hasMany('App\Models\Package');
-    }
-
-    /**
-     * Gets the human readable arrival date and time.
-     *
-     * @param  $withTime
-     * @return string
-     */
-    public function getArrivalDate($withTime = TRUE)
-    {
-        $dateFormat = 'n/j/Y';
-        if ($withTime)
-            return date($dateFormat . ' g:i A', strtotime($this->arrived_at));
-        return date($dateFormat, strtotime($this->arrived_at));
     }
 
     /**

@@ -1,11 +1,17 @@
 <?php namespace App\Models;
 
+use App\Presenters\PresentableTrait;
+
 /**
  * Company
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
 class Company extends Base {
+
+    use PresentableTrait;
+
+    protected $presenter = 'App\Presenters\Company';
 
     protected $table = 'companies';
 
@@ -35,29 +41,36 @@ class Company extends Base {
     }
 
     /**
-     * Gets the logo URL.
+     * Overrides parent method to sanitize certain attributes.
      *
-     * @param  string $size sm|md|lg
-     * @return string
+     * @see parent::setAttribute()
      */
-    public function getLogoUrl($size = 'sm')
+    public function setAttribute($key, $value)
     {
-        $path = 'uploads/companies/' . $this->id . '/images/logo/' . $size . '.png';
+        switch ($key) {
+            case 'city':
+            case 'state':
+                $value = ucwords(strtolower(trim($value)));
+                break;
 
-        if (file_exists(public_path() . '/' . $path)) {
-            return asset($path) . '?cb=' . time();
+            case 'address1':
+            case 'address2':
+                $value = strtoupper(trim($value));
+                break;
         }
 
-        return NULL;
+        return parent::setAttribute($key, $value);
     }
 
     /**
-     * Gets the default logo URL.
+     * Checks if a logo image file exists.
      *
-     * @return string
+     * @param  string $size sm|md|lg
+     * @return bool
      */
-    public function getDefaultLogoUrl()
+    public function hasLogo($size)
     {
-        return asset('assets/admin/img/avatar.png');
+        $path = 'uploads/companies/' . $this->id . '/images/logo/' . $size . '.png';
+        return file_exists(public_path() . '/' . $path);
     }
 }

@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use App\Helpers\Math;
+use App\Presenters\PresentableTrait;
 
 /**
  * Package
@@ -8,6 +9,10 @@ use App\Helpers\Math;
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
 class Package extends Base {
+
+    use PresentableTrait;
+
+    protected $presenter = 'App\Presenters\Package';
 
     protected $table = 'packages';
 
@@ -27,7 +32,7 @@ class Package extends Base {
         'invoice_number',
         'invoice_amount',
         'tracking_number',
-        'roll'
+        'ship'
     ];
 
     /**

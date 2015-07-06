@@ -14,22 +14,16 @@
 <table border="0">
     <tr>
         <td width="60%">
-            {!! ($url = $company->getLogoUrl()) ? '<img src="' . $url . '"><br>' : '' !!}
+{!! ($company->hasLogo('sm')) ? '<img src="' . $company->present()->logoURL('sm') . '"><br>' : '' !!}
+{{ strtoupper($company->name) }}<br>
+{!! strtoupper($company->present()->addressAsString()) !!}<br>
+TEL: {{ $company->phone }}<br>
+EMAIL: {{ $company->email }}<br><br>
 
-            {{ strtoupper($company->name) }}<br>
-            {{ strtoupper($company->address1) }}<br>
-            {!! ($company->address2) ? strtoupper($company->address2) . '<br>' : '' !!}
-            {{ strtoupper($company->city . ', ' . $company->state . ' ' . $company->postal_code) }}<br>
-            {{ ($company->country_id) ? strtoupper($company->country->name) : '' }}<br>
-            TEL: {{ $company->phone }}<br>
-            EMAIL: {{ $company->email }}<br><br>
+RECEIVED FOR:<br><br>
+{{ strtoupper($consignee->present()->fullName()) }}<br>
+{!! strtoupper($consignee->present()->addressAsString()) !!}<br>
 
-            RECEIVED FOR:<br><br>
-            {{ strtoupper($consignee->getFullName()) }}<br>
-            {{ strtoupper($consignee->address1) }}<br>
-            {!! ($company->consignee) ? strtoupper($consignee->address2) . '<br>' : '' !!}
-            {{ strtoupper($consignee->city . ', ' . $consignee->state . ' ' . $consignee->postal_code) }}<br>
-            {{ ($consignee->country_id) ? strtoupper($consignee->country->name) : '' }}<br>
         </td>
 
         <td width="40%">
@@ -45,7 +39,7 @@
                     <td><small>PIECES</small><br>{{ $totalPackages }}</td>
                 </tr>
                 <tr>
-                    <td><small>GROSS WEIGHT</small><br>{{ $grossWeight }} LBS</td>
+                    <td><small>GROSS WEIGHT</small><br>{{ $grossWeight }} LB</td>
                     <td><small>CUBIC</small><br>{{ $cubicFeet }} CF</td>
                 </tr>
             </table>
@@ -81,11 +75,11 @@
                 </tr>
                 @foreach ($packages as $package)
                     <tr>
-                        <td>{{ ($package->type_id) ? strtoupper($package->type->name) : '' }}</td>
+                        <td>{{ $package->present()->type() }}</td>
                         <td>{{ $package->length }}</td>
                         <td>{{ $package->width }}</td>
                         <td>{{ $package->height }}</td>
-                        <td>{{ $package->weight }} LBS</td>
+                        <td>{{ strtoupper($package->present()->weight()) }}</td>
                         <td>{{ $package->tracking_number }}</td>
                     </tr>
                 @endforeach
@@ -145,8 +139,7 @@
             <br>
             <br>
             <br>
-            <br>
-            <small>CREATED BY: {{ Auth::user()->getFullName() }} using {{ env('APP_NAME') }}</small>
+            <small>CREATED BY: {{ Auth::user()->present()->fullName() }} using {{ env('APP_NAME') }}</small>
         </td>
     </tr>
 </table>

@@ -5,6 +5,7 @@ use Auth;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
+use App\Presenters\PresentableTrait;
 use App\Models\SiteTrait;
 
 /**
@@ -14,7 +15,9 @@ use App\Models\SiteTrait;
  */
 class User extends Base implements AuthenticatableInterface {
 
-    use AuthenticableTrait, SiteTrait;
+    use AuthenticableTrait, SiteTrait, PresentableTrait;
+
+    protected $presenter = 'App\Presenters\User';
 
     protected $table = 'users';
 
@@ -36,7 +39,7 @@ class User extends Base implements AuthenticatableInterface {
         'state',
         'postal_code',
         'country_id',
-        'autoroll_packages'
+        'autoship_packages'
     ];
 
     /**
@@ -69,30 +72,6 @@ class User extends Base implements AuthenticatableInterface {
     public function site()
     {
         return $this->belongsTo('App\Models\Site');
-    }
-
-    /**
-     * Gets the full name.
-     *
-     * @return string
-     */
-    public function getFullName()
-    {
-        return $this->first_name . ' ' . $this->last_name;
-    }
-
-    /**
-     * Gets the roles as an array.
-     *
-     * @return array
-     */
-    public function getRolesAsArray()
-    {
-        $roles = [];
-        foreach ($this->roles as $role) {
-            $roles[$role->id] = $role->name;
-        }
-        return $roles;
     }
 
     /**
@@ -189,7 +168,13 @@ class User extends Base implements AuthenticatableInterface {
             case 'first_name':
             case 'last_name':
             case 'city':
+            case 'state':
                 $value = ucwords(strtolower(trim($value)));
+                break;
+
+            case 'address1':
+            case 'address2':
+                $value = strtoupper(trim($value));
                 break;
 
             case 'password':
@@ -209,30 +194,15 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the profile photo URL.
+     * Checks if a profile photo image file exists.
      *
      * @param  string $size sm|md
-     * @return string
+     * @return bool
      */
-    public function getProfilePhotoUrl($size = 'sm')
+    public function hasProfilePhoto($size)
     {
         $path = 'uploads/users/' . $this->id . '/images/profile/' . $size . '.png';
-
-        if (file_exists(public_path() . '/' . $path)) {
-            return asset($path) . '?cb=' . time();
-        }
-
-        return NULL;
-    }
-
-    /**
-     * Gets the default profile photo URL.
-     *
-     * @return string
-     */
-    public function getDefaultProfilePhotoUrl()
-    {
-        return asset('assets/admin/img/avatar.png');
+        return file_exists(public_path() . '/' . $path);
     }
 
     /**
@@ -285,13 +255,11 @@ class User extends Base implements AuthenticatableInterface {
         $sql = '1';
         $bindings = [];
 
-        if (isset($criteria['site_id']) && is_array($criteria['site_id']) && count($criteria['site_id']))
-        {
+        if (isset($criteria['site_id']) && is_array($criteria['site_id']) && count($criteria['site_id'])) {
             $sql .= ' AND site_id IN (' . implode(',', $criteria['site_id']) . ')';
         }
 
-        if ( ! empty($criteria['search_term']))
-        {
+        if ( ! empty($criteria['search_term'])) {
             $searchTerm = '%' . $criteria['search_term'] . '%';
             $sql .= ' AND (id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR business_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
             $bindings = [$searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm];

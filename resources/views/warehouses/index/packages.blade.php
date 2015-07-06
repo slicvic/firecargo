@@ -15,10 +15,10 @@
         @foreach ($packages as $package)
             <tr>
                 <td>{{ $package->id }}</td>
-                <td>{{ ($package->type_id) ? $package->type->name: '' }}</td>
-                <td>{{ ($package->status_id) ? $package->status->name : '' }}</td>
-                <td>{{ $package->length . ' x ' . $package->width . ' x ' . $package->height }}</td>
-                <td>{{ $package->weight }} lb(s)</td>
+                <td>{{ $package->present()->type() }}</td>
+                <td>{{ $package->present()->status() }}</td>
+                <td>{{ $package->present()->dimensions() }}</td>
+                <td>{{ $package->present()->weight() }}</td>
                 <td>{{ $package->tracking_number }}</td>
                 <td>{{ $package->invoice_number }}</td>
                 <td>{{ $package->invoice_amount }}</td>

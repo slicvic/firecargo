@@ -28,8 +28,10 @@
             <input type="text" name="package[<?php echo $packageId; ?>][weight]" data-name="weight" class="metric form-control" size="5"  value="<?php echo $package->weight; ?>">
         </td>
         <td style="min-width: 100px">
-            <button type="button" class="btn-clone-package btn btn-sm btn-default"><i class="fa fa-copy"></i></button>
-            <button type="button" class="btn-remove-package btn btn-sm btn-danger"><i class="fa fa-times"></i></button>
+            <div class="btn-group">
+                <button type="button" class="btn-clone-package btn btn-sm btn-white">Clone</button>
+                <button type="button" class="btn-remove-package btn btn-sm btn-white">Remove</button>
+            </div>
         </td>
     </tr>
     <tr>

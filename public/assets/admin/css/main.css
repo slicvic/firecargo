@@ -70,11 +70,13 @@ legend {
 }*/
 
 .tag-list .tag-item {
-    background: #f3f3f4;
+    background-color: #f3f3f4;
+    border: 1px solid #e7eaec;
     padding: 2px 6px;
     font-size: 10px;
     text-transform: uppercase;
     margin-bottom: 2px;
+    display: block;
 }
 
 .dataTables_filter .input-sm {
