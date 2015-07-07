@@ -2,9 +2,7 @@
 <?php $uri = Request::path(); ?>
 <!DOCTYPE html>
 <html>
-
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -74,10 +72,18 @@
 
                     @if ($user->isAdmin() || $user->isAgent())
                         <li{{ preg_match('/warehouse/', $uri) ? ' class=active' : '' }}>
-                            <a href="#"><i class="fa fa-cube"></i> <span class="nav-label">Warehouse</span> <span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-cube"></i> <span class="nav-label">Warehouses</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses">Warehouses</a></li>
                                 <li{{ (Request::is('warehouses/create')) ? ' class=active' : '' }}><a href="/warehouses/create">Create Warehouse</a></li>
+                            </ul>
+                        </li>
+
+                        <li{{ preg_match('/containers/', $uri) ? ' class=active' : '' }}>
+                            <a href="#"><i class="fa fa-plane"></i> <span class="nav-label">Containers</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li{{ (Request::is('containers')) ? ' class=active' : '' }}><a href="/containers">Containers</a></li>
+                                <li{{ (Request::is('containers/create')) ? ' class=active' : '' }}><a href="/containers/create">Create Container</a></li>
                             </ul>
                         </li>
 
@@ -91,11 +97,11 @@
                                 <?php if ($user->isAdmin()): ?>
                                     <li{{ (Request::is('roles') || Request::is('roles/*')) ? ' class=active' : '' }}><a href="/roles">Roles</a></li>
                                     <li{{ (Request::is('companies') || Request::is('companies/*')) ? ' class=active' : '' }}><a href="/companies">Companies</a></li>
-                                    <li{{ (Request::is('sites') || Request::is('sites/*')) ? ' class=active' : '' }}><a href="/sites">Sites</a></li>
-                                    <li{{ (Request::is('package-types') || Request::is('package-types/*')) ? ' class=active' : '' }}><a href="/package-types">Package Types</a></li>
                                 <?php endif; ?>
                                 <li{{ (Request::is('company') || Request::is('company/*')) ? ' class=active' : '' }}><a href="/company/profile">Company</a></li>
+                                <li{{ (Request::is('sites') || Request::is('sites/*')) ? ' class=active' : '' }}><a href="/sites">Sites</a></li>
                                 <li{{ (Request::is('couriers') || Request::is('couriers/*')) ? ' class=active' : '' }}><a href="/couriers">Couriers</a></li>
+                                <li{{ (Request::is('package-types') || Request::is('package-types/*')) ? ' class=active' : '' }}><a href="/package-types">Package Types</a></li>
                                 <li{{ (Request::is('package-statuses') || Request::is('package-statuses/*')) ? ' class=active' : '' }}><a href="/package-statuses">Package Statuses</a></li>
                             </ul>
                         </li>

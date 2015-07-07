@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Models\Address;
 use App\Helpers\Flash;
 use App\Helpers\Html;
 
@@ -43,9 +44,9 @@ class UsersController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $request->only('user', 'roles');
+        $input = $request->only('user', 'roles', 'shipping_address');
 
-        // Validate input
+        // Create validation rules
         $rules = [];
 
         if ( ! empty($input['user']['password'])) {
@@ -56,6 +57,7 @@ class UsersController extends BaseAuthController {
             $rules['email'] = 'email|unique:users,email';
         }
 
+        // Validate input
         $validator = Validator::make($input['user'], $rules);
 
         if ($validator->fails()) {
@@ -65,16 +67,20 @@ class UsersController extends BaseAuthController {
 
         $input['user']['site_id'] = ($this->user->isAdmin()) ? $input['user']['site_id'] : $this->user->site_id;
 
+        // Create address
+        $shippingAddress = Address::create($input['shipping_address']);
+
         // Create user
-        $user = User::create($input['user']);
+        $user = new User($input['user']);
+        $user->shippingAddress()->associate($shippingAddress);
+        $user->save();
 
         // Assign user roles
         if (isset($input['roles'])) {
-            $user->attachRoles($input['roles']);
+            $user->roles()->sync($input['roles']);
         }
 
-        // Process response
-        Flash::success('New account created.');
+        Flash::success('Account created.');
         return redirect('accounts');
     }
 
@@ -83,8 +89,7 @@ class UsersController extends BaseAuthController {
      */
     public function getEdit(Request $request, $id)
     {
-        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentSiteId($id);
-
+        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentSite($id);
         return view('users.form', ['user' => $user]);
     }
 
@@ -93,9 +98,9 @@ class UsersController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->only('user', 'roles');
+        $input = $request->only('user', 'roles', 'shipping_address');
 
-        // Validate input
+        // Create validation rules
         $rules = [];
 
         if ( ! empty($input['user']['password'])) {
@@ -106,6 +111,7 @@ class UsersController extends BaseAuthController {
             $rules['email'] = 'email|unique:users,email,' . $id;
         }
 
+        // Validate input
         $validator = Validator::make($input['user'], $rules);
 
         if ($validator->fails()) {
@@ -114,11 +120,11 @@ class UsersController extends BaseAuthController {
         }
 
         // Update user
-        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentSiteId($id);
+        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentSite($id);
         $user->update($input['user']);
-        $user->attachRoles(isset($input['roles']) ? $input['roles'] : []);
+        $user->shippingAddress->update($input['shipping_address']);
+        $user->roles()->sync(isset($input['roles']) ? $input['roles'] : []);
 
-        // Process response
         Flash::success('Account updated.');
         return redirect()->back();
     }
@@ -137,25 +143,26 @@ class UsersController extends BaseAuthController {
         $limit = isset($input['length']) ? (int) $input['length'] : 10;
         $offset = isset($input['start']) ? (int) $input['start'] : 0;
 
-        // Obtain order
-        $validSortColumns = [
+        // Obtain sort column
+        $sortColumns = [
             'id',
-            'company',
+            'site_id',
+            'business_name',
             'first_name',
             'last_name',
             'email',
             'phone',
             'mobile_phone'
         ];
-        $orderBy = isset($input['order'][0]) && isset($validSortColumns[$input['order'][0]['column']]) ? $validSortColumns[$input['order'][0]['column']] : 'id';
+        $orderBy = isset($input['order'][0]) && isset($sortColumns[$input['order'][0]['column']]) ? $sortColumns[$input['order'][0]['column']] : 'id';
         $order = isset($input['order'][0]) ? $input['order'][0]['dir'] : 'desc';
 
         // Search criteria
-        $filters['search_term'] = empty($input['search']['value']) ? NULL : $input['search']['value'];
-        $filters['site_id'] = ($this->user->isAdmin()) ? NULL : [$this->user->site_id];
+        $criteria['search_term'] = empty($input['search']['value']) ? NULL : $input['search']['value'];
+        $criteria['site_id'] = ($this->user->isAdmin()) ? NULL : [$this->user->site_id];
 
         // Retrieve results
-        $results = User::getUsersForDatatable($filters, $offset, $limit, $orderBy, $order);
+        $results = User::getUsersForDatatable($criteria, $offset, $limit, $orderBy, $order);
 
         // Process response
         $response = [];

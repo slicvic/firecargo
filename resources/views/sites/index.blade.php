@@ -1,3 +1,5 @@
+<?php $isAdmin = Auth::user()->isAdmin(); ?>
+
 @extends('layouts.admin.model.index')
 
 @section('icon', 'building-o')
@@ -5,14 +7,16 @@
 @section('subtitle', 'Manage Sites')
 
 @section('actions')
-    <a href="/sites/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Site</a>
+    @if ($isAdmin)
+        <a href="/sites/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Site</a>
+    @endif
 @stop
 
 @section('thead')
     <th>ID</th>
     <th>Name</th>
     <th>Display Name</th>
-    <th>Company</th>
+    @if ($isAdmin)<th>Company</th>@endif
     <th>Action</th>
 @stop
 
@@ -22,7 +26,7 @@
             <td>{{ $site->id }}</td>
             <td>{{ $site->name }}</td>
             <td>{{ $site->display_name }}</td>
-            <td>{{ ($site->company) ? $site->company->name : '' }}</td>
+            @if ($isAdmin)<td>{{ ($site->company) ? $site->company->name : '' }}</td>@endif
             <td>
                 <div class="btn-group">
                     <a href="/sites/edit/{{ $site->id }}" class="btn-white btn btn-sm"><i class="fa fa-pencil"></i> Edit</a>

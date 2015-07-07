@@ -3,21 +3,28 @@
 @section('icon', 'cube')
 
 @section('title')
-    {{ $warehouse->id ? 'Edit Warehouse #' . $warehouse->id : 'Create Warehouse' }}
+    {{ $warehouse->id ? 'Editing Warehouse #' . $warehouse->id : 'Create Warehouse' }}
 @stop
 
 @section('subtitle')
-    {{ $warehouse->id ? 'Update existing Warehouse' : 'Create a New Warehouse' }}
+    <ol class="breadcrumb">
+        <li>
+            <a href="/warehouses">Warehouses</a>
+        </li>
+        <li class="active">
+            <strong>{{ $warehouse->id ? 'Edit' : 'Create' }}</strong>
+        </li>
+    </ol>
 @stop
 
 @section('form')
     <form data-parsley-validate action="/warehouses/{{ ($warehouse->id) ? 'update/' . $warehouse->id : 'store' }}" method="post" class="form-horizontal">
         <div id="flashError"></div>
         <div class="ibox">
-            <div class="ibox-title"><h5>Warehouse Information</h5></div>
+            <div class="ibox-title"><h5>Warehouse Details</h5></div>
             <div class="ibox-content">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="warehouse[site_id]" value="{{ ($warehouse->id) ? $warehouse->site_id : Auth::user()->site_id }}">
+                <input type="hidden" name="warehouse[company_id]" value="{{ ($warehouse->id) ? $warehouse->company_id : Auth::user()->site->company_id }}">
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">Date</label>
@@ -53,16 +60,27 @@
                     <div class="col-sm-5">
                         <select name="warehouse[courier_id]" class="form-control" required>
                             <option value=""></option>
-                            @foreach (\App\Models\Courier::allByCurrentSiteId() as $courier)
+                            @foreach (\App\Models\Courier::allByCurrentCompany() as $courier)
                                 <option{{ ($warehouse->courier_id == $courier->id) ? ' selected' : '' }} value="{{ $courier->id }}">{{ $courier->name }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Description</label>
+                    <label class="control-label col-sm-2">Container</label>
                     <div class="col-sm-5">
-                        <textarea class="form-control" name="warehouse[description]">{{ $warehouse->description }}</textarea>
+                        <select name="warehouse[group_id]" class="form-control">
+                            <option value=""></option>
+                            @foreach (\App\Models\Container::allByCurrentCompany() as $container)
+                                <option{{ ($warehouse->container_id == $container->id) ? ' selected' : '' }} value="{{ $container->id }}">{{ $container->tracking_number }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Notes</label>
+                    <div class="col-sm-5">
+                        <textarea class="form-control" name="warehouse[notes]">{{ $warehouse->notes }}</textarea>
                     </div>
                 </div>
             </div>

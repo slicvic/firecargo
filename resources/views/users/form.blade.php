@@ -1,13 +1,22 @@
+<?php $shippingAddress = $user->shippingAddress ?: new App\Models\Address; ?>
+
 @extends('layouts.admin.model.form')
 
 @section('icon', 'user')
 
 @section('title')
-    {{ $user->id ? 'Edit' : 'Create' }} Account
+    {{ $user->id ? 'Editing Account # ' . $user->id : 'Create Account' }}
 @stop
 
 @section('subtitle')
-    {{ $user->id ? 'Update existing' : 'Create a New' }} Account
+    <ol class="breadcrumb">
+        <li>
+            <a href="/users">Users</a>
+        </li>
+        <li class="active">
+            <strong>{{ $user->id ? 'Edit' : 'Create' }}</strong>
+        </li>
+    </ol>
 @stop
 
 @section('form')
@@ -20,19 +29,11 @@
 					<ul class="nav nav-tabs">
 					<li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> Account Info</a></li>
 					<li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false"> Contact Info</a></li>
-					<li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false"> Shipping Address</a></li>
+					<li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false"> Address</a></li>
 					</ul>
 					<div class="tab-content">
 						<div id="tab-1" class="tab-pane active">
 							<div class="panel-body">
-								@if ($user->id)
-									<div class="form-group">
-										<label class="control-label col-sm-2">Account ID</label>
-										<div class="col-sm-5">
-											<input type="text" class="form-control" value="{{ $user->id }}" readonly>
-										</div>
-									</div>
-								@endif
 
 								@if (Auth::user()->isAdmin())
 									<div class="form-group">
@@ -79,12 +80,6 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-2 control-label">ID Number<span class="required-field"></span></label>
-									<div class="col-md-6">
-										<input type="text" name="user[id_number]" class="form-control" value="{{ Input::old('user.id_number', $user->id_number) }}">
-									</div>
-								</div>
-								<div class="form-group">
 									<label class="control-label col-sm-2">Group</label>
 									<div class="col-sm-5">
 										<?php
@@ -126,41 +121,41 @@
 						<div id="tab-3" class="tab-pane">
 							<div class="panel-body">
 								<div class="form-group">
-									<label class="control-label col-sm-2">Address</label>
+									<label class="control-label col-sm-2">Address 1</label>
 									<div class="col-sm-5">
-										<input type="text" name="user[address1]" placeholder="Address" class="form-control" value="{{ Input::old('user.address1', $user->address1) }}">
+										<input type="text" name="shipping_address[address1]" placeholder="Address 1" class="form-control" value="{{ Input::old('shipping_address.address1', $shippingAddress->address1) }}">
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="control-label col-sm-2">Apt / Unit</label>
+									<label class="control-label col-sm-2">Address 2</label>
 									<div class="col-sm-5">
-										<input type="text" name="user[address2]" placeholder="Apt / Unit" placeholder="Company" class="form-control" value="{{ Input::old('user.address2', $user->address2) }}">
+										<input type="text" name="shipping_address[address2]" placeholder="Address 2" placeholder="Company" class="form-control" value="{{ Input::old('shipping_address.address2', $shippingAddress->address2) }}">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-sm-2">City</label>
 									<div class="col-sm-5">
-										<input type="text" name="user[city]" placeholder="City" class="form-control" value="{{ Input::old('user.city', $user->city) }}">
+										<input type="text" name="shipping_address[city]" placeholder="City" class="form-control" value="{{ Input::old('shipping_address.city', $shippingAddress->city) }}">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-sm-2">State</label>
 									<div class="col-sm-5">
-										<input type="text" name="user[state]" placeholder="State" class="form-control" value="{{ Input::old('user.state', $user->state) }}">
+										<input type="text" name="shipping_address[state]" placeholder="State" class="form-control" value="{{ Input::old('shipping_address.state', $shippingAddress->state) }}">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-sm-2">Postal Code</label>
 									<div class="col-sm-2">
-										<input type="text" name="user[postal_code]" placeholder="Postal Code" class="form-control" value="{{ Input::old('user.postal_code', $user->postal_code) }}">
+										<input type="text" name="shipping_address[postal_code]" placeholder="Postal Code" class="form-control" value="{{ Input::old('shipping_address.postal_code', $shippingAddress->postal_code) }}">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="control-label col-sm-2">Country</label>
 									<div class="col-sm-3">
-										<select name="user[country_id]" class="form-control">
+										<select name="shipping_address[country_id]" class="form-control">
 											@foreach (\App\Models\Country::all() as $country)
-												<option value="{{ $country->id }}">{{ $country->name }}</option>
+												<option{{ ($country->id == Input::old('shipping_address.country_id', $shippingAddress->country_id)) ? ' selected' : '' }} value="{{ $country->id }}">{{ $country->name }}</option>
 											@endforeach
 										</select>
 									</div>

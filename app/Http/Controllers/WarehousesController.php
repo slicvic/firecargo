@@ -12,6 +12,7 @@ use App\Helpers\Flash;
 
 use Illuminate\Pagination\Paginator;
 use App\Pdf\Warehouse as WarehousePdf;
+use DB;
 
 /**
  * WarehousesController
@@ -27,22 +28,20 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Shows a list of warehouses.
+     * Displays a list of warehouses.
      */
     public function getIndex(Request $request)
     {
         $perPage = $request->input('limit', 10);
-        $searchTerm = $request->input('q');
         $sortBy = $request->input('sortby', 'id');
         $sortOrder = $request->input('order', 'desc');
-
-        $warehouses = Warehouse::where('site_id', '=', $this->user->site_id)
-           // ->join('users u1', 'w.consignee_user_id', '=', 'u1.id')
-           // ->whereRaw('w.id > 0 AND w.id < ?', [2])
-            ->orderBy(array_key_exists($sortBy, Warehouse::$sortColumns) ? Warehouse::$sortColumns[$sortBy] : 'id', $sortOrder)
-            ->paginate($perPage);
+        $criteria['q'] = $request->input('q');
+        $criteria['status'] = $request->input('status');
+        $criteria['company_id'] = $this->user->site->company_id;
+        $warehouses = Warehouse::search($criteria, $sortBy, $sortOrder, $perPage);
 
         return view('warehouses.index', [
+            'search' => $criteria,
             'warehouses' => $warehouses,
             'sortBy' => $sortBy,
             'sortOrder' => $sortOrder,
@@ -55,7 +54,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getShow(Request $request, $id)
     {
-        $warehouse = Warehouse::findOrFailByIdAndCurrentSiteId($id);
+        $warehouse = Warehouse::findOrFailByIdAndCurrentCompany($id);
         return view('warehouses.show', ['warehouse' => $warehouse]);
     }
 
@@ -83,6 +82,7 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Create warehouse
+        $input['warehouse']['group_id'] = $input['warehouse']['group_id'] ?: NULL;
         $input['warehouse']['arrived_at'] = date('Y-m-d H:i:s', strtotime($input['warehouse']['arrived_at']['date'] . ' ' . $input['warehouse']['arrived_at']['time']));
         $warehouse = Warehouse::create($input['warehouse']);
 
@@ -97,7 +97,8 @@ class WarehousesController extends BaseAuthController {
             }
         }
 
-        return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/view/' . $warehouse->id]);
+        Flash::success('Warehouse created.');
+        return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/show/' . $warehouse->id]);
     }
 
     /**
@@ -105,7 +106,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $warehouse = Warehouse::findOrFailByIdAndCurrentSiteId($id);
+        $warehouse = Warehouse::findOrFailByIdAndCurrentCompany($id);
         return view('warehouses.form', ['warehouse' => $warehouse]);
     }
 
@@ -125,12 +126,13 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Update warehouse
-        $warehouse = Warehouse::findByIdAndCurrentSiteId($id);
+        $warehouse = Warehouse::findByIdAndCurrentCompany($id);
 
         if ( ! $warehouse) {
             return response()->json(['status' => 'error', 'message' => 'Invalid warehouse ID.']);
         }
 
+        $input['warehouse']['group_id'] = $input['warehouse']['group_id'] ?: NULL;
         $input['warehouse']['arrived_at'] = date('Y-m-d H:i:s', strtotime($input['warehouse']['arrived_at']['date'] . ' ' . $input['warehouse']['arrived_at']['time']));
         $warehouse->update($input['warehouse']);
 
@@ -144,6 +146,7 @@ class WarehousesController extends BaseAuthController {
             }
         }
 
+        Flash::success('Warehouse updated.');
         return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/edit/' . $warehouse->id]);
     }
 

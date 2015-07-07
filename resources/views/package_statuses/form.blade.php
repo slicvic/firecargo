@@ -7,23 +7,24 @@
 @stop
 
 @section('subtitle')
-    {{ $status->id ? 'Update existing' : 'Create a New' }} Package Status
+    <ol class="breadcrumb">
+        <li>
+            <a href="/package-statuses">Package Statuses</a>
+        </li>
+        <li class="active">
+            <strong>{{ $status->id ? 'Edit' : 'Create' }}</strong>
+        </li>
+    </ol>
 @stop
 
 @section('form')
     <form data-parsley-validate action="/package-statuses/{{ ($status->id) ? 'update/' . $status->id : 'store' }}" method="post" class="form-horizontal">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <input type="hidden" name="site_id" value="{{ ($status->id) ? $status->site_id : Auth::user()->site_id }}">
+        <input type="hidden" name="company_id" value="{{ ($status->id) ? $status->company_id : Auth::user()->site->company_id }}">
         <div class="form-group">
             <label class="control-label col-sm-2">Name</label>
             <div class="col-sm-4">
                 <input required type="text" name="name" placeholder="e.g. Processing" class="form-control" value="{{ Input::old('name', $status->name) }}">
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-sm-2">Default?</label>
-            <div class="col-sm-4">
-                <input type="checkbox" name="is_default" class="form-control" value="1"<?php echo Input::old('is_default', $status->is_default) ? ' checked' : ''; ?>>
             </div>
         </div>
         <div class="form-group">

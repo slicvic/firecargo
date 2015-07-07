@@ -43,6 +43,8 @@ class RolesController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
+
+        // Validate input
         $validator = Validator::make($input, Role::$rules);
 
         if ($validator->fails()) {
@@ -50,9 +52,10 @@ class RolesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        // Create role
         Role::create($input);
 
-        Flash::success('New role created.');
+        Flash::success('Role created.');
         return redirect('roles');
     }
 
@@ -71,6 +74,8 @@ class RolesController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
+
+        // Validate input
         $validator = Validator::make($input, Role::$rules);
 
         if ($validator->fails()) {
@@ -78,6 +83,7 @@ class RolesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        // Update role
         $role = Role::findOrFail($id);
         $role->update($input);
 
@@ -92,6 +98,6 @@ class RolesController extends BaseAuthController {
     {
         $role = Role::findOrFail($id);
         $role->delete();
-        return redirect('roles');
+        return redirect()->back();
     }
 }

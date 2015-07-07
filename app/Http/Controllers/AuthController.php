@@ -100,7 +100,7 @@ class AuthController extends BaseController {
 
         // Create user
         $user = User::create($input['user']);
-        $user->attachRoles([Role::CLIENT, Role::LOGIN]);
+        $user->roles()->sync([Role::CLIENT, Role::LOGIN]);
 
         // Fire event
         Event::fire(new UserRegistered($user));

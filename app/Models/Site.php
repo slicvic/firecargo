@@ -1,11 +1,15 @@
 <?php namespace App\Models;
 
+use App\Models\CompanySpecificTrait;
+
 /**
  * Site
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
 class Site extends Base {
+
+    use CompanySpecificTrait;
 
     protected $table = 'sites';
 

@@ -26,7 +26,7 @@ class Package extends BasePresenter {
      */
     public function type()
     {
-        return ($this->model->type_od) ? $this->model->type->name : '';
+        return ($this->model->type_id) ? $this->model->type->name : '';
     }
 
     /**
@@ -46,6 +46,6 @@ class Package extends BasePresenter {
      */
     public function weight()
     {
-        return $this->model->weight . ' lb';
+        return $this->model->weight . ' Lbs';
     }
 }

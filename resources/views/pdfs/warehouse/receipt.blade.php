@@ -4,7 +4,7 @@
 <?php $packages = $warehouse->packages; ?>
 <?php $totalPackages = count($packages); ?>
 <?php $consignee = $warehouse->consignee; ?>
-<?php $company = Auth::user()->site->company; ?>
+<?php $company = $warehouse->company; ?>
 <style>
     .receipt-number {
         font-size: 20px;
@@ -16,13 +16,13 @@
         <td width="60%">
 {!! ($company->hasLogo('sm')) ? '<img src="' . $company->present()->logoURL('sm') . '"><br>' : '' !!}
 {{ strtoupper($company->name) }}<br>
-{!! strtoupper($company->present()->addressAsString()) !!}<br>
+{!! strtoupper($company->address->asString()) !!}<br>
 TEL: {{ $company->phone }}<br>
 EMAIL: {{ $company->email }}<br><br>
 
 RECEIVED FOR:<br><br>
 {{ strtoupper($consignee->present()->fullName()) }}<br>
-{!! strtoupper($consignee->present()->addressAsString()) !!}<br>
+{!! strtoupper($consignee->shippingAddress->asString()) !!}<br>
 
         </td>
 
@@ -39,7 +39,7 @@ RECEIVED FOR:<br><br>
                     <td><small>PIECES</small><br>{{ $totalPackages }}</td>
                 </tr>
                 <tr>
-                    <td><small>GROSS WEIGHT</small><br>{{ $grossWeight }} LB</td>
+                    <td><small>GROSS WEIGHT</small><br>{{ $grossWeight }} LBS</td>
                     <td><small>CUBIC</small><br>{{ $cubicFeet }} CF</td>
                 </tr>
             </table>
@@ -55,7 +55,7 @@ RECEIVED FOR:<br><br>
 </table>
 <table border="1">
     <tr>
-        <td><small>DESCRIPTION</small><br>{{ strtoupper($warehouse->description) }}</td>
+        <td><small>DESCRIPTION</small><br>{{ strtoupper($warehouse->note) }}</td>
     </tr>
 </table>
 
@@ -122,7 +122,7 @@ RECEIVED FOR:<br><br>
                     <td><small>CUBIC METERS</small><br><span style="font-size:16px;">{{ $warehouse->calculateCubicMeter() }}</span></td>
                 </tr>
                 <tr>
-                    <td><small>CHARGE WEIGHT</small><br><span style="font-size:16px;">{{ round($chargeWeight) }} <small>Lb</small></span></td>
+                    <td><small>CHARGE WEIGHT</small><br><span style="font-size:16px;">{{ round($chargeWeight) }} <small>Lbs</small></span></td>
                     <td><small>CHARGE WEIGHT</small><br><span style="font-size:16px;">{{ \App\Helpers\Math::poundsToKilos($chargeWeight, 0) }} <small>Kg</small></span></td>
                 </tr>
             </table>

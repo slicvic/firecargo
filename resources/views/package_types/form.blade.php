@@ -7,13 +7,20 @@
 @stop
 
 @section('subtitle')
-    {{ $type->id ? 'Update existing' : 'Create a New' }} Package Type
+    <ol class="breadcrumb">
+        <li>
+            <a href="/package-types">Package Types</a>
+        </li>
+        <li class="active">
+            <strong>{{ $type->id ? 'Edit' : 'Create' }}</strong>
+        </li>
+    </ol>
 @stop
 
 @section('form')
     <form data-parsley-validate action="/package-types/{{ ($type->id) ? 'update/' . $type->id : 'store' }}" method="post" class="form-horizontal">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <input type="hidden" name="site_id" value="{{ ($type->id) ? $type->site_id : Auth::user()->site_id }}">
+        <input type="hidden" name="company_id" value="{{ ($type->id) ? $type->company_id : Auth::user()->site->company_id }}">
         <div class="form-group">
             <label class="control-label col-sm-2">Name</label>
             <div class="col-sm-4">

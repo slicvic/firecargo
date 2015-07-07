@@ -7,7 +7,14 @@
 @stop
 
 @section('subtitle')
-    {{ $role->id ? 'Update existing' : 'Create a New' }} Role
+    <ol class="breadcrumb">
+        <li>
+            <a href="/roles">Roles</a>
+        </li>
+        <li class="active">
+            <strong>{{ $role->id ? 'Edit' : 'Create' }}</strong>
+        </li>
+    </ol>
 @stop
 
 @section('form')

@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use App\Presenters\PresentableTrait;
+use DB;
 
 /**
  * Company
@@ -24,42 +25,15 @@ class Company extends Base {
         'email',
         'phone',
         'fax',
-        'address1',
-        'address2',
-        'city',
-        'state',
-        'postal_code',
-        'country_id'
+        'address_id',
     ];
 
     /**
-     * Gets the country.
+     * Gets the address.
      */
-    public function country()
+    public function address()
     {
-        return $this->belongsTo('App\Models\Country');
-    }
-
-    /**
-     * Overrides parent method to sanitize certain attributes.
-     *
-     * @see parent::setAttribute()
-     */
-    public function setAttribute($key, $value)
-    {
-        switch ($key) {
-            case 'city':
-            case 'state':
-                $value = ucwords(strtolower(trim($value)));
-                break;
-
-            case 'address1':
-            case 'address2':
-                $value = strtoupper(trim($value));
-                break;
-        }
-
-        return parent::setAttribute($key, $value);
+        return $this->belongsTo('App\Models\Address', 'address_id');
     }
 
     /**

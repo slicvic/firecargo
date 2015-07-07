@@ -22,16 +22,16 @@ class PackageStatusesController extends BaseAuthController {
     }
 
     /**
-     * Shows a list of statuses.
+     * Shows a list of package statuses.
      */
     public function getIndex()
     {
-        $statuses = PackageStatus::allByCurrentSiteId();
+        $statuses = PackageStatus::allByCurrentCompany();
         return view('package_statuses.index', ['statuses' => $statuses]);
     }
 
     /**
-     * Shows the form for creating a new status.
+     * Shows the form for creating a new package status.
      */
     public function getCreate()
     {
@@ -39,7 +39,7 @@ class PackageStatusesController extends BaseAuthController {
     }
 
     /**
-     * Creates a new status.
+     * Creates a new package status.
      */
     public function postStore(Request $request)
     {
@@ -54,27 +54,23 @@ class PackageStatusesController extends BaseAuthController {
         }
 
         // Create status
-        if (isset($input['is_default'])) {
-            PackageStatus::unsetDefaultBySiteId($this->user->site_id);
-        }
-
         PackageStatus::create($input);
 
-        Flash::success('New package status created.');
+        Flash::success('Package status created.');
         return redirect('package-statuses');
     }
 
     /**
-     * Shows the form for editing a status.
+     * Shows the form for editing a package status.
      */
     public function getEdit($id)
     {
-        $status = PackageStatus::findOrFailByIdAndCurrentSiteId($id);
+        $status = PackageStatus::findOrFailByIdAndCurrentCompany($id);
         return view('package_statuses.form', ['status' => $status]);
     }
 
     /**
-     * Updates a specific status.
+     * Updates a specific package status.
      */
     public function postUpdate(Request $request, $id)
     {
@@ -89,12 +85,7 @@ class PackageStatusesController extends BaseAuthController {
         }
 
         // Update status
-        $status = PackageStatus::findOrFailByIdAndCurrentSiteId($id);
-
-        if (isset($input['is_default']) && ! $status->is_default) {
-            PackageStatus::unsetDefaultBySiteId($this->user->site_id);
-        }
-
+        $status = PackageStatus::findOrFailByIdAndCurrentCompany($id);
         $status->update($input);
 
         Flash::success('Package status updated.');
@@ -102,20 +93,20 @@ class PackageStatusesController extends BaseAuthController {
     }
 
     /**
-     * Deletes a specific status.
+     * Deletes a specific package status.
      */
     public function getDelete(Request $request, $id)
     {
-        $status = PackageStatus::findByIdAndCurrentSiteId($id);
+        $packageStatus = PackageStatus::findByIdAndCurrentCompany($id);
 
-        if ($status) {
-            $status->delete();
+        if ($packageStatus) {
+            $packageStatus->delete();
             Flash::success('Package status deleted.');
         }
         else {
             Flash::error('Package status not found.');
         }
 
-        return redirect('package-statuses');
+        return redirect()->back();
     }
 }

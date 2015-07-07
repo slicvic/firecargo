@@ -26,7 +26,7 @@ class CouriersController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $couriers = Courier::allByCurrentSiteId();
+        $couriers = Courier::allByCurrentCompany();
         return view('couriers.index', ['couriers' => $couriers]);
     }
 
@@ -44,6 +44,8 @@ class CouriersController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
+
+        // Validate input
         $validator = Validator::make($input, Courier::$rules);
 
         if ($validator->fails()) {
@@ -51,9 +53,10 @@ class CouriersController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        // Create courier
         Courier::create($input);
 
-        Flash::success('New courier created.');
+        Flash::success('Courier created.');
         return redirect('couriers');
     }
 
@@ -62,7 +65,7 @@ class CouriersController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $courier = Courier::findOrFailByIdAndCurrentSiteId($id);
+        $courier = Courier::findOrFailByIdAndCurrentCompany($id);
         return view('couriers.form', ['courier' => $courier]);
     }
 
@@ -72,6 +75,8 @@ class CouriersController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
+
+        // Validate input
         $validator = Validator::make($input, Courier::$rules);
 
         if ($validator->fails()) {
@@ -79,7 +84,8 @@ class CouriersController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        $courier = Courier::findOrFailByIdAndCurrentSiteId($id);
+        // Update courier
+        $courier = Courier::findOrFailByIdAndCurrentCompany($id);
         $courier->update($input);
 
         Flash::success('Courier updated.');
@@ -91,7 +97,7 @@ class CouriersController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        $courier = Courier::findByIdAndCurrentSiteId($id);
+        $courier = Courier::findByIdAndCurrentCompany($id);
 
         if ($courier) {
             $courier->delete();
@@ -101,6 +107,6 @@ class CouriersController extends BaseAuthController {
             Flash::error('Courier not found.');
         }
 
-        return redirect('couriers');
+        return redirect()->back();
     }
 }

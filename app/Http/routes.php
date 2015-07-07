@@ -11,7 +11,7 @@
 |
 */
 
-// Member
+// Agent/Admin/Members
 Route::controller('dashboard', 'DashboardController');
 Route::controller('couriers', 'CouriersController');
 Route::controller('package-statuses', 'PackageStatusesController');
@@ -22,12 +22,13 @@ Route::controller('companies', 'CompaniesController');
 Route::controller('roles', 'RolesController');
 Route::controller('accounts', 'UsersController');
 Route::controller('warehouses', 'WarehousesController');
+Route::controller('containers', 'ContainersController');
 Route::controller('company', 'CompanyController');
 
 Route::controller('account', 'AccountController');
 Route::get('logout', 'AccountController@getLogout');
 
-// Guests
+// Auth
 Route::get('login', 'AuthController@getLogin');
 Route::post('login', 'AuthController@postLogin');
 

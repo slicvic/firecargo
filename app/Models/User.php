@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
 use App\Presenters\PresentableTrait;
-use App\Models\SiteTrait;
+use App\Models\SiteSpecificTrait;
 
 /**
  * User
@@ -15,7 +15,7 @@ use App\Models\SiteTrait;
  */
 class User extends Base implements AuthenticatableInterface {
 
-    use AuthenticableTrait, SiteTrait, PresentableTrait;
+    use AuthenticableTrait, SiteSpecificTrait, PresentableTrait;
 
     protected $presenter = 'App\Presenters\User';
 
@@ -23,6 +23,7 @@ class User extends Base implements AuthenticatableInterface {
 
     protected $fillable = [
         'site_id',
+        'shipping_address_id',
         'email',
         'password',
         'business_name',
@@ -33,12 +34,6 @@ class User extends Base implements AuthenticatableInterface {
         'phone',
         'mobile_phone',
         'fax',
-        'address1',
-        'address2',
-        'city',
-        'state',
-        'postal_code',
-        'country_id',
         'autoship_packages'
     ];
 
@@ -59,11 +54,11 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the country.
+     * Gets the shipping address.
      */
-    public function country()
+    public function shippingAddress()
     {
-        return $this->belongsTo('App\Models\Country');
+        return $this->belongsTo('App\Models\Address', 'shipping_address_id');
     }
 
     /**
@@ -136,17 +131,6 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Assigns the specified roles to the user.
-     *
-     * @param  array  $roleIds
-     * @return void
-     */
-    public function attachRoles(array $roleIds = [])
-    {
-        return $this->roles()->sync($roleIds);
-    }
-
-    /**
      * Determines if the user has the given role.
      *
      * @param  int  $roleId
@@ -167,20 +151,11 @@ class User extends Base implements AuthenticatableInterface {
         switch ($key) {
             case 'first_name':
             case 'last_name':
-            case 'city':
-            case 'state':
                 $value = ucwords(strtolower(trim($value)));
                 break;
-
-            case 'address1':
-            case 'address2':
-                $value = strtoupper(trim($value));
-                break;
-
             case 'password':
                 $value = empty($value) ? $this->password : Hash::make($value);
                 break;
-
             case 'dob':
                 if (is_string($value))
                     $value = date('Y-m-d', strtotime($value));
@@ -255,7 +230,7 @@ class User extends Base implements AuthenticatableInterface {
         $sql = '1';
         $bindings = [];
 
-        if (isset($criteria['site_id']) && is_array($criteria['site_id']) && count($criteria['site_id'])) {
+        if ( ! empty($criteria['site_id'])) {
             $sql .= ' AND site_id IN (' . implode(',', $criteria['site_id']) . ')';
         }
 
@@ -269,6 +244,7 @@ class User extends Base implements AuthenticatableInterface {
         $total = $query->count();
         $results = $query
             ->orderBy($orderBy, $order)
+            ->offset($offset)
             ->limit($limit)
             ->get();
 

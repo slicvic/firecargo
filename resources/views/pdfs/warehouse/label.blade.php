@@ -1,5 +1,5 @@
 <?php $consignee = $warehouse->consignee; ?>
-<?php $company = Auth::user()->site->company; ?>
+<?php $company = $warehouse->company; ?>
 <?php $grossWeight = $warehouse->calculateGrossWeight(); ?>
 <?php $shipper = $warehouse->shipper; ?>
 
@@ -8,7 +8,7 @@
         <td width="50"><img width="50" height="50" src="/assets/img/avatar.png"></td>
         <td>
 {{ strtoupper($company->name) }}<br>
-{!! strtoupper($company->present()->addressAsString()) !!}<br>
+{!! strtoupper($company->address->asString()) !!}<br>
 TEL: {{ $company->phone }}<br>
 EMAIL: {{ $company->email }}
         </td>
@@ -29,7 +29,7 @@ EMAIL: {{ $company->email }}
         <td width="10%">FROM:</td>
         <td>
 <b>{{ strtoupper($warehouse->present()->shipperName()) }}</b><br>
-{!! strtoupper($shipper->present()->addressAsString()) !!}<br>
+{!! strtoupper($shipper->shippingAddress->asString()) !!}<br>
 <br>
         </td>
     </tr>
@@ -37,7 +37,7 @@ EMAIL: {{ $company->email }}
         <td width="10%">TO:</td>
         <td>
 <b>{{ strtoupper($consignee->present()->fullName()) }}</b><br>
-{!! strtoupper($consignee->present()->addressAsString()) !!}<br>
+{!! strtoupper($consignee->shippingAddress->asString()) !!}<br>
         </td>
     </tr>
 </table>
@@ -68,7 +68,7 @@ EMAIL: {{ $company->email }}
     </tr>
     <tr>
         <td>PIECES: {{ $totalPackages }}</td>
-        <td>WEIGHT {{ $grossWeight }} Lb</td>
+        <td>WEIGHT {{ $grossWeight }} Lbs</td>
         <td>WEIGHT {{ \App\Helpers\Math::poundsToKilos($grossWeight) }} Kg</td>
     </tr>
 </table>
@@ -79,7 +79,7 @@ EMAIL: {{ $company->email }}
 DESCRIPTION<br>
 <table border="1">
     <tr>
-        <td style="font-size:8px;"><br><br>&nbsp;{{ strtoupper($warehouse->description) }}<br></td>
+        <td style="font-size:8px;"><br><br>&nbsp;{{ strtoupper($warehouse->note) }}<br></td>
     </tr>
 </table>
 

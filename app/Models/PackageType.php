@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-use App\Models\SiteTrait;
+use App\Models\CompanySpecificTrait;
 
 /**
  * PackageType
@@ -9,17 +9,17 @@ use App\Models\SiteTrait;
  */
 class PackageType extends Base {
 
-    use SiteTrait;
+    use CompanySpecificTrait;
 
     protected $table = 'package_types';
 
     public static $rules = [
-        'site_id' => 'required',
+        'company_id' => 'required',
         'name' => 'required'
     ];
 
     protected $fillable = [
-        'site_id',
+        'company_id',
         'name',
     ];
 }

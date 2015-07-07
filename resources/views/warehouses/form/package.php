@@ -3,14 +3,14 @@
     <tr>
         <td>
             <select name="package[<?php echo $packageId; ?>][status_id]" data-name="status_id" class="form-control">
-                <?php foreach(\App\Models\PackageStatus::allByCurrentSiteId('is_default', 'desc') as $status): ?>
+                <?php foreach(\App\Models\PackageStatus::allByCurrentCompany() as $status): ?>
                     <option<?php echo ($package->status_id == $status->id) ? ' selected' : ''; ?> value="<?php echo $status->id; ?>"><?php echo $status->name; ?></option>
                 <?php endforeach; ?>
             </select>
         </td>
         <td>
             <select name="package[<?php echo $packageId; ?>][type_id]" data-name="type_id" class="form-control">
-                <?php foreach(\App\Models\PackageType::allByCurrentSiteId() as $type): ?>
+                <?php foreach(\App\Models\PackageType::allByCurrentCompany() as $type): ?>
                     <option<?php echo ($package->type_id == $type->id) ? ' selected' : ''; ?> value="<?php echo $type->id; ?>"><?php echo $type->name; ?></option>
                 <?php endforeach; ?>
             </select>
@@ -30,7 +30,7 @@
         <td style="min-width: 100px">
             <div class="btn-group">
                 <button type="button" class="btn-clone-package btn btn-sm btn-white">Clone</button>
-                <button type="button" class="btn-remove-package btn btn-sm btn-white">Remove</button>
+                <button type="button" class="btn-remove-package btn btn-sm btn-danger">Remove</button>
             </div>
         </td>
     </tr>

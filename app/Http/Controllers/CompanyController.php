@@ -47,18 +47,25 @@ class CompanyController extends BaseAuthController {
      */
     public function postProfile(Request $request)
     {
-        $input = $request->all();
-        $validator = Validator::make($input, Company::$rules);
+        $input = $request->only('company', 'address');
+
+        // Validate input
+        $validator = Validator::make($input['company'], Company::$rules);
 
         if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
-        $this->user->site->company->update($input);
+        // Update company
+        $company = $this->user->site->company;
+        $company->update($input['company']);
 
-        Flash::success('Profile updated.');
-        return redirect('/company/profile');
+        // Update address
+        $company->address->update($input['address']);
+
+        Flash::success('Company updated.');
+        return redirect()->back();
     }
 
     /**

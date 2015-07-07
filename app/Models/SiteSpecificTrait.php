@@ -2,7 +2,7 @@
 
 use Auth;
 
-trait SiteTrait {
+trait SiteSpecificTrait {
     /**
      * Finds a record by the ID and site ID and throws exception
      * if the record is not found.
@@ -25,7 +25,7 @@ trait SiteTrait {
      * @param   int  $id
      * @return  []
      */
-    public static function findOrFailByIdAndCurrentSiteId($id)
+    public static function findOrFailByIdAndCurrentSite($id)
     {
         return self::findOrFailByIdAndSiteId($id, Auth::user()->site_id);
     }
@@ -39,7 +39,6 @@ trait SiteTrait {
      */
     public static function findByIdAndSiteId($id, $siteId)
     {
-        $siteId = $siteId ?: Auth::user()->site_id;
         return self::where('id', '=', $id)
             ->where('site_id', '=', $siteId)
             ->first();
@@ -51,7 +50,7 @@ trait SiteTrait {
      * @param   int  $id
      * @return  []
      */
-    public static function findByIdAndCurrentSiteId($id)
+    public static function findByIdAndCurrentSite($id)
     {
         return self::findByIdAndSiteId($id, Auth::user()->site_id);
     }
@@ -83,8 +82,8 @@ trait SiteTrait {
      * @param  array   $columns
      * @return Model[]
      */
-    public static function allByCurrentSiteId($orderBy = 'id', $order = 'DESC', $columns = ['*'])
+    public static function allByCurrentSite($orderBy = 'id', $order = 'DESC', $columns = ['*'])
     {
-        return self::allBySiteId([0, Auth::user()->site_id], $orderBy, $order, $columns);
+        return self::allBySiteId([Auth::user()->site_id], $orderBy, $order, $columns);
     }
 }

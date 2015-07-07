@@ -17,7 +17,8 @@ class SitesController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
-        $this->middleware('admin');
+        $this->middleware('agent', ['only' => ['getIndex', 'getEdit', 'postUpdate']]);
+        $this->middleware('admin', ['except' => ['getIndex', 'getEdit', 'postUpdate']]);
     }
 
     /**
@@ -25,7 +26,7 @@ class SitesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $sites = Site::all();
+        $sites = $this->user->isAdmin() ? Site::all() : Site::allByCurrentCompany();
         return view('sites.index', ['sites' => $sites]);
     }
 
@@ -43,6 +44,8 @@ class SitesController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
+
+        // Validate input
         $validator = Validator::make($input, Site::$rules);
 
         if ($validator->fails()) {
@@ -50,9 +53,10 @@ class SitesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
+        // Create site
         Site::create($input);
 
-        Flash::success('New site created.');
+        Flash::success('Site created.');
         return redirect('sites');
     }
 
@@ -61,7 +65,7 @@ class SitesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $site = Site::findOrFail($id);
+        $site = Site::findOrFailByIdAndCurrentCompany($id);
         return view('sites.form', ['site' => $site]);
     }
 
@@ -71,14 +75,19 @@ class SitesController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
-        $validator = Validator::make($input, Site::$rules);
+
+        // Validate input
+        $rules = Site::$rules;
+        unset($rules['company_id']);
+        $validator = Validator::make($input, $rules);
 
         if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
-        $site = Site::findOrFail($id);
+        // Update site
+        $site = Site::findOrFailByIdAndCurrentCompany($id);
         $site->update($input);
 
         Flash::success('Site updated.');

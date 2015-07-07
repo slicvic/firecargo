@@ -7,7 +7,14 @@
 @stop
 
 @section('subtitle')
-    {{ $company->id ? 'Update existing' : 'Create a New' }} Company
+    <ol class="breadcrumb">
+        <li>
+            <a href="/companies">Companies</a>
+        </li>
+        <li class="active">
+            <strong>{{ $company->id ? 'Edit' : 'Create' }}</strong>
+        </li>
+    </ol>
 @stop
 
 @section('form')

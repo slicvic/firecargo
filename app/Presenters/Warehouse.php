@@ -47,7 +47,7 @@ class Warehouse extends BasePresenter {
     }
 
     /**
-     * Presents the consignee name.
+     * Presents the shipper name.
      *
      * @return string
      */
@@ -63,7 +63,7 @@ class Warehouse extends BasePresenter {
      */
     public function volumeWeight()
     {
-        return round($this->model->calculateVolumeWeight()) . ' lb';
+        return round($this->model->calculateVolumeWeight()) . ' Lbs';
     }
 
     /**
@@ -73,7 +73,7 @@ class Warehouse extends BasePresenter {
      */
     public function grossWeight()
     {
-        return round($this->model->calculateGrossWeight()) . ' lb';
+        return round($this->model->calculateGrossWeight()) . ' Lbs';
     }
 
     /**
@@ -83,6 +83,16 @@ class Warehouse extends BasePresenter {
      */
     public function chargeWeight()
     {
-        return round($this->model->calculateChargeWeight()) . ' lb';
+        return round($this->model->calculateChargeWeight()) . ' Lbs';
+    }
+
+    /**
+     * Presents the group.
+     *
+     * @return string
+     */
+    public function group()
+    {
+        return ($this->model->group_id) ? $this->model->group->tracking_number : 'N/A';
     }
 }

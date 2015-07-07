@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-use App\Models\SiteTrait;
+use App\Models\CompanySpecificTrait;
 
 /**
  * PackageStatus
@@ -9,30 +9,17 @@ use App\Models\SiteTrait;
  */
 class PackageStatus extends Base {
 
-    use SiteTrait;
+    use CompanySpecificTrait;
 
     protected $table = 'package_statuses';
 
     public static $rules = [
-        'site_id' => 'required',
+        'company_id' => 'required',
         'name' => 'required'
     ];
 
     protected $fillable = [
-        'site_id',
-        'name',
-        'is_default'
+        'company_id',
+        'name'
     ];
-
-    /**
-     * Resets the default status by site ID.
-     *
-     * @param  int  $siteId
-     * @return int
-     */
-    public static function unsetDefaultBySiteId($siteId)
-    {
-        return PackageStatus::where('site_id', $siteId)
-            ->update(['is_default' => 0]);
-    }
 }

@@ -49,7 +49,7 @@ class AccountController extends BaseAuthController {
      */
     public function postProfile(Request $request)
     {
-        $input = $request->only('user');
+        $input = $request->only('user', 'shipping_address');
 
         // Validate input
         $rules = [
@@ -66,11 +66,14 @@ class AccountController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        // Update profile
+        // Update user
         $input['user']['autoship_packages'] = isset($input['user']['autoship_packages']);
         $this->user->update($input['user']);
 
-        Flash::success('Your profile was updated.');
+        // Update address
+        $this->user->shippingAddress->update($input['shipping_address']);
+
+        Flash::success('Your account was updated.');
         return redirect()->back();
     }
 

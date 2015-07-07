@@ -5,7 +5,7 @@
 @section('subtitle', 'Manage User Accounts')
 
 @section('actions')
-    <a href="/accounts/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Role</a>
+    <a href="/accounts/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Account</a>
 @stop
 
 @section('thead')

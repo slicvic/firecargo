@@ -7,6 +7,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
         <h2>Warehouse Detail # {{ $warehouse->id }}</h2>
+        View Warehouse Details
     </div>
     <div class="col-sm-8">
         <div class="title-action">
@@ -101,8 +102,8 @@
                             <td>{{ $warehouse->present()->chargeWeight() }}</td>
                         </tr>
                         <tr>
-                            <th>Description</th>
-                            <td>{{ $warehouse->description }}</td>
+                            <th>Notes</th>
+                            <td>{{ $warehouse->notes }}</td>
                         </tr>
                     </table>
                 </div>

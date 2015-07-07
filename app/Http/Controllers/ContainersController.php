@@ -4,30 +4,29 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Validator;
 
-use App\Models\Company;
-use App\Models\Address;
+use App\Models\Container;
 use App\Helpers\Flash;
 
 /**
- * CompaniesController
+ * ContainersController
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class CompaniesController extends BaseAuthController {
+class ContainersController extends BaseAuthController {
 
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
-        $this->middleware('admin');
+        $this->middleware('agent');
     }
 
     /**
-     * Shows a list of companies.
+     * Shows a list of warehouse groups.
      */
     public function getIndex()
     {
-        $companies = Company::all();
-        return view('companies.index', ['companies' => $companies]);
+        $groups = Container::allByCurrentCompany();
+        return view('containers.index', ['groups' => $groups]);
     }
 
     /**
@@ -35,7 +34,7 @@ class CompaniesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('companies.form', ['company' => new Company()]);
+        return view('container.form', ['group' => new WarehouseGroup()]);
     }
 
     /**
@@ -43,25 +42,16 @@ class CompaniesController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $request->all();
-
-        // Validate input
-        $validator = Validator::make($input, Company::$rules);
+        $validator = Validator::make($input = $request->all(), Company::$rules);
 
         if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
-        // Create address
-        $address = Address::create([]);
+        Company::create($input);
 
-        // Create company
-        $company = new Company($input);
-        $company->address()->associate($address);
-        $company->save();
-
-        Flash::success('Company created.');
+        Flash::success('New company created.');
         return redirect('companies');
     }
 
@@ -80,8 +70,6 @@ class CompaniesController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
-
-        // Validate input
         $validator = Validator::make($input, Company::$rules);
 
         if ($validator->fails()) {
@@ -89,7 +77,6 @@ class CompaniesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        // Update company
         $company = Company::findOrFail($id);
         $company->update($input);
 

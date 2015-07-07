@@ -7,8 +7,6 @@
             <th>L x W x H</th>
             <th>Weight</th>
             <th>Tracking #</th>
-            <th>Invoice #</th>
-            <th>Invoice $</th>
         </tr>
     </thead>
     <tbody>
@@ -20,8 +18,6 @@
                 <td>{{ $package->present()->dimensions() }}</td>
                 <td>{{ $package->present()->weight() }}</td>
                 <td>{{ $package->tracking_number }}</td>
-                <td>{{ $package->invoice_number }}</td>
-                <td>{{ $package->invoice_amount }}</td>
             </tr>
         @endforeach
     </tbody>

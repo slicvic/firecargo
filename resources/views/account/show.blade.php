@@ -29,6 +29,6 @@
 <div class="ibox">
    <div class="ibox-content">
         <h2>Address</h2>
-        <p>{!! $user->present()->addressAsString() !!}</p>
+        <p>{!! $user->shippingAddress->asString() !!}</p>
    </div>
 </div>

@@ -64,7 +64,7 @@ class Package extends Base {
      */
     public function status()
     {
-        return $this->belongsTo('App\Models\PackageStatus');
+        return $this->belongsTo('App\Models\PackageStatus', 'status_id');
     }
 
     /**

@@ -1,25 +1,26 @@
 <?php namespace App\Models;
 
+use DB;
 use App\Models\CompanySpecificTrait;
 
 /**
- * Courier
+ * Container
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Courier extends Base {
+class Container extends Base {
 
     use CompanySpecificTrait;
 
-    protected $table = 'couriers';
+    protected $table = 'containers';
 
     public static $rules = [
         'company_id' => 'required',
-        'name' => 'required'
+        'tracking_number' => 'required|unique:containers,tracking_number'
     ];
 
     protected $fillable = [
         'company_id',
-        'name',
+        'tracking_number',
     ];
 }

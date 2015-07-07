@@ -20,7 +20,7 @@
             <td>{{ $type->id }}</td>
             <td>{{ $type->name }}</td>
             <td>
-                @if ($type->site_id == Auth::user()->site_id)
+                @if ($type->company_id == Auth::user()->site->company_id)
                     <div class="btn-group">
                         <a href="/package-types/edit/{{ $type->id }}" class="btn-white btn btn-sm">Edit</a>
                         <a href="/package-types/delete/{{ $type->id }}" class="btn-white btn btn-sm">Delete</a>
