@@ -3,7 +3,7 @@
 @section('icon', 'cube')
 
 @section('title')
-    {{ $warehouse->id ? 'Editing Warehouse #' . $warehouse->id : 'Create Warehouse' }}
+    {{ $warehouse->id ? 'Edit Warehouse # ' . $warehouse->id : 'Create Warehouse' }}
 @stop
 
 @section('subtitle')
@@ -11,6 +11,11 @@
         <li>
             <a href="/warehouses">Warehouses</a>
         </li>
+        @if ($warehouse->id)
+            <li>
+                <a href="/warehouses/show/{{ $warehouse->id }}">{{ $warehouse->id }}</a>
+            </li>
+        @endif
         <li class="active">
             <strong>{{ $warehouse->id ? 'Edit' : 'Create' }}</strong>
         </li>
@@ -30,13 +35,13 @@
                     <label class="control-label col-sm-2">Date</label>
                     <div class="col-sm-2">
                         <div class="input-group">
-                            <input required type="text" name="warehouse[arrived_at][date]" class="form-control" value="{{ ($warehouse->arrived_at) ? date('m/d/Y', strtotime($warehouse->arrived_at)) : date('m/d/Y') }}">
+                            <input required type="text" name="warehouse[arrived_at][date]" class="form-control" value="{{ ($warehouse->id) ? date('m/d/Y', strtotime($warehouse->arrived_at)) : date('m/d/Y') }}">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                         </div>
                     </div>
                     <div class="col-sm-2">
                         <div class="input-group bootstrap-timepicker">
-                            <input required type="text" name="warehouse[arrived_at][time]" class="form-control" value="{{ ($warehouse->arrived_at) ? date('g:i A', strtotime($warehouse->arrived_at)) : date('g:i A') }}">
+                            <input required type="text" name="warehouse[arrived_at][time]" class="form-control" value="{{ ($warehouse->id) ? date('g:i A', strtotime($warehouse->arrived_at)) : date('g:i A') }}">
                             <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                         </div>
                     </div>
@@ -66,6 +71,7 @@
                         </select>
                     </div>
                 </div>
+                <?php /*
                 <div class="form-group">
                     <label class="control-label col-sm-2">Container</label>
                     <div class="col-sm-5">
@@ -76,7 +82,7 @@
                             @endforeach
                         </select>
                     </div>
-                </div>
+                </div>*/?>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Notes</label>
                     <div class="col-sm-5">

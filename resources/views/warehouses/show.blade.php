@@ -7,7 +7,14 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
         <h2>Warehouse Detail # {{ $warehouse->id }}</h2>
-        View Warehouse Details
+        <ol class="breadcrumb">
+            <li>
+                <a href="/warehouses">Warehouses</a>
+            </li>
+            <li class="active">
+                <strong>Details</strong>
+            </li>
+        </ol>
     </div>
     <div class="col-sm-8">
         <div class="title-action">
@@ -72,6 +79,10 @@
                         <tr>
                             <th class="col-sm-2">Date</th>
                             <td>{{ $warehouse->present()->arrivalDate() }}</td>
+                        </tr>
+                        <tr>
+                            <th>Container</th>
+                            <td>{!! $warehouse->present()->containerLink() !!}</td>
                         </tr>
                         <tr>
                             <th>Shipper</th>

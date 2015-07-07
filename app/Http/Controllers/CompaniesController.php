@@ -35,7 +35,7 @@ class CompaniesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('companies.form', ['company' => new Company()]);
+        return view('companies.form', ['company' => new Company]);
     }
 
     /**

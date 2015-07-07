@@ -32,20 +32,21 @@ class WarehousesController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
-        $perPage = $request->input('limit', 10);
-        $sortBy = $request->input('sortby', 'id');
-        $sortOrder = $request->input('order', 'desc');
-        $criteria['q'] = $request->input('q');
-        $criteria['status'] = $request->input('status');
+        $input['limit'] = $request->input('limit', 10);
+        $input['sortby'] = $request->input('sortby', 'id');
+        $input['order'] = $request->input('order', 'desc');
+        $input['q'] = $request->input('q');
+        $input['status'] = $request->input('status');
+
+        $criteria['status'] = $input['status'];
+        $criteria['q'] = $input['q'];
         $criteria['company_id'] = $this->user->company_id;
-        $warehouses = Warehouse::search($criteria, $sortBy, $sortOrder, $perPage);
+        $warehouses = Warehouse::search($criteria, $input['sortby'], $input['order'], $input['limit']);
 
         return view('warehouses.index', [
-            'search' => $criteria,
             'warehouses' => $warehouses,
-            'sortBy' => $sortBy,
-            'sortOrder' => $sortOrder,
-            'reverseSortOrder' => ($sortOrder === 'asc' ? 'desc' : 'asc'),
+            'input' => $input,
+            'orderInverse' => ($input['order'] === 'asc' ? 'desc' : 'asc'),
         ]);
     }
 
@@ -63,7 +64,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('warehouses.form', ['warehouse' => new Warehouse()]);
+        return view('warehouses.form', ['warehouse' => new Warehouse]);
     }
 
     /**
@@ -82,8 +83,6 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Create warehouse
-        $input['warehouse']['container_id'] = $input['warehouse']['container_id'] ?: NULL;
-        $input['warehouse']['arrived_at'] = date('Y-m-d H:i:s', strtotime($input['warehouse']['arrived_at']['date'] . ' ' . $input['warehouse']['arrived_at']['time']));
         $warehouse = Warehouse::create($input['warehouse']);
 
         // Create packages
@@ -132,8 +131,6 @@ class WarehousesController extends BaseAuthController {
             return response()->json(['status' => 'error', 'message' => 'Invalid warehouse ID.']);
         }
 
-        $input['warehouse']['container_id'] = $input['warehouse']['container_id'] ?: NULL;
-        $input['warehouse']['arrived_at'] = date('Y-m-d H:i:s', strtotime($input['warehouse']['arrived_at']['date'] . ' ' . $input['warehouse']['arrived_at']['time']));
         $warehouse->update($input['warehouse']);
 
         // Update packages

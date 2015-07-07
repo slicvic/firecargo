@@ -11,7 +11,7 @@
 @section('subtitle')
     <ol class="breadcrumb">
         <li>
-            <a href="/users">Users</a>
+            <a href="/accounts">Accounts</a>
         </li>
         <li class="active">
             <strong>{{ $user->id ? 'Edit' : 'Create' }}</strong>
@@ -20,7 +20,7 @@
 @stop
 
 @section('form')
-    <form action="/users/{{ ($user->id) ? 'update/' . $user->id : 'store' }}" method="post" class="form-horizontal" data-parsley-validate>
+    <form action="/accounts/{{ ($user->id) ? 'update/' . $user->id : 'store' }}" method="post" class="form-horizontal" data-parsley-validate>
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         <div class="row">
@@ -59,15 +59,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2">Mobile Phone</label>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="user[mobile_phone]" placeholder="Mobile Phone" class="phone form-control" value="{{ Input::old('user.mobile_phone', $user->mobile_phone) }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label class="control-label col-sm-2">Last Name</label>
                                     <div class="col-sm-5">
                                         <input type="text" name="user[last_name]" placeholder="Last Name" class="form-control" value="{{ Input::old('user.last_name', $user->last_name) }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Mobile Phone</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" name="user[mobile_phone]" placeholder="Mobile Phone" class="phone form-control" value="{{ Input::old('user.mobile_phone', $user->mobile_phone) }}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -158,7 +158,7 @@
 
         <div class="form-group">
             <div class="col-sm-12">
-                <a class="btn btn-white" href="/users">Cancel</a>
+                <a class="btn btn-white" href="/accounts">Cancel</a>
                 <button class="btn btn-primary" type="submit">Save changes</button>
             </div>
         </div>

@@ -5,11 +5,12 @@
 @section('subtitle', 'Manage User Accounts')
 
 @section('actions')
-    <a href="/users/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Account</a>
+    <a href="/accounts/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Account</a>
 @stop
 
 @section('thead')
     <th>ID</th>
+    @if (Auth::user()->isAdmin()) {!! '<th>Company</th>' !!} @endif
     <th>Company Name</th>
     <th>First Name</th>
     <th>Last Name</th>
@@ -26,7 +27,7 @@
             //'aaSorting': [[ 0, 'desc' ]],
             'processing': true,
             'serverSide': true,
-            'ajax': '/users/ajax-datatable',
+            'ajax': '/accounts/ajax-datatable',
         });
     });
 @stop

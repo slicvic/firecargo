@@ -35,7 +35,7 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('package_types.form', ['type' => new PackageType()]);
+        return view('package_types.form', ['type' => new PackageType]);
     }
 
     /**

@@ -93,6 +93,34 @@ class Warehouse extends Base {
     }
 
     /**
+     * Overrides parent method to sanitize certain attributes.
+     *
+     * @see parent::setAttribute()
+     */
+    public function setAttribute($key, $value)
+    {
+        switch ($key) {
+            case 'container_id':
+                $value = empty($value) ? NULL : $value;
+                break;
+
+            case 'arrived_at':
+                if (is_string($value)) {
+                    $value = date('Y-m-d H:i:s', strtotime($value));
+                }
+                else if (is_array($value) && isset($value['date'], $value['time'])) {
+                    $value = date('Y-m-d H:i:s', strtotime($value['date'] . ' ' . $value['time']));
+                }
+                else {
+                    $value = NULL;
+                }
+                break;
+        }
+
+        return parent::setAttribute($key, $value);
+    }
+
+    /**
      * Calculates the actual weight of the warehouse in pounds.
      *
      * @return float
@@ -195,7 +223,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Searches warehouses.
+     * Finds all warehouses with the given criteria.
      *
      * @param  array|null $criteria
      * @param  string     $orderBy
@@ -232,12 +260,23 @@ class Warehouse extends Base {
 
         if ( ! empty($criteria['q'])) {
             $q = '%' . $criteria['q'] . '%';
+
             $warehouses = $warehouses
-                ->join('users AS consignee', 'warehouses.consignee_user_id', '=', 'consignee.id')
-                ->join('users AS shipper', 'warehouses.shipper_user_id', '=', 'shipper.id')
-                ->join('warehouse_groups AS group', 'warehouses.container_id', '=', 'group.id')
-                ->whereRaw('warehouses.id LIKE ? OR group.tracking_number LIKE ? OR consignee.first_name LIKE ? OR consignee.last_name LIKE ? OR shipper.company_name LIKE ?', [$q, $q, $q, $q, $q])
-                ->select('warehouses.*');
+                ->select('warehouses.*')
+                ->leftJoin('users AS consignee', 'warehouses.consignee_user_id', '=', 'consignee.id')
+                ->leftJoin('users AS shipper', 'warehouses.shipper_user_id', '=', 'shipper.id')
+                ->leftJoin('containers AS container', 'warehouses.container_id', '=', 'container.id')
+                ->whereRaw('(
+                    warehouses.id LIKE ?
+                    OR container.id LIKE ?
+                    OR container.tracking_number LIKE ?
+                    OR consignee.id LIKE ?
+                    OR consignee.first_name LIKE ?
+                    OR consignee.last_name LIKE ?
+                    OR shipper.id LIKE ?
+                    OR shipper.company_name LIKE ?
+                    )', [$q, $q, $q, $q, $q, $q, $q, $q]
+                );
         }
 
         $warehouses = $warehouses->paginate($perPage);

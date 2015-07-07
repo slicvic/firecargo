@@ -35,7 +35,7 @@ class CouriersController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('couriers.form', ['courier' => new Courier()]);
+        return view('couriers.form', ['courier' => new Courier]);
     }
 
     /**

@@ -39,7 +39,7 @@ class UserController extends BaseAuthController {
     /**
      * Shows the form for updating the user's profile.
      */
-    public function getEditProfile()
+    public function getEdit()
     {
         $view = view('user_profile.edit', ['user' => $this->user]);
         return view('user_profile.layout', ['content' => $view]);

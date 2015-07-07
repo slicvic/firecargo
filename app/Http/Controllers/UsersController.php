@@ -36,7 +36,7 @@ class UsersController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('users.form', ['user' => new User()]);
+        return view('users.form', ['user' => new User]);
     }
 
     /**
@@ -76,8 +76,8 @@ class UsersController extends BaseAuthController {
         $address->user()->associate($user);
         $address->save();
 
-        Flash::success('User created.');
-        return redirect('users');
+        Flash::success('Account created.');
+        return redirect('accounts');
     }
 
     /**
@@ -133,7 +133,7 @@ class UsersController extends BaseAuthController {
             $address->save();
         }
 
-        Flash::success('User updated.');
+        Flash::success('Account updated.');
         return redirect()->back();
     }
 
@@ -178,8 +178,7 @@ class UsersController extends BaseAuthController {
         $response['data'] = [];
 
         foreach($results['users'] as $user) {
-            $response['data'][] = [
-                $user->id,
+            $data = [
                 $user->company_name,
                 $user->first_name,
                 $user->last_name,
@@ -187,8 +186,17 @@ class UsersController extends BaseAuthController {
                 $user->phone,
                 $user->mobile_phone,
                 $user->present()->roles(),
-                sprintf('<a href="/users/edit/%s" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a>', $user->id)
+                sprintf('<a href="/accounts/edit/%s" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a>', $user->id)
             ];
+
+            if ($this->user->isAdmin()) {
+                $data = array_merge([$user->id, $user->company->name], $data);
+            }
+            else {
+                $data = array_merge([$user->id], $data);
+            }
+
+            $response['data'][] = $data;
         }
 
         return response()->json($response);

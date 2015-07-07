@@ -34,7 +34,7 @@ class RolesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('roles.form', ['role' => new Role()]);
+        return view('roles.form', ['role' => new Role]);
     }
 
     /**

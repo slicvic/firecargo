@@ -35,7 +35,7 @@ class SitesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('sites.form', ['site' => new Site()]);
+        return view('sites.form', ['site' => new Site]);
     }
 
     /**

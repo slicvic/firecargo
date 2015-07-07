@@ -11,11 +11,12 @@
             <th>Action</th>
         </tr>
     </thead>
-    <?php echo view('warehouses.form.package', ['package' => new \App\Models\Package()]); ?>
 
-    <?php if (count($packages)): ?>
-        <?php foreach ($packages as $package): ?>
-            <?php echo view('warehouses.form.package', ['package' => $package]); ?>
-        <?php endforeach; ?>
-    <?php endif; ?>
+    {!! view('warehouses.form.package', ['package' => new \App\Models\Package()]) !!}
+
+    @if (count($packages))
+        @foreach ($packages as $package)
+            {!! view('warehouses.form.package', ['package' => $package]) !!}
+        @endforeach
+    @endif
 </table>

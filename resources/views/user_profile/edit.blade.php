@@ -1,5 +1,5 @@
 <?php $address = $user->address ?: new App\Models\Address; ?>
-<form data-parsley-validate action="/user/profile" method="post" class="form-horizontal">
+<form data-parsley-validate action="/account/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <input type="hidden" name="user[company_id]" value="{{ $user->company_id }}">
     <div class="row">
@@ -110,7 +110,7 @@
     </div>
     <div class="form-group">
         <div class="col-sm-12">
-            <a class="btn btn-white" href="/user/profile">Cancel</a>
+            <a class="btn btn-white" href="/account/profile">Cancel</a>
             <button class="btn btn-primary" type="submit">Save changes</button>
         </div>
     </div>

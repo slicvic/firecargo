@@ -25,9 +25,9 @@
                         <button style="margin-top:4px;" type="button" id="btnEditPhoto" class="btn btn-block btn-link"><i class="fa fa-pencil"></i> Edit Photo</button>
                         <div id="dzErrorMessage" class="text-danger"></div>
                         <div class="list-group">
-                            <a href="/user/profile" class="{{ Request::is('user/profile') ? 'active ' : '' }}list-group-item btn btn-block btn-success">My Profile</a>
-                            <a href="/user/edit-profile" class="{{ Request::is('user/edit-profile') ? 'active ' : '' }}list-group-item btn btn-block btn-success">Update Profile</a>
-                            <a href="/user/password" class="{{ Request::is('user/password') ? 'active ' : '' }}list-group-item btn btn-block btn-success">Change Password</a>
+                            <a href="/account/profile" class="{{ Request::is('account/profile') ? 'active ' : '' }}list-group-item btn btn-block btn-success">My Profile</a>
+                            <a href="/account/edit" class="{{ Request::is('account/edit') ? 'active ' : '' }}list-group-item btn btn-block btn-success">Update Profile</a>
+                            <a href="/account/password" class="{{ Request::is('account/password') ? 'active ' : '' }}list-group-item btn btn-block btn-success">Change Password</a>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
     <script>
         $(function() {
             $('#btnEditPhoto').dropzone({
-                url: '/user/ajax-upload-photo',
+                url: '/account/ajax-upload-photo',
                 maxFileSize: 10,
                 acceptedFiles: 'image/*',
                 parallelUploads: 1,

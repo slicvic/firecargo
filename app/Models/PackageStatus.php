@@ -20,6 +20,19 @@ class PackageStatus extends Base {
 
     protected $fillable = [
         'company_id',
-        'name'
+        'name',
+        'is_default'
     ];
+
+    /**
+     * Resets the default status by company ID.
+     *
+     * @param  int  $siteId
+     * @return int
+     */
+    public static function unsetDefaultByCompanyId($companyId)
+    {
+        return PackageStatus::where('company_id', $companyId)
+            ->update(['is_default' => 0]);
+    }
 }

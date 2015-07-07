@@ -11,6 +11,7 @@
 @section('thead')
     <th>ID</th>
     <th>Name</th>
+    <th>Default?</th>
     <th>Action</th>
 @stop
 
@@ -19,6 +20,7 @@
        <tr>
             <td>{{ $status->id }}</td>
             <td>{{ $status->name }}</td>
+            <td>{!! $status->is_default ? '<i class="fa fa-check"></i>' : '' !!}</td>
             <td>
                 <div class="btn-group">
                     <a href="/package-statuses/edit/{{ $status->id }}" class="btn-white btn btn-sm">Edit</a>

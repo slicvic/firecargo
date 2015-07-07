@@ -35,7 +35,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('package_statuses.form', ['status' => new PackageStatus()]);
+        return view('package_statuses.form', ['status' => new PackageStatus]);
     }
 
     /**
@@ -54,6 +54,9 @@ class PackageStatusesController extends BaseAuthController {
         }
 
         // Create status
+        if (isset($input['is_default'])) {
+            PackageStatus::unsetDefaultByCompanyId($this->user->company_id);
+        }
         PackageStatus::create($input);
 
         Flash::success('Package status created.');
@@ -86,6 +89,9 @@ class PackageStatusesController extends BaseAuthController {
 
         // Update status
         $status = PackageStatus::findOrFailByIdAndCurrentCompany($id);
+        if (isset($input['is_default']) && ! $status->is_default) {
+            PackageStatus::unsetDefaultByCompanyId($this->user->company_id);
+        }
         $status->update($input);
 
         Flash::success('Package status updated.');

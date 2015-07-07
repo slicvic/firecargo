@@ -63,7 +63,7 @@ class Warehouse extends BasePresenter {
      */
     public function shipperNameLink()
     {
-        return '<a href="' . url('users/edit/' . $this->model->shipper->id) . '">' . $this->shipperName() . '</a>';
+        return '<a href="' . url('accounts/edit/' . $this->model->shipper->id) . '">' . $this->shipperName() . '</a>';
     }
 
 
@@ -74,7 +74,7 @@ class Warehouse extends BasePresenter {
      */
     public function consigneeNameLink()
     {
-        return '<a href="' . url('users/edit/' . $this->model->consignee->id) . '">' . $this->consigneeName() . '</a>';
+        return '<a href="' . url('accounts/edit/' . $this->model->consignee->id) . '">' . $this->consigneeName() . '</a>';
     }
 
     /**
@@ -108,12 +108,22 @@ class Warehouse extends BasePresenter {
     }
 
     /**
-     * Presents the group.
+     * Presents the container.
      *
      * @return string
      */
     public function container()
     {
         return ($this->model->container_id) ? $this->model->container->tracking_number : 'N/A';
+    }
+
+    /**
+     * Presents the container link.
+     *
+     * @return string
+     */
+    public function containerLink()
+    {
+        return ($this->model->container_id) ? '<a href="' . url('containers/edit/' . $this->model->container_id) . '">' . $this->container() . '</a>' : 'N/A';
     }
 }

@@ -168,16 +168,22 @@ class User extends Base implements AuthenticatableInterface {
             case 'last_name':
                 $value = ucwords(strtolower(trim($value)));
                 break;
+
             case 'password':
                 $value = empty($value) ? $this->password : Hash::make($value);
                 break;
+
             case 'dob':
-                if (is_string($value))
+                if (is_string($value)) {
                     $value = date('Y-m-d', strtotime($value));
-                else if (is_array($value))
+                }
+                else if (is_array($value) && isset($value['year'], $value['month'], $value['day'])) {
                     $value = date('Y-m-d', strtotime($value['year'] . '/' . $value['month'] . '/' . $value['day']));
-                else
+                }
+                else {
                     $value = NULL;
+                }
+                break;
         }
 
         return parent::setAttribute($key, $value);

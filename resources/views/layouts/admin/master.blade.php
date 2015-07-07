@@ -56,7 +56,10 @@
                                 </span>
                                 </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a href="/user/profile">Profile</a></li>
+                                <li><a href="/account/profile">My Profile</a></li>
+                                @if ( ! Auth::user()->isClient())
+                                    <li><a href="/company/profile">Company Profile</a></li>
+                                @endif
                                 <li class="divider"></li>
                                 <li><a href="/logout">Logout</a></li>
                             </ul>
@@ -74,7 +77,7 @@
                         <li{{ preg_match('/warehouse/', $uri) ? ' class=active' : '' }}>
                             <a href="#"><i class="fa fa-cube"></i> <span class="nav-label">Warehouses</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses?status=pending">Warehouses</a></li>
+                                <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses">Warehouses</a></li>
                                 <li{{ (Request::is('warehouses/create')) ? ' class=active' : '' }}><a href="/warehouses/create">Create Warehouse</a></li>
                             </ul>
                         </li>
@@ -87,8 +90,8 @@
                             </ul>
                         </li>
 
-                        <li{{ (Request::is('users') || Request::is('users/*')) ? ' class=active' : '' }}>
-                            <a href="/users"><i class="fa fa-users"></i><span>Accounts</span></a>
+                        <li{{ (Request::is('accounts') || Request::is('users/*')) ? ' class=active' : '' }}>
+                            <a href="/accounts"><i class="fa fa-users"></i><span>Accounts</span></a>
                         </li>
 
                         <li{{ preg_match('/couriers|sites|company|package-|companies|roles/', $uri) ? ' class=active' : '' }}>

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Validator;
 
 use App\Models\Container;
+use App\Models\Warehouse;
 use App\Helpers\Flash;
 
 /**
@@ -23,64 +24,100 @@ class ContainersController extends BaseAuthController {
     /**
      * Shows a list of warehouse groups.
      */
-    public function getIndex()
+    public function getIndex(Request $request)
     {
-        $groups = Container::allByCurrentCompany();
-        return view('containers.index', ['groups' => $groups]);
+        $input['limit'] = $request->input('limit', 10);
+        $input['sortby'] = $request->input('sortby', 'id');
+        $input['order'] = $request->input('order', 'desc');
+        $input['q'] = $request->input('q');
+
+        $criteria['q'] = $input['q'];
+        $criteria['company_id'] = $this->user->company_id;
+        $containers = Container::search($criteria, $input['sortby'], $input['order'], $input['limit']);
+
+        return view('containers.index', [
+            'containers' => $containers,
+            'input' => $input,
+            'orderInverse' => ($input['order'] === 'asc' ? 'desc' : 'asc'),
+        ]);
     }
 
     /**
-     * Shows the form for creating a new company.
+     * Shows the form for creating a warehouse.
      */
     public function getCreate()
     {
-        return view('container.form', ['group' => new WarehouseGroup()]);
+        return view('containers.form', ['container' => new Container]);
     }
 
     /**
-     * Creates a new company.
+     * Creates a new container.
      */
     public function postStore(Request $request)
     {
-        $validator = Validator::make($input = $request->all(), Company::$rules);
+        $input = $request->all();
+        $input['container']['company_id'] = $this->user->company_id;
+
+        // Validate input
+        $rules = Container::$rules;
+        $validator = Validator::make($input['container'], $rules);
 
         if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
-        Company::create($input);
+        // Create container
+        $container = Container::create($input['container']);
 
-        Flash::success('New company created.');
-        return redirect('companies');
+        // Assign warehouses
+        Warehouse::whereIn('id', explode("\n", $input['warehouse_ids']))
+            ->update(['container_id' => $container->id]);
+
+        Flash::success('Container created.');
+        return redirect('containers');
     }
 
     /**
-     * Shows the form for editing a company.
+     * Shows the form for editing a container.
      */
     public function getEdit($id)
     {
-        $company = Company::findOrFail($id);
-        return view('companies.form', ['company' => $company]);
+        $container = Container::findOrFailByIdAndCurrentCompany($id);
+        return view('containers.form', ['container' => $container]);
     }
 
     /**
-     * Updates a specific company.
+     * Updates a specific container.
      */
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
-        $validator = Validator::make($input, Company::$rules);
+
+        // Validate input
+        $rules = Container::$rules;
+        $rules['tracking_number'] .= ',' . $id;
+        unset($rules['company_id']);
+
+        $validator = Validator::make($input['container'], $rules);
 
         if ($validator->fails()) {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
-        $company = Company::findOrFail($id);
-        $company->update($input);
+        // Update container
+        $container = Container::findOrFailByIdAndCurrentCompany($id);
+        $container->update($input['container']);
 
-        Flash::success('Company updated.');
+        // Assign warehouses
+        Warehouse::where('container_id', $container->id)
+            ->update(['container_id' => NULL]);
+        Warehouse::whereIn('id', explode("\n", $input['warehouse_ids']))
+            ->update(['container_id' => $container->id]);
+
+        Flash::success('Container updated.');
         return redirect()->back();
     }
+
 }
