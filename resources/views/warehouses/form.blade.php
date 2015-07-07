@@ -24,7 +24,7 @@
             <div class="ibox-title"><h5>Warehouse Details</h5></div>
             <div class="ibox-content">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="warehouse[company_id]" value="{{ ($warehouse->id) ? $warehouse->company_id : Auth::user()->site->company_id }}">
+                <input type="hidden" name="warehouse[company_id]" value="{{ ($warehouse->id) ? $warehouse->company_id : Auth::user()->company_id }}">
 
                 <div class="form-group">
                     <label class="control-label col-sm-2">Date</label>
@@ -69,7 +69,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Container</label>
                     <div class="col-sm-5">
-                        <select name="warehouse[group_id]" class="form-control">
+                        <select name="warehouse[container_id]" class="form-control">
                             <option value=""></option>
                             @foreach (\App\Models\Container::allByCurrentCompany() as $container)
                                 <option{{ ($warehouse->container_id == $container->id) ? ' selected' : '' }} value="{{ $container->id }}">{{ $container->tracking_number }}</option>

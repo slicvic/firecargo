@@ -11,7 +11,7 @@ use App\Helpers\Html;
 use App\Helpers\Flash;
 
 use App\Events\UserLoggedIn;
-use App\Events\UserRegistered;
+use App\Events\UserJoined;
 use Event;
 
 /**
@@ -103,7 +103,7 @@ class AuthController extends BaseController {
         $user->roles()->sync([Role::CLIENT, Role::LOGIN]);
 
         // Fire event
-        Event::fire(new UserRegistered($user));
+        Event::fire(new UserJoined($user));
 
         return redirect('dashboard');
     }

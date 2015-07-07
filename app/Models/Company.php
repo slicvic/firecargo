@@ -24,8 +24,7 @@ class Company extends Base {
         'name',
         'email',
         'phone',
-        'fax',
-        'address_id',
+        'fax'
     ];
 
     /**
@@ -33,7 +32,7 @@ class Company extends Base {
      */
     public function address()
     {
-        return $this->belongsTo('App\Models\Address', 'address_id');
+        return $this->hasOne('App\Models\Address');
     }
 
     /**

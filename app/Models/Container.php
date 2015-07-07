@@ -21,6 +21,16 @@ class Container extends Base {
 
     protected $fillable = [
         'company_id',
+        'type_id',
         'tracking_number',
+        'departed_at'
     ];
+
+    /**
+     * Gets the warehouses.
+     */
+    public function warehouses()
+    {
+        return $this->hasMany('App\Models\Warehouse');
+    }
 }

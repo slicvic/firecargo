@@ -20,7 +20,7 @@
             <td>{{ $courier->id }}</td>
             <td>{{ $courier->name }}</td>
             <td>
-                @if ($courier->company_id == Auth::user()->site->company_id)
+                @if ($courier->company_id == Auth::user()->company_id)
                     <div class="btn-group">
                         <a href="/couriers/edit/{{ $courier->id }}" class="btn-white btn btn-sm">Edit</a>
                         <a href="/couriers/delete/{{ $courier->id }}" class="btn-white btn btn-sm">Delete</a>

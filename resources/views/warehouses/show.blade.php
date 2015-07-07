@@ -75,11 +75,11 @@
                         </tr>
                         <tr>
                             <th>Shipper</th>
-                            <td>{{ $warehouse->present()->shipperName() }}</td>
+                            <td>{!! $warehouse->present()->shipperNameLink() !!}</td>
                         </tr>
                         <tr>
                             <th>Consignee</th>
-                            <td>{{ $warehouse->present()->consigneeName() }}</td>
+                            <td>{!! $warehouse->present()->consigneeNameLink() !!}</td>
                         </tr>
                         <tr>
                             <th>Delivered By</th>

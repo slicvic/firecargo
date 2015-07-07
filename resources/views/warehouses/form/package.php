@@ -44,7 +44,7 @@
                     <input type="text" name="package[<?php echo $packageId; ?>][invoice_number]" placeholder="Invoice #" data-name="invoice_number" class="form-control" size="10" value="<?php echo $package->invoice_number; ?>">
                 </div>
                 <div class="col-sm-2">
-                    <input type="text" name="package[<?php echo $packageId; ?>][invoice_amount]" placeholder="Invoice $" data-name="invoice_amount" class="form-control" size="10" value="<?php echo $package->invoice_amount; ?>">
+                    <input type="text" name="package[<?php echo $packageId; ?>][invoice_amount]" placeholder="Invoice $USD" data-name="invoice_amount" class="form-control" size="10" value="<?php echo $package->invoice_amount; ?>">
                 </div>
                       <div class="col-sm-6">
                     <textarea name="package[<?php echo $packageId; ?>][description]" data-name="description" placeholder="Description" rows="1" class="form-control"><?php echo $package->description; ?></textarea>

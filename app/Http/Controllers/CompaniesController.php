@@ -53,13 +53,14 @@ class CompaniesController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        // Create address
-        $address = Address::create([]);
-
         // Create company
         $company = new Company($input);
-        $company->address()->associate($address);
         $company->save();
+
+        // Create address
+        $address = new Address();
+        $address->company()->associate($company);
+        $address->save();
 
         Flash::success('Company created.');
         return redirect('companies');

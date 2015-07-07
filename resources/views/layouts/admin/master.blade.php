@@ -56,7 +56,7 @@
                                 </span>
                                 </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a href="/account/profile">Profile</a></li>
+                                <li><a href="/user/profile">Profile</a></li>
                                 <li class="divider"></li>
                                 <li><a href="/logout">Logout</a></li>
                             </ul>
@@ -74,7 +74,7 @@
                         <li{{ preg_match('/warehouse/', $uri) ? ' class=active' : '' }}>
                             <a href="#"><i class="fa fa-cube"></i> <span class="nav-label">Warehouses</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses">Warehouses</a></li>
+                                <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses?status=pending">Warehouses</a></li>
                                 <li{{ (Request::is('warehouses/create')) ? ' class=active' : '' }}><a href="/warehouses/create">Create Warehouse</a></li>
                             </ul>
                         </li>
@@ -87,8 +87,8 @@
                             </ul>
                         </li>
 
-                        <li{{ (Request::is('accounts') || Request::is('accounts/*')) ? ' class=active' : '' }}>
-                            <a href="/accounts"><i class="fa fa-users"></i><span>Accounts</span></a>
+                        <li{{ (Request::is('users') || Request::is('users/*')) ? ' class=active' : '' }}>
+                            <a href="/users"><i class="fa fa-users"></i><span>Accounts</span></a>
                         </li>
 
                         <li{{ preg_match('/couriers|sites|company|package-|companies|roles/', $uri) ? ' class=active' : '' }}>
@@ -98,7 +98,7 @@
                                     <li{{ (Request::is('roles') || Request::is('roles/*')) ? ' class=active' : '' }}><a href="/roles">Roles</a></li>
                                     <li{{ (Request::is('companies') || Request::is('companies/*')) ? ' class=active' : '' }}><a href="/companies">Companies</a></li>
                                 <?php endif; ?>
-                                <li{{ (Request::is('company') || Request::is('company/*')) ? ' class=active' : '' }}><a href="/company/profile">Company</a></li>
+                                <li{{ (Request::is('company') || Request::is('company/*')) ? ' class=active' : '' }}><a href="/company/profile">Company Profile</a></li>
                                 <li{{ (Request::is('sites') || Request::is('sites/*')) ? ' class=active' : '' }}><a href="/sites">Sites</a></li>
                                 <li{{ (Request::is('couriers') || Request::is('couriers/*')) ? ' class=active' : '' }}><a href="/couriers">Couriers</a></li>
                                 <li{{ (Request::is('package-types') || Request::is('package-types/*')) ? ' class=active' : '' }}><a href="/package-types">Package Types</a></li>

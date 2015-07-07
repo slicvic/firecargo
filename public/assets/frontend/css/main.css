@@ -29,10 +29,6 @@
     margin-bottom: 10px;
 }
 
-.required-field {
-    color: red;
-    font-size: 18px;
-}
-
 .parsley-required {
     color: red;
+}

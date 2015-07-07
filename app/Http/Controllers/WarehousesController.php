@@ -37,7 +37,7 @@ class WarehousesController extends BaseAuthController {
         $sortOrder = $request->input('order', 'desc');
         $criteria['q'] = $request->input('q');
         $criteria['status'] = $request->input('status');
-        $criteria['company_id'] = $this->user->site->company_id;
+        $criteria['company_id'] = $this->user->company_id;
         $warehouses = Warehouse::search($criteria, $sortBy, $sortOrder, $perPage);
 
         return view('warehouses.index', [
@@ -82,7 +82,7 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Create warehouse
-        $input['warehouse']['group_id'] = $input['warehouse']['group_id'] ?: NULL;
+        $input['warehouse']['container_id'] = $input['warehouse']['container_id'] ?: NULL;
         $input['warehouse']['arrived_at'] = date('Y-m-d H:i:s', strtotime($input['warehouse']['arrived_at']['date'] . ' ' . $input['warehouse']['arrived_at']['time']));
         $warehouse = Warehouse::create($input['warehouse']);
 
@@ -132,7 +132,7 @@ class WarehousesController extends BaseAuthController {
             return response()->json(['status' => 'error', 'message' => 'Invalid warehouse ID.']);
         }
 
-        $input['warehouse']['group_id'] = $input['warehouse']['group_id'] ?: NULL;
+        $input['warehouse']['container_id'] = $input['warehouse']['container_id'] ?: NULL;
         $input['warehouse']['arrived_at'] = date('Y-m-d H:i:s', strtotime($input['warehouse']['arrived_at']['date'] . ' ' . $input['warehouse']['arrived_at']['time']));
         $warehouse->update($input['warehouse']);
 
@@ -169,36 +169,19 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Retrieves a list of packages by warehouse ID.
-     * @deprecated
-     */
-    public function getAjaxPackages(Request $request, $warehouseId)
-    {
-        $warehouse = Warehouse::findOrFail($warehouseId);
-        return view('warehouses.index.packages', ['packages' => $warehouse->packages]);
-    }
-
-    /**
      * Returns a list of users for a jQuery autocomple field.
      *
      * @uses    ajax
      * @return  json
      */
-    public function getAjaxAutocompleteUser(Request $request)
+    public function getAjaxShipperConsigneeAutocomplete(Request $request)
     {
         $input = $request->only('term', 'type');
         $response = [];
 
-        if (strlen($input['term']) > 1)
-        {
-            foreach(User::getUsersForAutocomplete($input['term'], [$this->user->site_id]) as $user) {
-                if ($input['type'] == 'shipper') {
-                    $label = $user->business_name ?: 'Blank Company Name';
-                }
-                else {
-                    $label = trim($user->present()->fullName()) ?: 'Blank Name';
-                }
-
+        if (strlen($input['term']) > 1) {
+            foreach(User::findForAutocomplete($input['term'], [$this->user->company_id]) as $user) {
+                $label = ($input['type'] == 'shipper') ? $user->present()->companyName() : trim($user->present()->fullName());
                 $response[] = [
                     'id' => $user->id,
                     'label' => $label
@@ -207,5 +190,15 @@ class WarehousesController extends BaseAuthController {
         }
 
         return response()->json($response);
+    }
+
+    /**
+     * Retrieves a list of packages by warehouse ID.
+     * @deprecated
+     */
+    public function getAjaxPackages(Request $request, $warehouseId)
+    {
+        $warehouse = Warehouse::findOrFail($warehouseId);
+        return view('warehouses.index.packages', ['packages' => $warehouse->packages]);
     }
 }

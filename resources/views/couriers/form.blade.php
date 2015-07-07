@@ -20,7 +20,7 @@
 @section('form')
     <form data-parsley-validate action="/couriers/{{ ($courier->id) ? 'update/' . $courier->id : 'store' }}" method="post" class="form-horizontal">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <input type="hidden" name="company_id" value="{{ ($courier->id) ? $courier->company_id : Auth::user()->site->company_id }}">
+        <input type="hidden" name="company_id" value="{{ ($courier->id) ? $courier->company_id : Auth::user()->company_id }}">
         <div class="form-group">
             <label class="control-label col-sm-2">Name</label>
             <div class="col-sm-4">

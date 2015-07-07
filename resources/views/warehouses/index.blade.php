@@ -74,8 +74,8 @@
                                 <td><span class="label label-success">{{ $warehouse->packages->count() }}</span></td>
                                 <td>{{ $warehouse->present()->grossWeight() }}</td>
                                 <td>{{ $warehouse->present()->volumeWeight() }}</td>
-                                <td>{{ $warehouse->present()->shipperName() }}</td>
-                                <td>{{ $warehouse->present()->consigneeName() }}</td>
+                                <td>{!! $warehouse->present()->shipperNameLink() !!}</td>
+                                <td>{!! $warehouse->present()->consigneeNameLink() !!}</td>
                                 <td></td>
                                 <td>
                                     <div class="btn-group">

@@ -18,6 +18,6 @@
 <div class="ibox">
    <div class="ibox-content">
         <h2>Address</h2>
-        <p>{!! $company->address->asString() !!}</p>
+        <p>{!! $company->present()->address() !!}</p>
    </div>
 </div>

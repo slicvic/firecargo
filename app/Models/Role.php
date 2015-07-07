@@ -17,7 +17,7 @@ class Role extends Base {
     protected $table = 'roles';
 
     public static $rules = [
-        'name' => 'required'
+        'name' => 'required',
     ];
 
     protected $fillable = [
@@ -41,7 +41,7 @@ class Role extends Base {
         }
         else
         {
-            // Return all roles except 'ADMIN'
+            // Return all roles except "ADMIN"
             return Role::where('id', '<>', self::ADMIN)
                 ->get($columns);
         }

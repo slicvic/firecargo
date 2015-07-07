@@ -20,13 +20,13 @@ Route::controller('packages', 'PackagesController');
 Route::controller('sites', 'SitesController');
 Route::controller('companies', 'CompaniesController');
 Route::controller('roles', 'RolesController');
-Route::controller('accounts', 'UsersController');
+Route::controller('users', 'UsersController');
 Route::controller('warehouses', 'WarehousesController');
 Route::controller('containers', 'ContainersController');
 Route::controller('company', 'CompanyController');
 
-Route::controller('account', 'AccountController');
-Route::get('logout', 'AccountController@getLogout');
+Route::controller('user', 'UserController');
+Route::get('logout', 'UserController@getLogout');
 
 // Auth
 Route::get('login', 'AuthController@getLogin');

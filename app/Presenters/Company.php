@@ -26,4 +26,14 @@ class Company extends BasePresenter {
             return asset('assets/admin/img/avatar.png');
         }
     }
+
+    /**
+     * Presents the address.
+     *
+     * @return string
+     */
+    public function address()
+    {
+        return ($this->model->address) ? $this->model->address->asString() : '';
+    }
 }

@@ -8,7 +8,7 @@
         <td width="50"><img width="50" height="50" src="/assets/img/avatar.png"></td>
         <td>
 {{ strtoupper($company->name) }}<br>
-{!! strtoupper($company->address->asString()) !!}<br>
+{!! strtoupper($company->present()->address()) !!}<br>
 TEL: {{ $company->phone }}<br>
 EMAIL: {{ $company->email }}
         </td>
@@ -29,7 +29,7 @@ EMAIL: {{ $company->email }}
         <td width="10%">FROM:</td>
         <td>
 <b>{{ strtoupper($warehouse->present()->shipperName()) }}</b><br>
-{!! strtoupper($shipper->shippingAddress->asString()) !!}<br>
+{!! strtoupper($shipper->present()->address()) !!}<br>
 <br>
         </td>
     </tr>
@@ -37,7 +37,7 @@ EMAIL: {{ $company->email }}
         <td width="10%">TO:</td>
         <td>
 <b>{{ strtoupper($consignee->present()->fullName()) }}</b><br>
-{!! strtoupper($consignee->shippingAddress->asString()) !!}<br>
+{!! strtoupper($consignee->address->asString()) !!}<br>
         </td>
     </tr>
 </table>

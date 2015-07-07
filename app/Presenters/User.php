@@ -1,6 +1,8 @@
 <?php namespace App\Presenters;
 
 use App\Presenters\Base as BasePresenter;
+use App\Models\Role;
+use App\Helpers\Html;
 
 /**
  * User
@@ -16,7 +18,24 @@ class User extends BasePresenter {
      */
     public function fullName()
     {
-        return $this->model->first_name . ' ' . $this->model->last_name;
+        $fullName = $this->model->first_name . ' ' . $this->model->last_name;
+
+        if ( ! empty(trim($fullName)))
+            return $fullName;
+
+        return $this->model->id;
+    }
+
+    /**
+     * Presents the company name.
+     *
+     * @return string
+     */
+    public function companyName()
+    {
+        if ( ! empty(trim($this->model->company_name)))
+            return $this->model->company_name;
+        return $this->model->id;
     }
 
     /**
@@ -38,16 +57,24 @@ class User extends BasePresenter {
     }
 
     /**
-     * Presents the roles as an array.
+     * Presents the roles.
      *
-     * @return array
+     * @return string
      */
-    public function rolesAsArray()
+    public function roles()
     {
-        $roles = [];
-        foreach ($this->model->roles as $role) {
-            $roles[$role->id] = $role->name;
-        }
-        return $roles;
+        if ( ! $this->model->roles)
+            return '';
+        return Html::arrayToTags($this->model->roles->lists('name'));
+    }
+
+    /**
+     * Presents the address.
+     *
+     * @return string
+     */
+    public function address()
+    {
+        return ($this->model->address) ? $this->model->address->asString() : '';
     }
 }

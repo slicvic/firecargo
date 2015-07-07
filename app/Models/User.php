@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
 use App\Presenters\PresentableTrait;
-use App\Models\SiteSpecificTrait;
+use App\Models\CompanySpecificTrait;
 
 /**
  * User
@@ -15,25 +15,32 @@ use App\Models\SiteSpecificTrait;
  */
 class User extends Base implements AuthenticatableInterface {
 
-    use AuthenticableTrait, SiteSpecificTrait, PresentableTrait;
+    use AuthenticableTrait, CompanySpecificTrait, PresentableTrait;
 
     protected $presenter = 'App\Presenters\User';
 
     protected $table = 'users';
 
+    public static $rules = [
+        'company_id' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'min:6',
+        'first_name' => 'required',
+        'last_name' => 'required'
+    ];
+
     protected $fillable = [
         'site_id',
-        'shipping_address_id',
+        'company_id',
         'email',
         'password',
-        'business_name',
+        'company_name',
         'first_name',
         'last_name',
         'dob',
         'id_number',
         'phone',
         'mobile_phone',
-        'fax',
         'autoship_packages'
     ];
 
@@ -54,11 +61,11 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the shipping address.
+     * Gets the address.
      */
-    public function shippingAddress()
+    public function address()
     {
-        return $this->belongsTo('App\Models\Address', 'shipping_address_id');
+        return $this->hasOne('App\Models\Address');
     }
 
     /**
@@ -67,6 +74,14 @@ class User extends Base implements AuthenticatableInterface {
     public function site()
     {
         return $this->belongsTo('App\Models\Site');
+    }
+
+    /**
+     * Gets the company.
+     */
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company');
     }
 
     /**
@@ -202,22 +217,22 @@ class User extends Base implements AuthenticatableInterface {
     /**
      * Retrieves a list of users for a jQuery Autocomplete input field.
      *
-     * @param  string $searchTerm  A search query
-     * @param  array  $siteIds     List of site ids
+     * @param  string $keyword     A search query
+     * @param  array  $companyIds  List of company ids
      * @return User[]
      */
-    public static function getUsersForAutocomplete($searchTerm, array $siteIds = NULL)
+    public static function findForAutocomplete($keyword, array $companyIds = NULL)
     {
-        $searchTerm = '%' . $searchTerm . '%';
-        $where = '(id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR business_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
-        $where .= count($siteIds) ? ' AND site_id IN (' . implode(',', $siteIds) . ')' : '';
-        return User::whereRaw($where, [$searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm])->get();
+        $keyword = '%' . $keyword . '%';
+        $where = '(id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
+        $where .= count($companyIds) ? ' AND company_id IN (' . implode(',', $companyIds) . ')' : '';
+        return User::whereRaw($where, [$keyword, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword])->get();
     }
 
     /**
      * Retrieves a list of users for a jQuery Datatable plugin.
      *
-     * @param  string   $criteria     Lists of criterias
+     * @param  string   $criteria     List of criterias
      * @param  int      $offset
      * @param  int      $limit
      * @param  string   $orderBy
@@ -225,19 +240,19 @@ class User extends Base implements AuthenticatableInterface {
      *
      * @return [total => X, users => User[]]
      */
-    public static function getUsersForDatatable(array $criteria = [], $offset = 0, $limit = 10, $orderBy = 'id', $order = 'DESC')
+    public static function findForDatatable(array $criteria = [], $offset = 0, $limit = 10, $orderBy = 'id', $order = 'DESC')
     {
         $sql = '1';
         $bindings = [];
 
-        if ( ! empty($criteria['site_id'])) {
-            $sql .= ' AND site_id IN (' . implode(',', $criteria['site_id']) . ')';
+        if ( ! empty($criteria['company_id'])) {
+            $sql .= ' AND company_id IN (' . implode(',', $criteria['company_id']) . ')';
         }
 
-        if ( ! empty($criteria['search_term'])) {
-            $searchTerm = '%' . $criteria['search_term'] . '%';
-            $sql .= ' AND (id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR business_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
-            $bindings = [$searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm, $searchTerm];
+        if ( ! empty($criteria['q'])) {
+            $q = '%' . $criteria['q'] . '%';
+            $sql .= ' AND (id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
+            $bindings = [$q, $q, $q, $q, $q, $q, $q];
         }
 
         $query = User::whereRaw($sql, $bindings);

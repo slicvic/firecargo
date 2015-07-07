@@ -7,15 +7,16 @@ use Auth;
 use Hash;
 
 use App\Models\User;
+use App\Models\Address;
 use App\Helpers\Flash;
 use Intervention\Image\ImageManagerStatic as Image;
 
 /**
- * AccountController
+ * UserProfileController
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class AccountController extends BaseAuthController {
+class UserController extends BaseAuthController {
 
     /**
      * Logs out the user.
@@ -31,8 +32,8 @@ class AccountController extends BaseAuthController {
      */
     public function getProfile()
     {
-        $view = view('account.show', ['user' => $this->user]);
-        return view('account.layout', ['content' => $view]);
+        $view = view('user_profile.show', ['user' => $this->user]);
+        return view('user_profile.layout', ['content' => $view]);
     }
 
     /**
@@ -40,8 +41,8 @@ class AccountController extends BaseAuthController {
      */
     public function getEditProfile()
     {
-        $view = view('account.edit', ['user' => $this->user]);
-        return view('account.layout', ['content' => $view]);
+        $view = view('user_profile.edit', ['user' => $this->user]);
+        return view('user_profile.layout', ['content' => $view]);
     }
 
     /**
@@ -49,15 +50,11 @@ class AccountController extends BaseAuthController {
      */
     public function postProfile(Request $request)
     {
-        $input = $request->only('user', 'shipping_address');
+        $input = $request->only('user', 'address');
 
         // Validate input
-        $rules = [
-            'site_id' => 'required',
-            'email' => 'required|email|unique:users,email,' . $this->user->id,
-            'first_name' => 'required',
-            'last_name' => 'required'
-        ];
+        $rules = User::$rules;
+        $rules['email'] .= ',' . $this->user->id;
 
         $validator = Validator::make($input['user'], $rules);
 
@@ -71,25 +68,32 @@ class AccountController extends BaseAuthController {
         $this->user->update($input['user']);
 
         // Update address
-        $this->user->shippingAddress->update($input['shipping_address']);
+        if ($this->user->address) {
+            $this->user->address->update($input['address']);
+        }
+        else {
+            $address = new Address($input['address']);
+            $address->user()->associate($this->user);
+            $address->save();
+        }
 
-        Flash::success('Your account was updated.');
+        Flash::success('Your profile was updated.');
         return redirect()->back();
     }
 
     /**
      * Shows the form for changing the user's password.
      */
-    public function getChangePassword()
+    public function getPassword()
     {
-        $passwordView = view('account.password');
-        return view('account.layout', ['content' => $passwordView]);
+        $passwordView = view('user_profile.password');
+        return view('user_profile.layout', ['content' => $passwordView]);
     }
 
     /**
      * Updates the user's password.
      */
-    public function postChangePassword(Request $request)
+    public function postPassword(Request $request)
     {
         $input = $request->all();
 

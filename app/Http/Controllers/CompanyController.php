@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Validator;
 
 use App\Models\Company;
+use App\Models\Address;
 use App\Helpers\Flash;
 use Config;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -27,9 +28,9 @@ class CompanyController extends BaseAuthController {
      */
     public function getProfile()
     {
-        $company = $this->user->site->company;
-        $view = view('company.show', ['company' => $company]);
-        return view('company.layout', ['company' => $company, 'content' => $view]);
+        $company = $this->user->company;
+        $view = view('company_profile.show', ['company' => $company]);
+        return view('company_profile.layout', ['company' => $company, 'content' => $view]);
     }
 
     /**
@@ -37,9 +38,9 @@ class CompanyController extends BaseAuthController {
      */
     public function getEditProfile()
     {
-        $company = $this->user->site->company;
-        $view = view('company.edit', ['company' => $company]);
-        return view('company.layout', ['company' => $company, 'content' => $view]);
+        $company = $this->user->company;
+        $view = view('company_profile.edit', ['company' => $company]);
+        return view('company_profile.layout', ['company' => $company, 'content' => $view]);
     }
 
     /**
@@ -58,11 +59,18 @@ class CompanyController extends BaseAuthController {
         }
 
         // Update company
-        $company = $this->user->site->company;
+        $company = $this->user->company;
         $company->update($input['company']);
 
         // Update address
-        $company->address->update($input['address']);
+        if ($company->address) {
+            $company->address->update($input['address']);
+        }
+        else {
+            $address = new Address($input['address']);
+            $address->company()->associate($company);
+            $address->save();
+        }
 
         Flash::success('Company updated.');
         return redirect()->back();
@@ -89,7 +97,7 @@ class CompanyController extends BaseAuthController {
         }
 
         // Create destination directory
-        $destination = public_path() . '/uploads/companies/' . $this->user->site->company->id . '/images/logo/';
+        $destination = public_path() . '/uploads/companies/' . $this->user->company->id . '/images/logo/';
         if ( ! file_exists($destination)) {
             mkdir($destination, 0775, TRUE);
         }

@@ -30,6 +30,7 @@ class Warehouse extends Base {
         'company_id',
         'shipper_user_id',
         'consignee_user_id',
+        'container_id',
         'courier_id',
         'arrived_at',
         'notes'
@@ -217,10 +218,10 @@ class Warehouse extends Base {
         if ( ! empty($criteria['status'])) {
             switch ($criteria['status']) {
                 case 'pending':
-                    $warehouses = $warehouses->whereRaw('warehouses.group_id IS NULL');
+                    $warehouses = $warehouses->whereRaw('warehouses.container_id IS NULL');
                     break;
                 case 'processed':
-                    $warehouses = $warehouses->whereRaw('warehouses.group_id IS NOT NULL');
+                    $warehouses = $warehouses->whereRaw('warehouses.container_id IS NOT NULL');
                     break;
             }
         }
@@ -234,8 +235,8 @@ class Warehouse extends Base {
             $warehouses = $warehouses
                 ->join('users AS consignee', 'warehouses.consignee_user_id', '=', 'consignee.id')
                 ->join('users AS shipper', 'warehouses.shipper_user_id', '=', 'shipper.id')
-                ->join('warehouse_groups AS group', 'warehouses.group_id', '=', 'group.id')
-                ->whereRaw('warehouses.id LIKE ? OR group.tracking_number LIKE ? OR consignee.first_name LIKE ? OR consignee.last_name LIKE ? OR shipper.business_name LIKE ?', [$q, $q, $q, $q, $q])
+                ->join('warehouse_groups AS group', 'warehouses.container_id', '=', 'group.id')
+                ->whereRaw('warehouses.id LIKE ? OR group.tracking_number LIKE ? OR consignee.first_name LIKE ? OR consignee.last_name LIKE ? OR shipper.company_name LIKE ?', [$q, $q, $q, $q, $q])
                 ->select('warehouses.*');
         }
 

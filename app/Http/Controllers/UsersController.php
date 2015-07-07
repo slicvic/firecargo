@@ -6,9 +6,9 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Models\Role;
 use App\Models\Address;
 use App\Helpers\Flash;
-use App\Helpers\Html;
 
 /**
  * UsersController
@@ -44,20 +44,11 @@ class UsersController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $request->only('user', 'roles', 'shipping_address');
-
-        // Create validation rules
-        $rules = [];
-
-        if ( ! empty($input['user']['password'])) {
-            $rules['password'] = 'min:6';
-        }
-
-        if ( ! empty($input['user']['email'])) {
-            $rules['email'] = 'email|unique:users,email';
-        }
+        $input = $request->only('user', 'roles', 'address');
 
         // Validate input
+        $rules = User::$rules;
+
         $validator = Validator::make($input['user'], $rules);
 
         if ($validator->fails()) {
@@ -65,23 +56,28 @@ class UsersController extends BaseAuthController {
             return redirect()->back()->withInput();
         }
 
-        $input['user']['site_id'] = ($this->user->isAdmin()) ? $input['user']['site_id'] : $this->user->site_id;
-
-        // Create address
-        $shippingAddress = Address::create($input['shipping_address']);
+        $input['user']['company_id'] = ($this->user->isAdmin()) ? $input['user']['company_id'] : $this->user->company_id;
 
         // Create user
         $user = new User($input['user']);
-        $user->shippingAddress()->associate($shippingAddress);
         $user->save();
 
-        // Assign user roles
+        // Assign roles
         if (isset($input['roles'])) {
+            if ( ! $this->user->isAdmin() && in_array(Role::ADMIN, $input['roles'])) {
+                // SORRY, YOU MUST BE AN ADMIN TO ASSIGN "ADMIN" ROLE
+                $input['roles'] = array_diff($input['roles'], [Role::ADMIN]);
+            }
             $user->roles()->sync($input['roles']);
         }
 
-        Flash::success('Account created.');
-        return redirect('accounts');
+        // Create address
+        $address = new Address($input['address']);
+        $address->user()->associate($user);
+        $address->save();
+
+        Flash::success('User created.');
+        return redirect('users');
     }
 
     /**
@@ -89,7 +85,7 @@ class UsersController extends BaseAuthController {
      */
     public function getEdit(Request $request, $id)
     {
-        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentSite($id);
+        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentCompany($id);
         return view('users.form', ['user' => $user]);
     }
 
@@ -98,20 +94,12 @@ class UsersController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->only('user', 'roles', 'shipping_address');
-
-        // Create validation rules
-        $rules = [];
-
-        if ( ! empty($input['user']['password'])) {
-            $rules['password'] = 'min:6';
-        }
-
-        if ( ! empty($input['user']['email'])) {
-            $rules['email'] = 'email|unique:users,email,' . $id;
-        }
+        $input = $request->only('user', 'roles', 'address');
 
         // Validate input
+        $rules = User::$rules;
+        $rules['email'] .= ',' . $id;
+
         $validator = Validator::make($input['user'], $rules);
 
         if ($validator->fails()) {
@@ -120,12 +108,32 @@ class UsersController extends BaseAuthController {
         }
 
         // Update user
-        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentSite($id);
+        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentCompany($id);
         $user->update($input['user']);
-        $user->shippingAddress->update($input['shipping_address']);
-        $user->roles()->sync(isset($input['roles']) ? $input['roles'] : []);
 
-        Flash::success('Account updated.');
+        // Update roles
+        if (isset($input['roles'])) {
+            if ( ! $this->user->isAdmin() && in_array(Role::ADMIN, $input['roles'])) {
+                // SORRY, YOU MUST BE AN ADMIN TO ASSIGN "ADMIN" ROLE
+                $input['roles'] = array_diff($input['roles'], [Role::ADMIN]);
+            }
+            $user->roles()->sync($input['roles']);
+        }
+        else {
+            $user->roles()->sync([]);
+        }
+
+        // Update address
+        if ($user->address) {
+            $user->address->update($input['address']);
+        }
+        else {
+            $address = new Address($input['address']);
+            $address->user()->associate($user);
+            $address->save();
+        }
+
+        Flash::success('User updated.');
         return redirect()->back();
     }
 
@@ -146,8 +154,7 @@ class UsersController extends BaseAuthController {
         // Obtain sort column
         $sortColumns = [
             'id',
-            'site_id',
-            'business_name',
+            'company_name',
             'first_name',
             'last_name',
             'email',
@@ -158,11 +165,11 @@ class UsersController extends BaseAuthController {
         $order = isset($input['order'][0]) ? $input['order'][0]['dir'] : 'desc';
 
         // Search criteria
-        $criteria['search_term'] = empty($input['search']['value']) ? NULL : $input['search']['value'];
-        $criteria['site_id'] = ($this->user->isAdmin()) ? NULL : [$this->user->site_id];
+        $criteria['q'] = empty($input['search']['value']) ? NULL : $input['search']['value'];
+        $criteria['company_id'] = ($this->user->isAdmin()) ? NULL : [$this->user->company_id];
 
         // Retrieve results
-        $results = User::getUsersForDatatable($criteria, $offset, $limit, $orderBy, $order);
+        $results = User::findForDatatable($criteria, $offset, $limit, $orderBy, $order);
 
         // Process response
         $response = [];
@@ -173,15 +180,14 @@ class UsersController extends BaseAuthController {
         foreach($results['users'] as $user) {
             $response['data'][] = [
                 $user->id,
-                $user->site->name,
-                $user->business_name,
+                $user->company_name,
                 $user->first_name,
                 $user->last_name,
                 $user->email,
                 $user->phone,
                 $user->mobile_phone,
-                Html::arrayToTags($user->present()->rolesAsArray()),
-                sprintf('<a href="/accounts/edit/%s" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a>', $user->id)
+                $user->present()->roles(),
+                sprintf('<a href="/users/edit/%s" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a>', $user->id)
             ];
         }
 

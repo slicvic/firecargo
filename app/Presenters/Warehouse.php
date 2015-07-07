@@ -53,7 +53,28 @@ class Warehouse extends BasePresenter {
      */
     public function shipperName()
     {
-        return ($this->model->shipper_user_id) ? $this->model->shipper->business_name : '';
+        return ($this->model->shipper_user_id) ? $this->model->shipper->present()->companyName() : '';
+    }
+
+    /**
+     * Presents the shipper name link.
+     *
+     * @return string
+     */
+    public function shipperNameLink()
+    {
+        return '<a href="' . url('users/edit/' . $this->model->shipper->id) . '">' . $this->shipperName() . '</a>';
+    }
+
+
+    /**
+     * Presents the shipper name link.
+     *
+     * @return string
+     */
+    public function consigneeNameLink()
+    {
+        return '<a href="' . url('users/edit/' . $this->model->consignee->id) . '">' . $this->consigneeName() . '</a>';
     }
 
     /**
@@ -91,8 +112,8 @@ class Warehouse extends BasePresenter {
      *
      * @return string
      */
-    public function group()
+    public function container()
     {
-        return ($this->model->group_id) ? $this->model->group->tracking_number : 'N/A';
+        return ($this->model->container_id) ? $this->model->container->tracking_number : 'N/A';
     }
 }

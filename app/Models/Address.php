@@ -1,6 +1,5 @@
 <?php namespace App\Models;
 
-use App\Presenters\PresentableTrait;
 use DB;
 
 /**
@@ -10,13 +9,12 @@ use DB;
  */
 class Address extends Base {
 
-    use PresentableTrait;
-
-    protected $presenter = 'App\Presenters\Address';
-
     protected $table = 'addresses';
 
     protected $fillable = [
+        'user_id',
+        'company_id',
+        'account_id',
         'address1',
         'address2',
         'city',
@@ -31,6 +29,22 @@ class Address extends Base {
     public function country()
     {
         return $this->belongsTo('App\Models\Country');
+    }
+
+    /**
+     * Gets the user.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
+
+    /**
+     * Gets the company.
+     */
+    public function company()
+    {
+        return $this->belongsTo('App\Models\User', 'company_id');
     }
 
     /**

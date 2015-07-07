@@ -5,19 +5,18 @@
 @section('subtitle', 'Manage User Accounts')
 
 @section('actions')
-    <a href="/accounts/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Account</a>
+    <a href="/users/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Account</a>
 @stop
 
 @section('thead')
     <th>ID</th>
-    <th>Site</th>
-    <th>Company</th>
+    <th>Company Name</th>
     <th>First Name</th>
     <th>Last Name</th>
     <th>Email</th>
     <th>Phone</th>
     <th>Mobile</th>
-    <th>Groups</th>
+    <th>Group</th>
     <th>Action</th>
 @stop
 
@@ -27,7 +26,7 @@
             //'aaSorting': [[ 0, 'desc' ]],
             'processing': true,
             'serverSide': true,
-            'ajax': '/accounts/ajax-datatable',
+            'ajax': '/users/ajax-datatable',
         });
     });
 @stop

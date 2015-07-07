@@ -14,81 +14,75 @@
 					<fieldset>
 						<legend>Personal Information</legend>
 						<div class="form-group-inline">
-							<label class="col-md-2 control-label">First Name<span class="required-field">*</span></label>
+							<label class="col-md-2 control-label">First Name <small>(required)</small></label>
 							<div class="col-md-2">
 								<input type="text" name="user[first_name]" class="form-control" value="{{ Input::old('user.first_name') }}" required>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-2 control-label">Last Name<span class="required-field">*</span></label>
+							<label class="col-md-2 control-label">Last Name <small>(required)</small></label>
 							<div class="col-md-2">
 								<input type="text" name="user[last_name]" class="form-control" value="{{ Input::old('user.last_name') }}" required>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-2 control-label">Email<span class="required-field">*</span></label>
+							<label class="col-md-2 control-label">Email <small>(required)</small></label>
 							<div class="col-md-6">
 								<input type="email" name="user[email]" class="form-control" value="{{ Input::old('user.email') }}" required>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-2 control-label">Password<span class="required-field">*</span></label>
+							<label class="col-md-2 control-label">Password <small>(required)</small></label>
 							<div class="col-md-6">
 								<input id="password" type="password" name="user[password]" class="form-control" value="{{ Input::old('user.password') }}" data-parsley-minlength="2" required>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-2 control-label">Confirm Password<span class="required-field">*</span></label>
+							<label class="col-md-2 control-label">Confirm Password <small>(required)</small></label>
 							<div class="col-md-6">
 								<input type="password" name="password_confirm" class="form-control" value="{{ Input::old('password_confirm') }}" data-parsley-equalto="#password" required>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-md-2 control-label">ID / RUT<span class="required-field">*</span></label>
-							<div class="col-md-6">
-								<input type="text" name="user[id_number]" class="form-control" value="{{ Input::old('user.id_number') }}" required>
 							</div>
 						</div>
 					</fieldset>
 
 					<fieldset>
-						<legend>Shipping Address</legend>
+						<legend>Delivery Address</legend>
 						<div class="form-group">
-							<label class="col-md-2 control-label">Address<span class="required-field">*</span></label>
+							<label class="col-md-2 control-label">Address <small>(required)</small></label>
 							<div class="col-md-6">
-								<input name="user[address1]" class="form-control" value="{{ Input::old('user.address1') }}" required>
+								<input name="address[address1]" class="form-control" value="{{ Input::old('address.address1') }}" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label">Apt / Unit</label>
 							<div class="col-md-6">
-								<input name="user[address2]" class="form-control" value="{{ Input::old('user.address2') }}">
+								<input name="address[address2]" class="form-control" value="{{ Input::old('address.address2') }}">
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-2 control-label">City<span class="required-field">*</span></label>
+							<label class="col-md-2 control-label">City <small>(required)</small></label>
 							<div class="col-md-6">
-								<input name="user[city]" class="form-control" value="{{ Input::old('user.city') }}" required>
+								<input name="address[city]" class="form-control" value="{{ Input::old('address.city') }}" required>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-2 control-label">State<span class="required-field">*</span></label>
+							<label class="col-md-2 control-label">State/Province/Region <small>(required)</small></label>
 							<div class="col-md-6">
-								<input type="text" name="user[state]" class="form-control" value="{{ Input::old('user.state') }}" required>
+								<input type="text" name="address[state]" class="form-control" value="{{ Input::old('address.state') }}" required>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-2 control-label">Postal Code<span class="required-field"></span></label>
+							<label class="col-md-2 control-label">Postal Code</label>
 							<div class="col-md-6">
-								<input type="text" name="user[postal_code]" class="form-control" value="{{ Input::old('user.postal_code') }}" required>
+								<input type="text" name="address[postal_code]" class="form-control" value="{{ Input::old('address.postal_code') }}">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="control-label col-md-2">Country</label>
 							<div class="col-sm-6">
-								<select name="user[country_id]" class="form-control">
+								<select name="address[country_id]" class="form-control">
 									@foreach (\App\Models\Country::all() as $country)
-										<option value="{{ $country->id }}">{{ $country->name }}</option>
+										<option{{ $country->id == Input::old('address.country_id') ? ' selected' : '' }} value="{{ $country->id }}">{{ $country->name }}</option>
 									@endforeach
 								</select>
 							</div>
@@ -100,7 +94,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-2 control-label">Mobile Phone<span class="required-field">*</span></label>
+							<label class="col-md-2 control-label">Mobile Phone <small>(required)</small></label>
 							<div class="col-md-2">
 								<input type="text" name="user[mobile_phone]" class="form-control" value="{{ Input::old('user.mobile_phone') }}" required>
 							</div>

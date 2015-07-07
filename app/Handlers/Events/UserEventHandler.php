@@ -1,7 +1,7 @@
 <?php namespace App\Handlers\Events;
 
 use App\Events\UserLoggedIn;
-use App\Events\UserRegistered;
+use App\Events\UserJoined;
 
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldBeQueued;
@@ -35,7 +35,7 @@ class UserEventHandler {
     /**
      * Handle user signup events.
      */
-    public function onUserRegister(UserRegistered $event)
+    public function onUserJoin(UserJoined $event)
     {
         Auth::login($event->user);
         Mailer::sendWelcome($event->user);
@@ -50,6 +50,6 @@ class UserEventHandler {
     public function subscribe($events)
     {
         $events->listen('App\Events\UserLoggedIn', 'App\Handlers\Events\UserEventHandler@onUserLogin');
-        $events->listen('App\Events\UserRegistered', 'App\Handlers\Events\UserEventHandler@onUserRegister');
+        $events->listen('App\Events\UserJoined', 'App\Handlers\Events\UserEventHandler@onUserJoin');
     }
 }

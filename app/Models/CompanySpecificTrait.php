@@ -27,7 +27,7 @@ trait CompanySpecificTrait {
      */
     public static function findOrFailByIdAndCurrentCompany($id)
     {
-        return self::findOrFailByIdAndCompanyId($id, Auth::user()->site->company_id);
+        return self::findOrFailByIdAndCompanyId($id, Auth::user()->company_id);
     }
 
     /**
@@ -52,7 +52,7 @@ trait CompanySpecificTrait {
      */
     public static function findByIdAndCurrentCompany($id)
     {
-        return self::findByIdAndCompanyId($id, Auth::user()->site->company_id);
+        return self::findByIdAndCompanyId($id, Auth::user()->company_id);
     }
 
     /**
@@ -84,6 +84,6 @@ trait CompanySpecificTrait {
      */
     public static function allByCurrentCompany($orderBy = 'id', $order = 'DESC', $columns = ['*'])
     {
-        return self::allByCompanyId([0, Auth::user()->site->company_id], $orderBy, $order, $columns);
+        return self::allByCompanyId([0, Auth::user()->company_id], $orderBy, $order, $columns);
     }
 }

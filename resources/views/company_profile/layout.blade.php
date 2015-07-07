@@ -16,8 +16,7 @@
                     <button type="button" id="btnEditLogo" class="btn btn-link btn-block"><i class="fa fa-pencil"></i> Edit Logo</button>
                     <div id="dzErrorMessage" class="text-danger"></div>
                    <div class="list-group">
-                        <a href="/company/profile" class="{{ Request::is('company/profile') ? 'active ' : '' }}list-group-item btn btn-block btn-success">Profile</a>
-                        <a href="/company/edit-profile" class="{{ Request::is('company/edit-profile') ? 'active ' : '' }}list-group-item btn btn-block btn-success">Edit Profile</a>
+                        <a href="/company/edit-profile" class="btn btn-block btn-primary">Update Profile</a>
                     </div>
                 </div>
             </div>
