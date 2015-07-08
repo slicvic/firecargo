@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:8889
--- Generation Time: Jul 07, 2015 at 08:03 PM
+-- Generation Time: Jul 08, 2015 at 05:38 PM
 -- Server version: 5.5.34
 -- PHP Version: 5.5.10
 
@@ -35,14 +35,45 @@ CREATE TABLE `addresses` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_id` (`user_id`),
   UNIQUE KEY `company_id` (`company_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `addresses`
 --
 
 INSERT INTO `addresses` (`id`, `user_id`, `company_id`, `address1`, `address2`, `city`, `state`, `postal_code`, `country_id`, `created_at`, `updated_at`) VALUES
-(29, 1020, NULL, '', '', '', '', '', 1, '2015-07-07 16:59:43', '2015-07-07 16:59:43');
+(29, 1020, NULL, '', '', '', '', '', 1, '2015-07-07 16:59:43', '2015-07-07 16:59:43'),
+(30, 1060, NULL, '', '', '', '', '', 1, '2015-07-07 20:30:59', '2015-07-07 20:30:59'),
+(31, 1061, NULL, '', '', '', '', '', 1, '2015-07-07 21:47:14', '2015-07-07 21:47:14'),
+(32, 1062, NULL, '', '', '', '', '', 1, '2015-07-07 22:24:36', '2015-07-07 22:24:36'),
+(33, 1063, NULL, '', '', '', '', '', 1, '2015-07-07 22:25:23', '2015-07-07 22:25:23'),
+(34, 1064, NULL, '', '', '', '', '', 1, '2015-07-07 22:26:18', '2015-07-07 22:26:18'),
+(35, 1065, NULL, '', '', '', '', '', 1, '2015-07-07 22:31:13', '2015-07-07 22:31:13'),
+(36, NULL, 1, '', '', '', '', '', 1, '2015-07-08 13:15:48', '2015-07-08 13:15:48');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `carriers`
+--
+
+CREATE TABLE `carriers` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=37 ;
+
+--
+-- Dumping data for table `carriers`
+--
+
+INSERT INTO `carriers` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(16, 'UPS', '0000-00-00 00:00:00', '2015-07-08 15:06:50'),
+(17, 'USPS', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(18, 'FedEx', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(19, 'LaserShip', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -53,6 +84,7 @@ INSERT INTO `addresses` (`id`, `user_id`, `company_id`, `address1`, `address2`, 
 CREATE TABLE `companies` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `code` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `phone` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `fax` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -65,9 +97,9 @@ CREATE TABLE `companies` (
 -- Dumping data for table `companies`
 --
 
-INSERT INTO `companies` (`id`, `name`, `phone`, `fax`, `email`, `created_at`, `updated_at`) VALUES
-(1, 'Lantigua Group', '1234567', '7654321', 'hello@gmail.com', '2015-03-23 22:58:37', '2015-07-05 20:22:18'),
-(2, 'Sion Services Group', '', '', '', '2015-03-23 22:59:07', '2015-03-23 23:05:58');
+INSERT INTO `companies` (`id`, `name`, `code`, `phone`, `fax`, `email`, `created_at`, `updated_at`) VALUES
+(1, 'Lantigua Group', 'LG', '1234567', '7654321', 'hello@gmail.com', '2015-03-23 22:58:37', '2015-07-08 02:21:36'),
+(2, 'Sion Services Group', 'SSG', '', '', '', '2015-03-23 22:59:07', '2015-07-08 02:21:44');
 
 -- --------------------------------------------------------
 
@@ -78,34 +110,43 @@ INSERT INTO `companies` (`id`, `name`, `phone`, `fax`, `email`, `created_at`, `u
 CREATE TABLE `containers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` int(10) unsigned NOT NULL,
-  `type_id` int(10) unsigned NOT NULL,
-  `tracking_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `receipt_type_id` int(10) unsigned NOT NULL,
+  `receipt_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `carrier` varchar(32) NOT NULL,
   `departed_at` datetime NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `tracking_number` (`tracking_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  UNIQUE KEY `tracking_number` (`receipt_number`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `containers`
+--
+
+INSERT INTO `containers` (`id`, `company_id`, `receipt_type_id`, `receipt_number`, `carrier`, `departed_at`, `created_at`, `updated_at`) VALUES
+(1, 1, 0, 'FLIGHT 2244242', '', '2015-07-07 19:57:35', '2015-07-07 19:57:38', '2015-07-07 20:19:10');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `container_types`
+-- Table structure for table `container_receipt_types`
 --
 
-CREATE TABLE `container_types` (
+CREATE TABLE `container_receipt_types` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf32 COLLATE utf32_unicode_ci NOT NULL,
+  `code` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
--- Dumping data for table `container_types`
+-- Dumping data for table `container_receipt_types`
 --
 
-INSERT INTO `container_types` (`id`, `name`) VALUES
-(1, 'Flight'),
-(2, 'Vessel');
+INSERT INTO `container_receipt_types` (`id`, `code`, `name`) VALUES
+(3, 'AWB', 'Air waybill'),
+(4, 'BL', 'Bill of Lading');
 
 -- --------------------------------------------------------
 
@@ -126,31 +167,6 @@ CREATE TABLE `countries` (
 INSERT INTO `countries` (`id`, `name`) VALUES
 (1, 'United States'),
 (2, 'Colombia');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `couriers`
---
-
-CREATE TABLE `couriers` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `company_id` bigint(20) unsigned NOT NULL,
-  `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
-
---
--- Dumping data for table `couriers`
---
-
-INSERT INTO `couriers` (`id`, `company_id`, `name`, `created_at`, `updated_at`) VALUES
-(16, 0, 'UPS', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(17, 0, 'USPS', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(18, 0, 'FedEx', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(19, 0, 'LaserShip', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -178,15 +194,18 @@ CREATE TABLE `packages` (
   KEY `warehouse_id` (`warehouse_id`),
   KEY `type_id` (`type_id`),
   KEY `status_id` (`status_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=72 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=94 ;
 
 --
 -- Dumping data for table `packages`
 --
 
 INSERT INTO `packages` (`id`, `warehouse_id`, `type_id`, `status_id`, `length`, `width`, `height`, `weight`, `description`, `invoice_number`, `invoice_amount`, `tracking_number`, `ship`, `created_at`, `updated_at`) VALUES
-(70, 24, 10, 5, 0, 0, 0, 0, '', '', 0.0000, '', 1, '2015-07-07 01:01:01', '2015-07-07 01:01:01'),
-(71, 24, 10, 5, 0, 0, 0, 0, '', '', 0.0000, '', 1, '2015-07-07 01:01:01', '2015-07-07 01:01:01');
+(89, 31, NULL, 1, 1, 1, 1, 1, '', '', 0.0000, '', 1, '2015-07-07 22:03:06', '2015-07-07 22:03:06'),
+(90, 31, NULL, 1, 2, 2, 2, 2, '', '', 0.0000, '', 1, '2015-07-07 22:03:06', '2015-07-07 22:03:06'),
+(91, 31, NULL, 1, 2, 2, 2, 2, '', '', 0.0000, '', 1, '2015-07-07 22:03:06', '2015-07-07 22:03:06'),
+(92, 31, NULL, 1, 2, 2, 2, 2, '', '', 0.0000, '', 1, '2015-07-07 22:03:06', '2015-07-07 22:03:06'),
+(93, 31, NULL, 1, 1, 1, 1, 1, '', '', 0.0000, '', 1, '2015-07-07 22:03:06', '2015-07-07 22:03:06');
 
 -- --------------------------------------------------------
 
@@ -197,22 +216,23 @@ INSERT INTO `packages` (`id`, `warehouse_id`, `type_id`, `status_id`, `length`, 
 CREATE TABLE `package_statuses` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` int(10) unsigned NOT NULL,
+  `is_default` tinyint(3) unsigned NOT NULL,
   `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `package_statuses`
 --
 
-INSERT INTO `package_statuses` (`id`, `company_id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Recibido USA', '0000-00-00 00:00:00', '2015-04-12 18:55:50'),
-(2, 1, 'En proceso de despacho USA', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(3, 1, 'Despachado desde USA', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(4, 1, 'Recibido Colombia', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(5, 1, 'En reparto Nacional', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+INSERT INTO `package_statuses` (`id`, `company_id`, `is_default`, `name`, `created_at`, `updated_at`) VALUES
+(1, 1, 0, 'Recibido USA', '0000-00-00 00:00:00', '2015-07-08 13:21:02'),
+(2, 1, 0, 'En proceso de despacho USA', '0000-00-00 00:00:00', '2015-07-08 13:21:02'),
+(3, 1, 0, 'Despachado desde USA', '0000-00-00 00:00:00', '2015-07-08 13:21:02'),
+(4, 1, 0, 'Recibido Colombia', '0000-00-00 00:00:00', '2015-07-08 13:21:02'),
+(5, 1, 1, 'En reparto Nacional', '0000-00-00 00:00:00', '2015-07-08 13:21:02');
 
 -- --------------------------------------------------------
 
@@ -222,28 +242,27 @@ INSERT INTO `package_statuses` (`id`, `company_id`, `name`, `created_at`, `updat
 
 CREATE TABLE `package_types` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `company_id` int(10) unsigned NOT NULL,
   `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `package_types`
 --
 
-INSERT INTO `package_types` (`id`, `company_id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 0, 'Box', '2015-03-23 01:29:12', '2015-04-12 19:02:06'),
-(2, 0, 'Piece', '2015-03-23 02:10:00', '2015-03-26 03:30:45'),
-(3, 0, 'Bundle', '2015-03-23 02:10:07', '2015-03-26 03:30:50'),
-(4, 0, 'Carton', '2015-03-23 02:11:07', '2015-03-26 03:30:54'),
-(5, 0, 'Roll', '2015-03-23 02:11:19', '2015-03-26 03:30:59'),
-(6, 0, 'Crate', '2015-03-23 02:11:31', '2015-03-26 03:31:03'),
-(7, 0, 'Pallet', '2015-03-23 02:11:39', '2015-03-23 02:11:39'),
-(8, 0, 'Drum', '2015-03-23 02:11:42', '2015-03-26 03:31:28'),
-(9, 0, 'Tube', '2015-03-23 02:11:48', '2015-03-23 02:11:48'),
-(10, 0, 'Envelope', '2015-03-23 02:11:52', '2015-03-26 03:31:37');
+INSERT INTO `package_types` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Box', '2015-03-23 01:29:12', '2015-07-08 01:30:03'),
+(2, 'Piece', '2015-03-23 02:10:00', '2015-03-26 03:30:45'),
+(3, 'Bundle', '2015-03-23 02:10:07', '2015-03-26 03:30:50'),
+(4, 'Carton', '2015-03-23 02:11:07', '2015-03-26 03:30:54'),
+(5, 'Roll', '2015-03-23 02:11:19', '2015-03-26 03:30:59'),
+(6, 'Crate', '2015-03-23 02:11:31', '2015-03-26 03:31:03'),
+(7, 'Pallet', '2015-03-23 02:11:39', '2015-03-23 02:11:39'),
+(8, 'Drum', '2015-03-23 02:11:42', '2015-03-26 03:31:28'),
+(9, 'Tube', '2015-03-23 02:11:48', '2015-03-23 02:11:48'),
+(10, 'Envolope', '2015-07-08 01:32:53', '2015-07-08 01:32:53');
 
 -- --------------------------------------------------------
 
@@ -259,7 +278,7 @@ CREATE TABLE `roles` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `roles`
@@ -268,10 +287,10 @@ CREATE TABLE `roles` (
 INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
 (1, 'login', 'Login privileges', '0000-00-00 00:00:00', '2015-07-02 17:16:48'),
 (2, 'admin', 'Administrative user, has access to everything.', '0000-00-00 00:00:00', '2015-03-21 17:34:02'),
-(3, 'agent', 'A registered company or business', '0000-00-00 00:00:00', '2015-03-24 03:18:46'),
-(4, 'customer', 'A customer of a company or business', '0000-00-00 00:00:00', '2015-07-07 14:02:24'),
-(6, 'consignee', 'A consignee', '0000-00-00 00:00:00', '2015-05-29 18:24:21'),
-(7, 'shipper', 'A shipper', '0000-00-00 00:00:00', '2015-05-29 18:24:29');
+(3, 'agent', 'A worker of registered company', '0000-00-00 00:00:00', '2015-07-08 03:36:44'),
+(4, 'client', 'A customer of registered company', '0000-00-00 00:00:00', '2015-07-08 03:36:54'),
+(5, 'shipper', 'A shipper of registered company', '0000-00-00 00:00:00', '2015-07-08 03:37:09'),
+(6, 'consignee', 'A consignee', '2015-07-08 14:44:27', '2015-07-08 14:44:27');
 
 -- --------------------------------------------------------
 
@@ -291,7 +310,13 @@ CREATE TABLE `roles_users` (
 
 INSERT INTO `roles_users` (`user_id`, `role_id`) VALUES
 (1020, 1),
-(1020, 2);
+(1020, 2),
+(1060, 1),
+(1060, 3),
+(1062, 7),
+(1063, 7),
+(1064, 6),
+(1065, 7);
 
 -- --------------------------------------------------------
 
@@ -343,14 +368,20 @@ CREATE TABLE `users` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1060 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1066 ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `site_id`, `company_id`, `email`, `password`, `company_name`, `first_name`, `last_name`, `dob`, `id_number`, `phone`, `mobile_phone`, `autoship_packages`, `remember_token`, `logins`, `last_login`, `created_at`, `updated_at`) VALUES
-(1020, 1, 1, 'admin@gmail.com', '$2y$10$4Pvalc2FFS9pRRmOTVMHYeSmNo2V2vRTveKn/8meoBYyfe9K93JFa', '', 'Admin', 'Vic', '2011-11-11', '13212121212', '1234567', '7654321', 1, 'OGas9iJ8CNuR9I4fMTGUFnObWBqb9qbPs13TNbCZOJTMP5akrx8uGn7pVUCe', 99, '2015-07-07 14:43:34', '2015-01-29 04:41:09', '2015-07-07 17:44:13');
+(1020, 1, 1, 'admin@gmail.com', '$2y$10$VFv1evnTm9yjB5Vk/ehQPe/BB0gi6Br74WpXLa9EizyJBBJfqnCui', '', 'Victor', 'Admin', '2011-11-11', '13212121212', '1234567', '7654321', 1, 'lRMjkEeFH3Wgu7rzfJrl9r3B8mHWVsoppCiQWZgdlk278VoouFAruezRmD0D', 105, '2015-07-08 11:18:37', '2015-01-29 04:41:09', '2015-07-08 14:15:55'),
+(1060, 0, 2, 'agent@gmail.com', '$2y$10$/KHLLdkQiLuyV6h/bcVjGOk2bK0CETqQxsIF/baD6d6MsZs2/HDrO', '', 'Jose', 'Agent', '0000-00-00', '', '', '', 1, 'EqNDcompMgcoQCYaVa4aG3iRJEWq6UbRFp5yUG19STZ3nzyxG5jP82i9cO4h', 3, '2015-07-08 02:23:58', '2015-07-07 20:30:59', '2015-07-08 02:34:08'),
+(1061, 0, 1, '', NULL, '', '', '', '0000-00-00', '', '', '', 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-07 21:47:14', '2015-07-07 21:51:33'),
+(1062, 0, 1, '', NULL, 'Amazon', '', '', '0000-00-00', '', '', '', 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-07 22:24:36', '2015-07-07 22:24:36'),
+(1063, 0, 1, '', NULL, 'eBay', '', '', '0000-00-00', '', '', '', 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-07 22:25:23', '2015-07-07 22:25:45'),
+(1064, 0, 1, '', NULL, '', 'Marco', 'Polo', '0000-00-00', '', '', '', 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-07 22:26:18', '2015-07-07 22:26:18'),
+(1065, 0, 1, '', NULL, 'Aliexpress', '', '', '0000-00-00', '', '', '', 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-07 22:31:13', '2015-07-07 22:31:13');
 
 -- --------------------------------------------------------
 
@@ -363,25 +394,24 @@ CREATE TABLE `warehouses` (
   `company_id` int(10) unsigned NOT NULL,
   `shipper_user_id` bigint(20) unsigned NOT NULL,
   `consignee_user_id` bigint(20) unsigned NOT NULL,
-  `courier_id` int(10) unsigned DEFAULT NULL,
+  `carrier_id` int(10) unsigned DEFAULT NULL,
   `container_id` int(10) unsigned DEFAULT NULL,
   `notes` varchar(1000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `arrived_at` datetime NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `courier_id` (`courier_id`),
+  KEY `courier_id` (`carrier_id`),
   KEY `group_id` (`container_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
 
 --
 -- Dumping data for table `warehouses`
 --
 
-INSERT INTO `warehouses` (`id`, `company_id`, `shipper_user_id`, `consignee_user_id`, `courier_id`, `container_id`, `notes`, `arrived_at`, `created_at`, `updated_at`) VALUES
-(23, 1, 1020, 1020, 19, NULL, '', '2015-07-07 00:49:00', '2015-07-07 00:50:24', '2015-07-07 00:50:24'),
-(24, 1, 1020, 1020, 19, NULL, '', '2015-07-07 00:49:00', '2015-07-07 00:50:57', '2015-07-07 00:50:57'),
-(25, 1, 1020, 1020, 19, NULL, '', '2015-07-07 17:10:00', '2015-07-07 17:11:18', '2015-07-07 17:11:18');
+INSERT INTO `warehouses` (`id`, `company_id`, `shipper_user_id`, `consignee_user_id`, `carrier_id`, `container_id`, `notes`, `arrived_at`, `created_at`, `updated_at`) VALUES
+(23, 1, 1061, 1020, 19, 1, '', '2015-07-07 00:49:00', '2015-07-07 00:50:24', '2015-07-07 23:16:43'),
+(31, 1, 1061, 1061, 19, 1, '', '2015-07-07 20:13:00', '2015-07-07 20:14:00', '2015-07-07 23:16:43');
 
 --
 -- Constraints for dumped tables
@@ -399,7 +429,6 @@ ALTER TABLE `addresses`
 --
 ALTER TABLE `packages`
   ADD CONSTRAINT `fk_packages_packagestatuses_statusid` FOREIGN KEY (`status_id`) REFERENCES `package_statuses` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `fk_packages_packagetypes_typeid` FOREIGN KEY (`type_id`) REFERENCES `package_types` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `fk_packages_warehouses_warehouseid` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouses` (`id`) ON DELETE CASCADE;
 
 --
@@ -412,5 +441,4 @@ ALTER TABLE `roles_users`
 -- Constraints for table `warehouses`
 --
 ALTER TABLE `warehouses`
-  ADD CONSTRAINT `fk_warehouses_containers_containerid` FOREIGN KEY (`container_id`) REFERENCES `containers` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `fk_warehouses_couriers_courierid` FOREIGN KEY (`courier_id`) REFERENCES `couriers` (`id`) ON DELETE SET NULL;
+  ADD CONSTRAINT `fk_warehouses_containers_containerid` FOREIGN KEY (`container_id`) REFERENCES `containers` (`id`) ON DELETE SET NULL;
