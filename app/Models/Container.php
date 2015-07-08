@@ -24,7 +24,7 @@ class Container extends Base {
 
     protected $fillable = [
         'company_id',
-        'type_id',
+        'receipt_type_id',
         'receipt_number',
         'departed_at'
     ];
@@ -40,9 +40,9 @@ class Container extends Base {
     /**
      * Gets the warehouses.
      */
-    public function type()
+    public function receiptType()
     {
-        return $this->belongsTo('App\Models\ContainerType');
+        return $this->belongsTo('App\Models\ContainerReceiptType');
     }
 
     /**

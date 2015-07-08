@@ -13,6 +13,8 @@ class Role extends Base {
     const ADMIN     = 2;
     const AGENT     = 3;
     const CLIENT    = 4;
+    const SHIPPER   = 5;
+    const CONSIGNEE = 6;
 
     protected $table = 'roles';
 
@@ -30,10 +32,10 @@ class Role extends Base {
      *
      * @return Role[]
      */
-    public static function allFriendly()
+    public static function allFiltered()
     {
         if (Auth::user()->isAdmin()) {
-            $except = [self::LOGIN];
+            $except = [];
         }
         else {
             $except = [self::LOGIN, self::ADMIN];

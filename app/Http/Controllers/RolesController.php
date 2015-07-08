@@ -50,7 +50,7 @@ class RolesController extends BaseAuthController {
         // Create role
         Role::create($input);
 
-        return $this->redirectWithSuccessMessage('roles', 'Role created.');
+        return $this->redirectWithSuccess('roles', 'Role created.');
     }
 
     /**
@@ -76,7 +76,7 @@ class RolesController extends BaseAuthController {
         $role = Role::findOrFail($id);
         $role->update($input);
 
-        return $this->redirectBackWithSuccessMessage('Role updated.');
+        return $this->redirectBackWithSuccess('Role updated.');
     }
 
     /**

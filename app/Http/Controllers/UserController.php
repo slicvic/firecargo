@@ -55,13 +55,7 @@ class UserController extends BaseAuthController {
         // Validate input
         $rules = User::$rules;
         $rules['email'] .= ',' . $this->user->id;
-
-        $validator = Validator::make($input['user'], $rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input['user'], $rules);
 
         // Update user
         $input['user']['autoship_packages'] = isset($input['user']['autoship_packages']);
@@ -77,8 +71,7 @@ class UserController extends BaseAuthController {
             $address->save();
         }
 
-        Flash::success('Your profile was updated.');
-        return redirect()->back();
+        return $this->redirectBackWithSuccess('Your profile was updated.');
     }
 
     /**
@@ -98,27 +91,22 @@ class UserController extends BaseAuthController {
         $input = $request->all();
 
         // Validate input
-        $validator = Validator::make($input, [
+        $rules = [
             'current' => 'required',
             'new' => 'required'
-        ]);
+        ];
 
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input, $rules);
 
         // Change password
-        if (Hash::check($input['current'], $this->user->password)) {
-            $this->user->password = $input['new'];
-            $this->user->save();
-            Flash::success('Your password was changed successfully.');
-        }
-        else {
-            Flash::error('The password you entered does not match your current one.');
+        if ( ! Hash::check($input['current'], $this->user->password)) {
+            return $this->redirectBackWithError('The password you entered does not match your current one.');
         }
 
-        return redirect()->back();
+        $this->user->password = $input['new'];
+        $this->user->save();
+
+        return $this->redirectBackWithSuccess('Your password was changed successfully.');
     }
 
     /**

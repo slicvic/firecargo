@@ -45,7 +45,7 @@
         <div class="col-md-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h2>Settings</h2>
+                    <h2>Preferences</h2>
                     <div class="form-group">
                         <label class="col-md-2 control-label">Auto-ship Packages?</label>
                         <div class="col-md-6">

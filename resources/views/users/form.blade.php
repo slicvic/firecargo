@@ -21,7 +21,7 @@
 
 @section('form')
     <form action="/accounts/{{ ($user->id) ? 'update/' . $user->id : 'store' }}" method="post" class="form-horizontal" data-parsley-validate>
-    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="ibox">
             <div class="ibox-title"><h5>Administration</h5></div>
             <div class="ibox-content">
@@ -49,6 +49,17 @@
                     <div class="tab-content">
                         <div id="tab-1" class="tab-pane active">
                             <div class="panel-body">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Type</label>
+                                    <div class="col-sm-10">
+                                        <?php $userRoles = $user->roles->lists('name', 'id'); ?>
+                                        @foreach (\App\Models\Role::allFiltered() as $role)
+                                            <label class="checkbox-inline">
+                                                <input{{ isset($userRoles[$role->id]) ? ' checked' : ''}} type="checkbox" name="role_ids[]" value="{{ $role->id }}"> {{ ucwords($role->name) }}
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">Company</label>
                                     <div class="col-sm-5">
@@ -89,21 +100,6 @@
                                     <label class="control-label col-sm-2">Password</label>
                                     <div class="col-sm-5">
                                         <input type="password" name="user[password]" placeholder="Password" class="form-control" data-parsley-minlength="1">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Type</label>
-                                    <div class="col-sm-5">
-                                        <?php
-                                            $userRoles = $user->roles->lists('name', 'id');
-                                            foreach (\App\Models\Role::allFriendly() as $role):
-                                        ?>
-                                            <div class="row checkbox">
-                                                <label class="control-label">
-                                                    <input {{ isset($userRoles[$role->id]) ? 'checked ' : ''}}type="checkbox" name="roles[]" value="{{ $role->id }}"> {{ ucwords($role->name) }}
-                                                </label>
-                                            </div>
-                                        <?php endforeach; ?>
                                     </div>
                                 </div>
                             </div>

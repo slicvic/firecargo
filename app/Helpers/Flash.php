@@ -12,7 +12,7 @@ use Illuminate\Support\MessageBag;
 class Flash {
 
     /**
-     * @var string  The message types.
+     * @var string  The message levels.
      */
     const SUCCESS = 'success';
     const INFO = 'info';
@@ -55,7 +55,7 @@ class Flash {
     /**
      * Sets error message.
      *
-     * @param  string|array|\Illuminate\Validation\Validator|Illuminate\Support\MessageBag $message
+     * @param  string|array|\Illuminate\Validation\Validator|\Illuminate\Support\MessageBag $message
      * @return void
      */
     public static function error($message)
@@ -91,7 +91,7 @@ class Flash {
     }
 
     /**
-     * Gets the HTML message.
+     * Renders the message as an HTML string.
      *
      * @return string|NULL
      */

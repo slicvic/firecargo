@@ -36,11 +36,7 @@ class UsersController extends BaseAuthController {
      */
     public function getCreate()
     {
-        if ($this->user->isAdmin()) {
-            return view('users.form_advanced', ['user' => new User]);
-        }
-
-        return view('users.form_basic', ['user' => new User]);
+        return view('users.form', ['user' => new User]);
     }
 
     /**
@@ -48,7 +44,7 @@ class UsersController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $request->only('user', 'roles', 'address');
+        $input = $request->only('user', 'role_ids', 'address');
 
         // Validate input
         $rules = User::$rules;
@@ -67,12 +63,12 @@ class UsersController extends BaseAuthController {
         $user->save();
 
         // Assign roles
-        if (isset($input['roles'])) {
-            if ( ! $this->user->isAdmin() && in_array(Role::ADMIN, $input['roles'])) {
+        if (isset($input['role_ids'])) {
+            if ( ! $this->user->isAdmin() && in_array(Role::ADMIN, $input['role_ids'])) {
                 // SORRY, YOU MUST BE AN ADMIN TO ASSIGN "ADMIN" ROLE
-                $input['roles'] = array_diff($input['roles'], [Role::ADMIN]);
+                $input['role_ids'] = array_diff($input['role_ids'], [Role::ADMIN]);
             }
-            $user->roles()->sync($input['roles']);
+            $user->roles()->sync($input['role_ids']);
         }
 
         // Create address
@@ -90,12 +86,8 @@ class UsersController extends BaseAuthController {
     public function getEdit(Request $request, $id)
     {
         $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentCompany($id);
-        if ($this->user->isAdmin()) {
-            return view('users.form_advanced', ['user' => $user]);
-        }
-        else {
-            return view('users.form_basic', ['user' => $user]);
-        }
+
+        return view('users.form', ['user' => $user]);
     }
 
     /**
@@ -103,7 +95,7 @@ class UsersController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->only('user', 'roles', 'address');
+        $input = $request->only('user', 'role_ids', 'address');
 
         // Validate input
         $rules = User::$rules;
@@ -121,12 +113,12 @@ class UsersController extends BaseAuthController {
         $user->update($input['user']);
 
         // Update roles
-        if (isset($input['roles'])) {
-            if ( ! $this->user->isAdmin() && in_array(Role::ADMIN, $input['roles'])) {
+        if (isset($input['role_ids'])) {
+            if ( ! $this->user->isAdmin() && in_array(Role::ADMIN, $input['role_ids'])) {
                 // SORRY, YOU MUST BE AN ADMIN TO ASSIGN "ADMIN" ROLE
-                $input['roles'] = array_diff($input['roles'], [Role::ADMIN]);
+                $input['role_ids'] = array_diff($input['role_ids'], [Role::ADMIN]);
             }
-            $user->roles()->sync($input['roles']);
+            $user->roles()->sync($input['role_ids']);
         }
         else {
             $user->roles()->sync([]);

@@ -57,7 +57,7 @@ class PackageStatusesController extends BaseAuthController {
 
         PackageStatus::create($input);
 
-        return $this->redirectWithSuccessMessage('package-statuses', 'Package status created.');
+        return $this->redirectWithSuccess('package-statuses', 'Package status created.');
 
     }
 
@@ -91,7 +91,7 @@ class PackageStatusesController extends BaseAuthController {
 
         $status->update($input);
 
-        return $this->redirectBackWithSuccessMessage('Package status updated.');
+        return $this->redirectBackWithSuccess('Package status updated.');
     }
 
     /**
@@ -102,9 +102,9 @@ class PackageStatusesController extends BaseAuthController {
         $status = PackageStatus::findByIdAndCurrentCompany($id);
 
         if ($status && $status->delete()) {
-            return $this->redirectBackWithSuccessMessage('Package status deleted.');
+            return $this->redirectBackWithSuccess('Package status deleted.');
         }
 
-        return $this->redirectBackWithErrorMessage('Package status delete failed.');
+        return $this->redirectBackWithError('Package status delete failed.');
     }
 }

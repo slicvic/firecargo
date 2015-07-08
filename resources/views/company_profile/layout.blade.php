@@ -1,25 +1,13 @@
 @extends('layouts.admin.model.form')
 
 @section('icon', 'building-o')
-@section('title', 'Company Profile')
-@section('subtitle', 'Manage your Company Profile')
+@section('title', 'Your Company Profile')
+@section('subtitle', 'Manage Your Company Profile')
 
 @section('form')
     <div class="row">
         <div class="col-md-4">
-            <div class="ibox">
-               <div class="ibox-content text-center">
-                    <h1>{{ "$company->name ($company->code)" }}</h1>
-                    <div id="logoContainer" class="m-b-sm">
-                        <img class="img-circle" src="{{ $company->getLogoURL('md') }}" style="width:100px;height:100px">
-                    </div>
-                    <button type="button" id="btnEditLogo" class="btn btn-link btn-block"><i class="fa fa-pencil"></i> Edit Logo</button>
-                    <div id="dzErrorMessage" class="text-danger"></div>
-                   <div class="list-group">
-                        <a href="/company/edit-profile" class="btn btn-block btn-primary">Edit Profile</a>
-                    </div>
-                </div>
-            </div>
+           @include('company_profile.nav')
         </div>
         <div class="col-md-8">
             {!! $content !!}

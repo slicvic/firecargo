@@ -50,7 +50,7 @@ class CarriersController extends BaseAuthController {
         // Create carrier
         Carrier::create($input);
 
-        return $this->redirectWithSuccessMessage('carriers', 'Carrier created.');
+        return $this->redirectWithSuccess('carriers', 'Carrier created.');
     }
 
     /**
@@ -76,7 +76,7 @@ class CarriersController extends BaseAuthController {
         $carrier = Carrier::findOrFail($id);
         $carrier->update($input);
 
-        return $this->redirectBackWithSuccessMessage('Carrier updated.');
+        return $this->redirectBackWithSuccess('Carrier updated.');
     }
 
     /**
@@ -87,9 +87,9 @@ class CarriersController extends BaseAuthController {
         $carrier = Carrier::findOrFail($id);
 
         if ($carrier && $carrier->delete()) {
-            return $this->redirectBackWithSuccessMessage(sprintf('Carrier "%s (%s)" deleted.', $carrier->name, $carrier->id));
+            return $this->redirectBackWithSuccess(sprintf('Carrier "%s (%s)" deleted.', $carrier->name, $carrier->id));
         }
 
-        return $this->redirectBackWithErrorMessage('Carrier delete failed.');
+        return $this->redirectBackWithError('Carrier delete failed.');
     }
 }

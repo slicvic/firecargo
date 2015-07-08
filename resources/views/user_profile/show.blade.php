@@ -18,7 +18,7 @@
 
 <div class="ibox">
    <div class="ibox-content">
-        <h2>Settings</h2>
+        <h2>Preferences</h2>
         <div class="row">
             <div class="col-xs-3"><strong>Auto-ship Packages?</strong></div>
             <div class="col-xs-9">

@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use Hash;
+use DB;
 use Auth;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
@@ -115,6 +116,24 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
+     * Determines if the user has the given role.
+     *
+     * @param  int  $roleId
+     * @return bool
+     */
+    public function hasRole($roleId)
+    {
+        return in_array($roleId, array_fetch($this->roles->toArray(), 'id'));
+
+        // $result = DB::table('roles_users')
+        //     ->where('user_id', $this->id)
+        //     ->where('role_id', $roleId)
+        //     ->first();
+
+        // return $result ? TRUE : FALSE;
+    }
+
+    /**
      * Generates a password recovery token.
      *
      * @return string
@@ -143,17 +162,6 @@ class User extends Base implements AuthenticatableInterface {
     public function checkPasswordRecoveryToken($token)
     {
         return Hash::check($this->makePlainPasswordRecoveryToken(), base64_decode(urldecode($token)));
-    }
-
-    /**
-     * Determines if the user has the given role.
-     *
-     * @param  int  $roleId
-     * @return bool
-     */
-    public function hasRole($roleId)
-    {
-        return in_array($roleId, array_fetch($this->roles->toArray(), 'id'));
     }
 
     /**

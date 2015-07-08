@@ -51,7 +51,7 @@ class PackageTypesController extends BaseAuthController {
         // Create package type
         PackageType::create($input);
 
-        return $this->redirectWithSuccessMessage('package-types', 'Package type created.');
+        return $this->redirectWithSuccess('package-types', 'Package type created.');
     }
 
     /**
@@ -77,7 +77,7 @@ class PackageTypesController extends BaseAuthController {
         $type = PackageType::findOrFail($id);
         $type->update($input);
 
-        return $this->redirectBackWithSuccessMessage('Package type updated.');
+        return $this->redirectBackWithSuccess('Package type updated.');
     }
 
     /**
@@ -88,9 +88,9 @@ class PackageTypesController extends BaseAuthController {
         $type = PackageType::findOrFail($id);
 
         if ($type && $type->delete()) {
-            return $this->redirectBackWithSuccessMessage(sprintf('Package type "%s (%s)" deleted.', $type->name, $type->id));
+            return $this->redirectBackWithSuccess(sprintf('Package type "%s (%s)" deleted.', $type->name, $type->id));
         }
 
-        return $this->redirectBackWithErrorMessage('Package type delete failed.');
+        return $this->redirectBackWithError('Package type delete failed.');
     }
 }

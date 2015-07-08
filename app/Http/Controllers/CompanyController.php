@@ -67,7 +67,7 @@ class CompanyController extends BaseAuthController {
             $address->save();
         }
 
-        return $this->redirectBackWithSuccessMessage('Company updated.');
+        return $this->redirectBackWithSuccess('Company updated.');
     }
 
     /**

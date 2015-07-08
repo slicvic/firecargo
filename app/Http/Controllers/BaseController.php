@@ -56,7 +56,7 @@ abstract class BaseController extends Controller {
      * @param  string $message
      * @return redirect()
      */
-    public function redirectWithSuccessMessage($path, $message)
+    public function redirectWithSuccess($path, $message)
     {
         return redirect($path)->with(Flash::SUCCESS, $message);
     }
@@ -68,7 +68,7 @@ abstract class BaseController extends Controller {
      * @param  string $message
      * @return redirect()
      */
-    public function redirectWithErrorMessage($path, $message)
+    public function redirectWithError($path, $message)
     {
         return redirect($path)->with(Flash::ERROR, $message);
     }
@@ -79,7 +79,7 @@ abstract class BaseController extends Controller {
      * @param  string $message
      * @return redirect()
      */
-    public function redirectBackWithSuccessMessage($message)
+    public function redirectBackWithSuccess($message)
     {
         return redirect()->back()->with(Flash::SUCCESS, $message);
     }
@@ -90,7 +90,7 @@ abstract class BaseController extends Controller {
      * @param  string $message
      * @return redirect()
      */
-    public function redirectBackWithErrorMessage($message)
+    public function redirectBackWithError($message)
     {
         return redirect()->back()->with(Flash::ERROR, $message);
     }

@@ -56,7 +56,7 @@ class CompaniesController extends BaseAuthController {
         $address->company()->associate($company);
         $address->save();
 
-        return $this->redirectWithSuccessMessage('companies', 'Company created.');
+        return $this->redirectWithSuccess('companies', 'Company created.');
     }
 
     /**
@@ -82,6 +82,6 @@ class CompaniesController extends BaseAuthController {
         $company = Company::findOrFail($id);
         $company->update($input);
 
-        return $this->redirectBackWithSuccessMessage('Company updated.');
+        return $this->redirectBackWithSuccess('Company updated.');
     }
 }

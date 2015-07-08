@@ -5,11 +5,11 @@ use App\Models\CompanySpecificTrait;
 use App\Presenters\PresentableTrait;
 
 /**
- * ContainerType
+ * ContainerReceiptType
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class ContainerType extends Base {
+class ContainerReceiptType extends Base {
 
-    protected $table = 'container_types';
+    protected $table = 'container_receipt_types';
 }

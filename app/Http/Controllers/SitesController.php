@@ -51,7 +51,7 @@ class SitesController extends BaseAuthController {
         // Create site
         Site::create($input);
 
-        return $this->redirectWithSuccessMessage('sites', 'Site created.');
+        return $this->redirectWithSuccess('sites', 'Site created.');
     }
 
     /**
@@ -80,6 +80,6 @@ class SitesController extends BaseAuthController {
         $site = Site::findOrFailByIdAndCurrentCompany($id);
         $site->update($input);
 
-        return $this->redirectBackWithSuccessMessage('Site updated.');
+        return $this->redirectBackWithSuccess('Site updated.');
     }
 }

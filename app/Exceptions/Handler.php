@@ -43,7 +43,7 @@ class Handler extends ExceptionHandler {
 	{
 		if ($e instanceof ValidationException) {
 			Flash::error($e->errors());
-			return redirect()->back();
+			return redirect()->back()->withInput();
 		}
 
 		return parent::render($request, $e);
