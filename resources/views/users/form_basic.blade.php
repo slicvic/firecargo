@@ -21,7 +21,23 @@
 
 @section('form')
     <form action="/accounts/{{ ($user->id) ? 'update/' . $user->id : 'store' }}" method="post" class="form-horizontal" data-parsley-validate>
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <div class="ibox">
+            <div class="ibox-title"><h5>Administration</h5></div>
+            <div class="ibox-content">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Master</label>
+                    <div class="col-sm-5">
+                        <select required class="form-control" name="user[company_id]">
+                            <option value="">- Choose -</option>
+                            @foreach (\App\Models\Company::all() as $company)
+                                <option{{ ($company->id == Input::old('user.company_id', $user->company_id)) ? ' selected' : '' }} value="{{ $company->id }}">{{ $company->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-lg-12">
@@ -33,19 +49,6 @@
                     <div class="tab-content">
                         <div id="tab-1" class="tab-pane active">
                             <div class="panel-body">
-                                @if (Auth::user()->isAdmin())
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-2">Internal Company</label>
-                                        <div class="col-sm-5">
-                                            <select required class="form-control" name="user[company_id]">
-                                                <option value="">- Choose -</option>
-                                                @foreach (\App\Models\Company::all() as $company)
-                                                    <option{{ ($company->id == Input::old('user.company_id', $user->company_id)) ? ' selected' : '' }} value="{{ $company->id }}">{{ $company->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                @endif
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">Company</label>
                                     <div class="col-sm-5">
@@ -89,11 +92,11 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2">Group</label>
+                                    <label class="control-label col-sm-2">Type</label>
                                     <div class="col-sm-5">
                                         <?php
                                             $userRoles = $user->roles->lists('name', 'id');
-                                            foreach (\App\Models\Role::all() as $role):
+                                            foreach (\App\Models\Role::allFriendly() as $role):
                                         ?>
                                             <div class="row checkbox">
                                                 <label class="control-label">

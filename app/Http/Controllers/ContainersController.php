@@ -96,7 +96,7 @@ class ContainersController extends BaseAuthController {
 
         // Validate input
         $rules = Container::$rules;
-        $rules['tracking_number'] .= ',' . $id;
+        $rules['receipt_number'] .= ',' . $id;
         unset($rules['company_id']);
 
         $validator = Validator::make($input['container'], $rules);

@@ -28,7 +28,7 @@ EMAIL: {{ $company->email }}
     <tr>
         <td width="10%">FROM:</td>
         <td>
-<b>{{ strtoupper($warehouse->present()->shipperName()) }}</b><br>
+<b>{{ strtoupper($warehouse->present()->shipper()) }}</b><br>
 {!! strtoupper($shipper->present()->address()) !!}<br>
 <br>
         </td>
@@ -36,7 +36,7 @@ EMAIL: {{ $company->email }}
     <tr>
         <td width="10%">TO:</td>
         <td>
-<b>{{ strtoupper($consignee->present()->fullName()) }}</b><br>
+<b>{{ strtoupper($consignee->present()->fullname()) }}</b><br>
 {!! strtoupper($consignee->address->asString()) !!}<br>
         </td>
     </tr>
@@ -79,7 +79,7 @@ EMAIL: {{ $company->email }}
 DESCRIPTION<br>
 <table border="1">
     <tr>
-        <td style="font-size:8px;"><br><br>&nbsp;{{ strtoupper($warehouse->note) }}<br></td>
+        <td style="font-size:8px;"><br><br>&nbsp;{{ strtoupper($warehouse->notes) }}<br></td>
     </tr>
 </table>
 

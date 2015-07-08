@@ -14,14 +14,14 @@
 <table border="0">
     <tr>
         <td width="60%">
-{!! ($company->hasLogo('sm')) ? '<img src="' . $company->present()->logoURL('sm') . '"><br>' : '' !!}
+{!! ($company->hasLogo('sm')) ? '<img src="' . $company->getLogoURL('sm') . '"><br>' : '' !!}
 {{ strtoupper($company->name) }}<br>
 {!! strtoupper($company->present()->address()) !!}<br>
 TEL: {{ $company->phone }}<br>
 EMAIL: {{ $company->email }}<br><br>
 
 RECEIVED FOR:<br><br>
-{{ strtoupper($consignee->present()->fullName()) }}<br>
+{{ strtoupper($consignee->present()->fullname()) }}<br>
 {!! strtoupper($consignee->present()->address()) !!}<br>
 
         </td>
@@ -49,13 +49,13 @@ RECEIVED FOR:<br><br>
 
 <table border="1">
     <tr>
-        <td><small>RECEIVED FROM</small><br>{{ strtoupper($warehouse->shipper->present()->companyName()) }}</td>
-        <td><small>DELIVERED BY</small><br>{{ $warehouse->courier->name }}</td>
+        <td><small>RECEIVED FROM</small><br>{{ strtoupper($warehouse->present()->shipper()) }}</td>
+        <td><small>DELIVERED BY</small><br>{{ $warehouse->present()->carrier() }}</td>
     </tr>
 </table>
 <table border="1">
     <tr>
-        <td><small>DESCRIPTION</small><br>{{ strtoupper($warehouse->note) }}</td>
+        <td><small>DESCRIPTION</small><br>{{ strtoupper($warehouse->notes) }}</td>
     </tr>
 </table>
 
@@ -139,7 +139,7 @@ RECEIVED FOR:<br><br>
             <br>
             <br>
             <br>
-            <small>CREATED BY: {{ Auth::user()->present()->fullName() }} using {{ env('APP_NAME') }}</small>
+            <small>CREATED BY: {{ Auth::user()->present()->fullname() }} using {{ env('APP_NAME') }}</small>
         </td>
     </tr>
 </table>

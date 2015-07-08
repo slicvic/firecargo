@@ -22,9 +22,16 @@
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <input type="hidden" name="company_id" value="{{ ($container->id) ? $container->company_id : Auth::user()->company_id }}">
         <div class="form-group">
-            <label class="control-label col-sm-2">Tracking Number</label>
-            <div class="col-sm-4">
-                <input required type="text" name="container[tracking_number]" placeholder="" class="form-control" value="{{ Input::old('container.tracking_number', $container->tracking_number) }}">
+            <label class="control-label col-sm-2">Receipt #</label>
+            <div class="col-sm-2">
+                <select class="form-control">
+                    @foreach (\App\Models\ContainerType::all() as $type)
+                        <option>{{ $type->code }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <input required type="text" name="container[receipt_number]" placeholder="" class="form-control" value="{{ Input::old('container.receipt_number', $container->receipt_number) }}">
             </div>
         </div>
         <div class="form-group">
@@ -34,10 +41,20 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label col-sm-2">Carrier</label>
+            <div class="col-sm-4">
+                <input type="text" name="container[carrier]" placeholder="" class="form-control" value="">
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label col-sm-2">Warehouse IDs</label>
             <div class="col-sm-4">
-                <textarea name="warehouse_ids" rows="11" class="form-control">{{ Input::old('warehouse_ids', implode("\n", $container->warehouseIds())) }}</textarea>
-                <p class="help-block">Line separated warehouse IDs.</p>
+                @foreach (\App\Models\Warehouse::all() as $warehouse)
+                    <div><input type="checkbox"> {{ $warehouse->id }} {{ $warehouse->present()->consignee() }}</div>
+                    @foreach ($warehouse->packages as $package)
+                        <div><input type="checkbox"> {{ $package->id }}</div>
+                    @endforeach
+                @endforeach
             </div>
         </div>
         <div class="form-group">

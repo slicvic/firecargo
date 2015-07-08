@@ -22,7 +22,7 @@ class Warehouse extends Base {
         'company_id' => 'required',
         'shipper_user_id' => 'required',
         'consignee_user_id' => 'required',
-        'courier_id' => 'required',
+        'carrier_id' => 'required',
         'arrived_at' => 'required'
     ];
 
@@ -31,7 +31,7 @@ class Warehouse extends Base {
         'shipper_user_id',
         'consignee_user_id',
         'container_id',
-        'courier_id',
+        'carrier_id',
         'arrived_at',
         'notes'
     ];
@@ -53,11 +53,11 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the courier.
+     * Gets the carrier.
      */
-    public function courier()
+    public function carrier()
     {
-        return $this->belongsTo('App\Models\Courier', 'courier_id');
+        return $this->belongsTo('App\Models\Carrier', 'carrier_id');
     }
 
     /**
@@ -269,7 +269,7 @@ class Warehouse extends Base {
                 ->whereRaw('(
                     warehouses.id LIKE ?
                     OR container.id LIKE ?
-                    OR container.tracking_number LIKE ?
+                    OR container.receipt_number LIKE ?
                     OR consignee.id LIKE ?
                     OR consignee.first_name LIKE ?
                     OR consignee.last_name LIKE ?

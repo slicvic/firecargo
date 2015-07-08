@@ -25,6 +25,7 @@
 @section('form')
     <form data-parsley-validate action="/warehouses/{{ ($warehouse->id) ? 'update/' . $warehouse->id : 'store' }}" method="post" class="form-horizontal">
         <div id="flashError"></div>
+
         <div class="ibox">
             <div class="ibox-title"><h5>Warehouse Details</h5></div>
             <div class="ibox-content">
@@ -49,40 +50,25 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Shipper</label>
                     <div class="col-sm-5">
-                        <input required type="text" id="shipperName" name="shipper_name" class="form-control" value="{{ $warehouse->present()->shipperName() }}">
+                        <input required type="text" id="shipper" name="shipper" class="form-control" value="{{ $warehouse->present()->shipper() }}">
                         <input type="hidden" id="shipperId" name="warehouse[shipper_user_id]" value="{{ $warehouse->shipper_user_id }}">
+                        <a target="_blank" style="diplay:inline-block" href="/accounts/create"><i class="fa fa-plus"></i> Add New</a>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Consignee</label>
                     <div class="col-sm-5">
-                        <input required  type="text" id="consigneeName" name="consignee_name" class="form-control" value="{{ $warehouse->present()->consigneeName() }}">
+                        <input required  type="text" id="consignee" name="consignee" class="form-control" value="{{ $warehouse->present()->consignee() }}">
                         <input type="hidden" id="consigneeId" name="warehouse[consignee_user_id]" value="{{ $warehouse->consignee_user_id }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Delivered By</label>
                     <div class="col-sm-5">
-                        <select name="warehouse[courier_id]" class="form-control" required>
-                            <option value=""></option>
-                            @foreach (\App\Models\Courier::allByCurrentCompany() as $courier)
-                                <option{{ ($warehouse->courier_id == $courier->id) ? ' selected' : '' }} value="{{ $courier->id }}">{{ $courier->name }}</option>
-                            @endforeach
-                        </select>
+                        <input required  type="text" id="" name="carrier" class="form-control" value="">
+                        <input type="hidden" id="carrierId" name="warehouse[carrier_id]" value="">
                     </div>
                 </div>
-                <?php /*
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Container</label>
-                    <div class="col-sm-5">
-                        <select name="warehouse[container_id]" class="form-control">
-                            <option value=""></option>
-                            @foreach (\App\Models\Container::allByCurrentCompany() as $container)
-                                <option{{ ($warehouse->container_id == $container->id) ? ' selected' : '' }} value="{{ $container->id }}">{{ $container->tracking_number }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>*/?>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Notes</label>
                     <div class="col-sm-5">

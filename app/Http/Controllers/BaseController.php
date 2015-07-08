@@ -3,6 +3,10 @@
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Validator;
+
+use App\Exceptions\ValidationException;
+use App\Helpers\Flash;
 
 /**
  * BaseController
@@ -26,5 +30,68 @@ abstract class BaseController extends Controller {
     {
         $result = call_user_func_array(array($this, $method), $parameters);
         return $result;
+    }
+
+    /**
+     * Validates the given input with the given rules.
+     *
+     * @param  array  $input
+     * @param  array  $rules
+     * @return void
+     * @throws ValidationException
+     */
+    public function validate(array $input, array $rules)
+    {
+        $validator = Validator::make($input, $rules);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator->messages());
+        }
+    }
+
+    /**
+     * Redirects to the given path with the given success message.
+     *
+     * @param  string $path
+     * @param  string $message
+     * @return redirect()
+     */
+    public function redirectWithSuccessMessage($path, $message)
+    {
+        return redirect($path)->with(Flash::SUCCESS, $message);
+    }
+
+    /**
+     * Redirects to the given path with the given error message.
+     *
+     * @param  string $path
+     * @param  string $message
+     * @return redirect()
+     */
+    public function redirectWithErrorMessage($path, $message)
+    {
+        return redirect($path)->with(Flash::ERROR, $message);
+    }
+
+    /**
+     * Redirects back with the given success message.
+     *
+     * @param  string $message
+     * @return redirect()
+     */
+    public function redirectBackWithSuccessMessage($message)
+    {
+        return redirect()->back()->with(Flash::SUCCESS, $message);
+    }
+
+    /**
+     * Redirects back with the given error message.
+     *
+     * @param  string $message
+     * @return redirect()
+     */
+    public function redirectBackWithErrorMessage($message)
+    {
+        return redirect()->back()->with(Flash::ERROR, $message);
     }
 }

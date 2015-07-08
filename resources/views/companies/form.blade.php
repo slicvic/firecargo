@@ -29,6 +29,12 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-sm-2">Code</label>
+                    <div class="col-sm-4">
+                        <input required type="text" name="code" placeholder="Code" class="form-control" value="{{ Input::old('code', $company->code) }}">
+                    </div>
+                </div>
+                <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">
                         <a class="btn btn-white" href="/companies">Cancel</a>
                         <button class="btn btn-primary" type="submit">Save changes</button>

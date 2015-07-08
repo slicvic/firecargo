@@ -36,7 +36,11 @@ class UsersController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('users.form', ['user' => new User]);
+        if ($this->user->isAdmin()) {
+            return view('users.form_advanced', ['user' => new User]);
+        }
+
+        return view('users.form_basic', ['user' => new User]);
     }
 
     /**
@@ -86,7 +90,12 @@ class UsersController extends BaseAuthController {
     public function getEdit(Request $request, $id)
     {
         $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentCompany($id);
-        return view('users.form', ['user' => $user]);
+        if ($this->user->isAdmin()) {
+            return view('users.form_advanced', ['user' => $user]);
+        }
+        else {
+            return view('users.form_basic', ['user' => $user]);
+        }
     }
 
     /**

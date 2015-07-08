@@ -89,15 +89,15 @@ $(function() {
     Packages.init();
 
     // Bind shipper autocomplete
-    $('#shipperName').keyup(function() {
+    $('#shipper').keyup(function() {
         $('#shipperId').val('');
     });
 
-    $('#shipperName').autocomplete({
+    $('#shipper').autocomplete({
         source: '/warehouses/ajax-shipper-consignee-autocomplete?type=shipper',
         minLength: 2,
         select: function(event, ui) {
-            $('#shipperName').val(ui.item.label);
+            $('#shipper').val(ui.item.label);
             $('#shipperId').val(ui.item.id);
             return false;
         }
@@ -109,15 +109,15 @@ $(function() {
     };
 
     // Bind consignee autocomplete
-    $('#consigneeName').keyup(function() {
+    $('#consignee').keyup(function() {
         $('#consigneeId').val('');
     });
 
-    $('#consigneeName').autocomplete({
+    $('#consignee').autocomplete({
         source: '/warehouses/ajax-shipper-consignee-autocomplete?type=consignee',
         minLength: 2,
         select: function(event, ui) {
-            $('#consigneeName').val(ui.item.label);
+            $('#consignee').val(ui.item.label);
             $('#consigneeId').val(ui.item.id);
             return false;
         }

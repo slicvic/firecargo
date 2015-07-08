@@ -2,6 +2,10 @@
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exception\HttpResponseException;
+
+use App\Exceptions\ValidationException;
+use App\Helpers\Flash;
 
 class Handler extends ExceptionHandler {
 
@@ -11,7 +15,8 @@ class Handler extends ExceptionHandler {
 	 * @var array
 	 */
 	protected $dontReport = [
-		'Symfony\Component\HttpKernel\Exception\HttpException'
+		'Symfony\Component\HttpKernel\Exception\HttpException',
+		'App\Exceptions\ValidationException'
 	];
 
 	/**
@@ -36,6 +41,11 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e)
 	{
+		if ($e instanceof ValidationException) {
+			Flash::error($e->errors());
+			return redirect()->back();
+		}
+
 		return parent::render($request, $e);
 	}
 

@@ -2,7 +2,6 @@
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Validator;
 
 use App\Models\Company;
 use App\Models\Address;
@@ -46,12 +45,7 @@ class CompaniesController extends BaseAuthController {
         $input = $request->all();
 
         // Validate input
-        $validator = Validator::make($input, Company::$rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input, Company::$rules);
 
         // Create company
         $company = new Company($input);
@@ -62,8 +56,7 @@ class CompaniesController extends BaseAuthController {
         $address->company()->associate($company);
         $address->save();
 
-        Flash::success('Company created.');
-        return redirect('companies');
+        return $this->redirectWithSuccessMessage('companies', 'Company created.');
     }
 
     /**
@@ -83,18 +76,12 @@ class CompaniesController extends BaseAuthController {
         $input = $request->all();
 
         // Validate input
-        $validator = Validator::make($input, Company::$rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input, Company::$rules);
 
         // Update company
         $company = Company::findOrFail($id);
         $company->update($input);
 
-        Flash::success('Company updated.');
-        return redirect()->back();
+        return $this->redirectBackWithSuccessMessage('Company updated.');
     }
 }

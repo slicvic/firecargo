@@ -2,6 +2,7 @@
 
 use Session;
 use Illuminate\Validation\Validator;
+use Illuminate\Support\MessageBag;
 
 /**
  * Flash Message Helper.
@@ -10,7 +11,13 @@ use Illuminate\Validation\Validator;
  */
 class Flash {
 
-    private static $sessionKey = 'flash_message';
+    /**
+     * @var string  The message types.
+     */
+    const SUCCESS = 'success';
+    const INFO = 'info';
+    const WARNING = 'warning';
+    const ERROR = 'error';
 
     /**
      * Sets success message.
@@ -20,7 +27,7 @@ class Flash {
      */
     public static function success($message)
     {
-        self::set(['level' => 'success', 'message' => $message]);
+        self::set(self::SUCCESS, $message);
     }
 
     /**
@@ -31,34 +38,37 @@ class Flash {
      */
     public static function info($message)
     {
-        self::set(['level' => 'info', 'message' => $message]);
+        self::set(self::INFO, $message);
+    }
+
+    /**
+     * Sets warning message.
+     *
+     * @param  string $message
+     * @return void
+     */
+    public static function warning($message)
+    {
+        self::set(self::WARNING, $message);
     }
 
     /**
      * Sets error message.
      *
-     * @param  string|array|\Illuminate\Validation\Validator $message
+     * @param  string|array|\Illuminate\Validation\Validator|Illuminate\Support\MessageBag $message
      * @return void
      */
     public static function error($message)
     {
-        if ($message instanceof Validator)
-        {
-            // Convert MessageBag to array
-            $messages = $message->messages()->getMessages();
-            $message = [];
-
-            foreach ($messages as $errors)
-            {
-                foreach ($errors as $error)
-                {
-                    $message[] = $error;
-                }
-            }
-
+        if ($message instanceof Validator) {
+            self::set(self::ERROR, $message->messages()->all(':message'));
         }
-
-        self::set(['level' => 'error', 'message' => $message]);
+        elseif ($message instanceof MessageBag) {
+            self::set(self::ERROR, $message->all(':message'));
+        }
+        else {
+            self::set(self::ERROR, $message);
+        }
     }
 
     /**
@@ -68,7 +78,16 @@ class Flash {
      */
     public static function get()
     {
-        return Session::pull(self::$sessionKey, NULL);
+        foreach ([self::SUCCESS, self::INFO, self::ERROR, self::WARNING] as $level)
+        {
+            $value = Session::pull($level, NULL);
+
+            if ($value) {
+                return ['level' => $level, 'message' => $value];
+            }
+        }
+
+        return NULL;
     }
 
     /**
@@ -80,13 +99,15 @@ class Flash {
     {
         $value = self::get();
 
-        if ( ! is_array($value))
-            return '';
+        if ($value === NULL)
+            return NULL;
 
         switch($value['level']) {
-            case 'error':
+            case self::ERROR:
                 return view('flash_messages.error', ['message' => $value['message']]);
-            default:
+            case self::SUCCESS:
+            case self::INFO:
+            case self::WARNING:
                 return view('flash_messages.success', ['message' => $value['message']]);
         }
     }
@@ -94,11 +115,12 @@ class Flash {
     /**
      * Sets message.
      *
-     * @param   mixed   $message
+     * @param   string  $key
+     * @param   mixed   $value
      * @return  string
      */
-    private static function set($message)
+    private static function set($key, $value)
     {
-        Session::flash(self::$sessionKey, $message);
+        Session::flash($key, $value);
     }
 }

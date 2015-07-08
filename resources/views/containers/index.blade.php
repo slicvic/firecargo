@@ -46,7 +46,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Tracking Number</th>
+                                <th>Receipt Number</th>
                                 <th>Departure Date</th>
                                 <th>Action</th>
                             </tr>
@@ -55,7 +55,7 @@
                             @foreach ($containers as $container)
                             <tr>
                                 <td>{{ $container->id }}</td>
-                                <td>{{ $container->tracking_number }}</td>
+                                <td>{{ $container->receipt_number }}</td>
                                 <td>{{ $container->departed_at }}</td>
                                 <td>
                                     <div class="btn-group">

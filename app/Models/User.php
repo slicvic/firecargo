@@ -23,10 +23,10 @@ class User extends Base implements AuthenticatableInterface {
 
     public static $rules = [
         'company_id' => 'required',
-        'email' => 'required|email|unique:users,email',
+        'email' => 'email|unique:users,email',
         'password' => 'min:6',
-        'first_name' => 'required',
-        'last_name' => 'required'
+        'first_name' => '',
+        'last_name' => ''
     ];
 
     protected $fillable = [
@@ -200,6 +200,25 @@ class User extends Base implements AuthenticatableInterface {
         $path = 'uploads/users/' . $this->id . '/images/profile/' . $size . '.png';
         return file_exists(public_path() . '/' . $path);
     }
+
+    /**
+     * Gets the profile photo URL.
+     *
+     * @param  string $size sm|md
+     * @return string
+     */
+    public function getProfilePhotoURL($size = 'sm')
+    {
+        $path = 'uploads/users/' . $this->id . '/images/profile/' . $size . '.png';
+
+        if (file_exists(public_path() . '/' . $path)) {
+            return asset($path) . '?cb=' . time();
+        }
+        else {
+            return asset('assets/admin/img/avatar.png');
+        }
+    }
+
 
     /**
      * Validates the specified credentials.

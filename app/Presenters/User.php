@@ -23,7 +23,7 @@ class User extends BasePresenter {
         if ( ! empty(trim($fullName)))
             return $fullName;
 
-        return $this->model->id;
+        return '[Blank Name]';
     }
 
     /**
@@ -31,29 +31,11 @@ class User extends BasePresenter {
      *
      * @return string
      */
-    public function companyName()
+    public function company()
     {
         if ( ! empty(trim($this->model->company_name)))
             return $this->model->company_name;
-        return $this->model->id;
-    }
-
-    /**
-     * Presents the profile photo URL.
-     *
-     * @param  string $size sm|md
-     * @return string
-     */
-    public function profilePhotoURL($size = 'sm')
-    {
-        $path = 'uploads/users/' . $this->model->id . '/images/profile/' . $size . '.png';
-
-        if (file_exists(public_path() . '/' . $path)) {
-            return asset($path) . '?cb=' . time();
-        }
-        else {
-            return asset('assets/admin/img/avatar.png');
-        }
+        return '[Blank Company Name]';
     }
 
     /**

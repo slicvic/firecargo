@@ -14,9 +14,9 @@
 
 @section('thead')
     <th>ID</th>
+    @if ($isAdmin)<th>Master</th>@endif
     <th>Name</th>
     <th>Display Name</th>
-    @if ($isAdmin)<th>Company</th>@endif
     <th>Action</th>
 @stop
 
@@ -24,9 +24,9 @@
      @foreach ($sites as $site)
         <tr>
             <td>{{ $site->id }}</td>
+            @if ($isAdmin)<td>{{ ($site->company) ? $site->company->name : '' }}</td>@endif
             <td>{{ $site->name }}</td>
             <td>{{ $site->display_name }}</td>
-            @if ($isAdmin)<td>{{ ($site->company) ? $site->company->name : '' }}</td>@endif
             <td>
                 <div class="btn-group">
                     <a href="/sites/edit/{{ $site->id }}" class="btn-white btn btn-sm"><i class="fa fa-pencil"></i> Edit</a>

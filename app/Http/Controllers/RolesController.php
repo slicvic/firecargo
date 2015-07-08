@@ -45,18 +45,12 @@ class RolesController extends BaseAuthController {
         $input = $request->all();
 
         // Validate input
-        $validator = Validator::make($input, Role::$rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input, Role::$rules);
 
         // Create role
         Role::create($input);
 
-        Flash::success('Role created.');
-        return redirect('roles');
+        return $this->redirectWithSuccessMessage('roles', 'Role created.');
     }
 
     /**
@@ -76,19 +70,13 @@ class RolesController extends BaseAuthController {
         $input = $request->all();
 
         // Validate input
-        $validator = Validator::make($input, Role::$rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input, Role::$rules);
 
         // Update role
         $role = Role::findOrFail($id);
         $role->update($input);
 
-        Flash::success('Role updated.');
-        return redirect()->back();
+        return $this->redirectBackWithSuccessMessage('Role updated.');
     }
 
     /**
@@ -96,8 +84,6 @@ class RolesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        $role = Role::findOrFail($id);
-        $role->delete();
-        return redirect()->back();
+        // TODO
     }
 }

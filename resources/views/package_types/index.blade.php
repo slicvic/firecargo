@@ -20,12 +20,10 @@
             <td>{{ $type->id }}</td>
             <td>{{ $type->name }}</td>
             <td>
-                @if ($type->company_id == Auth::user()->company_id)
-                    <div class="btn-group">
-                        <a href="/package-types/edit/{{ $type->id }}" class="btn-white btn btn-sm">Edit</a>
-                        <a href="/package-types/delete/{{ $type->id }}" class="btn-white btn btn-sm">Delete</a>
-                    </div>
-                @endif
+                <div class="btn-group">
+                    <a href="/package-types/edit/{{ $type->id }}" class="btn-white btn btn-sm">Edit</a>
+                    <a href="/package-types/delete/{{ $type->id }}" class="btn-white btn btn-sm">Delete</a>
+                </div>
             </td>
        </tr>
     @endforeach

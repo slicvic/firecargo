@@ -26,24 +26,19 @@ class Role extends Base {
     ];
 
     /**
-     * Overrides parent method to filter records base on the current
-     * user level.
+     * Retrives the friendly roles.
      *
-     * @param  array $columns
      * @return Role[]
      */
-    public static function all($columns = ['*'])
+    public static function allFriendly()
     {
-        if (Auth::user()->isAdmin())
-        {
-            // Return all roles
-            return parent::all($columns);
+        if (Auth::user()->isAdmin()) {
+            $except = [self::LOGIN];
         }
-        else
-        {
-            // Return all roles except "ADMIN"
-            return Role::where('id', '<>', self::ADMIN)
-                ->get($columns);
+        else {
+            $except = [self::LOGIN, self::ADMIN];
         }
+
+        return Role::whereNotIn('id', $except)->get();
     }
 }

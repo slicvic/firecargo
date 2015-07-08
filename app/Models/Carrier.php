@@ -1,19 +1,19 @@
 <?php namespace App\Models;
 
 /**
- * PackageType
+ * Carrier
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class PackageType extends Base {
+class Carrier extends Base {
 
-    protected $table = 'package_types';
+    protected $table = 'carriers';
 
     public static $rules = [
         'name' => 'required'
     ];
 
     protected $fillable = [
-        'name',
+        'name'
     ];
 }

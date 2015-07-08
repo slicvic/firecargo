@@ -19,13 +19,13 @@ class Container extends Base {
 
     public static $rules = [
         'company_id' => 'required',
-        'tracking_number' => 'required|unique:containers,tracking_number'
+        'receipt_number' => 'required|unique:containers,receipt_number'
     ];
 
     protected $fillable = [
         'company_id',
         'type_id',
-        'tracking_number',
+        'receipt_number',
         'departed_at'
     ];
 
@@ -35,6 +35,14 @@ class Container extends Base {
     public function warehouses()
     {
         return $this->hasMany('App\Models\Warehouse');
+    }
+
+    /**
+     * Gets the warehouses.
+     */
+    public function type()
+    {
+        return $this->belongsTo('App\Models\ContainerType');
     }
 
     /**
@@ -96,7 +104,7 @@ class Container extends Base {
                 ->whereRaw('(
                     warehouse.id LIKE ?
                     OR containers.id LIKE ?
-                    OR containers.tracking_number LIKE ?
+                    OR containers.receipt_number LIKE ?
                     )', [$q, $q, $q]
                 );
         }

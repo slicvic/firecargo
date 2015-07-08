@@ -10,7 +10,7 @@
         </td>
         <td>
             <select name="package[{{ $packageId }}][type_id]" data-name="type_id" class="form-control">
-                @foreach(\App\Models\PackageType::allByCurrentCompany() as $type)
+                @foreach(\App\Models\PackageType::all() as $type)
                     <option{{ ($package->type_id == $type->id) ? ' selected' : '' }} value="{{ $type->id }}">{{ $type->name }}</option>
                 @endforeach
             </select>

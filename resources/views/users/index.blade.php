@@ -10,14 +10,14 @@
 
 @section('thead')
     <th>ID</th>
-    @if (Auth::user()->isAdmin()) {!! '<th>Company</th>' !!} @endif
-    <th>Company Name</th>
+    @if (Auth::user()->isAdmin()) {!! '<th>Master</th>' !!} @endif
+    <th>Company</th>
     <th>First Name</th>
     <th>Last Name</th>
     <th>Email</th>
     <th>Phone</th>
     <th>Mobile</th>
-    <th>Group</th>
+    <th>Type</th>
     <th>Action</th>
 @stop
 

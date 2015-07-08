@@ -18,7 +18,7 @@ class PackageTypesController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
-        $this->middleware('agent');
+        $this->middleware('admin');
     }
 
     /**
@@ -26,7 +26,7 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $types = PackageType::allByCurrentCompany();
+        $types = PackageType::all();
         return view('package_types.index', ['types' => $types]);
     }
 
@@ -46,18 +46,12 @@ class PackageTypesController extends BaseAuthController {
         $input = $request->all();
 
         // Validate input
-        $validator = Validator::make($input, PackageType::$rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input, PackageType::$rules);
 
         // Create package type
         PackageType::create($input);
 
-        Flash::success('Package type created.');
-        return redirect('package-types');
+        return $this->redirectWithSuccessMessage('package-types', 'Package type created.');
     }
 
     /**
@@ -65,7 +59,7 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $type = PackageType::findOrFailByIdAndCurrentCompany($id);
+        $type = PackageType::findOrFail($id);
         return view('package_types.form', ['type' => $type]);
     }
 
@@ -77,19 +71,13 @@ class PackageTypesController extends BaseAuthController {
         $input = $request->all();
 
         // Validate input
-        $validator = Validator::make($input, PackageType::$rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input, PackageType::$rules);
 
         // Update package type
-        $type = PackageType::findOrFailByIdAndCurrentCompany($id);
+        $type = PackageType::findOrFail($id);
         $type->update($input);
 
-        Flash::success('Package type updated.');
-        return redirect()->back();
+        return $this->redirectBackWithSuccessMessage('Package type updated.');
     }
 
     /**
@@ -97,16 +85,12 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        $packageType = PackageType::findByIdAndCurrentCompany($id);
+        $type = PackageType::findOrFail($id);
 
-        if ($packageType) {
-            $packageType->delete();
-            Flash::success('Package type deleted.');
-        }
-        else {
-            Flash::error('Package type not found.');
+        if ($type && $type->delete()) {
+            return $this->redirectBackWithSuccessMessage(sprintf('Package type "%s (%s)" deleted.', $type->name, $type->id));
         }
 
-        return redirect()->back();
+        return $this->redirectBackWithErrorMessage('Package type delete failed.');
     }
 }

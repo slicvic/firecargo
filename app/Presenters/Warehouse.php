@@ -27,23 +27,23 @@ class Warehouse extends BasePresenter {
     }
 
     /**
-     * Presents the courier name.
+     * Presents the carrier.
      *
      * @return string
      */
-    public function courierName()
+    public function carrier()
     {
-        return ($this->model->courier_id) ? $this->model->courier->name : '';
+        return ($this->model->carrier_id) ? $this->model->carrier->name : '';
     }
 
     /**
-     * Presents the consignee name.
+     * Presents the consignee.
      *
      * @return string
      */
-    public function consigneeName()
+    public function consignee()
     {
-        return ($this->model->consignee_user_id) ? $this->model->consignee->present()->fullName() : '';
+        return ($this->model->consignee_user_id) ? $this->model->consignee->present()->fullname() : '';
     }
 
     /**
@@ -51,9 +51,9 @@ class Warehouse extends BasePresenter {
      *
      * @return string
      */
-    public function shipperName()
+    public function shipper()
     {
-        return ($this->model->shipper_user_id) ? $this->model->shipper->present()->companyName() : '';
+        return ($this->model->shipper_user_id) ? $this->model->shipper->present()->company() : '';
     }
 
     /**
@@ -61,9 +61,9 @@ class Warehouse extends BasePresenter {
      *
      * @return string
      */
-    public function shipperNameLink()
+    public function shipperLink()
     {
-        return '<a href="' . url('accounts/edit/' . $this->model->shipper->id) . '">' . $this->shipperName() . '</a>';
+        return '<a href="' . url('accounts/edit/' . $this->model->shipper->id) . '">' . $this->shipper() . '</a>';
     }
 
 
@@ -72,9 +72,9 @@ class Warehouse extends BasePresenter {
      *
      * @return string
      */
-    public function consigneeNameLink()
+    public function consigneeLink()
     {
-        return '<a href="' . url('accounts/edit/' . $this->model->consignee->id) . '">' . $this->consigneeName() . '</a>';
+        return '<a href="' . url('accounts/edit/' . $this->model->consignee->id) . '">' . $this->consignee() . '</a>';
     }
 
     /**
@@ -114,7 +114,7 @@ class Warehouse extends BasePresenter {
      */
     public function container()
     {
-        return ($this->model->container_id) ? $this->model->container->tracking_number : 'N/A';
+        return ($this->model->container_id) ? $this->model->container->receipt_number : 'N/A';
     }
 
     /**

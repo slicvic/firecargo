@@ -22,6 +22,7 @@ class Company extends Base {
 
     protected $fillable = [
         'name',
+        'code',
         'email',
         'phone',
         'fax'
@@ -36,7 +37,7 @@ class Company extends Base {
     }
 
     /**
-     * Checks if a logo image file exists.
+     * Checks if logo image file exists.
      *
      * @param  string $size sm|md|lg
      * @return bool
@@ -45,5 +46,22 @@ class Company extends Base {
     {
         $path = 'uploads/companies/' . $this->id . '/images/logo/' . $size . '.png';
         return file_exists(public_path() . '/' . $path);
+    }
+
+    /**
+     * Gets the logo URL.
+     *
+     * @param  string $size sm|md|lg
+     * @return string
+     */
+    public function getLogoURL($size = 'sm')
+    {
+        $path = 'uploads/companies/' . $this->id . '/images/logo/' . $size . '.png';
+
+        if (file_exists(public_path() . '/' . $path)) {
+            return asset($path) . '?cb=' . time();
+        }
+
+        return asset('assets/admin/img/avatar.png');
     }
 }

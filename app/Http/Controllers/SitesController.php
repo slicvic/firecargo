@@ -46,18 +46,12 @@ class SitesController extends BaseAuthController {
         $input = $request->all();
 
         // Validate input
-        $validator = Validator::make($input, Site::$rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input, Site::$rules);
 
         // Create site
         Site::create($input);
 
-        Flash::success('Site created.');
-        return redirect('sites');
+        return $this->redirectWithSuccessMessage('sites', 'Site created.');
     }
 
     /**
@@ -75,22 +69,17 @@ class SitesController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
+        if ( ! $this->user->isAdmin()) {
+            $input['company_id'] = $this->user->company_id;
+        }
 
         // Validate input
-        $rules = Site::$rules;
-        unset($rules['company_id']);
-        $validator = Validator::make($input, $rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input, Site::$rules);
 
         // Update site
         $site = Site::findOrFailByIdAndCurrentCompany($id);
         $site->update($input);
 
-        Flash::success('Site updated.');
-        return redirect()->back();
+        return $this->redirectBackWithSuccessMessage('Site updated.');
     }
 }

@@ -51,12 +51,7 @@ class CompanyController extends BaseAuthController {
         $input = $request->only('company', 'address');
 
         // Validate input
-        $validator = Validator::make($input['company'], Company::$rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input['company'], Company::$rules);
 
         // Update company
         $company = $this->user->company;
@@ -72,8 +67,7 @@ class CompanyController extends BaseAuthController {
             $address->save();
         }
 
-        Flash::success('Company updated.');
-        return redirect()->back();
+        return $this->redirectBackWithSuccessMessage('Company updated.');
     }
 
     /**
@@ -119,7 +113,9 @@ class CompanyController extends BaseAuthController {
                 ->save($destination . $filename . '.png');
         }
 
+        // Remove temp file
         unlink($input['file']->getPathName());
+
         return response()->json([]);
     }
 }

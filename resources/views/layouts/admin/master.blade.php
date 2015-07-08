@@ -49,10 +49,10 @@
                 <ul class="nav metismenu" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="{{ Auth::user()->present()->profilePhotoURL() }}" style="width:48px;height:48px"></span>
+                            <span><img alt="image" class="img-circle" src="{{ Auth::user()->getProfilePhotoURL() }}" style="width:48px;height:48px"></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                                    <span class="block m-t-xs"><strong class="font-bold">{{ $user->present()->fullName() }}</strong> <b class="caret"></b></span>
+                                    <span class="block m-t-xs"><strong class="font-bold">{{ $user->present()->fullname() }}</strong> <b class="caret"></b></span>
                                 </span>
                                 </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
@@ -78,7 +78,7 @@
                             <a href="#"><i class="fa fa-cube"></i> <span class="nav-label">Warehouses</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses">Warehouses</a></li>
-                                <li{{ (Request::is('warehouses/create')) ? ' class=active' : '' }}><a href="/warehouses/create">Create Warehouse</a></li>
+                                <li{{ (Request::is('warehouses/create')) ? ' class=active' : '' }}><a href="/warehouses/create">Add Warehouse</a></li>
                             </ul>
                         </li>
 
@@ -86,7 +86,7 @@
                             <a href="#"><i class="fa fa-plane"></i> <span class="nav-label">Containers</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 <li{{ (Request::is('containers')) ? ' class=active' : '' }}><a href="/containers">Containers</a></li>
-                                <li{{ (Request::is('containers/create')) ? ' class=active' : '' }}><a href="/containers/create">Create Container</a></li>
+                                <li{{ (Request::is('containers/create')) ? ' class=active' : '' }}><a href="/containers/create">Add Container</a></li>
                             </ul>
                         </li>
 
@@ -94,17 +94,17 @@
                             <a href="/accounts"><i class="fa fa-users"></i><span>Accounts</span></a>
                         </li>
 
-                        <li{{ preg_match('/couriers|sites|company|package-|companies|roles/', $uri) ? ' class=active' : '' }}>
+                        <li{{ preg_match('/carriers|sites|company|package-|companies|roles/', $uri) ? ' class=active' : '' }}>
                             <a href="#"><i class="fa fa-cog"></i> <span class="nav-label">Settings</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 <?php if ($user->isAdmin()): ?>
                                     <li{{ (Request::is('roles') || Request::is('roles/*')) ? ' class=active' : '' }}><a href="/roles">Roles</a></li>
                                     <li{{ (Request::is('companies') || Request::is('companies/*')) ? ' class=active' : '' }}><a href="/companies">Companies</a></li>
+                                    <li{{ (Request::is('package-types') || Request::is('package-types/*')) ? ' class=active' : '' }}><a href="/package-types">Package Types</a></li>
+                                    <li{{ (Request::is('carriers') || Request::is('carriers/*')) ? ' class=active' : '' }}><a href="/carriers">Carriers</a></li>
                                 <?php endif; ?>
-                                <li{{ (Request::is('company') || Request::is('company/*')) ? ' class=active' : '' }}><a href="/company/profile">Company Profile</a></li>
                                 <li{{ (Request::is('sites') || Request::is('sites/*')) ? ' class=active' : '' }}><a href="/sites">Sites</a></li>
-                                <li{{ (Request::is('couriers') || Request::is('couriers/*')) ? ' class=active' : '' }}><a href="/couriers">Couriers</a></li>
-                                <li{{ (Request::is('package-types') || Request::is('package-types/*')) ? ' class=active' : '' }}><a href="/package-types">Package Types</a></li>
+                                <li{{ (Request::is('company') || Request::is('company/*')) ? ' class=active' : '' }}><a href="/company/profile">Company Profile</a></li>
                                 <li{{ (Request::is('package-statuses') || Request::is('package-statuses/*')) ? ' class=active' : '' }}><a href="/package-statuses">Package Statuses</a></li>
                             </ul>
                         </li>

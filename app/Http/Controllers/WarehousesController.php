@@ -178,7 +178,7 @@ class WarehousesController extends BaseAuthController {
 
         if (strlen($input['term']) > 1) {
             foreach(User::findForAutocomplete($input['term'], [$this->user->company_id]) as $user) {
-                $label = ($input['type'] == 'shipper') ? $user->present()->companyName() : trim($user->present()->fullName());
+                $label = ($input['type'] == 'shipper') ? $user->present()->company() : trim($user->present()->fullname());
                 $response[] = [
                     'id' => $user->id,
                     'label' => $label

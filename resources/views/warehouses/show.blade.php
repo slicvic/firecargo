@@ -81,20 +81,16 @@
                             <td>{{ $warehouse->present()->arrivalDate() }}</td>
                         </tr>
                         <tr>
-                            <th>Container</th>
-                            <td>{!! $warehouse->present()->containerLink() !!}</td>
-                        </tr>
-                        <tr>
                             <th>Shipper</th>
-                            <td>{!! $warehouse->present()->shipperNameLink() !!}</td>
+                            <td>{!! $warehouse->present()->shipperLink() !!}</td>
                         </tr>
                         <tr>
                             <th>Consignee</th>
-                            <td>{!! $warehouse->present()->consigneeNameLink() !!}</td>
+                            <td>{!! $warehouse->present()->consigneeLink() !!}</td>
                         </tr>
                         <tr>
                             <th>Delivered By</th>
-                            <td>{{ $warehouse->present()->courierName() }}</td>
+                            <td>{{ $warehouse->present()->carrier() }}</td>
                         </tr>
                         <tr>
                             <th>Pieces</th>

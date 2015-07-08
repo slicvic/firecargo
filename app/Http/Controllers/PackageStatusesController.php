@@ -44,23 +44,21 @@ class PackageStatusesController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
+        $input['company_id'] = $this->user->company_id;
 
         // Validate input
-        $validator = Validator::make($input, PackageStatus::$rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input, PackageStatus::$rules);
 
         // Create status
         if (isset($input['is_default'])) {
+            // Unset default status so we can reset it below
             PackageStatus::unsetDefaultByCompanyId($this->user->company_id);
         }
+
         PackageStatus::create($input);
 
-        Flash::success('Package status created.');
-        return redirect('package-statuses');
+        return $this->redirectWithSuccessMessage('package-statuses', 'Package status created.');
+
     }
 
     /**
@@ -78,24 +76,22 @@ class PackageStatusesController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
+        $input['company_id'] = $this->user->company_id;
 
         // Validate input
-        $validator = Validator::make($input, PackageStatus::$rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input, PackageStatus::$rules);
 
         // Update status
         $status = PackageStatus::findOrFailByIdAndCurrentCompany($id);
+
         if (isset($input['is_default']) && ! $status->is_default) {
+            // Unset default status so we can reset it below
             PackageStatus::unsetDefaultByCompanyId($this->user->company_id);
         }
+
         $status->update($input);
 
-        Flash::success('Package status updated.');
-        return redirect()->back();
+        return $this->redirectBackWithSuccessMessage('Package status updated.');
     }
 
     /**
@@ -103,16 +99,12 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        $packageStatus = PackageStatus::findByIdAndCurrentCompany($id);
+        $status = PackageStatus::findByIdAndCurrentCompany($id);
 
-        if ($packageStatus) {
-            $packageStatus->delete();
-            Flash::success('Package status deleted.');
-        }
-        else {
-            Flash::error('Package status not found.');
+        if ($status && $status->delete()) {
+            return $this->redirectBackWithSuccessMessage('Package status deleted.');
         }
 
-        return redirect()->back();
+        return $this->redirectBackWithErrorMessage('Package status delete failed.');
     }
 }
