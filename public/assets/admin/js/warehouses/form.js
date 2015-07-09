@@ -24,11 +24,11 @@ $(function() {
             var $pkg = $(this).closest('tbody').clone();
             var idx;
 
-            $pkg.find('input.unique').val('');
+            $pkg.find('.unique').val('');
 
-            $pkg.find('input, select').each(function() {
+            $pkg.find('input, select, textarea').each(function() {
                 idx = -1 * totalPieces;
-                $(this).attr('name', 'package[' + idx + '][' + $(this).attr('data-name') + ']');
+                $(this).attr('name', 'packages[' + idx + '][' + $(this).attr('data-name') + ']');
             });
 
             $('#packages').append($pkg);
@@ -42,10 +42,10 @@ $(function() {
             var $pkg = Packages.$template.clone();
             var idx;
 
-            $pkg.find('input, select').each(function() {
+            $pkg.find('input, select, textarea').each(function() {
                 idx = -1 * totalPieces;
                 $(this).val('');
-                $(this).attr('name', 'package[' + idx + '][' + $(this).attr('data-name') + ']');
+                $(this).attr('name', 'packages[' + idx + '][' + $(this).attr('data-name') + ']');
             });
 
             $('#packages').append($pkg);
@@ -88,7 +88,27 @@ $(function() {
 
     Packages.init();
 
-    // Bind shipper autocomplete
+    // Carrier autocomplete
+    $('#carrier').keyup(function() {
+        $('#carrierId').val('');
+    });
+
+    $('#carrier').autocomplete({
+        source: '/warehouses/ajax-carrier-autocomplete',
+        minLength: 2,
+        select: function(event, ui) {
+            $('#carrier').val(ui.item.label);
+            $('#carrierId').val(ui.item.id);
+            return false;
+        }
+    })
+    .autocomplete('instance')._renderItem = function(ul, item) {
+        return $('<li>')
+            .append('<a>' + item.id + ' - ' + item.label + '</a>')
+            .appendTo(ul);
+    };
+
+    // Shipper autocomplete
     $('#shipper').keyup(function() {
         $('#shipperId').val('');
     });
@@ -108,7 +128,7 @@ $(function() {
             .appendTo(ul);
     };
 
-    // Bind consignee autocomplete
+    // Consignee autocomplete
     $('#consignee').keyup(function() {
         $('#consigneeId').val('');
     });
@@ -128,7 +148,7 @@ $(function() {
             .appendTo(ul);
     };
 
-    // Bind form submit
+    // Form submit
     $('form').on('submit', function() {
         event.preventDefault();
 

@@ -23,7 +23,7 @@
             <div class="col-xs-3"><strong>Auto-ship Packages?</strong></div>
             <div class="col-xs-9">
                 <p>{!! $user->autoship_packages ? '<span class="label label-primary">Yes</span>' : '<span class="label label-danger">No</span>' !!}</p>
-                @include('user_profile.autoship_help_block')
+                @include('user_profile.autoship_info')
             </div>
         </div>
    </div>

@@ -53,7 +53,7 @@ class UserController extends BaseAuthController {
         $input = $request->only('user', 'address');
 
         // Validate input
-        $rules = User::$rules;
+        $rules = User::$rulesUpdateProfile;
         $rules['email'] .= ',' . $this->user->id;
         $this->validate($input['user'], $rules);
 
@@ -92,18 +92,19 @@ class UserController extends BaseAuthController {
 
         // Validate input
         $rules = [
-            'current' => 'required',
-            'new' => 'required'
+            'current_password' => 'required',
+            'new_password' => 'required|min:6',
+            'confirm_password' => 'required|same:new_password'
         ];
 
         $this->validate($input, $rules);
 
         // Change password
-        if ( ! Hash::check($input['current'], $this->user->password)) {
+        if ( ! Hash::check($input['current_password'], $this->user->password)) {
             return $this->redirectBackWithError('The password you entered does not match your current one.');
         }
 
-        $this->user->password = $input['new'];
+        $this->user->password = $input['new_password'];
         $this->user->save();
 
         return $this->redirectBackWithSuccess('Your password was changed successfully.');

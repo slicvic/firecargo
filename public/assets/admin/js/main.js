@@ -1,4 +1,4 @@
-var app = {
+var main = {
 	init: function() {
 		this.initEvents();
 	},
@@ -10,17 +10,14 @@ var app = {
 	            return false;
 		    }
 		});
-	},
 
-	flashError: function(message, $container) {
-		$container.html('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + message + '</div>');
-	},
-
-	flashInfo: function(message, $container) {
-		$container.html('<div class="alert alert-success"><i class="fa fa-check"></i> ' + message + '</div>');
-	},
-
-	scrollTop: function() {
-		$('html, body').scrollTop(0);
+		$('input[type=checkbox]').iCheck({
+			checkboxClass: 'icheckbox_square-green',
+			radioClass: 'iradio_square-green',
+		});
 	}
 }
+
+$(function() {
+	main.init();
+});

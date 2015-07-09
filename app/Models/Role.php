@@ -38,7 +38,7 @@ class Role extends Base {
             $except = [];
         }
         else {
-            $except = [self::LOGIN, self::ADMIN];
+            $except = [self::ADMIN];
         }
 
         return Role::whereNotIn('id', $except)->get();

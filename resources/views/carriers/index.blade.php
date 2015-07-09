@@ -22,7 +22,7 @@
             <td>
                 <div class="btn-group">
                     <a href="/carriers/edit/{{ $carrier->id }}" class="btn-white btn btn-sm">Edit</a>
-                    <a href="/carriers/delete/{{ $carrier->id }}" class="btn-white btn btn-sm">Delete</a>
+                    <a href="/carriers/delete/{{ $carrier->id }}" class="btn-delete btn-white btn btn-sm">Delete</a>
                 </div>
             </td>
        </tr>

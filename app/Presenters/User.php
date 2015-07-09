@@ -16,14 +16,14 @@ class User extends BasePresenter {
      *
      * @return string
      */
-    public function fullName()
+    public function fullname()
     {
-        $fullName = $this->model->first_name . ' ' . $this->model->last_name;
+        $fullname = $this->model->first_name . ' ' . $this->model->last_name;
 
-        if ( ! empty(trim($fullName)))
-            return $fullName;
+        if ( ! empty(trim($fullname)))
+            return $fullname;
 
-        return '[Blank Name]';
+        return $this->model->company_name;
     }
 
     /**
@@ -35,7 +35,8 @@ class User extends BasePresenter {
     {
         if ( ! empty(trim($this->model->company_name)))
             return $this->model->company_name;
-        return '[Blank Company Name]';
+
+        return $this->fullname();
     }
 
     /**
@@ -47,7 +48,7 @@ class User extends BasePresenter {
     {
         if ( ! $this->model->roles)
             return '';
-        return Html::arrayToTags($this->model->roles->lists('name'));
+        return Html::arrayToBadges($this->model->roles->lists('name'));
     }
 
     /**

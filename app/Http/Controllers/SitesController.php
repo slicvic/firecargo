@@ -69,9 +69,7 @@ class SitesController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         $input = $request->all();
-        if ( ! $this->user->isAdmin()) {
-            $input['company_id'] = $this->user->company_id;
-        }
+        $input['company_id'] = ($this->user->isAdmin()) ? $input['company_id'] : $this->user->company_id;
 
         // Validate input
         $this->validate($input, Site::$rules);

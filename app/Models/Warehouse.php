@@ -30,7 +30,6 @@ class Warehouse extends Base {
         'company_id',
         'shipper_user_id',
         'consignee_user_id',
-        'container_id',
         'carrier_id',
         'arrived_at',
         'notes'
@@ -77,14 +76,6 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the container.
-     */
-    public function container()
-    {
-        return $this->belongsTo('App\Models\Container');
-    }
-
-    /**
      * Gets the packages.
      */
     public function packages()
@@ -100,10 +91,6 @@ class Warehouse extends Base {
     public function setAttribute($key, $value)
     {
         switch ($key) {
-            case 'container_id':
-                $value = empty($value) ? NULL : $value;
-                break;
-
             case 'arrived_at':
                 if (is_string($value)) {
                     $value = date('Y-m-d H:i:s', strtotime($value));
@@ -223,6 +210,28 @@ class Warehouse extends Base {
     }
 
     /**
+     * Creates the warehouse packages.
+     *
+     * @param  array $packages
+     * @return void
+     */
+    public function createPackages($packages)
+    {
+        $this->packages()->delete();
+
+        if ( ! count($packages))
+            return;
+
+        $consignee = $this->consignee;
+
+        foreach ($packages as $package) {
+            $package['warehouse_id'] = $this->id;
+            $package['ship'] = $consignee->autoship_packages;
+            Package::create($package);
+        }
+    }
+
+    /**
      * Finds all warehouses with the given criteria.
      *
      * @param  array|null $criteria
@@ -243,7 +252,7 @@ class Warehouse extends Base {
         $warehouses = Warehouse::whereRaw('1')
             ->orderBy('warehouses.' . $orderBy, $order);
 
-        if ( ! empty($criteria['status'])) {
+        /*if ( ! empty($criteria['status'])) {
             switch ($criteria['status']) {
                 case 'pending':
                     $warehouses = $warehouses->whereRaw('warehouses.container_id IS NULL');
@@ -252,7 +261,7 @@ class Warehouse extends Base {
                     $warehouses = $warehouses->whereRaw('warehouses.container_id IS NOT NULL');
                     break;
             }
-        }
+        }*/
 
         if ( ! empty($criteria['company_id'])) {
             $warehouses = $warehouses->where('warehouses.company_id', '=', $criteria['company_id']);
@@ -265,17 +274,15 @@ class Warehouse extends Base {
                 ->select('warehouses.*')
                 ->leftJoin('users AS consignee', 'warehouses.consignee_user_id', '=', 'consignee.id')
                 ->leftJoin('users AS shipper', 'warehouses.shipper_user_id', '=', 'shipper.id')
-                ->leftJoin('containers AS container', 'warehouses.container_id', '=', 'container.id')
+                //->leftJoin('containers AS container', 'warehouses.container_id', '=', 'container.id')
                 ->whereRaw('(
                     warehouses.id LIKE ?
-                    OR container.id LIKE ?
-                    OR container.receipt_number LIKE ?
                     OR consignee.id LIKE ?
                     OR consignee.first_name LIKE ?
                     OR consignee.last_name LIKE ?
                     OR shipper.id LIKE ?
                     OR shipper.company_name LIKE ?
-                    )', [$q, $q, $q, $q, $q, $q, $q, $q]
+                    )', [$q, $q, $q, $q, $q, $q]
                 );
         }
 

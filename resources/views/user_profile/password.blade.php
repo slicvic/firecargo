@@ -6,19 +6,19 @@
             <div class="form-group">
                 <label class="col-md-3 control-label">Current Password</label>
                 <div class="col-md-5">
-                    <input type="password" name="current" class="form-control" required>
+                    <input type="password" name="current_password" class="form-control" required>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-3 control-label">New Password</label>
                 <div class="col-md-5">
-                    <input id="new" type="password" name="new" class="form-control" data-parsley-minlength="6" required>
+                    <input id="new" type="password" name="new_password" class="form-control" data-parsley-minlength="6" required>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-3 control-label">Confirm Password</label>
                 <div class="col-md-5">
-                    <input type="password" name="confirm" class="form-control" data-parsley-equalto="#new" required>
+                    <input type="password" name="confirm_password" class="form-control" data-parsley-equalto="#new" required>
                 </div>
             </div>
             <div class="form-group">

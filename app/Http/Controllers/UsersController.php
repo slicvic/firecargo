@@ -44,19 +44,10 @@ class UsersController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $request->only('user', 'role_ids', 'address');
+        $input = $this->prepareInput($request);
 
         // Validate input
-        $rules = User::$rules;
-
-        $validator = Validator::make($input['user'], $rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
-
-        $input['user']['company_id'] = ($this->user->isAdmin()) ? $input['user']['company_id'] : $this->user->company_id;
+        $this->validate($input['user'], User::$rulesCreateUpdate);
 
         // Create user
         $user = new User($input['user']);
@@ -64,10 +55,6 @@ class UsersController extends BaseAuthController {
 
         // Assign roles
         if (isset($input['role_ids'])) {
-            if ( ! $this->user->isAdmin() && in_array(Role::ADMIN, $input['role_ids'])) {
-                // SORRY, YOU MUST BE AN ADMIN TO ASSIGN "ADMIN" ROLE
-                $input['role_ids'] = array_diff($input['role_ids'], [Role::ADMIN]);
-            }
             $user->roles()->sync($input['role_ids']);
         }
 
@@ -76,8 +63,7 @@ class UsersController extends BaseAuthController {
         $address->user()->associate($user);
         $address->save();
 
-        Flash::success('Account created.');
-        return redirect('accounts');
+        return $this->redirectWithSuccess('accounts', 'Account created.');
     }
 
     /**
@@ -86,7 +72,6 @@ class UsersController extends BaseAuthController {
     public function getEdit(Request $request, $id)
     {
         $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentCompany($id);
-
         return view('users.form', ['user' => $user]);
     }
 
@@ -95,18 +80,12 @@ class UsersController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->only('user', 'role_ids', 'address');
+        $input = $this->prepareInput($request);
 
         // Validate input
-        $rules = User::$rules;
+        $rules = User::$rulesCreateUpdate;
         $rules['email'] .= ',' . $id;
-
-        $validator = Validator::make($input['user'], $rules);
-
-        if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input['user'], $rules);
 
         // Update user
         $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentCompany($id);
@@ -114,10 +93,6 @@ class UsersController extends BaseAuthController {
 
         // Update roles
         if (isset($input['role_ids'])) {
-            if ( ! $this->user->isAdmin() && in_array(Role::ADMIN, $input['role_ids'])) {
-                // SORRY, YOU MUST BE AN ADMIN TO ASSIGN "ADMIN" ROLE
-                $input['role_ids'] = array_diff($input['role_ids'], [Role::ADMIN]);
-            }
             $user->roles()->sync($input['role_ids']);
         }
         else {
@@ -134,12 +109,11 @@ class UsersController extends BaseAuthController {
             $address->save();
         }
 
-        Flash::success('Account updated.');
-        return redirect()->back();
+        return $this->redirectBackWithSuccess('Account updated.');
     }
 
     /**
-     * Returns a list of users for a jQuery DataTable.
+     * Retrieves a list of users for a jQuery DataTable.
      *
      * @uses    ajax
      * @return  json
@@ -201,5 +175,30 @@ class UsersController extends BaseAuthController {
         }
 
         return response()->json($response);
+    }
+
+    /**
+     * Prepares the input before validation.
+     *
+     * @param  Request $request
+     * @return array
+     */
+    private function prepareInput(Request $request)
+    {
+        $input = $request->only('user', 'role_ids', 'address');
+
+        // Set company id
+        $input['user']['company_id'] = ($this->user->isAdmin()) ? $input['user']['company_id'] : $this->user->company_id;
+
+        // Sanitize roles
+        if (isset($input['role_ids']))
+        {
+            if ( ! $this->user->isAdmin() && in_array(Role::ADMIN, $input['role_ids'])) {
+                // SORRY, YOU MUST BE AN ADMIN TO ASSIGN "ADMIN" ROLE
+                $input['role_ids'] = array_diff($input['role_ids'], [Role::ADMIN]);
+            }
+        }
+
+        return $input;
     }
 }

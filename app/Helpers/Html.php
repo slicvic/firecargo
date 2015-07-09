@@ -13,19 +13,17 @@ class Html {
      * @param  array $values
      * @return string
      */
-    public static function arrayToTags(array $values)
+    public static function arrayToBadges(array $values)
     {
         if (empty($values))
             return '';
 
-        $str = '<div class="tag-list">';
+        $html = '';
 
         foreach($values as $value) {
-            $str .= '<div class="tag-item">' . ucfirst($value) . '</div>';
+            $html .= '<div class="badge badge-warning btns-xs">' . ucfirst($value) . '</div><br>';
         }
 
-        $str .= '</div>';
-
-        return $str;
+        return $html;
     }
 }

@@ -22,22 +22,25 @@
 @section('form')
     <form action="/accounts/{{ ($user->id) ? 'update/' . $user->id : 'store' }}" method="post" class="form-horizontal" data-parsley-validate>
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <div class="ibox">
-            <div class="ibox-title"><h5>Administration</h5></div>
-            <div class="ibox-content">
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Master</label>
-                    <div class="col-sm-5">
-                        <select required class="form-control" name="user[company_id]">
-                            <option value="">- Choose -</option>
-                            @foreach (\App\Models\Company::all() as $company)
-                                <option{{ ($company->id == Input::old('user.company_id', $user->company_id)) ? ' selected' : '' }} value="{{ $company->id }}">{{ $company->name }}</option>
-                            @endforeach
-                        </select>
+
+        @if (Auth::user()->isAdmin())
+            <div class="ibox">
+                <div class="ibox-title"><h5>Administration</h5></div>
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Master</label>
+                        <div class="col-sm-5">
+                            <select required class="form-control" name="user[company_id]">
+                                <option value="">- Choose -</option>
+                                @foreach (\App\Models\Company::all() as $company)
+                                    <option{{ ($company->id == Input::old('user.company_id', $user->company_id)) ? ' selected' : '' }} value="{{ $company->id }}">{{ $company->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
 
         <div class="row">
             <div class="col-lg-12">
@@ -51,7 +54,7 @@
                             <div class="panel-body">
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">Type</label>
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-10 checkbox">
                                         <?php $userRoles = $user->roles->lists('name', 'id'); ?>
                                         @foreach (\App\Models\Role::allFiltered() as $role)
                                             <label class="checkbox-inline">
@@ -60,6 +63,7 @@
                                         @endforeach
                                     </div>
                                 </div>
+                                <div class="clear hr-line-dashed"></div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">Company</label>
                                     <div class="col-sm-5">
@@ -78,18 +82,20 @@
                                         <input type="text" name="user[last_name]" placeholder="Last Name" class="form-control" value="{{ Input::old('user.last_name', $user->last_name) }}">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2">Mobile Phone</label>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="user[mobile_phone]" placeholder="Mobile Phone" class="phone form-control" value="{{ Input::old('user.mobile_phone', $user->mobile_phone) }}">
-                                    </div>
-                                </div>
+                                <div class="clear hr-line-dashed"></div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">Phone</label>
                                     <div class="col-sm-2">
                                         <input type="text" name="user[phone]" placeholder="Phone" class="phone form-control" value="{{ Input::old('user.phone', $user->phone) }}">
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Mobile Phone</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" name="user[mobile_phone]" placeholder="Mobile Phone" class="phone form-control" value="{{ Input::old('user.mobile_phone', $user->mobile_phone) }}">
+                                    </div>
+                                </div>
+                                <div class="clear hr-line-dashed"></div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">Email</label>
                                     <div class="col-sm-5">

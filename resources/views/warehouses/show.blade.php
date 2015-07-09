@@ -75,7 +75,7 @@
                     <h5>Summary</h5>
                 </div>
                 <div class="ibox-content">
-                    <table class="table warehouse-info-table">
+                    <table class="table warehouse-info-table table-responsive">
                         <tr>
                             <th class="col-sm-2">Date</th>
                             <td>{{ $warehouse->present()->arrivalDate() }}</td>

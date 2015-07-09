@@ -1,7 +1,6 @@
 <?php $address = $user->address ?: new App\Models\Address; ?>
 <form data-parsley-validate action="/account/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    <input type="hidden" name="user[company_id]" value="{{ $user->company_id }}">
     <div class="row">
         <div class="col-md-12">
             <div class="ibox">
@@ -48,11 +47,11 @@
                     <h2>Preferences</h2>
                     <div class="form-group">
                         <label class="col-md-2 control-label">Auto-ship Packages?</label>
-                        <div class="col-md-6">
+                        <div class="col-md-10">
                             <label class="checkbox-inline">
                                 <input type="checkbox" name="user[autoship_packages]" value="1"{{ Input::old('user.autoship_packages', $user->autoship_packages) ? ' checked' : '' }}> Yes
+                                @include('user_profile.autoship_info')
                             </label>
-                            @include('user_profile.autoship_help_block')
                         </div>
                     </div>
                 </div>

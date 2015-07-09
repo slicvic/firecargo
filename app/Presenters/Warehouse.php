@@ -18,12 +18,12 @@ class Warehouse extends BasePresenter {
     public function arrivalDate($withTime = TRUE)
     {
         $dateFormat = 'n/j/Y';
+
         if ($withTime) {
             return date($dateFormat . ' g:i A', strtotime($this->model->arrived_at));
         }
-        else {
-            return date($dateFormat, strtotime($this->model->arrived_at));
-        }
+
+        return date($dateFormat, strtotime($this->model->arrived_at));
     }
 
     /**
@@ -105,16 +105,6 @@ class Warehouse extends BasePresenter {
     public function chargeWeight()
     {
         return round($this->model->calculateChargeWeight()) . ' Lbs';
-    }
-
-    /**
-     * Presents the container.
-     *
-     * @return string
-     */
-    public function container()
-    {
-        return ($this->model->container_id) ? $this->model->container->receipt_number : 'N/A';
     }
 
     /**

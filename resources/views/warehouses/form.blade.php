@@ -30,8 +30,6 @@
             <div class="ibox-title"><h5>Warehouse Details</h5></div>
             <div class="ibox-content">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="warehouse[company_id]" value="{{ ($warehouse->id) ? $warehouse->company_id : Auth::user()->company_id }}">
-
                 <div class="form-group">
                     <label class="control-label col-sm-2">Date</label>
                     <div class="col-sm-2">
@@ -50,23 +48,28 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Shipper</label>
                     <div class="col-sm-5">
-                        <input required type="text" id="shipper" name="shipper" class="form-control" value="{{ $warehouse->present()->shipper() }}">
                         <input type="hidden" id="shipperId" name="warehouse[shipper_user_id]" value="{{ $warehouse->shipper_user_id }}">
-                        <a target="_blank" style="diplay:inline-block" href="/accounts/create"><i class="fa fa-plus"></i> Add New</a>
+                        <div class="input-group">
+                            <input required type="text" id="shipper" name="shipper" class="form-control" value="{{ $warehouse->present()->shipper() }}">
+                            <span class="input-group-addon"><a target="_blank" href="/accounts/create"><i class="fa fa-plus"></i></a></span>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Consignee</label>
                     <div class="col-sm-5">
-                        <input required  type="text" id="consignee" name="consignee" class="form-control" value="{{ $warehouse->present()->consignee() }}">
                         <input type="hidden" id="consigneeId" name="warehouse[consignee_user_id]" value="{{ $warehouse->consignee_user_id }}">
+                        <div class="input-group">
+                            <input required  type="text" id="consignee" name="consignee" class="form-control" value="{{ $warehouse->present()->consignee() }}">
+                            <span class="input-group-addon"><a target="_blank" href="/accounts/create"><i class="fa fa-plus"></i></a></span>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Delivered By</label>
                     <div class="col-sm-5">
-                        <input required  type="text" id="" name="carrier" class="form-control" value="">
-                        <input type="hidden" id="carrierId" name="warehouse[carrier_id]" value="">
+                        <input requirsed  type="text" id="carrier" name="warehouse[carrier_name]" class="form-control" value="{{ $warehouse->present()->carrier() }}">
+                        <input type="hidden" id="carrierId" name="warehouse[carrier_id]" value="{{ $warehouse->carrier_id }}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -113,7 +116,10 @@
         <button class="btn btn-primary" type="submit">Save changes</button>
     </form>
 
+    <br>
+    <br>
+
     <link rel="stylesheet" href="/assets/vendor/jquery-ui/jquery-ui.min.css">
     <script src="/assets/vendor/jquery-ui/jquery-ui.min.js"></script>
-    <script src="/assets/admin/js/warehouses/create-edit-page.js"></script>
+    <script src="/assets/admin/js/warehouses/form.js"></script>
 @stop

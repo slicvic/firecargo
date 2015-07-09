@@ -22,12 +22,27 @@ class User extends Base implements AuthenticatableInterface {
 
     protected $table = 'users';
 
-    public static $rules = [
+    public static $rulesRegistration = [
+        'site_id' => 'required',
+        'company_id' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6',
+        'first_name' => 'required',
+        'last_name' => 'required'
+    ];
+
+    public static $rulesUpdateProfile = [
+        'email' => 'required|email|unique:users,email',
+        'first_name' => 'required',
+        'last_name' => 'required'
+    ];
+
+    public static $rulesCreateUpdate = [
         'company_id' => 'required',
         'email' => 'email|unique:users,email',
-        'password' => 'min:6',
-        'first_name' => '',
-        'last_name' => ''
+        'first_name' => 'required_without:company_name',
+        'last_name' => 'required_without:company_name',
+        'company_name' => 'required_without:first_name,last_name',
     ];
 
     protected $fillable = [
@@ -248,22 +263,22 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Retrieves a list of users for a jQuery Autocomplete input field.
+     * Retrieves a list of users for a jquery autocomplete field.
      *
      * @param  string $keyword     A search query
-     * @param  array  $companyIds  List of company ids
+     * @param  int    $companyIds
      * @return User[]
      */
-    public static function findForAutocomplete($keyword, array $companyIds = NULL)
+    public static function findForAutocomplete($keyword, $companyId)
     {
         $keyword = '%' . $keyword . '%';
         $where = '(id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
-        $where .= count($companyIds) ? ' AND company_id IN (' . implode(',', $companyIds) . ')' : '';
-        return User::whereRaw($where, [$keyword, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword])->get();
+        $where .= ' AND company_id IN (?)';
+        return User::whereRaw($where, [$keyword, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword, $companyId])->get();
     }
 
     /**
-     * Retrieves a list of users for a jQuery Datatable plugin.
+     * Retrieves a list of users for a jquery datatable.
      *
      * @param  string   $criteria     List of criterias
      * @param  int      $offset

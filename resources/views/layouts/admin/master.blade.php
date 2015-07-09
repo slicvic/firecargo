@@ -36,8 +36,14 @@
     <link rel="stylesheet" href="/assets/vendor/parsleyjs/parsley.css">
     <script src="/assets/vendor/parsleyjs/parsley.min.js"></script>
 
+    <!-- iChecks -->
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/iCheck/icheck.min.js"></script>
+    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/iCheck/custom.css" rel="stylesheet">
+
     <!-- Main -->
-    <link rel="stylesheet" type="text/css" href="/assets/admin/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/admin/css/main.css">
+    <script src="/assets/admin/js/main.js"></script>
+
 </head>
 
 <body class="">

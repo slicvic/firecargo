@@ -40,7 +40,7 @@ abstract class BaseController extends Controller {
      * @return void
      * @throws ValidationException
      */
-    public function validate(array $input, array $rules)
+    protected function validate(array $input, array $rules)
     {
         $validator = Validator::make($input, $rules);
 
@@ -56,7 +56,7 @@ abstract class BaseController extends Controller {
      * @param  string $message
      * @return redirect()
      */
-    public function redirectWithSuccess($path, $message)
+    protected function redirectWithSuccess($path, $message)
     {
         return redirect($path)->with(Flash::SUCCESS, $message);
     }
@@ -68,7 +68,7 @@ abstract class BaseController extends Controller {
      * @param  string $message
      * @return redirect()
      */
-    public function redirectWithError($path, $message)
+    protected function redirectWithError($path, $message)
     {
         return redirect($path)->with(Flash::ERROR, $message);
     }
@@ -79,7 +79,7 @@ abstract class BaseController extends Controller {
      * @param  string $message
      * @return redirect()
      */
-    public function redirectBackWithSuccess($message)
+    protected function redirectBackWithSuccess($message)
     {
         return redirect()->back()->with(Flash::SUCCESS, $message);
     }
@@ -90,7 +90,7 @@ abstract class BaseController extends Controller {
      * @param  string $message
      * @return redirect()
      */
-    public function redirectBackWithError($message)
+    protected function redirectBackWithError($message)
     {
         return redirect()->back()->with(Flash::ERROR, $message);
     }
