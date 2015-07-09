@@ -28,7 +28,7 @@
                 <div class="ibox-title"><h5>Administration</h5></div>
                 <div class="ibox-content">
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Master</label>
+                        <label class="control-label col-sm-2">Master Company</label>
                         <div class="col-sm-5">
                             <select required class="form-control" name="user[company_id]">
                                 <option value="">- Choose -</option>

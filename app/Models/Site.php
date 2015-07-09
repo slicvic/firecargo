@@ -16,13 +16,11 @@ class Site extends Base {
     public static $rules = [
         'company_id' => 'required',
         'name' => 'required',
-        'display_name' => 'required'
     ];
 
     protected $fillable = [
         'company_id',
         'name',
-        'display_name'
     ];
 
     /**

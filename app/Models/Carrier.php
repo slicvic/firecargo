@@ -1,11 +1,17 @@
 <?php namespace App\Models;
 
+use App\Presenters\PresentableTrait;
+
 /**
  * Carrier
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
 class Carrier extends Base {
+
+    use PresentableTrait;
+
+    protected $presenter = 'App\Presenters\Carrier';
 
     protected $table = 'carriers';
 
@@ -17,6 +23,14 @@ class Carrier extends Base {
         'name',
         'company_id'
     ];
+
+    /**
+     * Gets the company.
+     */
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company');
+    }
 
     /**
      * Retrieves a list of carriers for a jquery autocomplete field.

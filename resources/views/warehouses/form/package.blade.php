@@ -3,7 +3,7 @@
     <tr>
         <td>
             <select name="packages[{{ $packageId }}][status_id]" data-name="status_id" class="form-control">
-                @foreach(\App\Models\PackageStatus::allByCurrentCompany('is_default', 'desc') as $status)
+                @foreach(\App\Models\PackageStatus::allByCurrentUserCompanyId('is_default', 'desc') as $status)
                     <option{{ ($package->status_id == $status->id) ? ' selected' : '' }} value="{{ $status->id }}">{{ $status->name }}</option>
                 @endforeach
             </select>

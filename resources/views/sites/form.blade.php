@@ -24,7 +24,7 @@
 
             @if (Auth::user()->isAdmin())
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Master</label>
+                    <label class="control-label col-sm-2">Master Company</label>
                     <div class="col-sm-5">
                         <select required class="form-control" name="company_id">
                             <option value="">- Choose -</option>
@@ -35,17 +35,10 @@
                     </div>
                 </div>
             @endif
-
             <div class="form-group">
                 <label class="control-label col-sm-2">Name</label>
                 <div class="col-sm-4">
-                    <input required type="text" name="name" placeholder="Name" class="form-control" value="{{ Input::old('name', $site->name) }}">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-sm-2">Display Name</label>
-                <div class="col-sm-4">
-                    <input required type="text" name="display_name" placeholder="Display Name" class="form-control" value="{{ Input::old('display_name', $site->display_name) }}">
+                    <input required type="text" name="name" placeholder="e.g. Google" class="form-control" value="{{ Input::old('name', $site->name) }}">
                 </div>
             </div>
             <div class="form-group">

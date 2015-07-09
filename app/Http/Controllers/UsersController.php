@@ -71,7 +71,7 @@ class UsersController extends BaseAuthController {
      */
     public function getEdit(Request $request, $id)
     {
-        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentCompany($id);
+        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
         return view('users.form', ['user' => $user]);
     }
 
@@ -88,7 +88,7 @@ class UsersController extends BaseAuthController {
         $this->validate($input['user'], $rules);
 
         // Update user
-        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentCompany($id);
+        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
         $user->update($input['user']);
 
         // Update roles

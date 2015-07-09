@@ -83,7 +83,7 @@ class ContainersController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $container = Container::findOrFailByIdAndCurrentCompany($id);
+        $container = Container::findOrFailByIdAndCurrentUserCompanyId($id);
         return view('containers.form', ['container' => $container]);
     }
 
@@ -107,7 +107,7 @@ class ContainersController extends BaseAuthController {
         }
 
         // Update container
-        $container = Container::findOrFailByIdAndCurrentCompany($id);
+        $container = Container::findOrFailByIdAndCurrentUserCompanyId($id);
         $container->update($input['container']);
 
         // Assign warehouses

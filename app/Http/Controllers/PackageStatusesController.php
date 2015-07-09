@@ -26,7 +26,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $statuses = PackageStatus::allByCurrentCompany();
+        $statuses = PackageStatus::allByCurrentUserCompanyId();
         return view('package_statuses.index', ['statuses' => $statuses]);
     }
 
@@ -66,7 +66,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $status = PackageStatus::findOrFailByIdAndCurrentCompany($id);
+        $status = PackageStatus::findOrFailByIdAndCurrentUserCompanyId($id);
         return view('package_statuses.form', ['status' => $status]);
     }
 
@@ -82,7 +82,7 @@ class PackageStatusesController extends BaseAuthController {
         $this->validate($input, PackageStatus::$rules);
 
         // Update status
-        $status = PackageStatus::findOrFailByIdAndCurrentCompany($id);
+        $status = PackageStatus::findOrFailByIdAndCurrentUserCompanyId($id);
 
         if (isset($input['is_default']) && ! $status->is_default) {
             // Unset default status so we can reset it below
@@ -99,7 +99,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        if (PackageStatus::deleteByIdAndCurrentCompany($id)) {
+        if (PackageStatus::deleteByIdAndCurrentUserCompanyId($id)) {
             return $this->redirectBackWithSuccess('Package status deleted.');
         }
 

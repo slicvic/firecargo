@@ -84,8 +84,8 @@ class CarriersController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        if (Carrier::deleteByIdAndCurrentCompany($id)) {
-            return $this->redirectBackWithSuccess(sprintf('Carrier "%s (%s)" deleted.', $carrier->name, $carrier->id));
+        if (Carrier::where('id', $id)->delete()) {
+            return $this->redirectBackWithSuccess('Carrier deleted.');
         }
 
         return $this->redirectBackWithError('Carrier delete failed.');

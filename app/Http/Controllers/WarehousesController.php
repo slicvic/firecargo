@@ -59,7 +59,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getShow(Request $request, $id)
     {
-        $warehouse = Warehouse::findOrFailByIdAndCurrentCompany($id);
+        $warehouse = Warehouse::findOrFailByIdAndCurrentUserCompanyId($id);
         return view('warehouses.show', ['warehouse' => $warehouse]);
     }
 
@@ -97,7 +97,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $warehouse = Warehouse::findOrFailByIdAndCurrentCompany($id);
+        $warehouse = Warehouse::findOrFailByIdAndCurrentUserCompanyId($id);
         return view('warehouses.form', ['warehouse' => $warehouse]);
     }
 
@@ -107,7 +107,7 @@ class WarehousesController extends BaseAuthController {
     public function postUpdate(Request $request, $id)
     {
         // Lookup warehouse
-        $warehouse = Warehouse::findByIdAndCurrentCompany($id);
+        $warehouse = Warehouse::findByIdAndCurrentUserCompanyId($id);
 
         if ( ! $warehouse)
             return response()->json(['status' => 'error', 'message' => 'Warehouse not found.']);

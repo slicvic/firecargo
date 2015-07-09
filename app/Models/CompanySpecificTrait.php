@@ -26,7 +26,7 @@ trait CompanySpecificTrait {
      * @param   int  $id
      * @return  array
      */
-    public static function findOrFailByIdAndCurrentCompany($id)
+    public static function findOrFailByIdAndCurrentUserCompanyId($id)
     {
         return self::findOrFailByIdAndCompanyId($id, Auth::user()->company_id);
     }
@@ -51,7 +51,7 @@ trait CompanySpecificTrait {
      * @param   int  $id
      * @return  array
      */
-    public static function findByIdAndCurrentCompany($id)
+    public static function findByIdAndCurrentUserCompanyId($id)
     {
         return self::findByIdAndCompanyId($id, Auth::user()->company_id);
     }
@@ -83,7 +83,7 @@ trait CompanySpecificTrait {
      * @param  array   $columns
      * @return Model[]
      */
-    public static function allByCurrentCompany($orderBy = 'id', $order = 'DESC', $columns = ['*'])
+    public static function allByCurrentUserCompanyId($orderBy = 'id', $order = 'DESC', $columns = ['*'])
     {
         return self::allByCompanyId([NULL, Auth::user()->company_id], $orderBy, $order, $columns);
     }
@@ -94,7 +94,7 @@ trait CompanySpecificTrait {
      * @param int $id
      * @return bool|null
      */
-    public static function deleteByIdAndCurrentCompany($id)
+    public static function deleteByIdAndCurrentUserCompanyId($id)
     {
         return self::where(['id' => $id, 'company_id' => Auth::user()->company_id])->delete();
     }
