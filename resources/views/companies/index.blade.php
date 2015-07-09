@@ -11,7 +11,7 @@
 @section('thead')
     <th>ID</th>
     <th>Name</th>
-    <th>Code</th>
+    <th>Corp Code</th>
     <th>Action</th>
 @stop
 
@@ -20,7 +20,7 @@
        <tr>
             <td>{{ $company->id }}</td>
             <td>{{ $company->name }}</td>
-            <td>{{ $company->code }}</td>
+            <td>{{ $company->corp_code }}</td>
             <td>
                 <div class="btn-group">
                     <a href="/companies/edit/{{ $company->id }}" class="btn-white btn btn-sm"><i class="fa fa-pencil"></i> Edit</a>

@@ -84,6 +84,38 @@ class Warehouse extends Base {
     }
 
     /**
+     * Creates ands assigns the packages to the warehouse.
+     *
+     * @param  array $packages
+     * @param  bool  $detaching
+     *   If TRUE, after this operation is complete,
+     *   only the packages in the array will be left
+     * @return void
+     */
+    public function syncPackages($packages, $detaching = TRUE)
+    {
+        $ids = (is_array($packages)) ? array_keys($packages) : [];
+
+        // First we need to delete the packages not specified in the array
+        if ($detaching) {
+            Package::whereNotIn('id', $ids)->delete();
+        }
+
+        // Terminate if there's nothing more to add or update
+        if (empty($ids))
+            return;
+
+        // Next, we will add or update the remaining packages
+        $consignee = $this->consignee;
+
+        foreach ($packages as $id => $data) {
+            $package = Package::firstOrCreate(['id' => $id, 'warehouse_id' => $this->id]);
+            $data['ship'] = $consignee->autoship_packages;
+            $package->update($data);
+        }
+    }
+
+    /**
      * Overrides parent method to sanitize certain attributes.
      *
      * @see parent::setAttribute()
@@ -207,28 +239,6 @@ class Warehouse extends Base {
         $grossWeight = $this->calculateGrossWeight();
         $volumeWeight = $this->calculateVolumeWeight();
         return ($grossWeight > $volumeWeight) ? $grossWeight : $volumeWeight;
-    }
-
-    /**
-     * Creates the warehouse packages.
-     *
-     * @param  array $packages
-     * @return void
-     */
-    public function createPackages($packages)
-    {
-        $this->packages()->delete();
-
-        if ( ! count($packages))
-            return;
-
-        $consignee = $this->consignee;
-
-        foreach ($packages as $package) {
-            $package['warehouse_id'] = $this->id;
-            $package['ship'] = $consignee->autoship_packages;
-            Package::create($package);
-        }
     }
 
     /**

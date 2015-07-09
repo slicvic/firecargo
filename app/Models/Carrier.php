@@ -29,7 +29,7 @@ class Carrier extends Base {
     {
         $keyword = '%' . $keyword . '%';
         $where = '(id LIKE ? OR name LIKE ?)';
-        $where .= ' AND company_id IN (0, ?)';
+        $where .= ' AND company_id IN (NULL, ?)';
         return Carrier::whereRaw($where, [$keyword, $keyword, $companyId])->get();
     }
 }

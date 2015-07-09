@@ -3,13 +3,14 @@
 use Auth;
 
 trait CompanySpecificTrait {
+
     /**
-     * Finds a record by the ID and company ID and throws exception
+     * Finds a record by the id and the company id and throws exception
      * if the record is not found.
      *
      * @param   int  $id
-     * @param   int  $siteId
-     * @return  []
+     * @param   int  $companyId
+     * @return  array
      */
     public static function findOrFailByIdAndCompanyId($id, $companyId)
     {
@@ -19,11 +20,11 @@ trait CompanySpecificTrait {
     }
 
     /**
-     * Finds a record by the ID and current company ID and throws exception
-     * if the record is not found.
+     * Finds a record by the id and current user's company id and
+     * throws exception if the record is not found.
      *
      * @param   int  $id
-     * @return  []
+     * @return  array
      */
     public static function findOrFailByIdAndCurrentCompany($id)
     {
@@ -31,11 +32,11 @@ trait CompanySpecificTrait {
     }
 
     /**
-     * Finds a record by the ID and company ID.
+     * Finds a record by the id and the company id.
      *
      * @param   int  $id
-     * @param   int  $siteId
-     * @return  []
+     * @param   int  $companyId
+     * @return  array
      */
     public static function findByIdAndCompanyId($id, $companyId)
     {
@@ -45,10 +46,10 @@ trait CompanySpecificTrait {
     }
 
     /**
-     * Finds a record by the ID and the current company ID.
+     * Finds a record by the id and the current user's company id.
      *
      * @param   int  $id
-     * @return  []
+     * @return  array
      */
     public static function findByIdAndCurrentCompany($id)
     {
@@ -56,7 +57,7 @@ trait CompanySpecificTrait {
     }
 
     /**
-     * Finds all records by the company ID.
+     * Finds all records by the company id.
      *
      * @param  array   $siteId
      * @param  string  $perPage
@@ -74,7 +75,7 @@ trait CompanySpecificTrait {
     }
 
     /**
-     * Finds all records by the current company ID.
+     * Finds all records by the current user's company id.
      *
      * @param  string  $perPage
      * @param  string  $orderBy
@@ -84,6 +85,17 @@ trait CompanySpecificTrait {
      */
     public static function allByCurrentCompany($orderBy = 'id', $order = 'DESC', $columns = ['*'])
     {
-        return self::allByCompanyId([0, Auth::user()->company_id], $orderBy, $order, $columns);
+        return self::allByCompanyId([NULL, Auth::user()->company_id], $orderBy, $order, $columns);
+    }
+
+    /**
+     * Deletes a record by the id and the current user's company id.
+     *
+     * @param int $id
+     * @return bool|null
+     */
+    public static function deleteByIdAndCurrentCompany($id)
+    {
+        return self::where(['id' => $id, 'company_id' => Auth::user()->company_id])->delete();
     }
 }

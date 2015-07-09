@@ -63,9 +63,8 @@ class Warehouse extends BasePresenter {
      */
     public function shipperLink()
     {
-        return '<a href="' . url('accounts/edit/' . $this->model->shipper->id) . '">' . $this->shipper() . '</a>';
+        return '<a href="' . url('accounts/edit/' . $this->model->shipper_id) . '">' . $this->shipper() . '</a>';
     }
-
 
     /**
      * Presents the shipper name link.
@@ -74,7 +73,7 @@ class Warehouse extends BasePresenter {
      */
     public function consigneeLink()
     {
-        return '<a href="' . url('accounts/edit/' . $this->model->consignee->id) . '">' . $this->consignee() . '</a>';
+        return '<a href="' . url('accounts/edit/' . $this->model->consignee_id) . '">' . $this->consignee() . '</a>';
     }
 
     /**
@@ -105,15 +104,5 @@ class Warehouse extends BasePresenter {
     public function chargeWeight()
     {
         return round($this->model->calculateChargeWeight()) . ' Lbs';
-    }
-
-    /**
-     * Presents the container link.
-     *
-     * @return string
-     */
-    public function containerLink()
-    {
-        return ($this->model->container_id) ? '<a href="' . url('containers/edit/' . $this->model->container_id) . '">' . $this->container() . '</a>' : 'N/A';
     }
 }

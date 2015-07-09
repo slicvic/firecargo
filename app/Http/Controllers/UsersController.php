@@ -54,8 +54,8 @@ class UsersController extends BaseAuthController {
         $user->save();
 
         // Assign roles
-        if (isset($input['role_ids'])) {
-            $user->roles()->sync($input['role_ids']);
+        if ($input['role_ids']) {
+            $user->roles()->sync($input['role_ids'] );
         }
 
         // Create address
@@ -92,12 +92,7 @@ class UsersController extends BaseAuthController {
         $user->update($input['user']);
 
         // Update roles
-        if (isset($input['role_ids'])) {
-            $user->roles()->sync($input['role_ids']);
-        }
-        else {
-            $user->roles()->sync([]);
-        }
+        $user->roles()->sync($input['role_ids'] ?: []);
 
         // Update address
         if ($user->address) {

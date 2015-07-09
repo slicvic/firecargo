@@ -99,9 +99,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        $status = PackageStatus::findByIdAndCurrentCompany($id);
-
-        if ($status && $status->delete()) {
+        if (PackageStatus::deleteByIdAndCurrentCompany($id)) {
             return $this->redirectBackWithSuccess('Package status deleted.');
         }
 

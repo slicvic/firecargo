@@ -86,7 +86,7 @@ class WarehousesController extends BaseAuthController {
         $warehouse = Warehouse::create($input['warehouse']);
 
         // Create packages
-        $warehouse->createPackages($input['packages']);
+        $warehouse->syncPackages($input['packages'], FALSE);
 
         Flash::success('Warehouse created.');
         return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/show/' . $warehouse->id]);
@@ -122,7 +122,7 @@ class WarehousesController extends BaseAuthController {
         $warehouse->update($input['warehouse']);
 
         // Update packages
-        $warehouse->createPackages($input['packages']);
+        $warehouse->syncPackages($input['packages']);
 
         Flash::success('Warehouse updated.');
         return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/edit/' . $warehouse->id]);
@@ -163,7 +163,7 @@ class WarehousesController extends BaseAuthController {
         foreach(User::findForAutocomplete($input['term'], $this->user->company_id) as $user) {
             $response[] = [
                 'id'    => $user->id,
-                'label' => ($input['type'] == 'shipper') ? $user->present()->company() : $user->present()->fullname()
+                'label' => ('shipper' == $input['type']) ? $user->present()->company() : $user->present()->fullname()
             ];
         }
 

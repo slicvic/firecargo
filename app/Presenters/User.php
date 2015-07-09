@@ -48,7 +48,14 @@ class User extends BasePresenter {
     {
         if ( ! $this->model->roles)
             return '';
-        return Html::arrayToBadges($this->model->roles->lists('name'));
+
+        $html = '';
+
+        foreach ($this->model->roles->lists('name') as $role) {
+            $html .= '<div class="badge badge-warning btns-xs">' . ucfirst($role) . '</div><br>';
+        }
+
+        return $html;
     }
 
     /**

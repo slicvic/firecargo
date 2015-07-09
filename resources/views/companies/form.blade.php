@@ -29,9 +29,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Code</label>
+                    <label class="control-label col-sm-2">Corp Code</label>
                     <div class="col-sm-4">
-                        <input required type="text" name="code" placeholder="Code" class="form-control" value="{{ Input::old('code', $company->code) }}">
+                        <input required type="text" name="corp_code" placeholder="Corp Code" class="form-control" value="{{ Input::old('corp_code', $company->corp_code) }}">
                     </div>
                 </div>
                 <div class="form-group">

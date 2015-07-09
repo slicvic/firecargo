@@ -22,7 +22,7 @@ class Company extends Base {
 
     protected $fillable = [
         'name',
-        'code',
+        'corp_code',
         'email',
         'phone',
         'fax'

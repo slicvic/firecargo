@@ -22,13 +22,11 @@ $(function() {
         clonePackage: function() {
             var totalPieces = Packages.countPackages();
             var $pkg = $(this).closest('tbody').clone();
-            var idx;
 
             $pkg.find('.unique').val('');
 
             $pkg.find('input, select, textarea').each(function() {
-                idx = -1 * totalPieces;
-                $(this).attr('name', 'packages[' + idx + '][' + $(this).attr('data-name') + ']');
+                $(this).attr('name', 'packages[new_' + totalPieces + '][' + $(this).attr('data-name') + ']');
             });
 
             $('#packages').append($pkg);
@@ -40,12 +38,10 @@ $(function() {
         newPackage: function() {
             var totalPieces = Packages.countPackages();
             var $pkg = Packages.$template.clone();
-            var idx;
 
             $pkg.find('input, select, textarea').each(function() {
-                idx = -1 * totalPieces;
                 $(this).val('');
-                $(this).attr('name', 'packages[' + idx + '][' + $(this).attr('data-name') + ']');
+                $(this).attr('name', 'packages[new_' + totalPieces + '][' + $(this).attr('data-name') + ']');
             });
 
             $('#packages').append($pkg);

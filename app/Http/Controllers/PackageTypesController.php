@@ -85,9 +85,7 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        $type = PackageType::findOrFail($id);
-
-        if ($type && $type->delete()) {
+        if (PackageType::deleteByIdAndCurrentCompany($id)) {
             return $this->redirectBackWithSuccess(sprintf('Package type "%s (%s)" deleted.', $type->name, $type->id));
         }
 
