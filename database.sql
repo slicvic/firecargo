@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:8889
--- Generation Time: Jul 09, 2015 at 05:00 PM
+-- Generation Time: Jul 09, 2015 at 05:33 PM
 -- Server version: 5.5.34
 -- PHP Version: 5.5.10
 
@@ -72,13 +72,9 @@ CREATE TABLE `carriers` (
 --
 
 INSERT INTO `carriers` (`id`, `company_id`, `name`, `created_at`, `updated_at`) VALUES
-(16, NULL, 'UPS', '0000-00-00 00:00:00', '2015-07-08 15:06:50'),
 (17, NULL, 'USPS', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(18, NULL, 'FedEx', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (19, NULL, 'LaserShip', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(37, NULL, 'KKKLK', '2015-07-08 21:24:16', '2015-07-08 21:24:16'),
 (38, 1, 'HELLOMOTTO', '2015-07-08 21:30:37', '2015-07-08 21:30:37'),
-(39, 1, 'MACCCY', '2015-07-08 21:56:23', '2015-07-08 21:56:23'),
 (40, 1, 'BYEBYE', '2015-07-08 22:17:29', '2015-07-08 22:17:29'),
 (41, 1, 'PPPPPPP', '2015-07-08 22:19:34', '2015-07-08 22:19:34'),
 (42, 1, 'FEDCULO', '2015-07-08 22:27:03', '2015-07-08 22:27:03'),
@@ -349,7 +345,6 @@ CREATE TABLE `sites` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` int(10) unsigned NOT NULL,
   `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
@@ -360,9 +355,8 @@ CREATE TABLE `sites` (
 -- Dumping data for table `sites`
 --
 
-INSERT INTO `sites` (`id`, `company_id`, `name`, `display_name`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Master', 'Master', '2015-03-23 23:20:35', '2015-04-16 12:48:30'),
-(2, 2, 'SionBox', 'SionBox Display Name', '2015-03-23 23:05:44', '2015-07-06 18:23:15');
+INSERT INTO `sites` (`id`, `company_id`, `name`, `created_at`, `updated_at`) VALUES
+(2, 2, 'SionBox', '2015-03-23 23:05:44', '2015-07-06 18:23:15');
 
 -- --------------------------------------------------------
 
@@ -399,7 +393,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `site_id`, `company_id`, `email`, `password`, `company_name`, `first_name`, `last_name`, `dob`, `id_number`, `phone`, `mobile_phone`, `autoship_packages`, `remember_token`, `logins`, `last_login`, `created_at`, `updated_at`) VALUES
-(1020, 1, 1, 'admin@gmail.com', '$2y$10$VFv1evnTm9yjB5Vk/ehQPe/BB0gi6Br74WpXLa9EizyJBBJfqnCui', '', 'Victor', 'Admin', '2011-11-11', '13212121212', '1234567', '7654321', 1, 'IGmLCLbQ0hPq0kpTYfBWeacgbxBb44bK4MHU5bmJ8EjIDatO5uhByHzGDlRq', 107, '2015-07-09 12:12:41', '2015-01-29 04:41:09', '2015-07-09 12:12:41'),
+(1020, NULL, 1, 'admin@gmail.com', '$2y$10$VFv1evnTm9yjB5Vk/ehQPe/BB0gi6Br74WpXLa9EizyJBBJfqnCui', '', 'Victor', 'Admin', '2011-11-11', '13212121212', '1234567', '7654321', 1, 'IGmLCLbQ0hPq0kpTYfBWeacgbxBb44bK4MHU5bmJ8EjIDatO5uhByHzGDlRq', 107, '2015-07-09 12:12:41', '2015-01-29 04:41:09', '2015-07-09 12:12:41'),
 (1060, NULL, 2, 'agent@gmail.com', '$2y$10$/KHLLdkQiLuyV6h/bcVjGOk2bK0CETqQxsIF/baD6d6MsZs2/HDrO', '', 'Jose', 'Agent', '0000-00-00', '', '', '', 1, 'dKx4aWyXyJ8FMMfO6MHCdgl0HUaBkOAVsUtqAIBppRIvbWP80OOP1lk7woF9', 4, '2015-07-08 19:26:47', '2015-07-07 20:30:59', '2015-07-08 20:35:37');
 
 -- --------------------------------------------------------
