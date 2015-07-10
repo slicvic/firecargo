@@ -154,19 +154,14 @@ class WarehousesController extends BaseAuthController {
      */
     public function getAjaxShipperConsigneeAutocomplete(Request $request)
     {
-        $input = $request->only('term', 'type');
+        $input = $request->only('term');
         $response = [];
 
         if (strlen($input['term']) < 2)
             return response()->json($response);
 
         foreach(User::findForAutocomplete($input['term'], $this->user->company_id) as $user) {
-            $label = $user->id . ' - ';
-            $label .= ('shipper' == $input['type']) ? $user->present()->company() : $user->present()->fullname();
-            $response[] = [
-                'id'    => $user->id,
-                'label' => $label
-            ];
+            $response[] = ['id' => $user->id, 'label' => $user->present()->company(TRUE)];
         }
 
         return response()->json($response);

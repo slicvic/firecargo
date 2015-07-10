@@ -19,7 +19,7 @@ $(function() {
     });
 
     $('#shipper').autocomplete({
-        source: '/warehouses/ajax-shipper-consignee-autocomplete?type=shipper',
+        source: '/warehouses/ajax-shipper-consignee-autocomplete',
         minLength: 2,
         select: function(event, ui) {
             $('#shipperId').val(ui.item.id);
@@ -32,7 +32,7 @@ $(function() {
     });
 
     $('#consignee').autocomplete({
-        source: '/warehouses/ajax-shipper-consignee-autocomplete?type=consignee',
+        source: '/warehouses/ajax-shipper-consignee-autocomplete',
         minLength: 2,
         select: function(event, ui) {
             $('#consignee').val(ui.item.label);

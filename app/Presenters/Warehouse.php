@@ -28,44 +28,40 @@ class Warehouse extends BasePresenter {
     /**
      * Presents the carrier name.
      *
-     * @param  bool $prependId  Whether or not to prepend the carrier's id.
+     * @param  bool  $appendId
      * @return string
      */
-    public function carrier($prependId = FALSE)
+    public function carrier($appendId = FALSE)
     {
-        return ($this->model->exists) ? $this->model->carrier->present()->name($prependId) : '';
+        return ($this->model->exists) ? $this->model->carrier->present()->name($appendId) : '';
     }
 
     /**
      * Presents the consignee name.
      *
-     * @param  bool  $prependId  Whether or not to prepend the user's id.
+     * @param  bool  $appendId
      * @return string
      */
-    public function consignee($prependId = FALSE)
+    public function consignee($appendId = FALSE)
     {
         if ( ! $this->model->exists)
             return '';
 
-        $name = $this->model->consignee->present()->fullname() ?: $this->model->consignee->company_name;
-
-        return ($prependId) ? "{$this->model->consignee_user_id} - {$name}" : $name;
+        return $this->model->consignee->present()->company($appendId);
     }
 
     /**
      * Presents the shipper name.
      *
-     * @param  bool  $prependId  Whether or not to prepend the user's id.
+     * @param  bool  $appendId  Whether or not to append the user's id.
      * @return string
      */
-    public function shipper($prependId = FALSE)
+    public function shipper($appendId = FALSE)
     {
         if ( ! $this->model->exists)
             return '';
 
-        $name = $this->model->shipper->company_name ?: $this->model->shipper->present()->fullname();
-
-        return ($prependId) ? "{$this->model->shipper_user_id} - {$name}" : $name;
+        return $this->model->shipper->present()->company($appendId);
     }
 
     /**
@@ -75,7 +71,7 @@ class Warehouse extends BasePresenter {
      */
     public function shipperLink()
     {
-        return sprintf('<a href="/accounts/edit/%s">%s</a>', $this->model->shipper_user_id, $this->shipper());
+        return sprintf('<a href="/accounts/edit/%s">%s</a>', $this->model->shipper_user_id, $this->model->shipper->present()->company());
     }
 
     /**
@@ -85,7 +81,7 @@ class Warehouse extends BasePresenter {
      */
     public function consigneeLink()
     {
-        return sprintf('<a href="/accounts/edit/%s">%s</a>', $this->model->consignee_user_id, $this->consignee());
+        return sprintf('<a href="/accounts/edit/%s">%s</a>', $this->model->consignee_user_id, $this->model->consignee->present()->company());
     }
 
     /**

@@ -138,14 +138,7 @@ class User extends Base implements AuthenticatableInterface {
      */
     public function hasRole($roleId)
     {
-        return in_array($roleId, array_fetch($this->roles->toArray(), 'id'));
-
-        // $result = DB::table('roles_users')
-        //     ->where('user_id', $this->id)
-        //     ->where('role_id', $roleId)
-        //     ->first();
-
-        // return $result ? TRUE : FALSE;
+        return in_array($roleId, $this->roles->lists('id'));
     }
 
     /**
@@ -193,7 +186,7 @@ class User extends Base implements AuthenticatableInterface {
                 break;
 
             case 'company_name':
-                $value = trim($value);
+                $value = strtoupper(trim($value));
                 break;
 
             case 'password':

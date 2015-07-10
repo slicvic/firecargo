@@ -12,11 +12,11 @@ class Carrier extends BasePresenter {
     /**
      * Presents the carrier name.
      *
-     * @param  bool $prependId  Whether or not to prepend the carrier's id.
+     * @param  bool $appendId  Whether or not to append the carrier's id.
      * @return string
      */
-    public function name($prependId = FALSE)
+    public function name($appendId = FALSE)
     {
-        return ($prependId) ? "{$this->model->id}  - {$this->model->name}" : $this->model->name;
+        return ($appendId) ? "{$this->model->name} ({$this->model->id})" : $this->model->name;
     }
 }

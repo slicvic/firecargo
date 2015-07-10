@@ -24,11 +24,13 @@ class User extends BasePresenter {
     /**
      * Presents the company name.
      *
+     * @param  bool  $appendId  Whether or not to append the user's id.
      * @return string
      */
-    public function company()
+    public function company($appendId = FALSE)
     {
-        return $this->model->company_name;
+        $name = $this->model->company_name ?: $this->fullname();
+        return ($appendId) ? "$name ({$this->model->id})" : $name;
     }
 
     /**

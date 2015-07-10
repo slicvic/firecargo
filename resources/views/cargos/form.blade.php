@@ -29,14 +29,14 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Receipt #</label>
                     <div class="col-sm-4">
-                        <input required type="text" name="cargo[receipt_number]" placeholder="" class="form-control" value="{{ Input::old('cargo.receipt_number', $cargo->receipt_number) }}">
+                        <input required type="text" name="cargo[receipt_number]" placeholder="" class="form-control" value="{{ cargo->receipt_number }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Departure Date</label>
                     <div class="col-sm-4">
                         <div class="input-group">
-                            <input required type="text" name="cargo[departed_at]" placeholder="" class="date form-control" value="{{ Input::old('cargo.departed_at', $cargo->exists ? $cargo->departed_at : date('Y-m-d H:i:s')) }}">
+                            <input required type="text" name="cargo[departed_at]" placeholder="" class="date form-control" value="{{ $cargo->exists ? $cargo->departed_at : date('Y-m-d H:i:s') }}">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                         </div>
                     </div>
@@ -44,8 +44,8 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Carrier</label>
                     <div class="col-sm-4">
-                        <input type="text" id="carrier" name="cargo[carrier_name]" placeholder="" class="form-control" value="">
-                        <input type="hidden" id="carrierId" name="cargo[carrier_id]">
+                        <input type="text" id="carrier" name="cargo[carrier_name]" placeholder="" class="form-control" value="{{ $cargo->carrier->present()->name(TRUE) }}">
+                        <input type="hidden" id="carrierId" name="cargo[carrier_id]" value="{{ $cargo->carrier_id }}">
                     </div>
                 </div>
             </div>
