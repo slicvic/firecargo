@@ -16,7 +16,7 @@ class Package extends BasePresenter {
      */
     public function status()
     {
-        return ($this->model->status_id) ? $this->model->status->name : '';
+        return ($this->model->exists) ? $this->model->status->name : '';
     }
 
     /**
@@ -26,7 +26,7 @@ class Package extends BasePresenter {
      */
     public function type()
     {
-        return ($this->model->type_id) ? $this->model->type->name : '';
+        return ($this->model->exists) ? $this->model->type->name : '';
     }
 
     /**

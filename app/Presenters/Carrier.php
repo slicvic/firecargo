@@ -10,12 +10,13 @@ use App\Presenters\Base as BasePresenter;
 class Carrier extends BasePresenter {
 
     /**
-     * Presents the company.
+     * Presents the carrier name.
      *
+     * @param  bool $prependId  Whether or not to prepend the carrier's id.
      * @return string
      */
-    public function company()
+    public function name($prependId = FALSE)
     {
-        return ($this->model->company_id) ? $this->model->company->name : 'Global';
+        return ($prependId) ? "{$this->model->id}  - {$this->model->name}" : $this->model->name;
     }
 }

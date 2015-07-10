@@ -15,65 +15,77 @@ class Warehouse extends BasePresenter {
      * @param  $withTime
      * @return string
      */
-    public function arrivalDate($withTime = TRUE)
+    public function arrivedAt($withTime = TRUE)
     {
         $dateFormat = 'n/j/Y';
 
-        if ($withTime) {
-            return date($dateFormat . ' g:i A', strtotime($this->model->arrived_at));
-        }
+        if ($withTime)
+            return date("$dateFormat g:i A", strtotime($this->model->arrived_at));
 
         return date($dateFormat, strtotime($this->model->arrived_at));
     }
 
     /**
-     * Presents the carrier.
+     * Presents the carrier name.
      *
+     * @param  bool $prependId  Whether or not to prepend the carrier's id.
      * @return string
      */
-    public function carrier()
+    public function carrier($prependId = FALSE)
     {
-        return ($this->model->carrier_id) ? $this->model->carrier->name : '';
+        return ($this->model->exists) ? $this->model->carrier->present()->name($prependId) : '';
     }
 
     /**
-     * Presents the consignee.
+     * Presents the consignee name.
      *
+     * @param  bool  $prependId  Whether or not to prepend the user's id.
      * @return string
      */
-    public function consignee()
+    public function consignee($prependId = FALSE)
     {
-        return ($this->model->consignee_user_id) ? $this->model->consignee->present()->fullname() : '';
+        if ( ! $this->model->exists)
+            return '';
+
+        $name = $this->model->consignee->present()->fullname() ?: $this->model->consignee->company_name;
+
+        return ($prependId) ? "{$this->model->consignee_user_id} - {$name}" : $name;
     }
 
     /**
      * Presents the shipper name.
      *
+     * @param  bool  $prependId  Whether or not to prepend the user's id.
      * @return string
      */
-    public function shipper()
+    public function shipper($prependId = FALSE)
     {
-        return ($this->model->shipper_user_id) ? $this->model->shipper->present()->company() : '';
+        if ( ! $this->model->exists)
+            return '';
+
+        $name = $this->model->shipper->company_name ?: $this->model->shipper->present()->fullname();
+
+        return ($prependId) ? "{$this->model->shipper_user_id} - {$name}" : $name;
     }
 
     /**
-     * Presents the shipper name link.
+     * Presents the shipper name as a link.
      *
      * @return string
      */
     public function shipperLink()
     {
-        return '<a href="' . url('accounts/edit/' . $this->model->shipper_user_id) . '">' . $this->shipper() . '</a>';
+        return sprintf('<a href="/accounts/edit/%s">%s</a>', $this->model->shipper_user_id, $this->shipper());
     }
 
     /**
-     * Presents the shipper name link.
+     * Presents the shipper name as a link.
      *
      * @return string
      */
     public function consigneeLink()
     {
-        return '<a href="' . url('accounts/edit/' . $this->model->consignee_user_id) . '">' . $this->consignee() . '</a>';
+        return sprintf('<a href="/accounts/edit/%s">%s</a>', $this->model->consignee_user_id, $this->consignee());
     }
 
     /**

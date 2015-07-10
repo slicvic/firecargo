@@ -12,7 +12,7 @@
                 <a href="/warehouses">Warehouses</a>
             </li>
             <li class="active">
-                <strong>Details</strong>
+                <strong>Detail</strong>
             </li>
         </ol>
     </div>
@@ -76,7 +76,7 @@
                     <table class="table warehouse-info-table table-responsive">
                         <tr>
                             <th class="col-sm-2">Date</th>
-                            <td>{{ $warehouse->present()->arrivalDate() }}</td>
+                            <td>{{ $warehouse->present()->arrivedAt() }}</td>
                         </tr>
                         <tr>
                             <th>Shipper</th>

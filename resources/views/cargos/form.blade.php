@@ -113,12 +113,7 @@
             select: function(event, ui) {
                 $('#carrierId').val(ui.item.id);
             }
-        })
-        .autocomplete('instance')._renderItem = function(ul, item) {
-            return $('<li>')
-                .append('<a>' + item.id + ' - ' + item.label + '</a>')
-                .appendTo(ul);
-        };
+        });
 
         // Bind form submit
         $('form').on('submit', function() {

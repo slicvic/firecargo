@@ -18,12 +18,7 @@ class User extends BasePresenter {
      */
     public function fullname()
     {
-        $fullname = $this->model->first_name . ' ' . $this->model->last_name;
-
-        if ( ! empty(trim($fullname)))
-            return $fullname;
-
-        return $this->model->company_name;
+        return trim($this->model->first_name . ' ' . $this->model->last_name);
     }
 
     /**
@@ -33,27 +28,26 @@ class User extends BasePresenter {
      */
     public function company()
     {
-        if ( ! empty(trim($this->model->company_name)))
-            return $this->model->company_name;
-
-        return $this->fullname();
+        return $this->model->company_name;
     }
 
     /**
      * Presents the roles.
      *
-     * @return string
+     * @return HTML string
      */
     public function roles()
     {
-        if ( ! $this->model->roles)
+        if ( ! $roles = $this->model->roles)
             return '';
 
-        $html = '';
+        $html = '<div>';
 
-        foreach ($this->model->roles->lists('name') as $role) {
+        foreach ($roles->lists('name') as $role) {
             $html .= '<div class="badge badge-warning btns-xs">' . ucfirst($role) . '</div><br>';
         }
+
+        $html .= '</div>';
 
         return $html;
     }
@@ -65,6 +59,6 @@ class User extends BasePresenter {
      */
     public function address()
     {
-        return ($this->model->address) ? $this->model->address->asString() : '';
+        return ($address = $this->model->address) ? $address->asString() : '';
     }
 }

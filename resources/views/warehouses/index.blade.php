@@ -70,7 +70,7 @@
                             <tr class="{{ $warehouse->container_id ? 'success' : 'danger' }}">
                                 <td><button class="btn-expand-row btn btn-link btn-sm" data-warehouse-id="{{ $warehouse->id }}"><i class="fa fa-plus"></i></button></td>
                                 <td>{{ $warehouse->id }}</td>
-                                <td>{{ $warehouse->present()->arrivalDate(FALSE) }}</td>
+                                <td>{{ $warehouse->present()->arrivedAt(FALSE) }}</td>
                                 <td><span class="label label-success">{{ $warehouse->packages->count() }}</span></td>
                                 <td>{{ $warehouse->present()->grossWeight() }}</td>
                                 <td>{{ $warehouse->present()->volumeWeight() }}</td>

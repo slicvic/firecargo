@@ -16,6 +16,6 @@ class Company extends BasePresenter {
      */
     public function address()
     {
-        return ($this->model->address) ? $this->model->address->asString() : '';
+        return ($address = $this->model->address) ? $address->asString() : '';
     }
 }

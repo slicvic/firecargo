@@ -13,7 +13,7 @@
         </li>
         @if ($warehouse->id)
             <li>
-                <a href="/warehouses/show/{{ $warehouse->id }}">{{ $warehouse->id }}</a>
+                <a href="/warehouses/show/{{ $warehouse->id }}">Detail</a>
             </li>
         @endif
         <li class="active">
@@ -49,7 +49,7 @@
                     <div class="col-sm-5">
                         <input type="hidden" id="shipperId" name="warehouse[shipper_user_id]" value="{{ $warehouse->shipper_user_id }}">
                         <div class="input-group">
-                            <input required type="text" id="shipper" name="shipper" class="form-control" value="{{ $warehouse->present()->shipper() }}">
+                            <input required type="text" id="shipper" name="shipper" class="form-control" value="{{ $warehouse->present()->shipper(TRUE) }}">
                             <span class="input-group-addon"><a target="_blank" href="/accounts/create"><i class="fa fa-plus"></i></a></span>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                     <div class="col-sm-5">
                         <input type="hidden" id="consigneeId" name="warehouse[consignee_user_id]" value="{{ $warehouse->consignee_user_id }}">
                         <div class="input-group">
-                            <input required  type="text" id="consignee" name="consignee" class="form-control" value="{{ $warehouse->present()->consignee() }}">
+                            <input required  type="text" id="consignee" name="consignee" class="form-control" value="{{ $warehouse->present()->consignee(TRUE) }}">
                             <span class="input-group-addon"><a target="_blank" href="/accounts/create"><i class="fa fa-plus"></i></a></span>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Delivered By</label>
                     <div class="col-sm-5">
-                        <input requirsed  type="text" id="carrier" name="warehouse[carrier_name]" class="form-control" value="{{ $warehouse->present()->carrier() }}">
+                        <input requirsed  type="text" id="carrier" name="warehouse[carrier_name]" class="form-control" value="{{ $warehouse->present()->carrier(TRUE) }}">
                         <input type="hidden" id="carrierId" name="warehouse[carrier_id]" value="{{ $warehouse->carrier_id }}">
                     </div>
                 </div>

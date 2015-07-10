@@ -84,15 +84,15 @@
                                 </div>
                                 <div class="clear hr-line-dashed"></div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2">Phone</label>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="user[phone]" placeholder="Phone" class="phone form-control" value="{{ Input::old('user.phone', $user->phone) }}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label class="control-label col-sm-2">Mobile Phone</label>
                                     <div class="col-sm-2">
                                         <input type="text" name="user[mobile_phone]" placeholder="Mobile Phone" class="phone form-control" value="{{ Input::old('user.mobile_phone', $user->mobile_phone) }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Other Phone</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" name="user[phone]" placeholder="Other Phone" class="phone form-control" value="{{ Input::old('user.phone', $user->phone) }}">
                                     </div>
                                 </div>
                                 <div class="clear hr-line-dashed"></div>

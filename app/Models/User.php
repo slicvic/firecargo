@@ -189,7 +189,11 @@ class User extends Base implements AuthenticatableInterface {
         switch ($key) {
             case 'first_name':
             case 'last_name':
-                $value = ucwords(strtolower(trim($value)));
+                $value = ucfirst(strtolower(trim($value)));
+                break;
+
+            case 'company_name':
+                $value = trim($value);
                 break;
 
             case 'password':

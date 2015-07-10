@@ -10,7 +10,7 @@
             <div class="col-xs-9"><p>{{ $user->mobile_phone }}</p></div>
         </div>
         <div class="row">
-            <div class="col-xs-3"><strong>Phone</strong></div>
+            <div class="col-xs-3"><strong>Other Phone</strong></div>
             <div class="col-xs-9"><p>{{ $user->phone }}</p></div>
         </div>
    </div>

@@ -108,7 +108,7 @@ class CarriersController extends BaseAuthController {
         foreach(Carrier::findForAutocomplete($input['term']) as $carrier) {
             $response[] = [
                 'id'    => $carrier->id,
-                'label' => $carrier->name
+                'label' => $carrier->present()->name(TRUE)
             ];
         }
 
