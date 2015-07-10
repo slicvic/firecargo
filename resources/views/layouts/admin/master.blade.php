@@ -40,13 +40,16 @@
     <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/iCheck/icheck.min.js"></script>
     <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/iCheck/custom.css" rel="stylesheet">
 
+    <!-- Date/Time Picker -->
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
     <!-- Main -->
     <link rel="stylesheet" type="text/css" href="/assets/admin/css/main.css">
     <script src="/assets/admin/js/main.js"></script>
-
 </head>
 
-<body class="">
+<body>
 
     <div id="wrapper">
 
@@ -88,11 +91,11 @@
                             </ul>
                         </li>
 
-                        <li{{ preg_match('/containers/', $uri) ? ' class=active' : '' }}>
-                            <a href="#"><i class="fa fa-plane"></i> <span class="nav-label">Containers</span> <span class="fa arrow"></span></a>
+                        <li{{ preg_match('/cargos/', $uri) ? ' class=active' : '' }}>
+                            <a href="#"><i class="fa fa-plane"></i> <span class="nav-label">Cargos</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                <li{{ (Request::is('containers')) ? ' class=active' : '' }}><a href="/containers">Containers</a></li>
-                                <li{{ (Request::is('containers/create')) ? ' class=active' : '' }}><a href="/containers/create">Add Container</a></li>
+                                <li{{ (Request::is('cargos')) ? ' class=active' : '' }}><a href="/cargos">Cargos</a></li>
+                                <li{{ (Request::is('cargos/create')) ? ' class=active' : '' }}><a href="/cargos/create">Create Cargo</a></li>
                             </ul>
                         </li>
 

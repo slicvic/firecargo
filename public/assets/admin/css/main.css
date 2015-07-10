@@ -86,3 +86,21 @@ legend {
 .alert h4 {
     margin-bottom: 0;
 }
+
+#cargoNestableList a {
+    font-weight: bold;
+}
+
+#cargoNestableList .dd-item > div {
+    display: block;
+    margin: 5px 0;
+    padding: 5px 10px;
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    border: 1px solid #e7eaec;
+    background: #f5f5f5;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    box-sizing: border-box;
+}

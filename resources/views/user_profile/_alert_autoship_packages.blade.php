@@ -1,4 +1,4 @@
-<p class="alert alert-warning">
-    <i class="fa fa-info-circle"></i>
+<div class="alert alert-warning">
+    <i class="fa fa-exclamation-triangle"></i>
     Automatically have your packages shipped out as soon as they arrive in our warehouse.
-</p>
+</div>

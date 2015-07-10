@@ -171,30 +171,6 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Retrieves a list of carriers for a jquery autocomplete field.
-     *
-     * @uses    ajax
-     * @return  json
-     */
-    public function getAjaxCarrierAutocomplete(Request $request)
-    {
-        $input = $request->only('term');
-        $response = [];
-
-        if (strlen($input['term']) < 2)
-            return response()->json($response);
-
-        foreach(Carrier::findForAutocomplete($input['term'], $this->user->company_id) as $carrier) {
-            $response[] = [
-                'id'    => $carrier->id,
-                'label' => $carrier->name
-            ];
-        }
-
-        return response()->json($response);
-    }
-
-    /**
      * Retrieves a list of packages by warehouse ID.
      * @deprecated
      */
@@ -236,8 +212,7 @@ class WarehousesController extends BaseAuthController {
         if (empty($input['warehouse']['carrier_id']))
         {
             $carrier = Carrier::firstOrCreate([
-                'company_id' => $this->user->company_id,
-                'name' => strtoupper($input['warehouse']['carrier_name'])
+                'name' => $input['warehouse']['carrier_name']
             ]);
 
             $input['warehouse']['carrier_id'] = $carrier->id;

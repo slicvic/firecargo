@@ -3,7 +3,7 @@
 @section('icon', 'male')
 
 @section('title')
-    {{ $role->id ? 'Edit' : 'Create' }} Role
+    {{ $role->exists ? 'Edit' : 'Create' }} Role
 @stop
 
 @section('subtitle')
@@ -12,7 +12,7 @@
             <a href="/roles">Roles</a>
         </li>
         <li class="active">
-            <strong>{{ $role->id ? 'Edit' : 'Create' }}</strong>
+            <strong>{{ $role->exists ? 'Edit' : 'Create' }}</strong>
         </li>
     </ol>
 @stop
@@ -20,7 +20,7 @@
 @section('form')
     <div class="iboxx">
         <div class="iboxx-content">
-            <form data-parsley-validate action="/roles/{{ ($role->id) ? 'update/' . $role->id : 'store' }}" method="post" class="form-horizontal">
+            <form data-parsley-validate action="/roles/{{ ($role->exists) ? 'update/' . $role->id : 'store' }}" method="post" class="form-horizontal">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                     <label class="control-label col-sm-2">Name</label>

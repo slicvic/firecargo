@@ -1,5 +1,7 @@
 <?php namespace App\Models;
 
+use Auth;
+
 use App\Helpers\Math;
 use App\Presenters\PresentableTrait;
 
@@ -17,13 +19,16 @@ class Package extends Base {
     protected $table = 'packages';
 
     public static $rules = [
-        'warehouse_id' => 'required'
+        'warehouse_id' => 'required',
+        'status_id' => 'required',
+        'type_id' => 'required'
     ];
 
     protected $fillable = [
         'warehouse_id',
         'type_id',
         'status_id',
+        'cargo_id',
         'length',
         'width',
         'height',
@@ -96,5 +101,25 @@ class Package extends Base {
     public function calculateCubicMeter()
     {
         return Math::calculateCubicMeter($this->length, $this->width, $this->height);
+    }
+
+    /**
+     * Retrieves all packages that have not yet been shipped out by the
+     * current user's company id.
+     *
+     * @return array
+     */
+    public static function allPendingShipmentByCurrentUserCompanyId()
+    {
+        $packages = Package::where([
+            'packages.cargo_id' => NULL,
+            'packages.ship' => TRUE,
+            'warehouses.company_id' => Auth::user()->company_id
+        ])
+        ->join('warehouses', 'packages.warehouse_id', '=', 'warehouses.id')
+        ->select('packages.*')
+        ->get();
+
+        return $packages;
     }
 }

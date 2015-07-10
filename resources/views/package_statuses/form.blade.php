@@ -3,7 +3,7 @@
 @section('icon', 'info-circle')
 
 @section('title')
-    {{ $status->id ? 'Edit' : 'Create' }} Package Status
+    {{ ($status->exists) ? 'Edit' : 'Create' }} Package Status
 @stop
 
 @section('subtitle')
@@ -12,13 +12,13 @@
             <a href="/package-statuses">Package Statuses</a>
         </li>
         <li class="active">
-            <strong>{{ $status->id ? 'Edit' : 'Create' }}</strong>
+            <strong>{{ $status->exists ? 'Edit' : 'Create' }}</strong>
         </li>
     </ol>
 @stop
 
 @section('form')
-    <form data-parsley-validate action="/package-statuses/{{ ($status->id) ? 'update/' . $status->id : 'store' }}" method="post" class="form-horizontal">
+    <form data-parsley-validate action="/package-statuses/{{ $status->exists ? 'update/' . $status->id : 'store' }}" method="post" class="form-horizontal">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="form-group">
             <label class="control-label col-sm-2">Name</label>

@@ -3,10 +3,10 @@
 use App\Presenters\Base as BasePresenter;
 
 /**
- * Container
+ * Cargo
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Container extends BasePresenter {
+class Cargo extends BasePresenter {
 
 }

@@ -59,7 +59,7 @@ trait CompanySpecificTrait {
     /**
      * Finds all records by the company id.
      *
-     * @param  array   $siteId
+     * @param  array   $companyId
      * @param  string  $perPage
      * @param  string  $orderBy
      * @param  string  $order

@@ -5,7 +5,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
         <h2>Warehouses</h2>
-        Manage Warehouses
+        Manage Your Warehouses
     </div>
     <div class="col-sm-8">
         <div class="title-action">

@@ -90,4 +90,28 @@ class CarriersController extends BaseAuthController {
 
         return $this->redirectBackWithError('Carrier delete failed.');
     }
+
+    /**
+     * Retrieves a list of carriers for a jquery autocomplete field.
+     *
+     * @uses    ajax
+     * @return  json
+     */
+    public function getAjaxAutocomplete(Request $request)
+    {
+        $input = $request->only('term');
+        $response = [];
+
+        if (strlen($input['term']) < 2)
+            return response()->json($response);
+
+        foreach(Carrier::findForAutocomplete($input['term']) as $carrier) {
+            $response[] = [
+                'id'    => $carrier->id,
+                'label' => $carrier->name
+            ];
+        }
+
+        return response()->json($response);
+    }
 }

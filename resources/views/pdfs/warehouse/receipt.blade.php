@@ -14,7 +14,7 @@
 <table border="0">
     <tr>
         <td width="60%">
-{!! ($company->hasLogo('sm')) ? '<img src="' . $company->getLogoURL('sm') . '"><br>' : '' !!}
+{!! $company->hasLogo('sm') ? '<img src="' . $company->getLogoURL('sm') . '"><br>' : '' !!}
 {{ strtoupper($company->name) }}<br>
 {!! strtoupper($company->present()->address()) !!}<br>
 TEL: {{ $company->phone }}<br>
@@ -23,9 +23,7 @@ EMAIL: {{ $company->email }}<br><br>
 RECEIVED FOR:<br><br>
 {{ strtoupper($consignee->present()->fullname()) }}<br>
 {!! strtoupper($consignee->present()->address()) !!}<br>
-
         </td>
-
         <td width="40%">
             <br><br><br><br><br><img src="data:image/png;base64,{{ $barcodeBase64 }}">
             <h1>WAREHOUSE RECEIPT</h1>
@@ -53,9 +51,13 @@ RECEIVED FOR:<br><br>
         <td><small>DELIVERED BY</small><br>{{ $warehouse->present()->carrier() }}</td>
     </tr>
 </table>
+
 <table border="1">
     <tr>
-        <td><small>DESCRIPTION</small><br>{{ strtoupper($warehouse->notes) }}</td>
+        <td>
+<small>DESCRIPTION</small><br>
+{{ strtoupper($warehouse->notes) }}<br>
+        </td>
     </tr>
 </table>
 
@@ -64,7 +66,8 @@ RECEIVED FOR:<br><br>
 
 <table id="packages" celspacing="0" celpadding="0">
     <tr>
-        <td width="70%"><table border="1">
+        <td width="70%">
+            <table border="1" cellpadding="0" style="text-align:center;">
                 <tr>
                     <td>TYPE</td>
                     <td>LENGTH</td>
@@ -110,12 +113,11 @@ RECEIVED FOR:<br><br>
             <br>
             <br>
             <br>
-            <br>
             <table id="metrics" border="1">
                 <tr><td colspan="2"><small>PIECES</small><br><span style="font-size:16px;">{{ $totalPackages }}</span></td></tr>
                 <tr>
                     <td><small>POUNDS</small><br><span style="font-size:16px;">{{ $grossWeight }}</span></td>
-                    <td><small>KILOS</small><br><span style="font-size:16px;">{{ \App\Helpers\Math::poundsToKilos($grossWeight, 0) }}</span></td>
+                    <td><small>KILOS</small><br><span style="font-size:16px;">{{ \App\Helpers\Math::lbToKg($grossWeight, 0) }}</span></td>
                 </tr>
                 <tr>
                     <td><small>CUBIC FEET</small><br><span style="font-size:16px;">{{ $cubicFeet }}</span></td>
@@ -123,14 +125,15 @@ RECEIVED FOR:<br><br>
                 </tr>
                 <tr>
                     <td><small>CHARGE WEIGHT</small><br><span style="font-size:16px;">{{ round($chargeWeight) }} <small>Lbs</small></span></td>
-                    <td><small>CHARGE WEIGHT</small><br><span style="font-size:16px;">{{ \App\Helpers\Math::poundsToKilos($chargeWeight, 0) }} <small>Kg</small></span></td>
+                    <td><small>CHARGE WEIGHT</small><br><span style="font-size:16px;">{{ \App\Helpers\Math::lbToKg($chargeWeight, 0) }} <small>Kgs</small></span></td>
                 </tr>
             </table>
         </td>
     </tr>
 </table>
 
-<br><br>
+<br>
+<br>
 
 <table border="1">
     <tr>

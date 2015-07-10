@@ -55,13 +55,11 @@ class Address extends Base {
     public function setAttribute($key, $value)
     {
         switch ($key) {
-            case 'city':
-            case 'state':
-                $value = ucwords(strtolower(trim($value)));
-                break;
-
             case 'address1':
             case 'address2':
+            case 'city':
+            case 'state':
+            case 'zip':
                 $value = strtoupper(trim($value));
                 break;
         }
@@ -87,17 +85,21 @@ class Address extends Base {
         }
 
         if ($this->city && $this->state) {
-            $line3 = $this->city . ', ' . $this->state;
+            $cityStateZip = $this->city . ', ' . $this->state;
         }
         else {
-            $line3 = $this->city . $this->state;
+            $cityStateZip = $this->city . $this->state;
         }
 
         if ($this->postal_code) {
-            $line3 .= ' ' . $this->postal_code;
+            $cityStateZip .= ' ' . $this->postal_code;
         }
 
-        $address[] = trim($line3);
+        $cityStateZip = trim($cityStateZip);
+
+        if ($cityStateZip) {
+            $address[] = $cityStateZip;
+        }
 
         if ($this->country_id) {
             $address[] = $this->country->name;

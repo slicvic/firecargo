@@ -3,7 +3,7 @@
 @section('icon', 'building-o')
 
 @section('title')
-    {{ $site->id ? 'Edit' : 'Create' }} Site
+    {{ $site->exists ? 'Edit' : 'Create' }} Site
 @stop
 
 @section('subtitle')
@@ -12,14 +12,14 @@
             <a href="/sites">Sites</a>
         </li>
         <li class="active">
-            <strong>{{ $site->id ? 'Edit' : 'Create' }}</strong>
+            <strong>{{ $site->exists ? 'Edit' : 'Create' }}</strong>
         </li>
     </ol>
 @stop
 
 @section('form')
 
-        <form data-parsley-validate action="/sites/{{ ($site->id) ? 'update/' . $site->id : 'store' }}" method="post" class="form-horizontal">
+        <form data-parsley-validate action="/sites/{{ ($site->exists) ? 'update/' . $site->id : 'store' }}" method="post" class="form-horizontal">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
             @if (Auth::user()->isAdmin())

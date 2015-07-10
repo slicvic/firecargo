@@ -5,7 +5,7 @@
 @section('icon', 'user')
 
 @section('title')
-    {{ $user->id ? 'Edit Account # ' . $user->id : 'Create Account' }}
+    {{ $user->exists ? 'Edit Account # ' . $user->id : 'Create Account' }}
 @stop
 
 @section('subtitle')
@@ -14,13 +14,13 @@
             <a href="/accounts">Accounts</a>
         </li>
         <li class="active">
-            <strong>{{ $user->id ? 'Edit' : 'Create' }}</strong>
+            <strong>{{ $user->exists ? 'Edit' : 'Create' }}</strong>
         </li>
     </ol>
 @stop
 
 @section('form')
-    <form action="/accounts/{{ ($user->id) ? 'update/' . $user->id : 'store' }}" method="post" class="form-horizontal" data-parsley-validate>
+    <form action="/accounts/{{ $user->exists ? 'update/' . $user->id : 'store' }}" method="post" class="form-horizontal" data-parsley-validate>
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
         @if (Auth::user()->isAdmin())

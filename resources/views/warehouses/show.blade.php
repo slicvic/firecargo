@@ -30,12 +30,10 @@
         <div class="col-md-9">
             <div class="ibox">
                 <div class="ibox-title">
-                    <h5>Packages</h5>
+                    <h5>Pieces</h5>
                 </div>
                 <div class="ibox-content">
-                    <div class="alert alert-warning">
-                        <i class="fa fa-exclamation-triangle"></i> Warehouse is setup in US SYSTEM - using inches and pounds.
-                    </div>
+                    @include('warehouses._alert_us_metric_system')
                     <table class="table table-striped">
                         <thead>
                             <tr>

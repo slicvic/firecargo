@@ -48,4 +48,19 @@ class Package extends BasePresenter {
     {
         return $this->model->weight . ' Lbs';
     }
+
+    /**
+     * Presents a string representation.
+     *
+     * @return string
+     */
+    public function toString()
+    {
+        return sprintf("# %s - %s - %s - %s",
+            $this->model->id,
+            $this->type(),
+            $this->dimensions(),
+            $this->weight()
+        );
+    }
 }

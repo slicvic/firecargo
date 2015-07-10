@@ -5,54 +5,37 @@ use App\Models\CompanySpecificTrait;
 use App\Presenters\PresentableTrait;
 
 /**
- * Container
+ * Cargo
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Container extends Base {
+class Cargo extends Base {
 
     use CompanySpecificTrait, PresentableTrait;
 
-    protected $table = 'containers';
+    protected $table = 'cargos';
 
-    protected $presenter = 'App\Presenters\Container';
+    protected $presenter = 'App\Presenters\Cargo';
 
     public static $rules = [
         'company_id' => 'required',
-        'receipt_number' => 'required|unique:containers,receipt_number'
+        'carrier_id' => 'required',
+        'receipt_number' => 'required'
     ];
 
     protected $fillable = [
         'company_id',
-        'receipt_type_id',
+        'carrier_id',
         'receipt_number',
         'departed_at'
     ];
 
     /**
-     * Gets the warehouses.
+     * Gets the packages.
      */
-    public function warehouses()
+    public function packages()
     {
-        return $this->hasMany('App\Models\Warehouse');
-    }
-
-    /**
-     * Gets the warehouses.
-     */
-    public function receiptType()
-    {
-        return $this->belongsTo('App\Models\ContainerReceiptType');
-    }
-
-    /**
-     * Obtains the warehouse ids.
-     *
-     * @return array
-     */
-    public function warehouseIds()
-    {
-        return $this->warehouses()->lists('id');
+        return $this->hasMany('App\Models\Package');
     }
 
     /**
@@ -72,7 +55,7 @@ class Container extends Base {
     }
 
     /**
-     * Finds all containers with the given criteria.
+     * Finds all cargos with the given criteria.
      *
      * @param  array|null $criteria
      * @param  string     $orderBy
@@ -88,28 +71,28 @@ class Container extends Base {
         $orderBy = array_key_exists($orderBy, $sortColumns) ? $sortColumns[$orderBy] : 'id';
         $order = ($order == 'asc') ? 'asc' : 'desc';
 
-        $containers = Container::whereRaw('1')
-            ->orderBy('containers.' . $orderBy, $order);
+        $cargos = Cargo::whereRaw('1')
+            ->orderBy('cargos.' . $orderBy, $order);
 
         if ( ! empty($criteria['company_id'])) {
-            $containers = $containers->where('containers.company_id', '=', $criteria['company_id']);
+            $cargos = $cargos->where('cargos.company_id', '=', $criteria['company_id']);
         }
 
         if ( ! empty($criteria['q'])) {
             $q = '%' . $criteria['q'] . '%';
 
-            $containers = $containers
-                ->select('containers.*')
-                ->leftJoin('warehouses AS warehouse', 'containers.id', '=', 'warehouse.container_id')
+            $cargos = $cargos
+                ->select('cargos.*')
+                ->leftJoin('packages AS package', 'cargos.id', '=', 'package.cargo_id')
                 ->whereRaw('(
-                    warehouse.id LIKE ?
-                    OR containers.id LIKE ?
-                    OR containers.receipt_number LIKE ?
+                    package.id LIKE ?
+                    OR cargos.id LIKE ?
+                    OR cargos.receipt_number LIKE ?
                     )', [$q, $q, $q]
                 );
         }
 
-        $containers = $containers->paginate($perPage);
-        return $containers;
+        $cargos = $cargos->paginate($perPage);
+        return $cargos;
     }
 }

@@ -3,7 +3,7 @@
 @section('icon', 'truck')
 
 @section('title')
-    {{ $carrier->id ? 'Edit' : 'Create' }} Carrier
+    {{ $carrier->exists ? 'Edit' : 'Create' }} Carrier
 @stop
 
 @section('subtitle')
@@ -12,13 +12,13 @@
             <a href="/carriers">Carriers</a>
         </li>
         <li class="active">
-            <strong>{{ $carrier->id ? 'Edit' : 'Create' }}</strong>
+            <strong>{{ $carrier->exists ? 'Edit' : 'Create' }}</strong>
         </li>
     </ol>
 @stop
 
 @section('form')
-    <form data-parsley-validate action="/carriers/{{ ($carrier->id) ? 'update/' . $carrier->id : 'store' }}" method="post" class="form-horizontal">
+    <form data-parsley-validate action="/carriers/{{ $carrier->exists ? 'update/' . $carrier->id : 'store' }}" method="post" class="form-horizontal">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="form-group">
             <label class="control-label col-sm-2">Name</label>

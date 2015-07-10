@@ -14,7 +14,7 @@ class Math {
      * @param  int $precision
      * @return int
      */
-    public static function poundsToKilos($pounds, $precision = 2)
+    public static function lbToKg($pounds, $precision = 2)
     {
         return round($pounds * 0.453592, $precision);
     }

@@ -4,12 +4,12 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
-        <h2>Containers</h2>
-        Manage Containers
+        <h2>Cargos</h2>
+        Manage Your Cargos
     </div>
     <div class="col-sm-8">
         <div class="title-action">
-            <a href="/containers/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Container</a>
+            <a href="/cargos/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Cargo</a>
         </div>
     </div>
 </div>
@@ -21,16 +21,16 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     @if ($input['q'])
-                        <h2>{{ $containers->count() }} results found for: <span class="text-navy">"{{ $input['q'] }}"</span></h2>
+                        <h2>{{ $cargos->count() }} results found for: <span class="text-navy">"{{ $input['q'] }}"</span></h2>
                     @endif
                     <div class="title-action">
-                        <form class="form-inline pull-sright" method="get" action="/containers">
+                        <form class="form-inline pull-sright" method="get" action="/cargos">
                             <div class="form-group">
                                 <label>Search</label>
                                 <input type="text" class="form-control" name="q" value="{{ $input['q'] }}">
                             </div>
                             @if ($input['q'])
-                                <a href="/containers" class="btn btn-md btn-white" type="submit">Clear</a>
+                                <a href="/cargos" class="btn btn-md btn-white" type="submit">Clear</a>
                             @endif
                             <button class="btn btn-md btn-primary" type="submit">Search</button>
                         </form>
@@ -39,7 +39,7 @@
                     <div class="clear hr-line-dashed"></div>
 
                     <div class="pull-right">
-                        {!! $pagination = $containers->appends(['sortby' => $input['sortby'], 'order' => $input['order']])->render() !!}
+                        {!! $pagination = $cargos->appends(['sortby' => $input['sortby'], 'order' => $input['order']])->render() !!}
                     </div>
 
                     <table class="datatable table table-striped">
@@ -52,14 +52,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($containers as $container)
+                            @foreach ($cargos as $cargo)
                             <tr>
-                                <td>{{ $container->id }}</td>
-                                <td>{{ $container->receipt_number }}</td>
-                                <td>{{ $container->departed_at }}</td>
+                                <td>{{ $cargo->id }}</td>
+                                <td>{{ $cargo->receipt_number }}</td>
+                                <td>{{ $cargo->departed_at }}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="/containers/edit/{{ $container->id }}" class="btn-white btn btn-sm">Edit</a>
+                                        <a href="/cargos/edit/{{ $cargo->id }}" class="btn-white btn btn-sm">Edit</a>
                                     </div>
                                 </td>
                             </tr>

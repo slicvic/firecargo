@@ -3,7 +3,7 @@
 @section('icon', 'building-o')
 
 @section('title')
-    {{ $company->id ? 'Edit' : 'Create' }} Company
+    {{ $company->exists ? 'Edit' : 'Create' }} Company
 @stop
 
 @section('subtitle')
@@ -12,7 +12,7 @@
             <a href="/companies">Companies</a>
         </li>
         <li class="active">
-            <strong>{{ $company->id ? 'Edit' : 'Create' }}</strong>
+            <strong>{{ $company->exists ? 'Edit' : 'Create' }}</strong>
         </li>
     </ol>
 @stop
@@ -20,7 +20,7 @@
 @section('form')
     <div class="iboxx">
         <div class="iboxx-content">
-            <form data-parsley-validate action="/companies/{{ ($company->id) ? 'update/' . $company->id : 'store' }}" method="post" class="form-horizontal">
+            <form data-parsley-validate action="/companies/{{ $company->exists ? 'update/' . $company->id : 'store' }}" method="post" class="form-horizontal">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                     <label class="control-label col-sm-2">Name</label>

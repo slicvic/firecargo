@@ -22,7 +22,7 @@ Route::controller('companies', 'CompaniesController');
 Route::controller('roles', 'RolesController');
 Route::controller('accounts', 'UsersController');
 Route::controller('warehouses', 'WarehousesController');
-Route::controller('containers', 'ContainersController');
+Route::controller('cargos', 'CargosController');
 Route::controller('company', 'CompanyController');
 
 Route::controller('account', 'UserController');

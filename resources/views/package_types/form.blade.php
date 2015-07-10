@@ -3,7 +3,7 @@
 @section('icon', 'truck')
 
 @section('title')
-    {{ $type->id ? 'Edit' : 'Create' }} Package Type
+    {{ $type->exists ? 'Edit' : 'Create' }} Package Type
 @stop
 
 @section('subtitle')
@@ -12,13 +12,13 @@
             <a href="/package-types">Package Types</a>
         </li>
         <li class="active">
-            <strong>{{ $type->id ? 'Edit' : 'Create' }}</strong>
+            <strong>{{ $type->exists ? 'Edit' : 'Create' }}</strong>
         </li>
     </ol>
 @stop
 
 @section('form')
-    <form data-parsley-validate action="/package-types/{{ ($type->id) ? 'update/' . $type->id : 'store' }}" method="post" class="form-horizontal">
+    <form data-parsley-validate action="/package-types/{{ ($type->exists) ? 'update/' . $type->id : 'store' }}" method="post" class="form-horizontal">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <div class="form-group">
             <label class="control-label col-sm-2">Name</label>

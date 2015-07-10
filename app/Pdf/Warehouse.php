@@ -26,6 +26,7 @@ class Warehouse {
         // White out the top header border
         $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
         $pdf->SetFont('helvetica', '', 10);
+        $pdf->SetAutoPageBreak(FALSE);
         $pdf->AddPage();
 
         $html = view('pdfs/warehouse/receipt', [
@@ -51,10 +52,11 @@ class Warehouse {
         $barcode = new TCPDFBarcode($warehouse->id, 'C128');
         $barcodeBase64 = base64_encode($barcode->getBarcodePngData(2, 30));
 
-        $pdf = new TCPDF('P', 'mm', 'A4', TRUE, 'UTF-8', FALSE);
+        $pdf = new TCPDF('P', 'mm', 'A6', TRUE, 'UTF-8', FALSE);
         // White out the top header border
         $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
-        $pdf->SetFont('helvetica', '', 10);
+        $pdf->SetFont('helvetica', '', 7);
+        $pdf->SetAutoPageBreak(FALSE);
 
         $html = view('pdfs/warehouse/label', [
             'warehouse' => $warehouse,
