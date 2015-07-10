@@ -56,7 +56,7 @@ class Package extends BasePresenter {
      */
     public function toString()
     {
-        return sprintf("# %s - %s - %s - %s",
+        return sprintf('# %s - %s - %s - %s',
             $this->model->id,
             $this->type(),
             $this->dimensions(),

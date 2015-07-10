@@ -44,10 +44,7 @@ class Warehouse extends BasePresenter {
      */
     public function consignee($appendId = FALSE)
     {
-        if ( ! $this->model->exists)
-            return '';
-
-        return $this->model->consignee->present()->company($appendId);
+        return ($this->model->exists) ? $this->model->consignee->present()->company($appendId) : '';
     }
 
     /**
@@ -58,10 +55,7 @@ class Warehouse extends BasePresenter {
      */
     public function shipper($appendId = FALSE)
     {
-        if ( ! $this->model->exists)
-            return '';
-
-        return $this->model->shipper->present()->company($appendId);
+        return ($this->model->exists) ? $this->model->shipper->present()->company($appendId) : '';
     }
 
     /**
