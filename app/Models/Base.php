@@ -11,16 +11,14 @@ use Auth;
 abstract class Base extends Model {
 
     /**
-     * Overrides parent method to assign company_id.
+     * Updates a record by the id.
      *
-     * @see parent::save()
+     * @param  int $id
+     * @param  array $input
+     * @return bool|null
      */
-    public function save(array $options = array())
+    public static function updateWhereId($id, $input)
     {
-        if ($this->isFillable('company_id') && Auth::check() && ! Auth::user()->isAdmin()) {
-            $this->company_id = Auth::user()->company_id;
-        }
-
-        return parent::save($options);
+        return self::where(['id' => $id])->update($input);
     }
 }

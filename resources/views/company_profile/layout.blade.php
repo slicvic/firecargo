@@ -32,10 +32,7 @@
                     formData.append('_token', '{{ csrf_token() }}');
                 },
                 error: function(file, errorMessage) {
-                    var errorHtml = '<div class="alert alert-danger"><strong>Whoops! There was an error:</strong><ul><li>';
-                    errorHtml += errorMessage.file.join('</li><li>')
-                    errorHtml += '</li></ul></div>';
-                    $('#dzErrorMessage').html(errorHtml).show();
+                    $('#dzErrorMessage').html(errorMessage).show();
                 }
             });
         });

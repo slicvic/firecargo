@@ -18,15 +18,7 @@ class Warehouse extends Base {
 
     protected $table = 'warehouses';
 
-    public static $rules = [
-        'shipper_user_id' => 'required',
-        'consignee_user_id' => 'required',
-        'carrier_id' => 'required',
-        'arrived_at' => 'required'
-    ];
-
     protected $fillable = [
-        'company_id',
         'shipper_user_id',
         'consignee_user_id',
         'carrier_id',

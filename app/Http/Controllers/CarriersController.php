@@ -73,7 +73,7 @@ class CarriersController extends BaseAuthController {
         $this->validate($input, Carrier::$rules);
 
         // Update carrier
-        Carrier::where(['id' => $id])->update($input);
+        Carrier::updateWhereId($id, $input);
 
         return $this->redirectBackWithSuccess('Carrier updated.');
     }
@@ -83,10 +83,8 @@ class CarriersController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        if (Carrier::where('id', $id)->delete())
-            return $this->redirectBackWithSuccess('Carrier deleted.');
-
-        return $this->redirectBackWithError('Carrier delete failed.');
+        // TODO
+        return redirect()->back();
     }
 
     /**

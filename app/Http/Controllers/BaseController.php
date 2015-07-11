@@ -96,6 +96,6 @@ abstract class BaseController extends Controller {
     protected function redirectBackWithError($message)
     {
         Flash::error($message);
-        return redirect()->back();
+        return redirect()->back()->withInput();
     }
 }

@@ -14,7 +14,7 @@ class Flash {
     private static $sessionKey = 'cool_flash_message';
 
     /**
-     * @var string  The flash levels.
+     * @var string  The levels.
      */
     const SUCCESS = 'success';
     const INFO    = 'info';
@@ -87,14 +87,14 @@ class Flash {
      *
      * @return string|NULL
      */
-    public static function getView()
+    public static function getAsHTML()
     {
         $value = self::get();
 
         if ($value === NULL)
             return NULL;
 
-        return self::makeView($value['message'], $value['level']);
+        return self::view($value['message'], $value['level']);
     }
 
     /**
@@ -104,7 +104,7 @@ class Flash {
      * @param  string|array|\Illuminate\Validation\Validator|\Illuminate\Support\MessageBag $message
      * @return string
      */
-    public static function makeView($message, $level = 'error')
+    public static function view($message, $level = 'error')
     {
         return view('flash_messages.' . $level, ['message' => $message])
             ->render();

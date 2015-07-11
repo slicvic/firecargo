@@ -1,6 +1,6 @@
  <div class="ibox">
    <div class="ibox-content text-center">
-        <h1>{{ "$company->name ($company->code)" }}</h1>
+        <h1>{{ "$company->name ($company->corp_code)" }}</h1>
         <div id="logoContainer" class="m-b-sm">
             <img class="img-circle" src="{{ $company->getLogoURL('md') }}" style="width:100px;height:100px">
         </div>

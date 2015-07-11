@@ -52,13 +52,16 @@ class UsersController extends BaseAuthController {
             'email' => 'email|unique:users,email',
             'first_name' => 'required_without:company_name',
             'last_name' => 'required_without:company_name',
-            'company_name' => 'required_without:first_name,last_name'
+            'company_name' => 'required_without:first_name,last_name',
+            'password' => 'min:6'
         ];
 
         $this->validate($input['user'], $rules);
 
         // Create user
-        $user = User::create($input['user']);
+        $user = new User($input['user']);
+        $user->company_id = $this->user->isAdmin() ? $input['user']['company_id'] : $this->user->company_id;
+        $user->save();
 
         // Assign roles
         if ($input['role_ids']) {
@@ -93,13 +96,15 @@ class UsersController extends BaseAuthController {
             'first_name' => 'required_without:company_name',
             'last_name' => 'required_without:company_name',
             'company_name' => 'required_without:first_name,last_name',
+            'password' => 'min:6'
         ];
 
         $this->validate($input['user'], $rules);
 
         // Update user
         $user = $this->user->isAdmin() ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
-        $user->update($input['user']);
+        $user->company_id = $this->user->isAdmin() ? $input['user']['company_id'] : $user->company_id;
+        $user->fill($input['user'])->save();
 
         // Update roles
         $user->roles()->sync($input['role_ids'] ?: []);
@@ -129,7 +134,7 @@ class UsersController extends BaseAuthController {
         $limit = isset($input['length']) ? (int) $input['length'] : 10;
         $offset = isset($input['start']) ? (int) $input['start'] : 0;
 
-        // Get the column to sort by
+        // Get sort column and order
         $sortColumns = [
             'id',
             'company_name',
@@ -142,7 +147,7 @@ class UsersController extends BaseAuthController {
         $orderBy = isset($input['order'][0]) && isset($sortColumns[$input['order'][0]['column']]) ? $sortColumns[$input['order'][0]['column']] : 'id';
         $order = isset($input['order'][0]) ? $input['order'][0]['dir'] : 'desc';
 
-        // Build search criteria
+        // Create search criteria
         $criteria['q'] = empty($input['search']['value']) ? NULL : $input['search']['value'];
         $criteria['company_id'] = $this->user->isAdmin() ? NULL : [$this->user->company_id];
 
@@ -190,11 +195,9 @@ class UsersController extends BaseAuthController {
     {
         $input = $request->only('user', 'role_ids', 'address');
 
-        // Sanitize roles
-        if (isset($input['role_ids']))
-        {
-            if ( ! $this->user->isAdmin() && in_array(Role::ADMIN, $input['role_ids'])) {
-                // SORRY, YOU MUST BE AN ADMIN TO ASSIGN "ADMIN" ROLE
+        if ( ! $this->user->isAdmin()) {
+            // Prohibit setting "admin" role
+            if ($input['role_ids'] && in_array(Role::ADMIN, $input['role_ids'])) {
                 $input['role_ids'] = array_diff($input['role_ids'], [Role::ADMIN]);
             }
         }

@@ -150,7 +150,7 @@
 
     <div class="content">
         <div id="pad-wrapper">
-            <?php echo \App\Helpers\Flash::getView(); ?>
+            <?php echo \App\Helpers\Flash::getAsHTML(); ?>
             @yield('content')
         </div>
     </div>

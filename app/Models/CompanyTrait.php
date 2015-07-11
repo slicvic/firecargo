@@ -5,21 +5,6 @@ use Auth;
 trait CompanyTrait {
 
     /**
-     * Finds a record by the id and the company id and throws exception
-     * if the record is not found.
-     *
-     * @param   int  $id
-     * @param   int  $companyId
-     * @return  array
-     */
-    public static function findOrFailByIdAndCompanyId($id, $companyId)
-    {
-        return self::where('id', '=', $id)
-            ->where('company_id', '=', $companyId)
-            ->firstOrFail();
-    }
-
-    /**
      * Finds a record by the id and current user's company id and
      * throws exception if the record is not found.
      *
@@ -28,7 +13,9 @@ trait CompanyTrait {
      */
     public static function findOrFailByIdAndCurrentUserCompanyId($id)
     {
-        return self::findOrFailByIdAndCompanyId($id, Auth::user()->company_id);
+        return self::where('id', '=', $id)
+            ->where('company_id', '=', Auth::user()->company_id)
+            ->firstOrFail();
     }
 
     /**
@@ -86,6 +73,18 @@ trait CompanyTrait {
     public static function allByCurrentUserCompanyId($orderBy = 'id', $order = 'DESC', $columns = ['*'])
     {
         return self::allByCompanyId([NULL, Auth::user()->company_id], $orderBy, $order, $columns);
+    }
+
+    /**
+     * Updates a record by the id and the current user's company id.
+     *
+     * @param  int    $id
+     * @param  array  $attributes
+     * @return bool|null
+     */
+    public static function updateWhereIdAndCurrentUserCompanyId($id, $attributes)
+    {
+        return self::where(['id' => $id, 'company_id' => Auth::user()->company_id])->update($attributes);
     }
 
     /**

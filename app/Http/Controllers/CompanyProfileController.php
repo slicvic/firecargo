@@ -11,11 +11,11 @@ use Config;
 use Intervention\Image\ImageManagerStatic as Image;
 
 /**
- * CompanyController
+ * CompanyProfileController
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class CompanyController extends BaseAuthController {
+class CompanyProfileController extends BaseAuthController {
 
     public function __construct(Guard $auth)
     {
@@ -24,7 +24,7 @@ class CompanyController extends BaseAuthController {
     }
 
     /**
-     * Displays the company's profile.
+     * Shows the company's profile.
      */
     public function getProfile()
     {
@@ -34,7 +34,7 @@ class CompanyController extends BaseAuthController {
     }
 
     /**
-     * Displays the form for editing a company's profile.
+     * DisplaShowsys the form for editing a company's profile.
      */
     public function getEditProfile()
     {
@@ -55,15 +55,14 @@ class CompanyController extends BaseAuthController {
         $this->validate($input['company'], $rules);
 
         // Update company
-        $company = $this->user->company;
-        $company->update($input['company']);
+        $this->user->company->update($input['company']);
 
         // Update address
-        if ($company->address) {
-            $company->address->update($input['address']);
+        if ($this->user->company->address) {
+            $this->user->company->address->update($input['address']);
         }
         else {
-            $company->address()->save(new Address($input['address']));
+            $this->user->company->address()->save(new Address($input['address']));
         }
 
         return $this->redirectBackWithSuccess('Company updated.');
@@ -78,15 +77,15 @@ class CompanyController extends BaseAuthController {
     public function postAjaxUploadLogo(Request $request)
     {
         $input = $request->only('file');
+        $maxKb = 1000;
 
         // Validate input
-        $maxKb = 10000;
         $validator = Validator::make($input, [
             'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . $maxKb
         ]);
 
         if ($validator->fails()) {
-           return response()->json($validator->messages()->toArray(), 500);
+           return response()->json(Flash::view($validator), 500);
         }
 
         // Create destination directory

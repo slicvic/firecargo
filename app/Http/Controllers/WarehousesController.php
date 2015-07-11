@@ -73,17 +73,23 @@ class WarehousesController extends BaseAuthController {
 
     /**
      * Creates a new warehouse.
+     *
+     * @uses   ajax
+     * @return json
      */
     public function postStore(Request $request)
     {
         // Prepare and validate input
         $input = $this->prepareAndValidateInput($request);
 
-        if ($input instanceof JsonResponse)
+        if ($input instanceof JsonResponse) {
             return $input;
+        }
 
         // Create warehouse
-        $warehouse = Warehouse::create($input['warehouse']);
+        $warehouse = new Warehouse($input['warehouse']);
+        $warehouse->company_id = $this->user->company_id;
+        $warehouse->save();
 
         // Create packages
         $warehouse->syncPackages($input['packages'], FALSE);
@@ -103,20 +109,25 @@ class WarehousesController extends BaseAuthController {
 
     /**
      * Updates a specific warehouse.
+     *
+     * @uses   ajax
+     * @return json
      */
     public function postUpdate(Request $request, $id)
     {
         // Lookup warehouse
         $warehouse = Warehouse::findByIdAndCurrentUserCompanyId($id);
 
-        if ( ! $warehouse)
-            return response()->json(['status' => 'error', 'message' => 'Warehouse not found.']);
+        if ( ! $warehouse) {
+            return response()->json(['error_message' => Flash::view('Warehouse not found.')], 400);
+        }
 
         // Prepare and validate input
         $input = $this->prepareAndValidateInput($request);
 
-        if ($input instanceof JsonResponse)
+        if ($input instanceof JsonResponse) {
             return $input;
+        }
 
         // Update warehouse
         $warehouse->update($input['warehouse']);
@@ -125,7 +136,7 @@ class WarehousesController extends BaseAuthController {
         $warehouse->syncPackages($input['packages']);
 
         Flash::success('Warehouse updated.');
-        return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/edit/' . $warehouse->id]);
+        return response()->json(['redirect_to' => '/warehouses/edit/' . $warehouse->id]);
     }
 
     /**
@@ -133,7 +144,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getPrintReceipt(Request $request, $warehouseId)
     {
-        $warehouse = Warehouse::findOrFail($warehouseId);
+        $warehouse = Warehouse::findOrFailByIdAndCurrentUserCompanyId($warehouseId);
         WarehousePdf::getReceipt($warehouse);
     }
 
@@ -142,15 +153,15 @@ class WarehousesController extends BaseAuthController {
      */
     public function getPrintLabel(Request $request, $warehouseId)
     {
-        $warehouse = Warehouse::findOrFail($warehouseId);
+        $warehouse = Warehouse::findOrFailByIdAndCurrentUserCompanyId($warehouseId);
         WarehousePdf::getLabel($warehouse);
     }
 
     /**
      * Retrieves a list of shippers & consignees for a jquery autocomplete field.
      *
-     * @uses    ajax
-     * @return  json
+     * @uses   ajax
+     * @return json
      */
     public function getAjaxShipperConsigneeAutocomplete(Request $request)
     {
@@ -168,8 +179,10 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Retrieves a list of packages by warehouse ID.
-     * @deprecated
+     * Retrieves a list of packages by warehouse id.
+     *
+     * @uses   ajax
+     * @return json
      */
     public function getAjaxPackages(Request $request, $warehouseId)
     {
@@ -187,20 +200,22 @@ class WarehousesController extends BaseAuthController {
     private function prepareAndValidateInput(Request $request)
     {
         $input = $request->only('warehouse', 'packages');
+        $input['warehouse']['company_id'] = $this->user->company_id;
 
         // Prepare rules
-        $rules = Warehouse::$rules;
-        $rules['carrier_name'] = 'required_without:carrier_id';
-        $rules['carrier_id'] = 'required_without:carrier_name';
+        $warehouseRules = [
+            'shipper_user_id' => 'required',
+            'consignee_user_id' => 'required',
+            'arrived_at' => 'required',
+            'carrier_id' => 'required_without:carrier_name',
+            'carrier_name' => 'required_without:carrier_id',
+        ];
 
         // Validate input
-        $validator = Validator::make($input['warehouse'], $rules);
+        $validator = Validator::make($input['warehouse'], $warehouseRules);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => Flash::makeView($validator)
-            ]);
+            return response()->json(['error_message' => Flash::view($validator)], 400);
         }
 
         // Create a new carrier if necessary
@@ -208,6 +223,9 @@ class WarehousesController extends BaseAuthController {
             $carrier = Carrier::firstOrCreate(['name' => $input['warehouse']['carrier_name']]);
             $input['warehouse']['carrier_id'] = $carrier->id;
         }
+
+        // Not an actual database field
+        unset($input['warehouse']['carrier_name']);
 
         return $input;
     }

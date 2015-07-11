@@ -16,7 +16,7 @@ use Intervention\Image\ImageManagerStatic as Image;
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class UserController extends BaseAuthController {
+class UserProfileController extends BaseAuthController {
 
     /**
      * Logs out the user.
@@ -81,8 +81,8 @@ class UserController extends BaseAuthController {
      */
     public function getPassword()
     {
-        $passwordView = view('user_profile.password');
-        return view('user_profile.layout', ['content' => $passwordView]);
+        $view = view('user_profile.password');
+        return view('user_profile.layout', ['content' => $view]);
     }
 
     /**
@@ -102,8 +102,9 @@ class UserController extends BaseAuthController {
         $this->validate($input, $rules);
 
         // Change password
-        if ( ! Hash::check($input['current_password'], $this->user->password))
+        if ( ! Hash::check($input['current_password'], $this->user->password)) {
             return $this->redirectBackWithError('The password you entered does not match your current one.');
+        }
 
         $this->user->password = $input['new_password'];
         $this->user->save();
@@ -120,15 +121,15 @@ class UserController extends BaseAuthController {
     public function postAjaxUploadPhoto(Request $request)
     {
         $input = $request->only('file');
+        $maxKb = 10000;
 
         // Validate input
-        $maxKb = 10000;
         $validator = Validator::make($input, [
             'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . $maxKb
         ]);
 
         if ($validator->fails())
-           return response()->json($validator->messages()->toArray(), 500);
+           return response()->json(Flash::view($validator), 500);
 
         // Create destination directory
         $destination = public_path() . '/uploads/users/' . $this->user->id . '/images/profile/';
@@ -145,10 +146,7 @@ class UserController extends BaseAuthController {
         foreach ($dimensions as $filename => $dimension) {
             Image::make($input['file']->getPathName())
                 ->orientate()
-                ->resize($dimension, $dimension, function($constraint) {
-                    //$constraint->aspectRatio();
-                    //$constraint->upsize();
-                })
+                ->resize($dimension, $dimension)
                 ->save($destination . $filename . '.png');
         }
 

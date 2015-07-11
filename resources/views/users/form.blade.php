@@ -22,7 +22,6 @@
 @section('form')
     <form action="/accounts/{{ $user->exists ? 'update/' . $user->id : 'store' }}" method="post" class="form-horizontal" data-parsley-validate>
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
         @if (Auth::user()->isAdmin())
             <div class="ibox">
                 <div class="ibox-title"><h5>Administration</h5></div>
@@ -41,7 +40,6 @@
                 </div>
             </div>
         @endif
-
         <div class="row">
             <div class="col-lg-12">
                 <div class="tabs-container">

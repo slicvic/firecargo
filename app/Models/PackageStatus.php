@@ -18,20 +18,25 @@ class PackageStatus extends Base {
     ];
 
     protected $fillable = [
-        'company_id',
         'name',
         'is_default'
     ];
 
     /**
-     * Resets the default status by company ID.
+     * Resets the default company package status.
      *
      * @param  int  $companyId
+     * @param  int  $excludeId
      * @return int
      */
-    public static function unsetDefaultByCompanyId($companyId)
+    public static function unsetCompanyDefaultStatus($companyId, $excludeId = NULL)
     {
-        return PackageStatus::where('company_id', $companyId)
-            ->update(['is_default' => 0]);
+        $query = PackageStatus::where('company_id', $companyId);
+
+        if ($excludeId) {
+            $query->where('id', '<>', $excludeId);
+        }
+
+        return $query->update(['is_default' => 0]);
     }
 }

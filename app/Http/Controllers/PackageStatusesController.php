@@ -43,20 +43,22 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $request->all();
+        $input = $request->only('name', 'is_default');
 
         // Validate input
         $this->validate($input, PackageStatus::$rules);
 
         // Create status
-        if (isset($input['is_default'])) {
-            PackageStatus::unsetDefaultByCompanyId($this->user->company_id);
+        $status = new PackageStatus($input);
+        $status->company_id = Auth::user()->company_id;
+        $status->save();
+
+        if ($status->is_default) {
+            // Unset the previous default status
+            PackageStatus::unsetCompanyDefaultStatus($this->user->company_id, $status->id);
         }
 
-        PackageStatus::create($input);
-
         return $this->redirectWithSuccess('package-statuses', 'Package status created.');
-
     }
 
     /**
@@ -79,13 +81,12 @@ class PackageStatusesController extends BaseAuthController {
         $this->validate($input, PackageStatus::$rules);
 
         // Update status
-        $packageStatus = PackageStatus::findOrFailByIdAndCurrentUserCompanyId($id);
+        $isSuccess = PackageStatus::updateWhereIdAndCurrentUserCompanyId($id, $input);
 
-        if ($input['is_default'] && ! $packageStatus->is_default) {
-            PackageStatus::unsetDefaultByCompanyId($this->user->company_id);
+        if ($isSuccess && $input['is_default']) {
+            // Unset the previous default status
+            PackageStatus::unsetCompanyDefaultStatus($this->user->company_id, $id);
         }
-
-        $packageStatus->update($input);
 
         return $this->redirectBackWithSuccess('Package status updated.');
     }

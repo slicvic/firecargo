@@ -14,7 +14,7 @@
     </div>
     <div class="wrapper wrapper-content">
         <div class="row">
-            {!! \App\Helpers\Flash::getView() !!}
+            {!! \App\Helpers\Flash::getAsHTML() !!}
             <div class="col-md-4">
                 @include('user_profile.nav')
             </div>
@@ -42,10 +42,7 @@
                     formData.append('_token', '{{ csrf_token() }}');
                 },
                 error: function(file, errorMessage, xhr) {
-                    var errorHtml = '<div class="alert alert-danger"><strong>Whoops! There was an error:</strong><ul><li>';
-                    errorHtml += errorMessage.file.join('</li><li>')
-                    errorHtml += '</li></ul></div>';
-                    $('#dzErrorMessage').html(errorHtml).show();
+                    $('#dzErrorMessage').html(errorMessage).show();
                 }
             });
         });

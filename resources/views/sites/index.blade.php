@@ -14,7 +14,7 @@
 
 @section('thead')
     <th>ID</th>
-    @if ($isAdmin)<th>Master Company</th>@endif
+    Master Company</th>
     <th>Name</th>
     <th>Action</th>
 @stop
@@ -23,7 +23,7 @@
      @foreach ($sites as $site)
         <tr>
             <td>{{ $site->id }}</td>
-            @if ($isAdmin)<td>{{ ($site->company) ? $site->company->name : '' }}</td>@endif
+            <td>{{ ($site->company) ? $site->company->name : '' }}</td>
             <td>{{ $site->name }}</td>
             <td>
                 <div class="btn-group">

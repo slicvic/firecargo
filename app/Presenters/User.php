@@ -61,6 +61,6 @@ class User extends BasePresenter {
      */
     public function address()
     {
-        return ($address = $this->model->address) ? $address->asString() : '';
+        return ($this->model->address) ? $this->model->address->asString() : '';
     }
 }

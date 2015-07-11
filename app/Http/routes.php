@@ -23,10 +23,10 @@ Route::controller('roles', 'RolesController');
 Route::controller('accounts', 'UsersController');
 Route::controller('warehouses', 'WarehousesController');
 Route::controller('cargos', 'CargosController');
-Route::controller('company', 'CompanyController');
+Route::controller('company', 'CompanyProfileController');
 
-Route::controller('account', 'UserController');
-Route::get('logout', 'UserController@getLogout');
+Route::controller('account', 'UserProfileController');
+Route::get('logout', 'UserProfileController@getLogout');
 
 // Auth
 Route::get('login', 'AuthController@getLogin');

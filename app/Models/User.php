@@ -23,7 +23,6 @@ class User extends Base implements AuthenticatableInterface {
     protected $table = 'users';
 
     protected $fillable = [
-        'company_id',
         'email',
         'password',
         'company_name',

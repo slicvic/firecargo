@@ -52,7 +52,7 @@
 
         </div>
 
-        {!! \App\Helpers\Flash::getView() !!}
+        {!! \App\Helpers\Flash::getAsHTML() !!}
 
         @yield('content')
 

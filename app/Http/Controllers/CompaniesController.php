@@ -86,7 +86,7 @@ class CompaniesController extends BaseAuthController {
         $this->validate($input, $rules);
 
         // Update company
-        Company::where(['id' => $id])->update($input);
+        Company::updateWhereId($id, $input);
 
         return $this->redirectBackWithSuccess('Company updated.');
     }

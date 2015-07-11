@@ -79,7 +79,7 @@ class CargosController extends BaseAuthController {
         $validator = Validator::make($input['cargo'], $rules);
 
         if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'message' => Flash::makeView($validator)]);
+            return response()->json(['status' => 'error', 'message' => Flash::view($validator)]);
         }
 
         // Create new carrier if necessary
@@ -142,7 +142,7 @@ class CargosController extends BaseAuthController {
         $validator = Validator::make($input['cargo'], $rules);
 
         if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'message' => Flash::makeView($validator)]);
+            return response()->json(['status' => 'error', 'message' => Flash::view($validator)]);
         }
 
         // Create new carrier if necessary

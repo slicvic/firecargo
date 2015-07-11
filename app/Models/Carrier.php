@@ -17,7 +17,7 @@ class Carrier extends Base {
     protected $table = 'carriers';
 
     public static $rules = [
-        'name' => 'required',
+        'name' => 'required'
     ];
 
     protected $fillable = [
@@ -41,14 +41,14 @@ class Carrier extends Base {
     /**
      * Retrieves a list of carriers for a jquery autocomplete field.
      *
-     * @param  string $keyword     A search query
+     * @param  string $keyword  A search term
      * @return User[]
      */
-    public static function autocompleteSearch($keyword)
+    public static function autocompleteSearch($term)
     {
-        $keyword = '%' . $keyword . '%';
+        $term = '%' . $term . '%';
         $where = '(id LIKE ? OR name LIKE ?)';
-        return Carrier::whereRaw($where, [$keyword, $keyword])->get();
+        return Carrier::whereRaw($where, [$term, $term])->get();
     }
 
     /**

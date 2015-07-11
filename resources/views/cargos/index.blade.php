@@ -17,7 +17,7 @@
 <div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-lg-12">
-            {!! \App\Helpers\Flash::getView() !!}
+            {!! \App\Helpers\Flash::getAsHTML() !!}
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
                     @if ($input['q'])

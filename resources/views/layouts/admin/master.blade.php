@@ -111,8 +111,8 @@
                                     <li{{ (Request::is('companies') || Request::is('companies/*')) ? ' class=active' : '' }}><a href="/companies">Companies</a></li>
                                     <li{{ (Request::is('package-types') || Request::is('package-types/*')) ? ' class=active' : '' }}><a href="/package-types">Package Types</a></li>
                                     <li{{ (Request::is('carriers') || Request::is('carriers/*')) ? ' class=active' : '' }}><a href="/carriers">Carriers</a></li>
+                                    <li{{ (Request::is('sites') || Request::is('sites/*')) ? ' class=active' : '' }}><a href="/sites">Sites</a></li>
                                 <?php endif; ?>
-                                <li{{ (Request::is('sites') || Request::is('sites/*')) ? ' class=active' : '' }}><a href="/sites">Sites</a></li>
                                 <li{{ (Request::is('company') || Request::is('company/*')) ? ' class=active' : '' }}><a href="/company/profile">Company Profile</a></li>
                                 <li{{ (Request::is('package-statuses') || Request::is('package-statuses/*')) ? ' class=active' : '' }}><a href="/package-statuses">Package Statuses</a></li>
                             </ul>

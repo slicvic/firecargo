@@ -17,8 +17,7 @@ class SitesController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
-        $this->middleware('agent', ['only' => ['getIndex', 'getEdit', 'postUpdate']]);
-        $this->middleware('admin', ['except' => ['getIndex', 'getEdit', 'postUpdate']]);
+        $this->middleware('admin');
     }
 
     /**
@@ -26,7 +25,7 @@ class SitesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $sites = $this->user->isAdmin() ? Site::all() : Site::allByCurrentUserCompanyId();
+        $sites = Site::all();
         return view('sites.index', ['sites' => $sites]);
     }
 
@@ -43,7 +42,7 @@ class SitesController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $request->all();
+        $input = $request->only('name', 'company_id');
 
         // Validate input
         $this->validate($input, Site::$rules);
@@ -59,7 +58,7 @@ class SitesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $site = $this->user->isAdmin() ? Site::findOrFail($id) : Site::findOrFailByIdAndCurrentUserCompanyId($id);
+        $site = Site::findOrFail($id);
         return view('sites.form', ['site' => $site]);
     }
 
@@ -68,15 +67,13 @@ class SitesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->only('name');
+        $input = $request->only('name', 'company_id');
 
         // Validate input
         $this->validate($input, Site::$rules);
 
         // Update site
-        $this->user->isAdmin()
-            ? Site::where(['id' => $id])->update($input)
-            : Site::where(['id' => $id, 'company_id' => $this->user->company_id])->update($input);
+        Site::updateWhereId($id, $input);
 
         return $this->redirectBackWithSuccess('Site updated.');
     }

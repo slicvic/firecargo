@@ -73,7 +73,7 @@ class RolesController extends BaseAuthController {
         $this->validate($input, Role::$rules);
 
         // Update role
-        Role::where(['id' => $id])->update($input);
+        Role::updateWhereId($id, $input);
 
         return $this->redirectBackWithSuccess('Role updated.');
     }
@@ -84,5 +84,6 @@ class RolesController extends BaseAuthController {
     public function getDelete(Request $request, $id)
     {
         // TODO
+        return redirect()->back();
     }
 }

@@ -52,16 +52,16 @@ $(function() {
         $submit.attr('disabled', true);
         $flashError.html('');
 
-        $.post($form.attr('action'), $form.serialize(), function(data) {
-            $submit.attr('disabled', false);
-
-            if (data.status == 'ok') {
+        $.post($form.attr('action'), $form.serialize(), 'json')
+            .done(function(data) {
                 window.location = data.redirect_to;
-            } else {
-                $flashError.html(data.message);
+            })
+            .fail(function(xhr) {
+                var data = JSON.parse(xhr.responseText);
+                $flashError.html(data.error_message);
                 $('html, body').scrollTop(0);
-            }
-        }, 'json');
+                $submit.attr('disabled', false);
+            });
     });
 
     // Package Manager
