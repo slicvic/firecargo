@@ -24,6 +24,7 @@
 
 @section('form')
     <form data-parsley-validate action="/warehouses/{{ $warehouse->exists ? 'update/' . $warehouse->id : 'store' }}" method="post" class="form-horizontal">
+        <input type="hidden" name="warehouse[company_id]" value="{{ Auth::user()->company_id }}">
         <div id="flashError"></div>
         <div class="ibox">
             <div class="ibox-title"><h5>Warehouse Info</h5></div>

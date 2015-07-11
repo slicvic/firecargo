@@ -67,14 +67,13 @@ class RolesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->all();
+        $input = $request->only('name', 'description');
 
         // Validate input
         $this->validate($input, Role::$rules);
 
         // Update role
-        $role = Role::findOrFail($id);
-        $role->update($input);
+        Role::where(['id' => $id])->update($input);
 
         return $this->redirectBackWithSuccess('Role updated.');
     }

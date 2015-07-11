@@ -19,6 +19,7 @@
 
 @section('form')
     <form data-parsley-validate action="/cargos/{{ $cargo->exists ? 'update/' . $cargo->id : 'store' }}" method="post" class="form-horizontal">
+        <input type="hidden" name="cargo[company_id]" value="{{ Auth::user()->company_id }}">
         <div id="flashError"></div>
         <div class="ibox">
             <div class="ibox-title">
@@ -29,7 +30,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Receipt #</label>
                     <div class="col-sm-4">
-                        <input required type="text" name="cargo[receipt_number]" placeholder="" class="form-control" value="{{ cargo->receipt_number }}">
+                        <input required type="text" name="cargo[receipt_number]" placeholder="" class="form-control" value="{{ $cargo->receipt_number }}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -44,7 +45,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Carrier</label>
                     <div class="col-sm-4">
-                        <input type="text" id="carrier" name="cargo[carrier_name]" placeholder="" class="form-control" value="{{ $cargo->carrier->present()->name(TRUE) }}">
+                        <input type="text" id="carrier" name="cargo[carrier_name]" placeholder="" class="form-control" value="{{ $cargo->present()->carrier(TRUE) }}">
                         <input type="hidden" id="carrierId" name="cargo[carrier_id]" value="{{ $cargo->carrier_id }}">
                     </div>
                 </div>
@@ -71,7 +72,7 @@
                                     @foreach ($packages as $package)
                                         <li class="dd-item" data-id="4">
                                             <div class="">
-                                                <input type="checkbox" name="packages[{{ $package->id }}]"{{ $cargo->exists ? ' checked' : '' }}>
+                                                <input type="checkbox" name="packages[{{ $package->id }}]"{{ $cargo->exists && $cargo->id == $package->cargo_id ? ' checked' : '' }}>
                                                 {{ $package->present()->toString() }}
                                             </div>
                                         </li>

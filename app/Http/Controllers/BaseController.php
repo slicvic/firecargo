@@ -58,7 +58,8 @@ abstract class BaseController extends Controller {
      */
     protected function redirectWithSuccess($path, $message)
     {
-        return redirect($path)->with(Flash::SUCCESS, $message);
+        Flash::success($message);
+        return redirect($path);
     }
 
     /**
@@ -70,7 +71,8 @@ abstract class BaseController extends Controller {
      */
     protected function redirectWithError($path, $message)
     {
-        return redirect($path)->with(Flash::ERROR, $message);
+        Flash::error($message);
+        return redirect($path);
     }
 
     /**
@@ -81,7 +83,8 @@ abstract class BaseController extends Controller {
      */
     protected function redirectBackWithSuccess($message)
     {
-        return redirect()->back()->with(Flash::SUCCESS, $message);
+        Flash::success($message);
+        return redirect()->back();
     }
 
     /**
@@ -92,6 +95,7 @@ abstract class BaseController extends Controller {
      */
     protected function redirectBackWithError($message)
     {
-        return redirect()->back()->with(Flash::ERROR, $message);
+        Flash::error($message);
+        return redirect()->back();
     }
 }

@@ -44,14 +44,12 @@ class PackageStatusesController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->all();
-        $input['company_id'] = $this->user->company_id;
 
         // Validate input
         $this->validate($input, PackageStatus::$rules);
 
         // Create status
         if (isset($input['is_default'])) {
-            // Unset default status so we can reset it below
             PackageStatus::unsetDefaultByCompanyId($this->user->company_id);
         }
 
@@ -75,21 +73,19 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->all();
-        $input['company_id'] = $this->user->company_id;
+        $input = $request->only('name', 'is_default');
 
         // Validate input
         $this->validate($input, PackageStatus::$rules);
 
         // Update status
-        $status = PackageStatus::findOrFailByIdAndCurrentUserCompanyId($id);
+        $packageStatus = PackageStatus::findOrFailByIdAndCurrentUserCompanyId($id);
 
-        if (isset($input['is_default']) && ! $status->is_default) {
-            // Unset default status so we can reset it below
+        if ($input['is_default'] && ! $packageStatus->is_default) {
             PackageStatus::unsetDefaultByCompanyId($this->user->company_id);
         }
 
-        $status->update($input);
+        $packageStatus->update($input);
 
         return $this->redirectBackWithSuccess('Package status updated.');
     }
@@ -99,9 +95,8 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        if (PackageStatus::deleteByIdAndCurrentUserCompanyId($id)) {
+        if (PackageStatus::deleteByIdAndCurrentUserCompanyId($id))
             return $this->redirectBackWithSuccess('Package status deleted.');
-        }
 
         return $this->redirectBackWithError('Package status delete failed.');
     }

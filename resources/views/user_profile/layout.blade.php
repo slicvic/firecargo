@@ -14,7 +14,7 @@
     </div>
     <div class="wrapper wrapper-content">
         <div class="row">
-            {!! \App\Helpers\Flash::getHTML() !!}
+            {!! \App\Helpers\Flash::getView() !!}
             <div class="col-md-4">
                 @include('user_profile.nav')
             </div>

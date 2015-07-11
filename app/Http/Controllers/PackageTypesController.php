@@ -68,14 +68,13 @@ class PackageTypesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->all();
+        $input = $request->only('name');
 
         // Validate input
         $this->validate($input, PackageType::$rules);
 
         // Update package type
-        $type = PackageType::findOrFail($id);
-        $type->update($input);
+        PackageType::where(['id' => $id])->update($input);
 
         return $this->redirectBackWithSuccess('Package type updated.');
     }
@@ -85,9 +84,8 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        if (PackageType::delete($id)) {
+        if (PackageType::delete($id))
             return $this->redirectBackWithSuccess('Package type deleted.');
-        }
 
         return $this->redirectBackWithError('Package type delete failed.');
     }

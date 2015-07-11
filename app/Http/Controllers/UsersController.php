@@ -4,6 +4,7 @@ use Validator;
 use Auth;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
+use Session;
 
 use App\Models\User;
 use App\Models\Role;
@@ -47,11 +48,17 @@ class UsersController extends BaseAuthController {
         $input = $this->prepareInput($request);
 
         // Validate input
-        $this->validate($input['user'], User::$rulesCreateUpdate);
+        $rules = [
+            'email' => 'email|unique:users,email',
+            'first_name' => 'required_without:company_name',
+            'last_name' => 'required_without:company_name',
+            'company_name' => 'required_without:first_name,last_name'
+        ];
+
+        $this->validate($input['user'], $rules);
 
         // Create user
-        $user = new User($input['user']);
-        $user->save();
+        $user = User::create($input['user']);
 
         // Assign roles
         if ($input['role_ids']) {
@@ -59,9 +66,7 @@ class UsersController extends BaseAuthController {
         }
 
         // Create address
-        $address = new Address($input['address']);
-        $address->user()->associate($user);
-        $address->save();
+        $user->address()->save(new Address($input['address']));
 
         return $this->redirectWithSuccess('accounts', 'Account created.');
     }
@@ -83,12 +88,17 @@ class UsersController extends BaseAuthController {
         $input = $this->prepareInput($request);
 
         // Validate input
-        $rules = User::$rulesCreateUpdate;
-        $rules['email'] .= ',' . $id;
+        $rules = [
+            'email' => 'email|unique:users,email,' . $id,
+            'first_name' => 'required_without:company_name',
+            'last_name' => 'required_without:company_name',
+            'company_name' => 'required_without:first_name,last_name',
+        ];
+
         $this->validate($input['user'], $rules);
 
         // Update user
-        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
+        $user = $this->user->isAdmin() ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
         $user->update($input['user']);
 
         // Update roles
@@ -99,9 +109,7 @@ class UsersController extends BaseAuthController {
             $user->address->update($input['address']);
         }
         else {
-            $address = new Address($input['address']);
-            $address->user()->associate($user);
-            $address->save();
+            $user->address()->save(new Address($input['address']));
         }
 
         return $this->redirectBackWithSuccess('Account updated.');
@@ -117,11 +125,11 @@ class UsersController extends BaseAuthController {
     {
         $input = $request->all();
 
-        // Obtain Limit / Offset
+        // Get the limit and offset
         $limit = isset($input['length']) ? (int) $input['length'] : 10;
         $offset = isset($input['start']) ? (int) $input['start'] : 0;
 
-        // Obtain sort column
+        // Get the column to sort by
         $sortColumns = [
             'id',
             'company_name',
@@ -134,12 +142,12 @@ class UsersController extends BaseAuthController {
         $orderBy = isset($input['order'][0]) && isset($sortColumns[$input['order'][0]['column']]) ? $sortColumns[$input['order'][0]['column']] : 'id';
         $order = isset($input['order'][0]) ? $input['order'][0]['dir'] : 'desc';
 
-        // Search criteria
+        // Build search criteria
         $criteria['q'] = empty($input['search']['value']) ? NULL : $input['search']['value'];
-        $criteria['company_id'] = ($this->user->isAdmin()) ? NULL : [$this->user->company_id];
+        $criteria['company_id'] = $this->user->isAdmin() ? NULL : [$this->user->company_id];
 
         // Retrieve results
-        $results = User::findForDatatable($criteria, $offset, $limit, $orderBy, $order);
+        $results = User::datatableSearch($criteria, $offset, $limit, $orderBy, $order);
 
         // Process response
         $response = [];
@@ -181,9 +189,6 @@ class UsersController extends BaseAuthController {
     private function prepareInput(Request $request)
     {
         $input = $request->only('user', 'role_ids', 'address');
-
-        // Set company id
-        $input['user']['company_id'] = ($this->user->isAdmin()) ? $input['user']['company_id'] : $this->user->company_id;
 
         // Sanitize roles
         if (isset($input['role_ids']))

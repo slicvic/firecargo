@@ -160,7 +160,7 @@ class WarehousesController extends BaseAuthController {
         if (strlen($input['term']) < 2)
             return response()->json($response);
 
-        foreach(User::findForAutocomplete($input['term'], $this->user->company_id) as $user) {
+        foreach(User::autocompleteSearch($input['term'], $this->user->company_id) as $user) {
             $response[] = ['id' => $user->id, 'label' => $user->present()->company(TRUE)];
         }
 
@@ -178,7 +178,8 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Validates and prepares the given request input.
+     * Validates and prepares the given request input for creating and updating
+     * a warehouse.
      *
      * @param  Request $request
      * @return array  The input
@@ -186,7 +187,6 @@ class WarehousesController extends BaseAuthController {
     private function prepareAndValidateInput(Request $request)
     {
         $input = $request->only('warehouse', 'packages');
-        $input['warehouse']['company_id'] = $this->user->company_id;
 
         // Prepare rules
         $rules = Warehouse::$rules;
@@ -196,27 +196,18 @@ class WarehousesController extends BaseAuthController {
         // Validate input
         $validator = Validator::make($input['warehouse'], $rules);
 
-        if ($validator->fails())
-        {
-            $message = view('flash_messages.error', [
-                'message' => $validator->messages()->all(':message')
-            ])->render();
-
-            return response()->json(['status' => 'error', 'message' => $message]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => Flash::makeView($validator)
+            ]);
         }
 
-        // Create new carrier if necessary
-        if (empty($input['warehouse']['carrier_id']))
-        {
-            $carrier = Carrier::firstOrCreate([
-                'name' => $input['warehouse']['carrier_name']
-            ]);
-
+        // Create a new carrier if necessary
+        if (empty($input['warehouse']['carrier_id'])) {
+            $carrier = Carrier::firstOrCreate(['name' => $input['warehouse']['carrier_name']]);
             $input['warehouse']['carrier_id'] = $carrier->id;
         }
-
-        // Not a database field
-        unset($input['warehouse']['carrier_name']);
 
         return $input;
     }

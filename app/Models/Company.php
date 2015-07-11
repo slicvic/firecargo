@@ -16,10 +16,6 @@ class Company extends Base {
 
     protected $table = 'companies';
 
-    public static $rules = [
-        'name' => 'required'
-    ];
-
     protected $fillable = [
         'name',
         'corp_code',

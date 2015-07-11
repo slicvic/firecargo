@@ -12,9 +12,6 @@ class Address extends Base {
     protected $table = 'addresses';
 
     protected $fillable = [
-        'user_id',
-        'company_id',
-        'account_id',
         'address1',
         'address2',
         'city',

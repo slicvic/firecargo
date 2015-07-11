@@ -51,7 +51,8 @@ class CompanyController extends BaseAuthController {
         $input = $request->only('company', 'address');
 
         // Validate input
-        $this->validate($input['company'], Company::$rules);
+        $rules = ['name' => 'required'];
+        $this->validate($input['company'], $rules);
 
         // Update company
         $company = $this->user->company;
@@ -62,9 +63,7 @@ class CompanyController extends BaseAuthController {
             $company->address->update($input['address']);
         }
         else {
-            $address = new Address($input['address']);
-            $address->company()->associate($company);
-            $address->save();
+            $company->address()->save(new Address($input['address']));
         }
 
         return $this->redirectBackWithSuccess('Company updated.');
@@ -81,7 +80,7 @@ class CompanyController extends BaseAuthController {
         $input = $request->only('file');
 
         // Validate input
-        $maxKb = 10000; // 10 MB
+        $maxKb = 10000;
         $validator = Validator::make($input, [
             'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . $maxKb
         ]);

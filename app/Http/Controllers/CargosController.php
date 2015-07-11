@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Validator;
 
 use App\Models\Cargo;
+use App\Models\Carrier;
 use App\Models\Package;
 use App\Models\Warehouse;
 use App\Helpers\Flash;
@@ -48,9 +49,10 @@ class CargosController extends BaseAuthController {
      */
     public function getCreate()
     {
-        $packages = Package::allPendingShipmentByCurrentUserCompanyId();
         $nestablePackages = [];
 
+        // Get all packages not assigned to a cargo
+        $packages = Package::allPendingCargoByCurrentUserCompanyId();
         foreach ($packages as $package) {
             $nestablePackages[$package->warehouse_id][] = $package;
         }
@@ -67,7 +69,6 @@ class CargosController extends BaseAuthController {
     public function postStore(Request $request)
     {
         $input = $request->only('cargo', 'packages');
-        $input['cargo']['company_id'] = $this->user->company_id;
 
         // Prepare rules
         $rules = Cargo::$rules;
@@ -77,29 +78,18 @@ class CargosController extends BaseAuthController {
         // Validate input
         $validator = Validator::make($input['cargo'], $rules);
 
-        if ($validator->fails())
-        {
-            $message = view('flash_messages.error', [
-                'message' => $validator->messages()->all(':message')
-            ])->render();
-
-            return response()->json(['status' => 'error', 'message' => $message]);
+        if ($validator->fails()) {
+            return response()->json(['status' => 'error', 'message' => Flash::makeView($validator)]);
         }
 
         // Create new carrier if necessary
-        if (empty($input['cargo']['carrier_id']))
-        {
-            $carrier = Carrier::firstOrCreate([
-                'name' => $input['cargo']['carrier_name']
-            ]);
-
+        if (empty($input['cargo']['carrier_id'])) {
+            $carrier = Carrier::firstOrCreate(['name' => $input['cargo']['carrier_name']]);
             $input['cargo']['carrier_id'] = $carrier->id;
         }
 
-        // Not a database field
-        unset($input['cargo']['carrier_name']);
-
         // Create cargo
+        $input['cargo']['company_id'] = $this->user->company_id;
         $cargo = Cargo::create($input['cargo']);
 
         // Update packages
@@ -117,7 +107,23 @@ class CargosController extends BaseAuthController {
     public function getEdit($id)
     {
         $cargo = Cargo::findOrFailByIdAndCurrentUserCompanyId($id);
-        return view('cargos.form', ['cargo' => $cargo]);
+        $nestablePackages = [];
+
+        // Get the current packages in the cargo
+        foreach ($cargo->packages as $package) {
+            $nestablePackages[$package->warehouse_id][] = $package;
+        }
+
+        // Get all other packages not assigned to a cargo
+        $packages = Package::allPendingCargoByCurrentUserCompanyId();
+        foreach ($packages as $package) {
+            $nestablePackages[$package->warehouse_id][] = $package;
+        }
+
+        return view('cargos.form', [
+            'cargo' =>  $cargo,
+            'nestablePackages' => $nestablePackages
+        ]);
     }
 
     /**
@@ -125,32 +131,36 @@ class CargosController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->all();
+        $input = $request->only('cargo', 'packages');
+
+        // Prepare rules
+        $rules = Cargo::$rules;
+        $rules['carrier_name'] = 'required_without:carrier_id';
+        $rules['carrier_id'] = 'required_without:carrier_name';
 
         // Validate input
-        $rules = Cargo::$rules;
-        $rules['receipt_number'] .= ',' . $id;
-        unset($rules['company_id']);
-
         $validator = Validator::make($input['cargo'], $rules);
 
         if ($validator->fails()) {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
+            return response()->json(['status' => 'error', 'message' => Flash::makeView($validator)]);
         }
 
-        // Update cargo
-        $cargo = Cargo::findOrFailByIdAndCurrentUserCompanyId($id);
-        $cargo->update($input['cargo']);
+        // Create new carrier if necessary
+        if (empty($input['cargo']['carrier_id'])) {
+            $carrier = Carrier::firstOrCreate(['name' => $input['cargo']['carrier_name']]);
+            $input['cargo']['carrier_id'] = $carrier->id;
+        }
 
-        // Assign warehouses
-        Warehouse::where('container_id', $cargo->id)
-            ->update(['container_id' => NULL]);
-        Warehouse::whereIn('id', explode("\n", $input['warehouse_ids']))
-            ->update(['container_id' => $cargo->id]);
+        // Create cargo
+        $cargo = Cargo::create($input['cargo']);
 
-        Flash::success('Cargo updated.');
-        return redirect()->back();
+        // Update packages
+        if ($input['packages']) {
+            Package::whereIn('id', array_keys($input['packages']))->update(['cargo_id' => $cargo->id]);
+        }
+
+        Flash::success('Cargo created.');
+        return response()->json(['status' => 'ok', 'redirect_to' => '/cargos/show/' . $cargo->id]);
     }
 
 }

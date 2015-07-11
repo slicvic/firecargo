@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-use App\Models\CompanySpecificTrait;
+use App\Models\CompanyTrait;
 
 /**
  * Site
@@ -9,12 +9,11 @@ use App\Models\CompanySpecificTrait;
  */
 class Site extends Base {
 
-    use CompanySpecificTrait;
+    use CompanyTrait;
 
     protected $table = 'sites';
 
     public static $rules = [
-        'company_id' => 'required',
         'name' => 'required',
     ];
 

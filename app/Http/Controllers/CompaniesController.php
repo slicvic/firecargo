@@ -45,16 +45,18 @@ class CompaniesController extends BaseAuthController {
         $input = $request->all();
 
         // Validate input
-        $this->validate($input, Company::$rules);
+        $rules = [
+            'name' => 'required',
+            'corp_code' => 'required'
+        ];
+
+        $this->validate($input, $rules);
 
         // Create company
-        $company = new Company($input);
-        $company->save();
+        $company = Company::create($input);
 
         // Create address
-        $address = new Address();
-        $address->company()->associate($company);
-        $address->save();
+        $company->address()->save(new Address());
 
         return $this->redirectWithSuccess('companies', 'Company created.');
     }
@@ -73,14 +75,18 @@ class CompaniesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->all();
+        $input = $request->only('name', 'corp_code');
 
         // Validate input
-        $this->validate($input, Company::$rules);
+        $rules = [
+            'name' => 'required',
+            'corp_code' => 'required'
+        ];
+
+        $this->validate($input, $rules);
 
         // Update company
-        $company = Company::findOrFail($id);
-        $company->update($input);
+        Company::where(['id' => $id])->update($input);
 
         return $this->redirectBackWithSuccess('Company updated.');
     }

@@ -53,8 +53,12 @@ class UserController extends BaseAuthController {
         $input = $request->only('user', 'address');
 
         // Validate input
-        $rules = User::$rulesUpdateProfile;
-        $rules['email'] .= ',' . $this->user->id;
+        $rules = [
+            'email' => 'required|email|unique:users,email,' . $this->user->id,
+            'first_name' => 'required',
+            'last_name' => 'required'
+        ];
+
         $this->validate($input['user'], $rules);
 
         // Update user
@@ -66,9 +70,7 @@ class UserController extends BaseAuthController {
             $this->user->address->update($input['address']);
         }
         else {
-            $address = new Address($input['address']);
-            $address->user()->associate($this->user);
-            $address->save();
+            $this->user->address()->save(new Address($input['address']));
         }
 
         return $this->redirectBackWithSuccess('Your profile was updated.');
@@ -100,9 +102,8 @@ class UserController extends BaseAuthController {
         $this->validate($input, $rules);
 
         // Change password
-        if ( ! Hash::check($input['current_password'], $this->user->password)) {
+        if ( ! Hash::check($input['current_password'], $this->user->password))
             return $this->redirectBackWithError('The password you entered does not match your current one.');
-        }
 
         $this->user->password = $input['new_password'];
         $this->user->save();
@@ -121,14 +122,13 @@ class UserController extends BaseAuthController {
         $input = $request->only('file');
 
         // Validate input
-        $maxKb = 10000; // 10 MB
+        $maxKb = 10000;
         $validator = Validator::make($input, [
             'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . $maxKb
         ]);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
            return response()->json($validator->messages()->toArray(), 500);
-        }
 
         // Create destination directory
         $destination = public_path() . '/uploads/users/' . $this->user->id . '/images/profile/';
@@ -152,7 +152,9 @@ class UserController extends BaseAuthController {
                 ->save($destination . $filename . '.png');
         }
 
+        // Remove temp file
         unlink($input['file']->getPathName());
+
         return response()->json([]);
     }
 }

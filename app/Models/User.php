@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
 use App\Presenters\PresentableTrait;
-use App\Models\CompanySpecificTrait;
+use App\Models\CompanyTrait;
 
 /**
  * User
@@ -16,37 +16,13 @@ use App\Models\CompanySpecificTrait;
  */
 class User extends Base implements AuthenticatableInterface {
 
-    use AuthenticableTrait, CompanySpecificTrait, PresentableTrait;
+    use AuthenticableTrait, CompanyTrait, PresentableTrait;
 
     protected $presenter = 'App\Presenters\User';
 
     protected $table = 'users';
 
-    public static $rulesRegistration = [
-        'site_id' => 'required',
-        'company_id' => 'required',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|min:6',
-        'first_name' => 'required',
-        'last_name' => 'required'
-    ];
-
-    public static $rulesUpdateProfile = [
-        'email' => 'required|email|unique:users,email',
-        'first_name' => 'required',
-        'last_name' => 'required'
-    ];
-
-    public static $rulesCreateUpdate = [
-        'company_id' => 'required',
-        'email' => 'email|unique:users,email',
-        'first_name' => 'required_without:company_name',
-        'last_name' => 'required_without:company_name',
-        'company_name' => 'required_without:first_name,last_name',
-    ];
-
     protected $fillable = [
-        'site_id',
         'company_id',
         'email',
         'password',
@@ -266,7 +242,7 @@ class User extends Base implements AuthenticatableInterface {
      * @param  int    $companyIds
      * @return User[]
      */
-    public static function findForAutocomplete($keyword, $companyId)
+    public static function autocompleteSearch($keyword, $companyId)
     {
         $keyword = '%' . $keyword . '%';
         $where = '(id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
@@ -285,7 +261,7 @@ class User extends Base implements AuthenticatableInterface {
      *
      * @return [total => X, users => User[]]
      */
-    public static function findForDatatable(array $criteria = [], $offset = 0, $limit = 10, $orderBy = 'id', $order = 'DESC')
+    public static function datatableSearch(array $criteria = [], $offset = 0, $limit = 10, $orderBy = 'id', $order = 'DESC')
     {
         $sql = '1';
         $bindings = [];

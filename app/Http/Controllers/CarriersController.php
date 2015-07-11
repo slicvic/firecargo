@@ -67,14 +67,13 @@ class CarriersController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->all();
+        $input = $request->only('name');
 
         // Validate input
         $this->validate($input, Carrier::$rules);
 
         // Update carrier
-        $carrier = Carrier::findOrFail($id);
-        $carrier->update($input);
+        Carrier::where(['id' => $id])->update($input);
 
         return $this->redirectBackWithSuccess('Carrier updated.');
     }
@@ -84,9 +83,8 @@ class CarriersController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        if (Carrier::where('id', $id)->delete()) {
+        if (Carrier::where('id', $id)->delete())
             return $this->redirectBackWithSuccess('Carrier deleted.');
-        }
 
         return $this->redirectBackWithError('Carrier delete failed.');
     }
@@ -105,7 +103,7 @@ class CarriersController extends BaseAuthController {
         if (strlen($input['term']) < 2)
             return response()->json($response);
 
-        foreach(Carrier::findForAutocomplete($input['term']) as $carrier) {
+        foreach(Carrier::autocompleteSearch($input['term']) as $carrier) {
             $response[] = [
                 'id'    => $carrier->id,
                 'label' => $carrier->present()->name(TRUE)

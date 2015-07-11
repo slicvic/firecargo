@@ -11,16 +11,18 @@ use Illuminate\Support\MessageBag;
  */
 class Flash {
 
-    /**
-     * @var string  The message levels.
-     */
-    const SUCCESS = 'success';
-    const INFO = 'info';
-    const WARNING = 'warning';
-    const ERROR = 'error';
+    private static $sessionKey = 'cool_flash_message';
 
     /**
-     * Sets success message.
+     * @var string  The flash levels.
+     */
+    const SUCCESS = 'success';
+    const INFO    = 'info';
+    const WARNING = 'warning';
+    const ERROR   = 'error';
+
+    /**
+     * Sets a success message.
      *
      * @param  string $message
      * @return void
@@ -31,7 +33,7 @@ class Flash {
     }
 
     /**
-     * Sets info message.
+     * Sets an info message.
      *
      * @param  string $message
      * @return void
@@ -42,7 +44,7 @@ class Flash {
     }
 
     /**
-     * Sets warning message.
+     * Sets a warning message.
      *
      * @param  string $message
      * @return void
@@ -53,7 +55,7 @@ class Flash {
     }
 
     /**
-     * Sets error message.
+     * Sets an error message.
      *
      * @param  string|array|\Illuminate\Validation\Validator|\Illuminate\Support\MessageBag $message
      * @return void
@@ -61,14 +63,13 @@ class Flash {
     public static function error($message)
     {
         if ($message instanceof Validator) {
-            self::set(self::ERROR, $message->messages()->all(':message'));
+            $message = $message->messages()->all(':message');
         }
         elseif ($message instanceof MessageBag) {
-            self::set(self::ERROR, $message->all(':message'));
+            $message = $message->all(':message');
         }
-        else {
-            self::set(self::ERROR, $message);
-        }
+
+        self::set(self::ERROR, $message);
     }
 
     /**
@@ -78,49 +79,46 @@ class Flash {
      */
     public static function get()
     {
-        foreach ([self::SUCCESS, self::INFO, self::ERROR, self::WARNING] as $level)
-        {
-            $value = Session::pull($level, NULL);
-
-            if ($value) {
-                return ['level' => $level, 'message' => $value];
-            }
-        }
-
-        return NULL;
+        return Session::pull(self::$sessionKey, NULL);
     }
 
     /**
-     * Renders the message as an HTML string.
+     * Renders the message as a an HTML view.
      *
      * @return string|NULL
      */
-    public static function getHTML()
+    public static function getView()
     {
         $value = self::get();
 
         if ($value === NULL)
             return NULL;
 
-        switch($value['level']) {
-            case self::ERROR:
-                return view('flash_messages.error', ['message' => $value['message']]);
-            case self::SUCCESS:
-            case self::INFO:
-            case self::WARNING:
-                return view('flash_messages.success', ['message' => $value['message']]);
-        }
+        return self::makeView($value['message'], $value['level']);
     }
 
     /**
-     * Sets message.
+     * Makes the view for an HTML message.
      *
-     * @param   string  $key
-     * @param   mixed   $value
+     * @param  string $level  success|info|warning|error
+     * @param  string|array|\Illuminate\Validation\Validator|\Illuminate\Support\MessageBag $message
+     * @return string
+     */
+    public static function makeView($message, $level = 'error')
+    {
+        return view('flash_messages.' . $level, ['message' => $message])
+            ->render();
+    }
+
+    /**
+     * Sets a message.
+     *
+     * @param   string        $level    success|info|warning|error
+     * @param   string|array  $message
      * @return  string
      */
-    private static function set($key, $value)
+    private static function set($level, $message)
     {
-        Session::flash($key, $value);
+        Session::flash(self::$sessionKey, ['level' => $level, 'message' => $message]);
     }
 }

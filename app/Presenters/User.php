@@ -22,7 +22,7 @@ class User extends BasePresenter {
     }
 
     /**
-     * Presents the company name.
+     * Presents the company name, otherwise the full name.
      *
      * @param  bool  $appendId  Whether or not to append the user's id.
      * @return string

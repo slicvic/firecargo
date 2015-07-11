@@ -2,7 +2,7 @@
 
 use Auth;
 
-trait CompanySpecificTrait {
+trait CompanyTrait {
 
     /**
      * Finds a record by the id and the company id and throws exception

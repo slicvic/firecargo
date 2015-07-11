@@ -17,7 +17,7 @@
 <div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-lg-12">
-            {!! \App\Helpers\Flash::getHTML() !!}
+            {!! \App\Helpers\Flash::getView() !!}
             @yield('form')
         </div>
     </div>

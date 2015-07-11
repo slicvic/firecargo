@@ -2,7 +2,7 @@
 
 use DB;
 use App\Helpers\Math;
-use App\Models\CompanySpecificTrait;
+use App\Models\CompanyTrait;
 use App\Presenters\PresentableTrait;
 
 /**
@@ -12,14 +12,13 @@ use App\Presenters\PresentableTrait;
  */
 class Warehouse extends Base {
 
-    use CompanySpecificTrait, PresentableTrait;
+    use CompanyTrait, PresentableTrait;
 
     protected $presenter = 'App\Presenters\Warehouse';
 
     protected $table = 'warehouses';
 
     public static $rules = [
-        'company_id' => 'required',
         'shipper_user_id' => 'required',
         'consignee_user_id' => 'required',
         'carrier_id' => 'required',

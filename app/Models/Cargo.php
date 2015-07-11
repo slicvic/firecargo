@@ -1,7 +1,7 @@
 <?php namespace App\Models;
 
 use DB;
-use App\Models\CompanySpecificTrait;
+use App\Models\CompanyTrait;
 use App\Presenters\PresentableTrait;
 
 /**
@@ -11,14 +11,13 @@ use App\Presenters\PresentableTrait;
  */
 class Cargo extends Base {
 
-    use CompanySpecificTrait, PresentableTrait;
+    use CompanyTrait, PresentableTrait;
 
     protected $table = 'cargos';
 
     protected $presenter = 'App\Presenters\Cargo';
 
     public static $rules = [
-        'company_id' => 'required',
         'carrier_id' => 'required',
         'receipt_number' => 'required'
     ];
@@ -36,6 +35,14 @@ class Cargo extends Base {
     public function packages()
     {
         return $this->hasMany('App\Models\Package');
+    }
+
+    /**
+     * Gets the carrier.
+     */
+    public function carrier()
+    {
+        return $this->belongsTo('App\Models\Carrier');
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Helpers\Math;
 use App\Presenters\PresentableTrait;
@@ -12,11 +13,13 @@ use App\Presenters\PresentableTrait;
  */
 class Package extends Base {
 
-    use PresentableTrait;
+    use PresentableTrait, SoftDeletes;
 
     protected $presenter = 'App\Presenters\Package';
 
     protected $table = 'packages';
+
+    protected $dates = ['deleted_at'];
 
     public static $rules = [
         'warehouse_id' => 'required',
@@ -104,12 +107,12 @@ class Package extends Base {
     }
 
     /**
-     * Retrieves all packages that have not yet been shipped out by the
+     * Retrieves all packages that have not yet been assigned to a cargo by the
      * current user's company id.
      *
      * @return array
      */
-    public static function allPendingShipmentByCurrentUserCompanyId()
+    public static function allPendingCargoByCurrentUserCompanyId()
     {
         $packages = Package::where([
             'packages.cargo_id' => NULL,

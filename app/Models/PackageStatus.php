@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-use App\Models\CompanySpecificTrait;
+use App\Models\CompanyTrait;
 
 /**
  * PackageStatus
@@ -9,12 +9,11 @@ use App\Models\CompanySpecificTrait;
  */
 class PackageStatus extends Base {
 
-    use CompanySpecificTrait;
+    use CompanyTrait;
 
     protected $table = 'package_statuses';
 
     public static $rules = [
-        'company_id' => 'required',
         'name' => 'required'
     ];
 
@@ -27,7 +26,7 @@ class PackageStatus extends Base {
     /**
      * Resets the default status by company ID.
      *
-     * @param  int  $siteId
+     * @param  int  $companyId
      * @return int
      */
     public static function unsetDefaultByCompanyId($companyId)

@@ -26,24 +26,29 @@ class Carrier extends Base {
     ];
 
     /**
+     * Overrides parent method to assign created_by_user_id.
+     *
+     * @see parent::save()
+     */
+    public function save(array $options = array())
+    {
+        if ( ! $this->exists) {
+            $this->created_by_user_id = Auth::user()->id;
+        }
+        parent::save($options);
+    }
+
+    /**
      * Retrieves a list of carriers for a jquery autocomplete field.
      *
      * @param  string $keyword     A search query
      * @return User[]
      */
-    public static function findForAutocomplete($keyword)
+    public static function autocompleteSearch($keyword)
     {
         $keyword = '%' . $keyword . '%';
         $where = '(id LIKE ? OR name LIKE ?)';
         return Carrier::whereRaw($where, [$keyword, $keyword])->get();
-    }
-
-    public function save(array $options = NULL)
-    {
-        if ( ! $this->exists) {
-            $this->created_by_user_id = Auth::user()->id;
-        }
-        parent::save();
     }
 
     /**

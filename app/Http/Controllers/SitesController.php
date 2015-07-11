@@ -59,7 +59,7 @@ class SitesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $site = ($this->user->isAdmin()) ? Site::findOrFail($id) : Site::findOrFailByIdAndCurrentUserCompanyId($id);
+        $site = $this->user->isAdmin() ? Site::findOrFail($id) : Site::findOrFailByIdAndCurrentUserCompanyId($id);
         return view('sites.form', ['site' => $site]);
     }
 
@@ -68,15 +68,15 @@ class SitesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->all();
-        $input['company_id'] = ($this->user->isAdmin()) ? $input['company_id'] : $this->user->company_id;
+        $input = $request->only('name');
 
         // Validate input
         $this->validate($input, Site::$rules);
 
         // Update site
-        $site = ($this->user->isAdmin()) ? Site::findOrFail($id) : Site::findOrFailByIdAndCurrentUserCompanyId($id);
-        $site->update($input);
+        $this->user->isAdmin()
+            ? Site::where(['id' => $id])->update($input)
+            : Site::where(['id' => $id, 'company_id' => $this->user->company_id])->update($input);
 
         return $this->redirectBackWithSuccess('Site updated.');
     }
