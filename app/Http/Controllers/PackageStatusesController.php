@@ -27,6 +27,7 @@ class PackageStatusesController extends BaseAuthController {
     public function getIndex()
     {
         $statuses = PackageStatus::allByCurrentUserCompanyId();
+
         return view('package_statuses.index', ['statuses' => $statuses]);
     }
 
@@ -50,13 +51,8 @@ class PackageStatusesController extends BaseAuthController {
 
         // Create status
         $status = new PackageStatus($input);
-        $status->company_id = Auth::user()->company_id;
+        $status->company_id = $this->user->company_id;
         $status->save();
-
-        if ($status->is_default) {
-            // Unset the previous default status
-            PackageStatus::unsetCompanyDefaultStatus($this->user->company_id, $status->id);
-        }
 
         return $this->redirectWithSuccess('package-statuses', 'Package status created.');
     }
@@ -67,6 +63,7 @@ class PackageStatusesController extends BaseAuthController {
     public function getEdit($id)
     {
         $status = PackageStatus::findOrFailByIdAndCurrentUserCompanyId($id);
+
         return view('package_statuses.form', ['status' => $status]);
     }
 
@@ -81,12 +78,9 @@ class PackageStatusesController extends BaseAuthController {
         $this->validate($input, PackageStatus::$rules);
 
         // Update status
-        $isSuccess = PackageStatus::updateWhereIdAndCurrentUserCompanyId($id, $input);
-
-        if ($isSuccess && $input['is_default']) {
-            // Unset the previous default status
-            PackageStatus::unsetCompanyDefaultStatus($this->user->company_id, $id);
-        }
+        $status = PackageStatus::findOrFailByIdAndCurrentUserCompanyId($id);
+        $status->fill($input);
+        $status->save();
 
         return $this->redirectBackWithSuccess('Package status updated.');
     }
@@ -97,7 +91,9 @@ class PackageStatusesController extends BaseAuthController {
     public function getDelete(Request $request, $id)
     {
         if (PackageStatus::deleteByIdAndCurrentUserCompanyId($id))
+        {
             return $this->redirectBackWithSuccess('Package status deleted.');
+        }
 
         return $this->redirectBackWithError('Package status delete failed.');
     }

@@ -26,6 +26,7 @@ class RolesController extends BaseAuthController {
     public function getIndex()
     {
         $roles = Role::all();
+
         return view('roles.index', ['roles' => $roles]);
     }
 
@@ -59,6 +60,7 @@ class RolesController extends BaseAuthController {
     public function getEdit($id)
     {
         $role = Role::findOrFail($id);
+
         return view('roles.form', ['role' => $role]);
     }
 
@@ -73,7 +75,7 @@ class RolesController extends BaseAuthController {
         $this->validate($input, Role::$rules);
 
         // Update role
-        Role::updateWhereId($id, $input);
+        Role::updateById($id, $input);
 
         return $this->redirectBackWithSuccess('Role updated.');
     }

@@ -78,7 +78,7 @@ class Package extends Base {
     /**
      * Calculates the volume weight of the package in pounds.
      *
-     * @param  int $precision
+     * @param  int  $precision
      * @return float
      */
     public function calculateVolumeWeight()
@@ -112,7 +112,7 @@ class Package extends Base {
      *
      * @return array
      */
-    public static function allPendingCargoByCurrentUserCompanyId()
+    public static function allPendingCargoByCurrentUserCompany()
     {
         $packages = Package::where([
             'packages.cargo_id' => NULL,

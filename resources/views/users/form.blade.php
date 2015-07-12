@@ -53,10 +53,10 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">Type</label>
                                     <div class="col-sm-10 checkbox">
-                                        <?php $userRoles = $user->roles->lists('name', 'id'); ?>
+                                        <?php $userRoles = Input::old('roles', $user->roles->lists('id')); ?>
                                         @foreach (\App\Models\Role::allFiltered() as $role)
                                             <label class="checkbox-inline">
-                                                <input{{ isset($userRoles[$role->id]) ? ' checked' : ''}} type="checkbox" name="role_ids[]" value="{{ $role->id }}"> {{ ucwords($role->name) }}
+                                                <input{{ in_array($role->id, $userRoles) ? ' checked' : ''}} type="checkbox" name="roles[]" value="{{ $role->id }}"> {{ ucwords($role->name) }}
                                             </label>
                                         @endforeach
                                     </div>

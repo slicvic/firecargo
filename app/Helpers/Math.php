@@ -10,8 +10,8 @@ class Math {
     /**
      * Converts pounds to kilos.
      *
-     * @param  int|float $pounds
-     * @param  int $precision
+     * @param  int|float  $pounds
+     * @param  int        $precision
      * @return int
      */
     public static function lbToKg($pounds, $precision = 2)
@@ -45,6 +45,7 @@ class Math {
     public static function calculateCubicFeet($length, $width, $height)
     {
         $result = ($length * $width * $height) * 0.00057870;
+
         return $result;
     }
 
@@ -59,6 +60,7 @@ class Math {
     public static function calculateCubicMeter($length, $width, $height)
     {
         $result = self::calculateCubicFeet($length, $width, $height) / 35.315;
+
         return $result;
     }
 }

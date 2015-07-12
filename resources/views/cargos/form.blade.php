@@ -20,7 +20,7 @@
 @section('form')
     <form data-parsley-validate action="/cargos/{{ $cargo->exists ? 'update/' . $cargo->id : 'store' }}" method="post" class="form-horizontal">
         <input type="hidden" name="cargo[company_id]" value="{{ Auth::user()->company_id }}">
-        <div id="flashError"></div>
+        <div id="flashMessage"></div>
         <div class="ibox">
             <div class="ibox-title">
                 <h5>Cargo Info</h5>
@@ -121,22 +121,22 @@
             event.preventDefault();
 
             var $form = $(this),
-                $flashError = $('#flashError'),
+                $flash = $('#flashMessage'),
                 $submit = $(this).find('button');
 
             $submit.attr('disabled', true);
-            $flashError.html('');
+            $flash.html('');
 
-            $.post($form.attr('action'), $form.serialize(), function(data) {
-                $submit.attr('disabled', false);
-
-                if (data.status == 'ok') {
-                    window.location = data.redirect_to;
-                } else {
-                    $flashError.html(data.message);
+            $.post($form.attr('action'), $form.serialize(), 'json')
+                .done(function(data) {
+                    window.location = data.redirect_url;
+                })
+                .fail(function(xhr) {
+                    var data = JSON.parse(xhr.responseText);
+                    $flash.html(data.error);
                     $('html, body').scrollTop(0);
-                }
-            }, 'json');
+                    $submit.attr('disabled', false);
+                });
         });
      });
     </script>

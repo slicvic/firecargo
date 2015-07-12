@@ -30,6 +30,7 @@ class User extends BasePresenter {
     public function company($appendId = FALSE)
     {
         $name = $this->model->company_name ?: $this->fullname();
+
         return ($appendId) ? "$name ({$this->model->id})" : $name;
     }
 
@@ -41,11 +42,14 @@ class User extends BasePresenter {
     public function roles()
     {
         if ( ! $roles = $this->model->roles)
+        {
             return '';
+        }
 
         $html = '<div>';
 
-        foreach ($roles->lists('name') as $role) {
+        foreach ($roles->lists('name') as $role)
+        {
             $html .= '<div class="badge badge-warning btns-xs">' . ucfirst($role) . '</div><br>';
         }
 

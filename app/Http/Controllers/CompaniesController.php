@@ -26,6 +26,7 @@ class CompaniesController extends BaseAuthController {
     public function getIndex()
     {
         $companies = Company::all();
+
         return view('companies.index', ['companies' => $companies]);
     }
 
@@ -67,6 +68,7 @@ class CompaniesController extends BaseAuthController {
     public function getEdit($id)
     {
         $company = Company::findOrFail($id);
+
         return view('companies.form', ['company' => $company]);
     }
 
@@ -86,7 +88,7 @@ class CompaniesController extends BaseAuthController {
         $this->validate($input, $rules);
 
         // Update company
-        Company::updateWhereId($id, $input);
+        Company::updateById($id, $input);
 
         return $this->redirectBackWithSuccess('Company updated.');
     }

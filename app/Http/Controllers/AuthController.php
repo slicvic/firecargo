@@ -42,7 +42,8 @@ class AuthController extends BaseController {
             'password' => 'required'
         ]);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
+        {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
@@ -50,12 +51,14 @@ class AuthController extends BaseController {
         // Authenticate user
         $user = User::validateCredentials($input['username'], $input['password']);
 
-        if ($user) {
+        if ($user)
+        {
             // Fire event
             Event::fire(new UserLoggedIn($user));
             return redirect('dashboard');
         }
-        else {
+        else
+        {
             Flash::error('The email or password your entered is incorrect.');
             return redirect()->back()->withInput();
         }
@@ -87,13 +90,15 @@ class AuthController extends BaseController {
 
         $validator = Validator::make($input['user'], $rules);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
+        {
             Flash::error($validator);
             return redirect()->back()->withInput();
         }
 
         // Validate site ID
-        if ( ! Site::find($input['user']['site_id'])) {
+        if ( ! Site::find($input['user']['site_id']))
+        {
             Flash::error('Your site ID is not valid.');
             return redirect()->back()->withInput();
         }
@@ -124,11 +129,13 @@ class AuthController extends BaseController {
         $input = $request->only('email');
         $validator = Validator::make($input, ['email' => 'required|email']);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
+        {
             Flash::error($validator);
         }
         else {
-            if ($user = User::where('email', '=', $input['email'])->first()) {
+            if ($user = User::where('email', '=', $input['email'])->first())
+            {
                 Mailer::sendPasswordRecovery($user);
                 // @TODO: change message
                 Flash::info('<a href="/reset-password?email=' . $user->email . '&token=' . $user->makePasswordRecoveryToken() . '">Click here to reset your password</a>');
@@ -164,7 +171,8 @@ class AuthController extends BaseController {
             'password' => 'required'
         ]);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
+        {
             Flash::error($validator);
             return redirect()->back();
         }
@@ -172,13 +180,15 @@ class AuthController extends BaseController {
         // Reset password
         $user = User::where('email', '=', $input['email'])->first();
 
-        if ($user && $user->checkPasswordRecoveryToken($input['token'])) {
+        if ($user && $user->checkPasswordRecoveryToken($input['token']))
+        {
             $user->password = $input['password'];
             $user->save();
             Flash::success('Your password has been reset successfully.');
             return redirect('login');
         }
-        else {
+        else
+        {
             Flash::error('Password reset failed.');
             return redirect()->back();
         }

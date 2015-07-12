@@ -29,6 +29,7 @@ abstract class BaseController extends Controller {
     public function callAction($method, $parameters)
     {
         $result = call_user_func_array(array($this, $method), $parameters);
+
         return $result;
     }
 
@@ -44,7 +45,8 @@ abstract class BaseController extends Controller {
     {
         $validator = Validator::make($input, $rules);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
+        {
             throw new ValidationException($validator->messages());
         }
     }
@@ -52,50 +54,69 @@ abstract class BaseController extends Controller {
     /**
      * Redirects to the given path with the given success message.
      *
-     * @param  string $path
-     * @param  string $message
+     * @param  string  $path
+     * @param  string  $message
      * @return redirect()
      */
     protected function redirectWithSuccess($path, $message)
     {
         Flash::success($message);
+
         return redirect($path);
     }
 
     /**
      * Redirects to the given path with the given error message.
      *
-     * @param  string $path
-     * @param  string $message
+     * @param  string  $path
+     * @param  string  $message
      * @return redirect()
      */
     protected function redirectWithError($path, $message)
     {
         Flash::error($message);
+
         return redirect($path);
     }
 
     /**
      * Redirects back with the given success message.
      *
-     * @param  string $message
+     * @param  string  $message
      * @return redirect()
      */
     protected function redirectBackWithSuccess($message)
     {
         Flash::success($message);
+
         return redirect()->back();
     }
 
     /**
      * Redirects back with the given error message.
      *
-     * @param  string $message
+     * @param  string  $message
      * @return redirect()
      */
     protected function redirectBackWithError($message)
     {
         Flash::error($message);
+
         return redirect()->back()->withInput();
+    }
+
+    /**
+     * Returns a new JSON response from the application.
+     *
+     * @param  string|array  $data
+     * @param  int           $status
+     * @param  string        $message  A success flash message
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function jsonResponseWithSuccess($message, $data = array(), $status = 200)
+    {
+        Flash::success($message);
+
+        return response()->json($data, $status);
     }
 }

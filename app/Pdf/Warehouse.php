@@ -14,7 +14,7 @@ class Warehouse {
     /**
      * Generates a warehouse receipt.
      *
-     * @param  WarehouseModel $warehouse
+     * @param  WarehouseModel  $warehouse
      * @return PDF
      */
     public static function getReceipt(WarehouseModel $warehouse)
@@ -23,7 +23,7 @@ class Warehouse {
         $barcodeBase64 = base64_encode($barcode->getBarcodePngData(2, 30));
 
         $pdf = new TCPDF('P', 'mm', 'A4', TRUE, 'UTF-8', FALSE);
-        // White out the top header border
+        // White out the header border
         $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
         $pdf->SetFont('helvetica', '', 10);
         $pdf->SetAutoPageBreak(FALSE);
@@ -42,7 +42,7 @@ class Warehouse {
     /**
      * Generates a warehouse shipping label.
      *
-     * @param  WarehouseModel $warehouse
+     * @param  WarehouseModel  $warehouse
      * @return PDF
      */
     public static function getLabel(WarehouseModel $warehouse)
@@ -53,7 +53,7 @@ class Warehouse {
         $barcodeBase64 = base64_encode($barcode->getBarcodePngData(2, 30));
 
         $pdf = new TCPDF('P', 'mm', 'A6', TRUE, 'UTF-8', FALSE);
-        // White out the top header border
+        // White out the header border
         $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
         $pdf->SetFont('helvetica', '', 7);
         $pdf->SetAutoPageBreak(FALSE);

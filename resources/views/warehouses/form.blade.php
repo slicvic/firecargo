@@ -24,7 +24,7 @@
 
 @section('form')
     <form data-parsley-validate action="/warehouses/{{ $warehouse->exists ? 'update/' . $warehouse->id : 'store' }}" method="post" class="form-horizontal">
-        <div id="flashError"></div>
+        <div id="flashMessage"></div>
         <div class="ibox">
             <div class="ibox-title"><h5>Warehouse Info</h5></div>
             <div class="ibox-content">
@@ -67,7 +67,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Delivered By</label>
                     <div class="col-sm-5">
-                        <input requirsed  type="text" id="carrier" name="warehouse[carrier_name]" class="form-control" value="{{ $warehouse->present()->carrier(TRUE) }}">
+                        <input required  type="text" id="carrier" name="warehouse[carrier_name]" class="form-control" value="{{ $warehouse->present()->carrier(TRUE) }}">
                         <input type="hidden" id="carrierId" name="warehouse[carrier_id]" value="{{ $warehouse->carrier_id }}">
                     </div>
                 </div>

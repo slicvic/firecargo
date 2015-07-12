@@ -23,20 +23,22 @@ class PackageStatus extends Base {
     ];
 
     /**
-     * Resets the default company package status.
+     * Overrides parent method to add setting default status.
      *
-     * @param  int  $companyId
-     * @param  int  $excludeId
-     * @return int
+     * @see parent::save()
      */
-    public static function unsetCompanyDefaultStatus($companyId, $excludeId = NULL)
+    public function save(array $options = array())
     {
-        $query = PackageStatus::where('company_id', $companyId);
+        $result = parent::save($options);
 
-        if ($excludeId) {
-            $query->where('id', '<>', $excludeId);
+        if ($result && $this->is_default)
+        {
+            // Unset the previous default status
+            PackageStatus::where('company_id', $this->company_id)
+                ->where('id', '<>', $this->id)
+                ->update(['is_default' => 0]);
         }
 
-        return $query->update(['is_default' => 0]);
+        return $result;
     }
 }

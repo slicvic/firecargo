@@ -77,8 +77,8 @@ class Warehouse extends Base {
     /**
      * Creates ands assigns the packages to the warehouse.
      *
-     * @param  array $packages
-     * @param  bool  $detaching
+     * @param array  $packages
+     * @param bool   $detaching
      *   If TRUE, after this operation is complete,
      *   only the packages in the array will be left
      * @return void
@@ -88,18 +88,22 @@ class Warehouse extends Base {
         $ids = (is_array($packages)) ? array_keys($packages) : [];
 
         // First we need to delete the packages not specified in the array
-        if ($detaching) {
+        if ($detaching)
+        {
             Package::whereNotIn('id', $ids)->delete();
         }
 
         // Terminate if there's nothing more to add or update
         if (empty($ids))
+        {
             return;
+        }
 
         // Next, we will add or update the remaining packages
         $consignee = $this->consignee;
 
-        foreach ($packages as $id => $data) {
+        foreach ($packages as $id => $data)
+        {
             $package = Package::firstOrCreate(['id' => $id, 'warehouse_id' => $this->id]);
             $data['ship'] = $consignee->autoship_packages;
             $package->update($data);
@@ -113,17 +117,23 @@ class Warehouse extends Base {
      */
     public function setAttribute($key, $value)
     {
-        switch ($key) {
+        switch ($key)
+        {
             case 'arrived_at':
-                if (is_string($value)) {
+
+                if (is_string($value))
+                {
                     $value = date('Y-m-d H:i:s', strtotime($value));
                 }
-                else if (is_array($value) && isset($value['date'], $value['time'])) {
+                else if (is_array($value) && isset($value['date'], $value['time']))
+                {
                     $value = date('Y-m-d H:i:s', strtotime($value['date'] . ' ' . $value['time']));
                 }
-                else {
+                else
+                {
                     $value = NULL;
                 }
+
                 break;
         }
 
@@ -229,16 +239,17 @@ class Warehouse extends Base {
     {
         $grossWeight = $this->calculateGrossWeight();
         $volumeWeight = $this->calculateVolumeWeight();
+
         return ($grossWeight > $volumeWeight) ? $grossWeight : $volumeWeight;
     }
 
     /**
      * Finds all warehouses with the given criteria.
      *
-     * @param  array|null $criteria
-     * @param  string     $orderBy
-     * @param  string     $order
-     * @param  int        $perPage
+     * @param  array|null  $criteria
+     * @param  string      $orderBy
+     * @param  string      $order
+     * @param  int         $perPage
      * @return array
      */
     public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
@@ -264,11 +275,13 @@ class Warehouse extends Base {
             }
         }*/
 
-        if ( ! empty($criteria['company_id'])) {
+        if ( ! empty($criteria['company_id']))
+        {
             $warehouses = $warehouses->where('warehouses.company_id', '=', $criteria['company_id']);
         }
 
-        if ( ! empty($criteria['q'])) {
+        if ( ! empty($criteria['q']))
+        {
             $q = '%' . $criteria['q'] . '%';
 
             $warehouses = $warehouses
@@ -288,6 +301,7 @@ class Warehouse extends Base {
         }
 
         $warehouses = $warehouses->paginate($perPage);
+
         return $warehouses;
     }
 }

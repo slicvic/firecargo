@@ -139,7 +139,7 @@ class User extends Base implements AuthenticatableInterface {
     /**
      * Determines if a password recovery token is valid.
      *
-     * @param  string $token
+     * @param  string  $token
      * @return bool
      */
     public function checkPasswordRecoveryToken($token)
@@ -154,7 +154,8 @@ class User extends Base implements AuthenticatableInterface {
      */
     public function setAttribute($key, $value)
     {
-        switch ($key) {
+        switch ($key)
+        {
             case 'first_name':
             case 'last_name':
                 $value = ucfirst(strtolower(trim($value)));
@@ -187,40 +188,41 @@ class User extends Base implements AuthenticatableInterface {
     /**
      * Checks if a profile photo image file exists.
      *
-     * @param  string $size sm|md
+     * @param  string  $size  sm|md
      * @return bool
      */
     public function hasProfilePhoto($size)
     {
         $path = 'uploads/users/' . $this->id . '/images/profile/' . $size . '.png';
+
         return file_exists(public_path() . '/' . $path);
     }
 
     /**
      * Gets the profile photo URL.
      *
-     * @param  string $size sm|md
+     * @param  string  $size  sm|md
      * @return string
      */
     public function getProfilePhotoURL($size = 'sm')
     {
         $path = 'uploads/users/' . $this->id . '/images/profile/' . $size . '.png';
 
-        if (file_exists(public_path() . '/' . $path)) {
+        if (file_exists(public_path() . '/' . $path))
+        {
             return asset($path) . '?cb=' . time();
         }
-        else {
-            return asset('assets/admin/img/avatar.png');
-        }
+
+        return asset('assets/admin/img/avatar.png');
     }
 
 
     /**
      * Validates the specified credentials.
      *
-     * @param  string $username
-     * @param  string $password
-     * @return User|FALSE
+     * @param  string  $username
+     * @param  string  $password
+     * @return User|false
      */
     public static function validateCredentials($username, $password)
     {
@@ -229,7 +231,9 @@ class User extends Base implements AuthenticatableInterface {
             ->first();
 
         if ($user && Hash::check($password, $user->password) && $user->hasRole(Role::LOGIN))
+        {
             return $user;
+        }
 
         return FALSE;
     }
@@ -237,27 +241,27 @@ class User extends Base implements AuthenticatableInterface {
     /**
      * Retrieves a list of users for a jquery autocomplete field.
      *
-     * @param  string $keyword     A search query
-     * @param  int    $companyIds
+     * @param  string  $term       A search query
+     * @param  int     $companyId
      * @return User[]
      */
-    public static function autocompleteSearch($keyword, $companyId)
+    public static function autocompleteSearch($term, $companyId)
     {
-        $keyword = '%' . $keyword . '%';
+        $term = '%' . $term . '%';
         $where = '(id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
         $where .= ' AND company_id IN (?)';
-        return User::whereRaw($where, [$keyword, $keyword, $keyword, $keyword, $keyword, $keyword, $keyword, $companyId])->get();
+
+        return User::whereRaw($where, [$term, $term, $term, $term, $term, $term, $term, $companyId])->get();
     }
 
     /**
      * Retrieves a list of users for a jquery datatable.
      *
-     * @param  string   $criteria     List of criterias
+     * @param  string   $criteria  List of criterias
      * @param  int      $offset
      * @param  int      $limit
      * @param  string   $orderBy
      * @param  string   $order
-     *
      * @return [total => X, users => User[]]
      */
     public static function datatableSearch(array $criteria = [], $offset = 0, $limit = 10, $orderBy = 'id', $order = 'DESC')
@@ -265,11 +269,13 @@ class User extends Base implements AuthenticatableInterface {
         $sql = '1';
         $bindings = [];
 
-        if ( ! empty($criteria['company_id'])) {
+        if ( ! empty($criteria['company_id']))
+        {
             $sql .= ' AND company_id IN (' . implode(',', $criteria['company_id']) . ')';
         }
 
-        if ( ! empty($criteria['q'])) {
+        if ( ! empty($criteria['q']))
+        {
             $q = '%' . $criteria['q'] . '%';
             $sql .= ' AND (id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
             $bindings = [$q, $q, $q, $q, $q, $q, $q];

@@ -26,6 +26,7 @@ class SitesController extends BaseAuthController {
     public function getIndex()
     {
         $sites = Site::all();
+
         return view('sites.index', ['sites' => $sites]);
     }
 
@@ -59,6 +60,7 @@ class SitesController extends BaseAuthController {
     public function getEdit($id)
     {
         $site = Site::findOrFail($id);
+
         return view('sites.form', ['site' => $site]);
     }
 
@@ -73,7 +75,7 @@ class SitesController extends BaseAuthController {
         $this->validate($input, Site::$rules);
 
         // Update site
-        Site::updateWhereId($id, $input);
+        Site::updateById($id, $input);
 
         return $this->redirectBackWithSuccess('Site updated.');
     }

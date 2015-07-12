@@ -27,6 +27,7 @@ class PackageTypesController extends BaseAuthController {
     public function getIndex()
     {
         $types = PackageType::all();
+
         return view('package_types.index', ['types' => $types]);
     }
 
@@ -60,6 +61,7 @@ class PackageTypesController extends BaseAuthController {
     public function getEdit($id)
     {
         $type = PackageType::findOrFail($id);
+
         return view('package_types.form', ['type' => $type]);
     }
 
@@ -74,7 +76,7 @@ class PackageTypesController extends BaseAuthController {
         $this->validate($input, PackageType::$rules);
 
         // Update package type
-        PackageType::updateWhereId($id, $input);
+        PackageType::updateById($id, $input);
 
         return $this->redirectBackWithSuccess('Package type updated.');
     }

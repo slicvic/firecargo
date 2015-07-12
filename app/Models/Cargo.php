@@ -17,13 +17,7 @@ class Cargo extends Base {
 
     protected $presenter = 'App\Presenters\Cargo';
 
-    public static $rules = [
-        'carrier_id' => 'required',
-        'receipt_number' => 'required'
-    ];
-
     protected $fillable = [
-        'company_id',
         'carrier_id',
         'receipt_number',
         'departed_at'
@@ -56,6 +50,9 @@ class Cargo extends Base {
             case 'departed_at':
                 $value = date('Y-m-d H:i:s', strtotime($value));
                 break;
+            case 'receipt_number':
+                $value = strtoupper($value);
+                break;
         }
 
         return parent::setAttribute($key, $value);
@@ -64,10 +61,10 @@ class Cargo extends Base {
     /**
      * Finds all cargos with the given criteria.
      *
-     * @param  array|null $criteria
-     * @param  string     $orderBy
-     * @param  string     $order
-     * @param  int        $perPage
+     * @param  array|null  $criteria
+     * @param  string      $orderBy
+     * @param  string      $order
+     * @param  int         $perPage
      * @return array
      */
     public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
@@ -81,11 +78,13 @@ class Cargo extends Base {
         $cargos = Cargo::whereRaw('1')
             ->orderBy('cargos.' . $orderBy, $order);
 
-        if ( ! empty($criteria['company_id'])) {
+        if ( ! empty($criteria['company_id']))
+        {
             $cargos = $cargos->where('cargos.company_id', '=', $criteria['company_id']);
         }
 
-        if ( ! empty($criteria['q'])) {
+        if ( ! empty($criteria['q']))
+        {
             $q = '%' . $criteria['q'] . '%';
 
             $cargos = $cargos
@@ -100,6 +99,7 @@ class Cargo extends Base {
         }
 
         $cargos = $cargos->paginate($perPage);
+
         return $cargos;
     }
 }

@@ -8,8 +8,8 @@ trait CompanyTrait {
      * Finds a record by the id and current user's company id and
      * throws exception if the record is not found.
      *
-     * @param   int  $id
-     * @return  array
+     * @param  int  $id
+     * @return array
      */
     public static function findOrFailByIdAndCurrentUserCompanyId($id)
     {
@@ -21,9 +21,9 @@ trait CompanyTrait {
     /**
      * Finds a record by the id and the company id.
      *
-     * @param   int  $id
-     * @param   int  $companyId
-     * @return  array
+     * @param  int  $id
+     * @param  int  $companyId
+     * @return array
      */
     public static function findByIdAndCompanyId($id, $companyId)
     {
@@ -35,8 +35,8 @@ trait CompanyTrait {
     /**
      * Finds a record by the id and the current user's company id.
      *
-     * @param   int  $id
-     * @return  array
+     * @param  int  $id
+     * @return array
      */
     public static function findByIdAndCurrentUserCompanyId($id)
     {
@@ -82,7 +82,7 @@ trait CompanyTrait {
      * @param  array  $attributes
      * @return bool|null
      */
-    public static function updateWhereIdAndCurrentUserCompanyId($id, $attributes)
+    public static function updateByIdAndCurrentUserCompanyId($id, $attributes)
     {
         return self::where(['id' => $id, 'company_id' => Auth::user()->company_id])->update($attributes);
     }
@@ -90,7 +90,7 @@ trait CompanyTrait {
     /**
      * Deletes a record by the id and the current user's company id.
      *
-     * @param int $id
+     * @param  int  $id
      * @return bool|null
      */
     public static function deleteByIdAndCurrentUserCompanyId($id)

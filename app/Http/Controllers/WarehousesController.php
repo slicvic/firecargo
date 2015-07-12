@@ -60,6 +60,7 @@ class WarehousesController extends BaseAuthController {
     public function getShow(Request $request, $id)
     {
         $warehouse = Warehouse::findOrFailByIdAndCurrentUserCompanyId($id);
+
         return view('warehouses.show', ['warehouse' => $warehouse]);
     }
 
@@ -75,27 +76,32 @@ class WarehousesController extends BaseAuthController {
      * Creates a new warehouse.
      *
      * @uses   ajax
-     * @return json
+     * @return json string
      */
     public function postStore(Request $request)
     {
         // Prepare and validate input
         $input = $this->prepareAndValidateInput($request);
 
-        if ($input instanceof JsonResponse) {
+        if ($input instanceof JsonResponse)
+        {
             return $input;
         }
 
         // Create warehouse
         $warehouse = new Warehouse($input['warehouse']);
         $warehouse->company_id = $this->user->company_id;
-        $warehouse->save();
+
+        if ( ! $warehouse->save())
+        {
+            return response()->json(['error_message' => Flash::view('Warehouse creation failed, please try again.')], 500);
+        }
 
         // Create packages
         $warehouse->syncPackages($input['packages'], FALSE);
 
         Flash::success('Warehouse created.');
-        return response()->json(['status' => 'ok', 'redirect_to' => '/warehouses/show/' . $warehouse->id]);
+        return response()->json(['redirect_url' => '/warehouses/show/' . $warehouse->id]);
     }
 
     /**
@@ -111,21 +117,23 @@ class WarehousesController extends BaseAuthController {
      * Updates a specific warehouse.
      *
      * @uses   ajax
-     * @return json
+     * @return json string
      */
     public function postUpdate(Request $request, $id)
     {
         // Lookup warehouse
         $warehouse = Warehouse::findByIdAndCurrentUserCompanyId($id);
 
-        if ( ! $warehouse) {
-            return response()->json(['error_message' => Flash::view('Warehouse not found.')], 400);
+        if ( ! $warehouse)
+        {
+            return response()->json(['error' => Flash::view('Warehouse not found.')], 404);
         }
 
         // Prepare and validate input
         $input = $this->prepareAndValidateInput($request);
 
-        if ($input instanceof JsonResponse) {
+        if ($input instanceof JsonResponse)
+        {
             return $input;
         }
 
@@ -135,8 +143,8 @@ class WarehousesController extends BaseAuthController {
         // Update packages
         $warehouse->syncPackages($input['packages']);
 
-        Flash::success('Warehouse updated.');
-        return response()->json(['redirect_to' => '/warehouses/edit/' . $warehouse->id]);
+        Flash::success('Warehouse updated.')
+        return response()->json(['redirect_url' => '/warehouses/edit/' . $warehouse->id]);
     }
 
     /**
@@ -161,7 +169,7 @@ class WarehousesController extends BaseAuthController {
      * Retrieves a list of shippers & consignees for a jquery autocomplete field.
      *
      * @uses   ajax
-     * @return json
+     * @return json string
      */
     public function getAjaxShipperConsigneeAutocomplete(Request $request)
     {
@@ -169,9 +177,12 @@ class WarehousesController extends BaseAuthController {
         $response = [];
 
         if (strlen($input['term']) < 2)
+        {
             return response()->json($response);
+        }
 
-        foreach(User::autocompleteSearch($input['term'], $this->user->company_id) as $user) {
+        foreach(User::autocompleteSearch($input['term'], $this->user->company_id) as $user)
+        {
             $response[] = ['id' => $user->id, 'label' => $user->present()->company(TRUE)];
         }
 
@@ -182,7 +193,7 @@ class WarehousesController extends BaseAuthController {
      * Retrieves a list of packages by warehouse id.
      *
      * @uses   ajax
-     * @return json
+     * @return view
      */
     public function getAjaxPackages(Request $request, $warehouseId)
     {
@@ -195,12 +206,11 @@ class WarehousesController extends BaseAuthController {
      * a warehouse.
      *
      * @param  Request $request
-     * @return array  The input
+     * @return array|JsonResponse  An input array or JsonResponse
      */
     private function prepareAndValidateInput(Request $request)
     {
         $input = $request->only('warehouse', 'packages');
-        $input['warehouse']['company_id'] = $this->user->company_id;
 
         // Prepare rules
         $warehouseRules = [
@@ -214,17 +224,19 @@ class WarehousesController extends BaseAuthController {
         // Validate input
         $validator = Validator::make($input['warehouse'], $warehouseRules);
 
-        if ($validator->fails()) {
-            return response()->json(['error_message' => Flash::view($validator)], 400);
+        if ($validator->fails())
+        {
+            return response()->json(['error' => Flash::view($validator)], 400);
         }
 
         // Create a new carrier if necessary
-        if (empty($input['warehouse']['carrier_id'])) {
+        if (empty($input['warehouse']['carrier_id']))
+        {
             $carrier = Carrier::firstOrCreate(['name' => $input['warehouse']['carrier_name']]);
             $input['warehouse']['carrier_id'] = $carrier->id;
         }
 
-        // Not an actual database field
+        // Not a real attribute
         unset($input['warehouse']['carrier_name']);
 
         return $input;

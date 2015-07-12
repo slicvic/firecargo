@@ -32,9 +32,11 @@ class Carrier extends Base {
      */
     public function save(array $options = array())
     {
-        if ( ! $this->exists) {
+        if ( ! $this->exists)
+        {
             $this->created_by_user_id = Auth::user()->id;
         }
+
         parent::save($options);
     }
 
@@ -58,7 +60,8 @@ class Carrier extends Base {
      */
     public function setAttribute($key, $value)
     {
-        switch ($key) {
+        switch ($key)
+        {
             case 'name':
                 $value = $this->sanitizeName($value);
                 break;
@@ -70,7 +73,7 @@ class Carrier extends Base {
     /**
      * Sanitizes a carrier name in preparation for database.
      *
-     * @param  string $name
+     * @param  string  $name
      * @return string
      */
     private function sanitizeName($name)

@@ -61,11 +61,16 @@ class UsersController extends BaseAuthController {
         // Create user
         $user = new User($input['user']);
         $user->company_id = $this->user->isAdmin() ? $input['user']['company_id'] : $this->user->company_id;
-        $user->save();
+
+        if ( ! $user->save())
+        {
+            return $this->redirectBackWithError('Account creation failed, please try again.');
+        }
 
         // Assign roles
-        if ($input['role_ids']) {
-            $user->roles()->sync($input['role_ids'] );
+        if ($input['roles'])
+        {
+            $user->roles()->sync($input['roles'] );
         }
 
         // Create address
@@ -80,6 +85,7 @@ class UsersController extends BaseAuthController {
     public function getEdit(Request $request, $id)
     {
         $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
+
         return view('users.form', ['user' => $user]);
     }
 
@@ -104,16 +110,19 @@ class UsersController extends BaseAuthController {
         // Update user
         $user = $this->user->isAdmin() ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
         $user->company_id = $this->user->isAdmin() ? $input['user']['company_id'] : $user->company_id;
-        $user->fill($input['user'])->save();
+        $user->fill($input['user']);
+        $user->save();
 
         // Update roles
-        $user->roles()->sync($input['role_ids'] ?: []);
+        $user->roles()->sync($input['roles'] ?: []);
 
         // Update address
-        if ($user->address) {
+        if ($user->address)
+        {
             $user->address->update($input['address']);
         }
-        else {
+        else
+        {
             $user->address()->save(new Address($input['address']));
         }
 
@@ -160,7 +169,8 @@ class UsersController extends BaseAuthController {
         $response['recordsTotal'] = $results['total'];
         $response['data'] = [];
 
-        foreach($results['users'] as $user) {
+        foreach($results['users'] as $user)
+        {
             $data = [
                 $user->company_name,
                 $user->first_name,
@@ -172,10 +182,12 @@ class UsersController extends BaseAuthController {
                 sprintf('<a href="/accounts/edit/%s" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a>', $user->id)
             ];
 
-            if ($this->user->isAdmin()) {
+            if ($this->user->isAdmin())
+            {
                 $data = array_merge([$user->id, $user->company->name], $data);
             }
-            else {
+            else
+            {
                 $data = array_merge([$user->id], $data);
             }
 
@@ -193,12 +205,14 @@ class UsersController extends BaseAuthController {
      */
     private function prepareInput(Request $request)
     {
-        $input = $request->only('user', 'role_ids', 'address');
+        $input = $request->only('user', 'roles', 'address');
 
-        if ( ! $this->user->isAdmin()) {
+        if ( ! $this->user->isAdmin())
+        {
             // Prohibit setting "admin" role
-            if ($input['role_ids'] && in_array(Role::ADMIN, $input['role_ids'])) {
-                $input['role_ids'] = array_diff($input['role_ids'], [Role::ADMIN]);
+            if ($input['roles'] && in_array(Role::ADMIN, $input['roles']))
+            {
+                $input['roles'] = array_diff($input['roles'], [Role::ADMIN]);
             }
         }
 

@@ -33,6 +33,7 @@ class UserProfileController extends BaseAuthController {
     public function getProfile()
     {
         $view = view('user_profile.show', ['user' => $this->user]);
+
         return view('user_profile.layout', ['content' => $view]);
     }
 
@@ -42,6 +43,7 @@ class UserProfileController extends BaseAuthController {
     public function getEdit()
     {
         $view = view('user_profile.edit', ['user' => $this->user]);
+
         return view('user_profile.layout', ['content' => $view]);
     }
 
@@ -66,10 +68,12 @@ class UserProfileController extends BaseAuthController {
         $this->user->update($input['user']);
 
         // Update address
-        if ($this->user->address) {
+        if ($this->user->address)
+        {
             $this->user->address->update($input['address']);
         }
-        else {
+        else
+        {
             $this->user->address()->save(new Address($input['address']));
         }
 
@@ -82,6 +86,7 @@ class UserProfileController extends BaseAuthController {
     public function getPassword()
     {
         $view = view('user_profile.password');
+
         return view('user_profile.layout', ['content' => $view]);
     }
 
@@ -102,7 +107,8 @@ class UserProfileController extends BaseAuthController {
         $this->validate($input, $rules);
 
         // Change password
-        if ( ! Hash::check($input['current_password'], $this->user->password)) {
+        if ( ! Hash::check($input['current_password'], $this->user->password))
+        {
             return $this->redirectBackWithError('The password you entered does not match your current one.');
         }
 
@@ -129,11 +135,15 @@ class UserProfileController extends BaseAuthController {
         ]);
 
         if ($validator->fails())
+        {
            return response()->json(Flash::view($validator), 500);
+        }
 
         // Create destination directory
         $destination = public_path() . '/uploads/users/' . $this->user->id . '/images/profile/';
-        if ( ! file_exists($destination)) {
+
+        if ( ! file_exists($destination))
+        {
             mkdir($destination, 0775, TRUE);
         }
 
@@ -143,7 +153,8 @@ class UserProfileController extends BaseAuthController {
             'md' => 200
         ];
 
-        foreach ($dimensions as $filename => $dimension) {
+        foreach ($dimensions as $filename => $dimension)
+        {
             Image::make($input['file']->getPathName())
                 ->orientate()
                 ->resize($dimension, $dimension)

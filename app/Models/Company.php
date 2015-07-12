@@ -35,26 +35,28 @@ class Company extends Base {
     /**
      * Checks if logo image file exists.
      *
-     * @param  string $size sm|md|lg
+     * @param  string  $size  sm|md|lg
      * @return bool
      */
     public function hasLogo($size)
     {
         $path = 'uploads/companies/' . $this->id . '/images/logo/' . $size . '.png';
+
         return file_exists(public_path() . '/' . $path);
     }
 
     /**
      * Gets the logo URL.
      *
-     * @param  string $size sm|md|lg
+     * @param  string  $size  sm|md|lg
      * @return string
      */
     public function getLogoURL($size = 'sm')
     {
         $path = 'uploads/companies/' . $this->id . '/images/logo/' . $size . '.png';
 
-        if (file_exists(public_path() . '/' . $path)) {
+        if (file_exists(public_path() . '/' . $path))
+        {
             return asset($path) . '?cb=' . time();
         }
 

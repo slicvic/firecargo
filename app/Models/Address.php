@@ -73,32 +73,39 @@ class Address extends Base {
     {
         $address = [];
 
-        if ($this->address1) {
+        if ($this->address1)
+        {
             $address[] = $this->address1;
         }
 
-        if ($this->address2) {
+        if ($this->address2)
+        {
             $address[] = $this->address2;
         }
 
-        if ($this->city && $this->state) {
+        if ($this->city && $this->state)
+        {
             $cityStateZip = $this->city . ', ' . $this->state;
         }
-        else {
+        else
+        {
             $cityStateZip = $this->city . $this->state;
         }
 
-        if ($this->postal_code) {
+        if ($this->postal_code)
+        {
             $cityStateZip .= ' ' . $this->postal_code;
         }
 
         $cityStateZip = trim($cityStateZip);
 
-        if ($cityStateZip) {
+        if ($cityStateZip)
+        {
             $address[] = $cityStateZip;
         }
 
-        if ($this->country_id) {
+        if ($this->country_id)
+        {
             $address[] = $this->country->name;
         }
 
@@ -108,7 +115,7 @@ class Address extends Base {
     /**
      * Converts the address into a string.
      *
-     * @param  string $lineSeparator
+     * @param  string  $lineSeparator
      * @return string
      */
     public function asString($lineSeparator = '<br>')

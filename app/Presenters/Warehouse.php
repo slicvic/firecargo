@@ -20,7 +20,9 @@ class Warehouse extends BasePresenter {
         $dateFormat = 'n/j/Y';
 
         if ($withTime)
+        {
             return date("$dateFormat g:i A", strtotime($this->model->arrived_at));
+        }
 
         return date($dateFormat, strtotime($this->model->arrived_at));
     }

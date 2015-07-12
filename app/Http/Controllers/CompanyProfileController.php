@@ -30,6 +30,7 @@ class CompanyProfileController extends BaseAuthController {
     {
         $company = $this->user->company;
         $view = view('company_profile.show', ['company' => $company]);
+
         return view('company_profile.layout', ['company' => $company, 'content' => $view]);
     }
 
@@ -40,6 +41,7 @@ class CompanyProfileController extends BaseAuthController {
     {
         $company = $this->user->company;
         $view = view('company_profile.edit', ['company' => $company]);
+
         return view('company_profile.layout', ['company' => $company, 'content' => $view]);
     }
 
@@ -58,10 +60,12 @@ class CompanyProfileController extends BaseAuthController {
         $this->user->company->update($input['company']);
 
         // Update address
-        if ($this->user->company->address) {
+        if ($this->user->company->address)
+        {
             $this->user->company->address->update($input['address']);
         }
-        else {
+        else
+        {
             $this->user->company->address()->save(new Address($input['address']));
         }
 
@@ -84,13 +88,16 @@ class CompanyProfileController extends BaseAuthController {
             'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . $maxKb
         ]);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
+        {
            return response()->json(Flash::view($validator), 500);
         }
 
         // Create destination directory
         $destination = public_path() . '/uploads/companies/' . $this->user->company->id . '/images/logo/';
-        if ( ! file_exists($destination)) {
+
+        if ( ! file_exists($destination))
+        {
             mkdir($destination, 0775, TRUE);
         }
 
@@ -101,7 +108,8 @@ class CompanyProfileController extends BaseAuthController {
             'lg' => 300
         ];
 
-        foreach ($dimensions as $filename => $dimension) {
+        foreach ($dimensions as $filename => $dimension)
+        {
             Image::make($input['file']->getPathName())
                 ->orientate()
                 ->resize($dimension, NULL, function($constraint) {

@@ -26,6 +26,7 @@ class CarriersController extends BaseAuthController {
     public function getIndex()
     {
         $carriers = Carrier::all();
+
         return view('carriers.index', ['carriers' => $carriers]);
     }
 
@@ -59,6 +60,7 @@ class CarriersController extends BaseAuthController {
     public function getEdit($id)
     {
         $carrier = Carrier::findOrFail($id);
+
         return view('carriers.form', ['carrier' => $carrier]);
     }
 
@@ -73,7 +75,7 @@ class CarriersController extends BaseAuthController {
         $this->validate($input, Carrier::$rules);
 
         // Update carrier
-        Carrier::updateWhereId($id, $input);
+        Carrier::updateById($id, $input);
 
         return $this->redirectBackWithSuccess('Carrier updated.');
     }
@@ -99,9 +101,12 @@ class CarriersController extends BaseAuthController {
         $response = [];
 
         if (strlen($input['term']) < 2)
+        {
             return response()->json($response);
+        }
 
-        foreach(Carrier::autocompleteSearch($input['term']) as $carrier) {
+        foreach(Carrier::autocompleteSearch($input['term']) as $carrier)
+        {
             $response[] = [
                 'id'    => $carrier->id,
                 'label' => $carrier->present()->name(TRUE)

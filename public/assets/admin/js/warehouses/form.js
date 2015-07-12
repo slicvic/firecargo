@@ -46,19 +46,19 @@ $(function() {
         event.preventDefault();
 
         var $form = $(this),
-            $flashError = $('#flashError'),
+            $flash = $('#flashMessage'),
             $submit = $(this).find('button');
 
         $submit.attr('disabled', true);
-        $flashError.html('');
+        $flash.html('');
 
         $.post($form.attr('action'), $form.serialize(), 'json')
             .done(function(data) {
-                window.location = data.redirect_to;
+                window.location = data.redirect_url;
             })
             .fail(function(xhr) {
                 var data = JSON.parse(xhr.responseText);
-                $flashError.html(data.error_message);
+                $flash.html(data.error);
                 $('html, body').scrollTop(0);
                 $submit.attr('disabled', false);
             });

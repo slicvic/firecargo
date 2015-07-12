@@ -13,11 +13,11 @@ abstract class Base extends Model {
     /**
      * Updates a record by the id.
      *
-     * @param  int $id
-     * @param  array $input
+     * @param  int    $id
+     * @param  array  $input
      * @return bool|null
      */
-    public static function updateWhereId($id, $input)
+    public static function updateById($id, $input)
     {
         return self::where(['id' => $id])->update($input);
     }

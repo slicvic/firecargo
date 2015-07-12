@@ -24,7 +24,7 @@ class Flash {
     /**
      * Sets a success message.
      *
-     * @param  string $message
+     * @param  string  $message
      * @return void
      */
     public static function success($message)
@@ -35,7 +35,7 @@ class Flash {
     /**
      * Sets an info message.
      *
-     * @param  string $message
+     * @param  string  $message
      * @return void
      */
     public static function info($message)
@@ -46,7 +46,7 @@ class Flash {
     /**
      * Sets a warning message.
      *
-     * @param  string $message
+     * @param  string  $message
      * @return void
      */
     public static function warning($message)
@@ -57,15 +57,17 @@ class Flash {
     /**
      * Sets an error message.
      *
-     * @param  string|array|\Illuminate\Validation\Validator|\Illuminate\Support\MessageBag $message
+     * @param  string|array|\Illuminate\Validation\Validator|\Illuminate\Support\MessageBag  $message
      * @return void
      */
     public static function error($message)
     {
-        if ($message instanceof Validator) {
+        if ($message instanceof Validator)
+        {
             $message = $message->messages()->all(':message');
         }
-        elseif ($message instanceof MessageBag) {
+        elseif ($message instanceof MessageBag)
+        {
             $message = $message->all(':message');
         }
 
@@ -92,20 +94,59 @@ class Flash {
         $value = self::get();
 
         if ($value === NULL)
+        {
             return NULL;
+        }
 
         return self::view($value['message'], $value['level']);
     }
 
     /**
-     * Makes the view for an HTML message.
+     * Makes the HTML view for a message.
      *
-     * @param  string $level  success|info|warning|error
-     * @param  string|array|\Illuminate\Validation\Validator|\Illuminate\Support\MessageBag $message
+     * @param  string  $level  success|info|warning|error
+     * @param  string|array|\Illuminate\Validation\Validator|\Illuminate\Support\MessageBag  $message
      * @return string
      */
     public static function view($message, $level = 'error')
     {
+        switch ($level)
+        {
+            case self::SUCCESS:
+            case self::INFO:
+            case self::WARNING:
+
+                if ( ! is_string($message))
+                {
+                    $message = NULL;
+                }
+                break;
+
+            case self::ERROR:
+
+                if (is_string($message) || is_array($message))
+                {
+                    // Do Nothing
+                }
+                elseif ($message instanceof \Illuminate\Validation\Validator)
+                {
+                    $message = $message->messages()->all(':message');
+                }
+                elseif ($message instanceof \Illuminate\Support\MessageBag)
+                {
+                    $message = $message->all(':message');
+                }
+                else
+                {
+                    $message = NULL;
+                }
+                break;
+
+            default:
+
+                return NULL;
+        }
+
         return view('flash_messages.' . $level, ['message' => $message])
             ->render();
     }

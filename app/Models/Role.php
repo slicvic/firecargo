@@ -34,12 +34,7 @@ class Role extends Base {
      */
     public static function allFiltered()
     {
-        if (Auth::user()->isAdmin()) {
-            $except = [];
-        }
-        else {
-            $except = [self::ADMIN];
-        }
+        $except = Auth::user()->isAdmin() ? [] : [self::ADMIN];
 
         return Role::whereNotIn('id', $except)->get();
     }
