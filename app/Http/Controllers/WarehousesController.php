@@ -23,6 +23,12 @@ use DB;
  */
 class WarehousesController extends BaseAuthController {
 
+    /**
+     * Constructor.
+     *
+     * @param  Guard $auth
+     * @return void
+     */
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
@@ -31,6 +37,8 @@ class WarehousesController extends BaseAuthController {
 
     /**
      * Displays a list of warehouses.
+     *
+     * @return Response
      */
     public function getIndex(Request $request)
     {
@@ -56,6 +64,8 @@ class WarehousesController extends BaseAuthController {
 
     /**
      * Shows a specific warehouse.
+     *
+     * @return Response
      */
     public function getShow(Request $request, $id)
     {
@@ -66,6 +76,8 @@ class WarehousesController extends BaseAuthController {
 
     /**
      * Shows the form for creating a warehouse.
+     *
+     * @return Response
      */
     public function getCreate()
     {
@@ -75,8 +87,7 @@ class WarehousesController extends BaseAuthController {
     /**
      * Creates a new warehouse.
      *
-     * @uses   ajax
-     * @return json string
+     * @return JsonResponse
      */
     public function postStore(Request $request)
     {
@@ -106,6 +117,8 @@ class WarehousesController extends BaseAuthController {
 
     /**
      * Shows the form for editing a warehouse.
+     *
+     * @return Response
      */
     public function getEdit($id)
     {
@@ -116,8 +129,7 @@ class WarehousesController extends BaseAuthController {
     /**
      * Updates a specific warehouse.
      *
-     * @uses   ajax
-     * @return json string
+     * @return JsonResponse
      */
     public function postUpdate(Request $request, $id)
     {
@@ -143,12 +155,15 @@ class WarehousesController extends BaseAuthController {
         // Update packages
         $warehouse->syncPackages($input['packages']);
 
-        Flash::success('Warehouse updated.')
+        Flash::success('Warehouse updated.');
+
         return response()->json(['redirect_url' => '/warehouses/edit/' . $warehouse->id]);
     }
 
     /**
      * Displays the warehouse receipt PDF.
+     *
+     * @return void
      */
     public function getPrintReceipt(Request $request, $warehouseId)
     {
@@ -158,6 +173,8 @@ class WarehousesController extends BaseAuthController {
 
     /**
      * Displays the warehouse shipping label PDF.
+     *
+     * @return void
      */
     public function getPrintLabel(Request $request, $warehouseId)
     {
@@ -168,8 +185,7 @@ class WarehousesController extends BaseAuthController {
     /**
      * Retrieves a list of shippers & consignees for a jquery autocomplete field.
      *
-     * @uses   ajax
-     * @return json string
+     * @return JsonResponse
      */
     public function getAjaxShipperConsigneeAutocomplete(Request $request)
     {
@@ -192,8 +208,7 @@ class WarehousesController extends BaseAuthController {
     /**
      * Retrieves a list of packages by warehouse id.
      *
-     * @uses   ajax
-     * @return view
+     * @return Response
      */
     public function getAjaxPackages(Request $request, $warehouseId)
     {

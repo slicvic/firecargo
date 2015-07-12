@@ -14,6 +14,12 @@ use App\Helpers\Flash;
  */
 class CarriersController extends BaseAuthController {
 
+    /**
+     * Constructor.
+     *
+     * @param  Guard $auth
+     * @return void
+     */
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
@@ -22,6 +28,8 @@ class CarriersController extends BaseAuthController {
 
     /**
      * Shows a list of carriers.
+     *
+     * @return Response
      */
     public function getIndex()
     {
@@ -32,14 +40,19 @@ class CarriersController extends BaseAuthController {
 
     /**
      * Shows the form for creating a new carrier.
+     *
+     * @return Response
      */
     public function getCreate()
     {
+        var_dump(redirect());exit;
         return view('carriers.form', ['carrier' => new Carrier]);
     }
 
     /**
      * Creates a new carrier.
+     *
+     * @return Redirector
      */
     public function postStore(Request $request)
     {
@@ -56,6 +69,8 @@ class CarriersController extends BaseAuthController {
 
     /**
      * Shows the form for editing a carrier.
+     *
+     * @return Response
      */
     public function getEdit($id)
     {
@@ -66,6 +81,8 @@ class CarriersController extends BaseAuthController {
 
     /**
      * Updates a specific carrier.
+     *
+     * @return Redirector
      */
     public function postUpdate(Request $request, $id)
     {
@@ -82,6 +99,8 @@ class CarriersController extends BaseAuthController {
 
     /**
      * Deletes a specific carrier.
+     *
+     * @return Redirector
      */
     public function getDelete(Request $request, $id)
     {
@@ -92,8 +111,7 @@ class CarriersController extends BaseAuthController {
     /**
      * Retrieves a list of carriers for a jquery autocomplete field.
      *
-     * @uses    ajax
-     * @return  json
+     * @return JsonResponse
      */
     public function getAjaxAutocomplete(Request $request)
     {

@@ -111,7 +111,7 @@ abstract class BaseController extends Controller {
      * @param  string|array  $data
      * @param  int           $status
      * @param  string        $message  A success flash message
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse
      */
     protected function jsonResponseWithSuccess($message, $data = array(), $status = 200)
     {

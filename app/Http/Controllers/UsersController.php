@@ -18,6 +18,12 @@ use App\Helpers\Flash;
  */
 class UsersController extends BaseAuthController {
 
+    /**
+     * Constructor.
+     *
+     * @param  Guard $auth
+     * @return void
+     */
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
@@ -26,6 +32,8 @@ class UsersController extends BaseAuthController {
 
     /**
      * Shows a list of users.
+     *
+     * @return Response
      */
     public function getIndex(Request $request)
     {
@@ -34,6 +42,8 @@ class UsersController extends BaseAuthController {
 
     /**
      * Shows the form for creating a user.
+     *
+     * @return Response
      */
     public function getCreate()
     {
@@ -42,6 +52,8 @@ class UsersController extends BaseAuthController {
 
     /**
      * Creates a new user.
+     *
+     * @return Redirector
      */
     public function postStore(Request $request)
     {
@@ -81,6 +93,8 @@ class UsersController extends BaseAuthController {
 
     /**
      * Shows the form for editing a user.
+     *
+     * @return Response
      */
     public function getEdit(Request $request, $id)
     {
@@ -91,6 +105,8 @@ class UsersController extends BaseAuthController {
 
     /**
      * Updates a specific user.
+     *
+     * @return Redirector
      */
     public function postUpdate(Request $request, $id)
     {
@@ -132,8 +148,7 @@ class UsersController extends BaseAuthController {
     /**
      * Retrieves a list of users for a jQuery DataTable.
      *
-     * @uses    ajax
-     * @return  json
+     * @return JsonResponse
      */
     public function getAjaxDatatable(Request $request)
     {

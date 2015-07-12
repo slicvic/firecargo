@@ -15,6 +15,12 @@ use App\Helpers\Flash;
  */
 class PackageStatusesController extends BaseAuthController {
 
+    /**
+     * Constructor.
+     *
+     * @param  Guard $auth
+     * @return void
+     */
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
@@ -23,6 +29,8 @@ class PackageStatusesController extends BaseAuthController {
 
     /**
      * Shows a list of package statuses.
+     *
+     * @return Response
      */
     public function getIndex()
     {
@@ -33,6 +41,8 @@ class PackageStatusesController extends BaseAuthController {
 
     /**
      * Shows the form for creating a new package status.
+     *
+     * @return Response
      */
     public function getCreate()
     {
@@ -41,6 +51,8 @@ class PackageStatusesController extends BaseAuthController {
 
     /**
      * Creates a new package status.
+     *
+     * @return Redirector
      */
     public function postStore(Request $request)
     {
@@ -59,6 +71,8 @@ class PackageStatusesController extends BaseAuthController {
 
     /**
      * Shows the form for editing a package status.
+     *
+     * @return Response
      */
     public function getEdit($id)
     {
@@ -69,6 +83,8 @@ class PackageStatusesController extends BaseAuthController {
 
     /**
      * Updates a specific package status.
+     *
+     * @return Redirector
      */
     public function postUpdate(Request $request, $id)
     {
@@ -87,6 +103,8 @@ class PackageStatusesController extends BaseAuthController {
 
     /**
      * Deletes a specific package status.
+     *
+     * @return Redirector
      */
     public function getDelete(Request $request, $id)
     {

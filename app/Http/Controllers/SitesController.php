@@ -14,6 +14,12 @@ use App\Helpers\Flash;
  */
 class SitesController extends BaseAuthController {
 
+    /**
+     * Constructor.
+     *
+     * @param  Guard $auth
+     * @return void
+     */
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
@@ -22,6 +28,8 @@ class SitesController extends BaseAuthController {
 
     /**
      * Shows a list of sites.
+     *
+     * @return Response
      */
     public function getIndex()
     {
@@ -32,6 +40,8 @@ class SitesController extends BaseAuthController {
 
     /**
      * Shows the form for creating a new site.
+     *
+     * @return Response
      */
     public function getCreate()
     {
@@ -40,6 +50,8 @@ class SitesController extends BaseAuthController {
 
     /**
      * Creates a new site.
+     *
+     * @return Redirector
      */
     public function postStore(Request $request)
     {
@@ -56,6 +68,8 @@ class SitesController extends BaseAuthController {
 
     /**
      * Shows the form for editing a site.
+     *
+     * @return Response
      */
     public function getEdit($id)
     {
@@ -66,6 +80,8 @@ class SitesController extends BaseAuthController {
 
     /**
      * Updates a specific site.
+     *
+     * @return Redirector
      */
     public function postUpdate(Request $request, $id)
     {

@@ -17,6 +17,12 @@ use App\Helpers\Flash;
  */
 class CargosController extends BaseAuthController {
 
+    /**
+     * Constructor.
+     *
+     * @param  Guard $auth
+     * @return void
+     */
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
@@ -25,6 +31,8 @@ class CargosController extends BaseAuthController {
 
     /**
      * Shows a list of cargos.
+     *
+     * @return Response
      */
     public function getIndex(Request $request)
     {
@@ -46,6 +54,8 @@ class CargosController extends BaseAuthController {
 
     /**
      * Shows the form for creating a cargo.
+     *
+     * @return Response
      */
     public function getCreate()
     {
@@ -67,6 +77,8 @@ class CargosController extends BaseAuthController {
 
     /**
      * Creates a new cargo.
+     *
+     * @return JsonResponse
      */
     public function postStore(Request $request)
     {
@@ -118,6 +130,8 @@ class CargosController extends BaseAuthController {
 
     /**
      * Shows the form for editing a cargo.
+     *
+     * @return Response
      */
     public function getEdit($id)
     {
@@ -145,6 +159,8 @@ class CargosController extends BaseAuthController {
 
     /**
      * Updates a specific cargo.
+     *
+     * @return JsonResponse
      */
     public function postUpdate(Request $request, $id)
     {

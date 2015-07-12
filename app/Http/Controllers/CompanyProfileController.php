@@ -17,6 +17,12 @@ use Intervention\Image\ImageManagerStatic as Image;
  */
 class CompanyProfileController extends BaseAuthController {
 
+    /**
+     * Constructor.
+     *
+     * @param  Guard $auth
+     * @return void
+     */
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
@@ -25,6 +31,8 @@ class CompanyProfileController extends BaseAuthController {
 
     /**
      * Shows the company's profile.
+     *
+     * @return Response
      */
     public function getProfile()
     {
@@ -35,7 +43,9 @@ class CompanyProfileController extends BaseAuthController {
     }
 
     /**
-     * DisplaShowsys the form for editing a company's profile.
+     * Shows the form for editing a company's profile.
+     *
+     * @return Response
      */
     public function getEditProfile()
     {
@@ -47,6 +57,8 @@ class CompanyProfileController extends BaseAuthController {
 
     /**
      * Updates the company's profile.
+     *
+     * @return Redirector
      */
     public function postProfile(Request $request)
     {
@@ -75,8 +87,7 @@ class CompanyProfileController extends BaseAuthController {
     /**
      * Uploads the company's logo.
      *
-     * @uses    ajax
-     * @return  json
+     * @return JsonResponse
      */
     public function postAjaxUploadLogo(Request $request)
     {

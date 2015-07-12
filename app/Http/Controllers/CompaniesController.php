@@ -14,6 +14,12 @@ use App\Helpers\Flash;
  */
 class CompaniesController extends BaseAuthController {
 
+    /**
+     * Constructor.
+     *
+     * @param  Guard $auth
+     * @return void
+     */
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
@@ -22,6 +28,8 @@ class CompaniesController extends BaseAuthController {
 
     /**
      * Shows a list of companies.
+     *
+     * @return Response
      */
     public function getIndex()
     {
@@ -32,6 +40,8 @@ class CompaniesController extends BaseAuthController {
 
     /**
      * Shows the form for creating a new company.
+     *
+     * @return Response
      */
     public function getCreate()
     {
@@ -40,6 +50,8 @@ class CompaniesController extends BaseAuthController {
 
     /**
      * Creates a new company.
+     *
+     * @return Redirector
      */
     public function postStore(Request $request)
     {
@@ -64,6 +76,8 @@ class CompaniesController extends BaseAuthController {
 
     /**
      * Shows the form for editing a company.
+     *
+     * @return Response
      */
     public function getEdit($id)
     {
@@ -74,6 +88,8 @@ class CompaniesController extends BaseAuthController {
 
     /**
      * Updates a specific company.
+     *
+     * @return Redirector
      */
     public function postUpdate(Request $request, $id)
     {

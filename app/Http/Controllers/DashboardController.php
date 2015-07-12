@@ -11,6 +11,11 @@ use App\Pdf\Warehouse as WarehousePdf;
  */
 class DashboardController extends BaseAuthController {
 
+    /**
+     * Shows the dashboard.
+     *
+     * @return Response
+     */
     public function getIndex()
     {
         if ($this->user->isAdmin())

@@ -23,6 +23,8 @@ class AuthController extends BaseController {
 
     /**
      * Shows the login form.
+     *
+     * @return Response
      */
     public function getLogin()
     {
@@ -31,6 +33,8 @@ class AuthController extends BaseController {
 
     /**
      * Handles a login request.
+     *
+     * @return Response
      */
     public function postLogin(Request $request)
     {
@@ -66,6 +70,8 @@ class AuthController extends BaseController {
 
     /**
      * Shows the signup form.
+     *
+     * @return Response
      */
     public function getSignup()
     {
@@ -74,6 +80,8 @@ class AuthController extends BaseController {
 
     /**
      * Handles a signup request.
+     *
+     * @return Response
      */
     public function postSignup(Request $request)
     {
@@ -115,6 +123,8 @@ class AuthController extends BaseController {
 
     /**
      * Shows the forgot password form.
+     *
+     * @return Response
      */
     public function getForgotPassword()
     {
@@ -123,6 +133,8 @@ class AuthController extends BaseController {
 
     /**
      * Handles forgot password request.
+     *
+     * @return Response
      */
     public function postForgotPassword(Request $request)
     {
@@ -151,6 +163,8 @@ class AuthController extends BaseController {
 
     /**
      * Shows the password reset form.
+     *
+     * @return Response
      */
     public function getResetPassword()
     {
@@ -159,6 +173,8 @@ class AuthController extends BaseController {
 
     /**
      * Handles a password reset request.
+     *
+     * @return Response
      */
     public function postResetPassword(Request $request)
     {

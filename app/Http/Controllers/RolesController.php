@@ -14,6 +14,12 @@ use App\Helpers\Flash;
  */
 class RolesController extends BaseAuthController {
 
+    /**
+     * Constructor.
+     *
+     * @param  Guard $auth
+     * @return void
+     */
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
@@ -22,6 +28,8 @@ class RolesController extends BaseAuthController {
 
     /**
      * Shows a list of roles.
+     *
+     * @return Response
      */
     public function getIndex()
     {
@@ -32,6 +40,8 @@ class RolesController extends BaseAuthController {
 
     /**
      * Shows the form for creating a new role.
+     *
+     * @return Response
      */
     public function getCreate()
     {
@@ -40,6 +50,8 @@ class RolesController extends BaseAuthController {
 
     /**
      * Creates a new role.
+     *
+     * @return Redirector
      */
     public function postStore(Request $request)
     {
@@ -56,6 +68,8 @@ class RolesController extends BaseAuthController {
 
     /**
      * Shows the form for editing a role.
+     *
+     * @return Response
      */
     public function getEdit($id)
     {
@@ -66,6 +80,8 @@ class RolesController extends BaseAuthController {
 
     /**
      * Updates a specific role.
+     *
+     * @return Redirector
      */
     public function postUpdate(Request $request, $id)
     {
@@ -82,6 +98,8 @@ class RolesController extends BaseAuthController {
 
     /**
      * Deletes a specific role.
+     *
+     * @return Redirector
      */
     public function getDelete(Request $request, $id)
     {

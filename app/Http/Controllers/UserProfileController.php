@@ -20,6 +20,8 @@ class UserProfileController extends BaseAuthController {
 
     /**
      * Logs out the user.
+     *
+     * @return Redirector
      */
     public function getLogout()
     {
@@ -29,6 +31,8 @@ class UserProfileController extends BaseAuthController {
 
     /**
      * Displays the user's profile.
+     *
+     * @return Response
      */
     public function getProfile()
     {
@@ -39,6 +43,8 @@ class UserProfileController extends BaseAuthController {
 
     /**
      * Shows the form for updating the user's profile.
+     *
+     * @return Response
      */
     public function getEdit()
     {
@@ -49,6 +55,8 @@ class UserProfileController extends BaseAuthController {
 
     /**
      * Updates the user's profile.
+     *
+     * @return Redirector
      */
     public function postProfile(Request $request)
     {
@@ -82,6 +90,8 @@ class UserProfileController extends BaseAuthController {
 
     /**
      * Shows the form for changing the user's password.
+     *
+     * @return Response
      */
     public function getPassword()
     {
@@ -92,6 +102,8 @@ class UserProfileController extends BaseAuthController {
 
     /**
      * Updates the user's password.
+     *
+     * @return Redirector
      */
     public function postPassword(Request $request)
     {
@@ -121,8 +133,7 @@ class UserProfileController extends BaseAuthController {
     /**
      * Uploads the user's photo.
      *
-     * @uses    ajax
-     * @return  json
+     * @return JsonResponse
      */
     public function postAjaxUploadPhoto(Request $request)
     {

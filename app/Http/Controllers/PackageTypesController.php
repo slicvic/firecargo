@@ -15,6 +15,12 @@ use App\Helpers\Flash;
  */
 class PackageTypesController extends BaseAuthController {
 
+    /**
+     * Constructor.
+     *
+     * @param  Guard $auth
+     * @return void
+     */
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
@@ -23,6 +29,8 @@ class PackageTypesController extends BaseAuthController {
 
     /**
      * Shows a list of package types.
+     *
+     * @return Response
      */
     public function getIndex()
     {
@@ -33,6 +41,8 @@ class PackageTypesController extends BaseAuthController {
 
     /**
      * Shows the form for creating a new package type.
+     *
+     * @return Response
      */
     public function getCreate()
     {
@@ -41,6 +51,8 @@ class PackageTypesController extends BaseAuthController {
 
     /**
      * Creates a new package type.
+     *
+     * @return Redirector
      */
     public function postStore(Request $request)
     {
@@ -57,6 +69,8 @@ class PackageTypesController extends BaseAuthController {
 
     /**
      * Shows the form for editing a package type.
+     *
+     * @return Response
      */
     public function getEdit($id)
     {
@@ -67,6 +81,8 @@ class PackageTypesController extends BaseAuthController {
 
     /**
      * Updates a specific package type.
+     *
+     * @return Redirector
      */
     public function postUpdate(Request $request, $id)
     {
@@ -83,6 +99,8 @@ class PackageTypesController extends BaseAuthController {
 
     /**
      * Deletes a specific package type.
+     *
+     * @return Redirector
      */
     public function getDelete(Request $request, $id)
     {
