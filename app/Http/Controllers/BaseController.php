@@ -1,9 +1,10 @@
 <?php namespace App\Http\Controllers;
 
+use Validator;
+
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Validator;
 
 use App\Exceptions\ValidationException;
 use App\Helpers\Flash;
@@ -56,7 +57,7 @@ abstract class BaseController extends Controller {
      *
      * @param  string  $path
      * @param  string  $message
-     * @return redirect()
+     * @return Redirector
      */
     protected function redirectWithSuccess($path, $message)
     {
@@ -70,7 +71,7 @@ abstract class BaseController extends Controller {
      *
      * @param  string  $path
      * @param  string  $message
-     * @return redirect()
+     * @return Redirector
      */
     protected function redirectWithError($path, $message)
     {
@@ -83,7 +84,7 @@ abstract class BaseController extends Controller {
      * Redirects back with the given success message.
      *
      * @param  string  $message
-     * @return redirect()
+     * @return Redirector
      */
     protected function redirectBackWithSuccess($message)
     {
@@ -96,7 +97,7 @@ abstract class BaseController extends Controller {
      * Redirects back with the given error message.
      *
      * @param  string  $message
-     * @return redirect()
+     * @return Redirector
      */
     protected function redirectBackWithError($message)
     {

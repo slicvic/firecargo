@@ -1,14 +1,16 @@
 <?php namespace App\Http\Controllers;
 
+use Validator;
+use Config;
+
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Validator;
+
+use Intervention\Image\ImageManagerStatic as Image;
 
 use App\Models\Company;
 use App\Models\Address;
 use App\Helpers\Flash;
-use Config;
-use Intervention\Image\ImageManagerStatic as Image;
 
 /**
  * CompanyProfileController
@@ -26,6 +28,7 @@ class CompanyProfileController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
+
         $this->middleware('agent');
     }
 

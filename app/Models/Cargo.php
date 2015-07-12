@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use DB;
+
 use App\Models\CompanyTrait;
 use App\Presenters\PresentableTrait;
 

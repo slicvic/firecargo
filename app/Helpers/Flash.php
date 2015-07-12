@@ -1,8 +1,6 @@
 <?php namespace App\Helpers;
 
 use Session;
-use Illuminate\Validation\Validator;
-use Illuminate\Support\MessageBag;
 
 /**
  * Flash Message Helper.
@@ -62,11 +60,11 @@ class Flash {
      */
     public static function error($message)
     {
-        if ($message instanceof Validator)
+        if ($message instanceof \Illuminate\Validation\Validator)
         {
             $message = $message->messages()->all(':message');
         }
-        elseif ($message instanceof MessageBag)
+        elseif ($message instanceof \Illuminate\Support\MessageBag)
         {
             $message = $message->all(':message');
         }
@@ -105,7 +103,7 @@ class Flash {
      * Makes the HTML view for a message.
      *
      * @param  string  $level  success|info|warning|error
-     * @param  string|array|\Illuminate\Validation\Validator|\Illuminate\Support\MessageBag  $message
+     * @param  string|array|\App\Exceptions\ValidationException|\Illuminate\Validation\Validator|\Illuminate\Support\MessageBag  $message
      * @return string
      */
     public static function view($message, $level = 'error')
@@ -120,6 +118,7 @@ class Flash {
                 {
                     $message = NULL;
                 }
+
                 break;
 
             case self::ERROR:
@@ -136,10 +135,15 @@ class Flash {
                 {
                     $message = $message->all(':message');
                 }
+                elseif ($message instanceof \App\Exceptions\ValidationException)
+                {
+                    $message = $message->errors()->all(':message');
+                }
                 else
                 {
                     $message = NULL;
                 }
+
                 break;
 
             default:

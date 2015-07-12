@@ -1,7 +1,8 @@
 <?php namespace App\Http\Controllers;
 
-use App\Models\User;
 use Auth;
+
+use App\Models\User;
 use App\Pdf\Warehouse as WarehousePdf;
 
 /**

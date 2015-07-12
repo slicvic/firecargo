@@ -23,6 +23,7 @@ class CompaniesController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
+
         $this->middleware('admin');
     }
 

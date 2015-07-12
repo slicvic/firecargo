@@ -1,7 +1,7 @@
 <?php namespace App\Models;
 
-use App\Presenters\PresentableTrait;
 use Auth;
+use App\Presenters\PresentableTrait;
 
 /**
  * Carrier

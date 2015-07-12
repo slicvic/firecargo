@@ -1,15 +1,17 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Http\Request;
 use Validator;
 use Auth;
 use Hash;
 
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
+
+use Intervention\Image\ImageManagerStatic as Image;
+
 use App\Models\User;
 use App\Models\Address;
 use App\Helpers\Flash;
-use Intervention\Image\ImageManagerStatic as Image;
 
 /**
  * UserProfileController
@@ -26,6 +28,7 @@ class UserProfileController extends BaseAuthController {
     public function getLogout()
     {
         Auth::logout();
+
         return redirect('/');
     }
 

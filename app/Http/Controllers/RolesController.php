@@ -1,8 +1,9 @@
 <?php namespace App\Http\Controllers;
 
+use Validator;
+
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Validator;
 
 use App\Models\Role;
 use App\Helpers\Flash;
@@ -23,6 +24,7 @@ class RolesController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
+
         $this->middleware('admin');
     }
 

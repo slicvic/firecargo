@@ -1,9 +1,10 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Http\Request;
 use Validator;
 use Auth;
+
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
 
 use App\Models\PackageType;
 use App\Helpers\Flash;
@@ -24,6 +25,7 @@ class PackageTypesController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
+
         $this->middleware('admin');
     }
 

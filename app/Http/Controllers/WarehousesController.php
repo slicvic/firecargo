@@ -1,20 +1,21 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Http\Request;
 use Validator;
 use Auth;
+use DB;
+
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Pagination\Paginator;
 
 use App\Models\Warehouse;
 use App\Models\Package;
 use App\Models\User;
 use App\Models\Carrier;
 use App\Helpers\Flash;
-
-use Illuminate\Pagination\Paginator;
 use App\Pdf\Warehouse as WarehousePdf;
-use DB;
+use App\Exceptions\ValidationException;
 
 /**
  * WarehousesController
@@ -32,6 +33,7 @@ class WarehousesController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
+
         $this->middleware('agent');
     }
 
@@ -49,7 +51,7 @@ class WarehousesController extends BaseAuthController {
         $input['q'] = $request->input('q');
         $input['status'] = $request->input('status');
 
-        // Perform search
+        // Perform query
         $criteria['status'] = $input['status'];
         $criteria['q'] = $input['q'];
         $criteria['company_id'] = $this->user->company_id;
@@ -92,11 +94,13 @@ class WarehousesController extends BaseAuthController {
     public function postStore(Request $request)
     {
         // Prepare and validate input
-        $input = $this->prepareAndValidateInput($request);
-
-        if ($input instanceof JsonResponse)
+        try
         {
-            return $input;
+            $input = $this->prepareAndValidateInput($request);
+        }
+        catch (ValidationException $e)
+        {
+            return response()->json(['error' => Flash::view($e)], 400);
         }
 
         // Create warehouse
@@ -105,13 +109,14 @@ class WarehousesController extends BaseAuthController {
 
         if ( ! $warehouse->save())
         {
-            return response()->json(['error_message' => Flash::view('Warehouse creation failed, please try again.')], 500);
+            return response()->json(['error' => Flash::view('Warehouse creation failed, please try again.')], 500);
         }
 
         // Create packages
         $warehouse->syncPackages($input['packages'], FALSE);
 
         Flash::success('Warehouse created.');
+
         return response()->json(['redirect_url' => '/warehouses/show/' . $warehouse->id]);
     }
 
@@ -142,11 +147,13 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Prepare and validate input
-        $input = $this->prepareAndValidateInput($request);
-
-        if ($input instanceof JsonResponse)
+        try
         {
-            return $input;
+            $input = $this->prepareAndValidateInput($request);
+        }
+        catch (ValidationException $e)
+        {
+            return response()->json(['error' => Flash::view($e)], 400);
         }
 
         // Update warehouse
@@ -221,7 +228,8 @@ class WarehousesController extends BaseAuthController {
      * a warehouse.
      *
      * @param  Request $request
-     * @return array|JsonResponse  An input array or JsonResponse
+     * @return array
+     * @throws ValidationException
      */
     private function prepareAndValidateInput(Request $request)
     {
@@ -241,7 +249,7 @@ class WarehousesController extends BaseAuthController {
 
         if ($validator->fails())
         {
-            return response()->json(['error' => Flash::view($validator)], 400);
+            throw new ValidationException($validator->messages(), 400);
         }
 
         // Create a new carrier if necessary

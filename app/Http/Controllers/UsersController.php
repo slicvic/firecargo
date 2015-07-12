@@ -2,9 +2,10 @@
 
 use Validator;
 use Auth;
+use Session;
+
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Session;
 
 use App\Models\User;
 use App\Models\Role;
@@ -27,6 +28,7 @@ class UsersController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
+
         $this->middleware('agent');
     }
 

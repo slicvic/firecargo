@@ -1,8 +1,9 @@
 <?php namespace App\Http\Controllers;
 
+use Validator;
+
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Validator;
 
 use App\Models\Cargo;
 use App\Models\Carrier;
@@ -26,6 +27,7 @@ class CargosController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
+
         $this->middleware('agent');
     }
 
@@ -36,11 +38,13 @@ class CargosController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
+        // Prepare input
         $input['limit'] = $request->input('limit', 10);
         $input['sortby'] = $request->input('sortby', 'id');
         $input['order'] = $request->input('order', 'desc');
         $input['q'] = $request->input('q');
 
+        // Perform query
         $criteria['q'] = $input['q'];
         $criteria['company_id'] = $this->user->company_id;
         $cargos = Cargo::search($criteria, $input['sortby'], $input['order'], $input['limit']);
@@ -82,33 +86,12 @@ class CargosController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $request->only('cargo', 'packages');
+        $input = $this->prepareAndValidateInput($request);
 
-        // Prepare rules
-        $rules =  [
-            'departed_at' => 'required',
-            'receipt_number' => 'required',
-            'carrier_id' => 'required_without:carrier_id',
-            'carrier_name' => 'required_without:carrier_name',
-        ];
-
-        // Validate input
-        $validator = Validator::make($input['cargo'], $rules);
-
-        if ($validator->fails())
+        if ($input instanceof JsonResponse)
         {
-            return response()->json(['error' => Flash::view($validator)], 400);
+            return $input;
         }
-
-        // Create new carrier if necessary
-        if (empty($input['cargo']['carrier_id']))
-        {
-            $carrier = Carrier::firstOrCreate(['name' => $input['cargo']['carrier_name']]);
-            $input['cargo']['carrier_id'] = $carrier->id;
-        }
-
-        // Not a real attribute
-        unset($input['cargo']['carrier_name']);
 
         // Create cargo
         $cargo = new Cargo($input['cargo']);
@@ -120,12 +103,14 @@ class CargosController extends BaseAuthController {
         }
 
         // Update packages
-        if ($input['packages']) {
+        if ($input['packages'])
+        {
             Package::whereIn('id', array_keys($input['packages']))->update(['cargo_id' => $cargo->id]);
         }
 
         Flash::success('Cargo created.');
-        return response()->json(['redirect_to' => '/cargos/show/' . $cargo->id]);
+
+        return response()->json(['redirect_url' => '/cargos/show/' . $cargo->id]);
     }
 
     /**
@@ -164,9 +149,7 @@ class CargosController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-
-
-        // Create cargo
+        // Lookup the cargo
         $cargo = Cargo::findByIdAndCurrentUserCompanyId($id);
 
         if ( ! $cargo)
@@ -174,15 +157,12 @@ class CargosController extends BaseAuthController {
             return response()->json(['error' => Flash::view('Cargo not found.')], 404);
         }
 
-        // Create new carrier if necessary
-        if (empty($input['cargo']['carrier_id']))
-        {
-            $carrier = Carrier::firstOrCreate(['name' => $input['cargo']['carrier_name']]);
-            $input['cargo']['carrier_id'] = $carrier->id;
-        }
+        $input = $this->prepareAndValidateInput($request);
 
-        // Not a real attribute
-        unset($input['cargo']['carrier_name']);
+        if ($input instanceof JsonResponse)
+        {
+            return $input;
+        }
 
         // Update packages
         Package::where(['cargo_id' => $cargo->id])->update(['cargo_id' => NULL]);

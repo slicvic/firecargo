@@ -1,8 +1,9 @@
 <?php namespace App\Http\Controllers;
 
+use Auth;
+
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Auth;
 
 use App\Models\Carrier;
 use App\Helpers\Flash;
@@ -23,6 +24,7 @@ class CarriersController extends BaseAuthController {
     public function __construct(Guard $auth)
     {
         parent::__construct($auth);
+
         $this->middleware('admin');
     }
 
@@ -45,7 +47,6 @@ class CarriersController extends BaseAuthController {
      */
     public function getCreate()
     {
-        var_dump(redirect());exit;
         return view('carriers.form', ['carrier' => new Carrier]);
     }
 

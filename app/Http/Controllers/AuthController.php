@@ -1,18 +1,18 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Session;
 use Validator;
+use Event;
+
+use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Site;
 use App\Models\Role;
 use App\Helpers\Html;
 use App\Helpers\Flash;
-
 use App\Events\UserLoggedIn;
 use App\Events\UserJoined;
-use Event;
 
 /**
  * AuthController
