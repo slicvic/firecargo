@@ -113,7 +113,10 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Create packages
-        $warehouse->syncPackages($input['packages'], FALSE);
+        if ($input['packages'])
+        {
+            $warehouse->syncPackages($input['packages'], FALSE);
+        }
 
         Flash::success('Warehouse created.');
 
@@ -138,7 +141,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        // Lookup warehouse
+        // Make sure warehouse exists before proceeding
         $warehouse = Warehouse::findByIdAndCurrentUserCompanyId($id);
 
         if ( ! $warehouse)
@@ -160,7 +163,7 @@ class WarehousesController extends BaseAuthController {
         $warehouse->update($input['warehouse']);
 
         // Update packages
-        $warehouse->syncPackages($input['packages']);
+        $warehouse->syncPackages($input['packages'] ?: []);
 
         Flash::success('Warehouse updated.');
 
@@ -213,17 +216,6 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Retrieves a list of packages by warehouse id.
-     *
-     * @return Response
-     */
-    public function getAjaxPackages(Request $request, $warehouseId)
-    {
-        $warehouse = Warehouse::findOrFail($warehouseId);
-        return view('warehouses.index.packages', ['packages' => $warehouse->packages]);
-    }
-
-    /**
      * Validates and prepares the given request input for creating and updating
      * a warehouse.
      *
@@ -249,7 +241,7 @@ class WarehousesController extends BaseAuthController {
 
         if ($validator->fails())
         {
-            throw new ValidationException($validator->messages(), 400);
+            throw new ValidationException($validator->messages());
         }
 
         // Create a new carrier if necessary

@@ -59,14 +59,6 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the site.
-     */
-    public function site()
-    {
-        return $this->belongsTo('App\Models\Site');
-    }
-
-    /**
      * Gets the packages.
      */
     public function packages()
@@ -75,38 +67,40 @@ class Warehouse extends Base {
     }
 
     /**
-     * Creates ands assigns the packages to the warehouse.
+     * Creates/updates the given packages and attaches them to the warehouse.
      *
-     * @param array  $packages
-     * @param bool   $detaching
-     *   If TRUE, after this operation is complete,
-     *   only the packages in the array will be left
+     * WARNING: After this operation is complete only the packages in the array
+     * will remain in the warehouse.
+     *
+     * @param  array  $packages
+     * @param  bool   $detaching
      * @return void
      */
-    public function syncPackages($packages, $detaching = TRUE)
+    public function syncPackages(array $packages, $detaching = TRUE)
     {
-        $ids = (is_array($packages)) ? array_keys($packages) : [];
+        $packageIds = array_keys($packages);
 
-        // First we need to delete the packages not specified in the array
+        // First lets detach those packages not in $packageIds
         if ($detaching)
         {
-            Package::whereNotIn('id', $ids)->delete();
+            Package::whereNotIn('id', $packageIds)
+                ->where('warehouse_id', '=', $this->id)
+                ->update(['warehouse_id' => NULL]);
         }
 
-        // Terminate if there's nothing more to add or update
-        if (empty($ids))
+        // Next, we will create or update the given packages
+        if (count($packages))
         {
-            return;
-        }
-
-        // Next, we will add or update the remaining packages
-        $consignee = $this->consignee;
-
-        foreach ($packages as $id => $data)
-        {
-            $package = Package::firstOrCreate(['id' => $id, 'warehouse_id' => $this->id]);
-            $data['ship'] = $consignee->autoship_packages;
-            $package->update($data);
+            foreach ($packages as $id => $data)
+            {
+                $package = Package::firstOrNew(['id' => $id]);
+                $package->fill($data);
+                $package->warehouse_id = $this->id;
+                $package->original_warehouse_id = $package->original_warehouse_id ?: $this->id;
+                $package->company_id = $this->company_id;
+                $package->ship = ($package->cargo_id) ? $package->ship : $this->consignee->autoship_setting;
+                $package->save();
+            }
         }
     }
 
@@ -138,6 +132,28 @@ class Warehouse extends Base {
         }
 
         return parent::setAttribute($key, $value);
+    }
+
+    /**
+     * Returns the warehouse color status (red, green or yellow)
+     *
+     * @return string
+     */
+    public function determineColorStatus()
+    {
+        $totalPackages = Package::where(['warehouse_id' => $this->id])->count();
+        $totalPackagesShipped = Package::whereRaw('warehouse_id = ? AND cargo_id IS NOT NULL', [$this->id])->count();
+
+        if ($totalPackages - $totalPackagesShipped == 0)
+        {
+            return 'green';
+        }
+        elseif ($totalPackages - $totalPackagesShipped > 0)
+        {
+            return 'yellow';
+        }
+
+        return 'red';
     }
 
     /**
@@ -256,8 +272,11 @@ class Warehouse extends Base {
     {
         $sortColumns = [
             'id' => 'id',
-            'date' => 'arrived_at'
+            'arrived' => 'arrived_at',
+            'created' => 'created_at',
+            'updated' => 'updated_at',
         ];
+
         $orderBy = array_key_exists($orderBy, $sortColumns) ? $sortColumns[$orderBy] : 'id';
         $order = ($order == 'asc') ? 'asc' : 'desc';
 

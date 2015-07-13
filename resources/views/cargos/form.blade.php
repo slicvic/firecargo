@@ -3,7 +3,7 @@
 @section('icon', 'truck')
 
 @section('title')
-    {{ $cargo->exists ? 'Edit' : 'Create' }} Cargo
+    {{ $cargo->exists ? 'Edit Cargo # ' . $cargo->id  : 'Create Cargo' }}
 @stop
 
 @section('subtitle')
@@ -11,6 +11,11 @@
         <li>
             <a href="/cargos">Cargos</a>
         </li>
+        @if ($cargo->exists)
+            <li>
+                <a href="/cargos/show/{{ $cargo->id }}">Detail</a>
+            </li>
+        @endif
         <li class="active">
             <strong>{{ $cargo->exists ? 'Edit' : 'Create' }}</strong>
         </li>
@@ -37,7 +42,7 @@
                     <label class="control-label col-sm-2">Departure Date</label>
                     <div class="col-sm-4">
                         <div class="input-group">
-                            <input required type="text" name="cargo[departed_at]" placeholder="" class="date form-control" value="{{ $cargo->exists ? $cargo->departed_at : date('Y-m-d H:i:s') }}">
+                            <input required type="text" name="cargo[departed_at]" class="date form-control" value="{{ $cargo->present()->departedAt() }}">
                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                         </div>
                     </div>
@@ -79,7 +84,6 @@
                                     @endforeach
                                 </ol>
                             @endforeach
-
                         </li>
                     </ol>
                 </div>
@@ -100,8 +104,8 @@
     <script>
     $(function() {
         // Bind nestable
-        $('#cargoNestableList').nestable({});
-        $('#cargoNestableList').nestable('expandAll');
+        // $('#cargoNestableList').nestable({});
+        // $('#cargoNestableList').nestable('expandAll');
 
         // Bind carrier autocomplete
         $('#carrier').keyup(function() {

@@ -1,6 +1,7 @@
 <?php $id = ($package->exists) ? $package->id : 0; ?>
 <tbody{!! $id ? 'class="package"' : ' style="display:none;" class="package-template"' !!}>
     <tr>
+        <td class="id">{{ $id ?: 'NEW' }}</td>
         <td>
             <select name="packages[{{ $id }}][status_id]" data-name="status_id" class="form-control">
                 @foreach(\App\Models\PackageStatus::allByCurrentUserCompanyId('is_default', 'desc') as $status)
@@ -35,7 +36,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="7">
+        <td colspan="8">
             <div class="row">
                 <div class="col-sm-2">
                     <input type="text" name="packages[{{ $id }}][tracking_number]" placeholder="Tracking #" data-name="tracking_number" class="unique form-control" size="10" value="{{ $package->tracking_number }}">

@@ -50,6 +50,36 @@ class Package extends BasePresenter {
     }
 
     /**
+     * Presents the warehouse link.
+     *
+     * @return string
+     */
+    public function warehouseLink()
+    {
+        return sprintf('<a target="_blank" href="/warehouses/show/%s">%s</a> <i class="fa fa-link"></i>', $this->model->warehouse_id, $this->model->warehouse_id);
+    }
+
+    /**
+     * Presents the cargo link.
+     *
+     * @return string
+     */
+    public function cargoLink()
+    {
+        return sprintf('<a target="_blank" href="/cargos/show/%s">%s</a> <i class="fa fa-link"></i>', $this->model->cargo_id, $this->model->cargo_id);
+    }
+
+    /**
+     * Presents the color status.
+     *
+     * @return string
+     */
+    public function colorStatus()
+    {
+        return ($this->model->cargo_id) ? 'success' : 'danger';
+    }
+
+    /**
      * Presents a string representation.
      *
      * @return string

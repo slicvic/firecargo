@@ -3,6 +3,8 @@
 use Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Models\Warehouse;
+use App\Models\CompanyTrait;
 use App\Helpers\Math;
 use App\Presenters\PresentableTrait;
 
@@ -13,7 +15,7 @@ use App\Presenters\PresentableTrait;
  */
 class Package extends Base {
 
-    use PresentableTrait, SoftDeletes;
+    use PresentableTrait, SoftDeletes, CompanyTrait;
 
     protected $presenter = 'App\Presenters\Package';
 
@@ -21,14 +23,7 @@ class Package extends Base {
 
     protected $dates = ['deleted_at'];
 
-    public static $rules = [
-        'warehouse_id' => 'required',
-        'status_id' => 'required',
-        'type_id' => 'required'
-    ];
-
     protected $fillable = [
-        'warehouse_id',
         'type_id',
         'status_id',
         'cargo_id',
@@ -44,11 +39,19 @@ class Package extends Base {
     ];
 
     /**
-     * Gets the warehouse.
+     * Gets the currently assigned warehouse.
      */
     public function warehouse()
     {
         return $this->belongsTo('App\Models\Warehouse');
+    }
+
+    /**
+     * Gets the original warehouse this package came in.
+     */
+    public function originalWarehouse()
+    {
+        return $this->belongsTo('App\Models\Warehouse', 'original_warehouse_id');
     }
 
     /**
@@ -60,19 +63,19 @@ class Package extends Base {
     }
 
     /**
-     * Gets the site.
-     */
-    public function site()
-    {
-        return $this->belongsTo('App\Models\Site');
-    }
-
-    /**
      * Gets the status.
      */
     public function status()
     {
         return $this->belongsTo('App\Models\PackageStatus', 'status_id');
+    }
+
+    /**
+     * Gets the company.
+     */
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company');
     }
 
     /**

@@ -89,6 +89,7 @@ $(function() {
             var $clonedPkg = $(this).closest('tbody').clone();
 
             $clonedPkg.find('.unique').val('');
+            $clonedPkg.find('.id').html('NEW');
 
             $clonedPkg.find('input, select, textarea').each(function() {
                 $(this).attr('name', 'packages[new_' + total + '][' + $(this).attr('data-name') + ']');

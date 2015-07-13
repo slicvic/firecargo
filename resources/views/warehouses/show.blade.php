@@ -6,7 +6,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
-        <h2>Warehouse Detail # {{ $warehouse->id }}</h2>
+        <h2>Warehouse # {{ $warehouse->id }}</h2>
         <ol class="breadcrumb">
             <li>
                 <a href="/warehouses">Warehouses</a>
@@ -75,7 +75,11 @@
                 <div class="ibox-content">
                     <table class="table warehouse-info-table table-responsive">
                         <tr>
-                            <th class="col-sm-2">Date</th>
+                            <th class="col-sm-2">ID</th>
+                            <td>{{ $warehouse->id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Arrived</th>
                             <td>{{ $warehouse->present()->arrivedAt() }}</td>
                         </tr>
                         <tr>

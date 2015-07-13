@@ -32,7 +32,7 @@ class User extends Base implements AuthenticatableInterface {
         'id_number',
         'phone',
         'mobile_phone',
-        'autoship_packages'
+        'autoship_setting'
     ];
 
     /**

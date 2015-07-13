@@ -18,4 +18,16 @@ class Cargo extends BasePresenter {
     {
         return ($this->model->exists) ? $this->model->carrier->present()->name() : '';
     }
+
+    /**
+     * Presents the departed date.
+     *
+     * @return string
+     */
+    public function departedAt()
+    {
+        $format = 'm/d/Y';
+
+        return $this->model->exists ? date($format, strtotime($this->model->departed_at)) : date($format);
+    }
 }

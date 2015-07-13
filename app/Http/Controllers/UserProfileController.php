@@ -75,7 +75,7 @@ class UserProfileController extends BaseAuthController {
         $this->validate($input['user'], $rules);
 
         // Update user
-        $input['user']['autoship_packages'] = isset($input['user']['autoship_packages']);
+        $input['user']['autoship_setting'] = isset($input['user']['autoship_setting']);
         $this->user->update($input['user']);
 
         // Update address

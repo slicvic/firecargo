@@ -10,6 +10,7 @@ use App\Models\Carrier;
 use App\Models\Package;
 use App\Models\Warehouse;
 use App\Helpers\Flash;
+use App\Exceptions\ValidationException;
 
 /**
  * CargosController
@@ -57,6 +58,18 @@ class CargosController extends BaseAuthController {
     }
 
     /**
+     * Shows a specific cargo.
+     *
+     * @return Response
+     */
+    public function getShow(Request $request, $id)
+    {
+        $cargo = Cargo::findOrFailByIdAndCurrentUserCompanyId($id);
+
+        return view('cargos.show', ['cargo' => $cargo]);
+    }
+
+    /**
      * Shows the form for creating a cargo.
      *
      * @return Response
@@ -86,11 +99,14 @@ class CargosController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $this->prepareAndValidateInput($request);
-
-        if ($input instanceof JsonResponse)
+        // Prepare and validate input
+        try
         {
-            return $input;
+            $input = $this->prepareAndValidateInput($request);
+        }
+        catch (ValidationException $e)
+        {
+            return response()->json(['error' => Flash::view($e)], 400);
         }
 
         // Create cargo
@@ -105,7 +121,7 @@ class CargosController extends BaseAuthController {
         // Update packages
         if ($input['packages'])
         {
-            Package::whereIn('id', array_keys($input['packages']))->update(['cargo_id' => $cargo->id]);
+            $cargo->syncPackages(array_keys($input['packages']), FALSE);
         }
 
         Flash::success('Cargo created.');
@@ -131,6 +147,7 @@ class CargosController extends BaseAuthController {
 
         // Get all other packages not assigned to a cargo
         $packages = Package::allPendingCargoByCurrentUserCompany();
+
         foreach ($packages as $package)
         {
             $nestablePackages[$package->warehouse_id][] = $package;
@@ -149,7 +166,7 @@ class CargosController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        // Lookup the cargo
+        // Make sure cargo exists before proceeding
         $cargo = Cargo::findByIdAndCurrentUserCompanyId($id);
 
         if ( ! $cargo)
@@ -157,30 +174,33 @@ class CargosController extends BaseAuthController {
             return response()->json(['error' => Flash::view('Cargo not found.')], 404);
         }
 
-        $input = $this->prepareAndValidateInput($request);
-
-        if ($input instanceof JsonResponse)
+        // Prepare and validate input
+        try
         {
-            return $input;
+            $input = $this->prepareAndValidateInput($request);
         }
+        catch (ValidationException $e)
+        {
+            return response()->json(['error' => Flash::view($e)], 400);
+        }
+
+        // Update cargo
+        $cargo->update($input['cargo']);
 
         // Update packages
-        Package::where(['cargo_id' => $cargo->id])->update(['cargo_id' => NULL]);
-
-        if ($input['packages'])
-        {
-            Package::whereIn('id', array_keys($input['packages']))->update(['cargo_id' => $cargo->id]);
-        }
+        $cargo->syncPackages($input['packages'] ? array_keys($input['packages']) : []);
 
         Flash::success('Cargo updated.');
-        return response()->json(['redirect_to' => '/cargos/edit/' . $cargo->id]);
+
+        return response()->json(['redirect_url' => '/cargos/edit/' . $cargo->id]);
     }
 
     /**
      * Prepares and validates the input for creating and updating a cargo.
      *
      * @param  Request  $request
-     * @return array|JsonResponse  An input array or JsonResponse
+     * @return array
+     * @throws ValidationException
      */
     private function prepareAndValidateInput(Request $request)
     {
@@ -190,8 +210,8 @@ class CargosController extends BaseAuthController {
         $rules = [
             'departed_at' => 'required',
             'receipt_number' => 'required',
-            'carrier_id' => 'required_without:carrier_id',
-            'carrier_name' => 'required_without:carrier_name',
+            'carrier_id' => 'required_without:carrier_name',
+            'carrier_name' => 'required_without:carrier_id',
         ];
 
         // Validate input
@@ -199,7 +219,7 @@ class CargosController extends BaseAuthController {
 
         if ($validator->fails())
         {
-            return response()->json(['error' => Flash::view($validator)], 400);
+            throw new ValidationException($validator->messages());
         }
 
         // Create new carrier if necessary

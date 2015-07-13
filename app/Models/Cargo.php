@@ -60,6 +60,33 @@ class Cargo extends Base {
     }
 
     /**
+     * Attaches the given packages to the cargo.
+     *
+     * WARNING: After this operation is complete only the packages in the array
+     * will remain in the cargo.
+     *
+     * @param  array  $packageIds
+     * @param  bool   $detaching
+     * @return void
+     * */
+    public function syncPackages(array $packageIds, $detaching = TRUE)
+    {
+        // First lets detach those packages not in $packageIds
+        if ($detaching)
+        {
+            Package::whereNotIn('id', $packageIds)
+                ->where('cargo_id', '=', $this->id)
+                ->update(['cargo_id' => NULL]);
+        }
+
+        // Next, we will attach the given packages
+        if (count($packageIds))
+        {
+            Package::whereIn('id', $packageIds)->update(['cargo_id' => $this->id]);
+        }
+    }
+
+    /**
      * Finds all cargos with the given criteria.
      *
      * @param  array|null  $criteria
@@ -72,7 +99,11 @@ class Cargo extends Base {
     {
         $sortColumns = [
             'id' => 'id',
+            'departed' => 'departed_at',
+            'created' => 'created_at',
+            'updated' => 'updated_at'
         ];
+
         $orderBy = array_key_exists($orderBy, $sortColumns) ? $sortColumns[$orderBy] : 'id';
         $order = ($order == 'asc') ? 'asc' : 'desc';
 
@@ -90,12 +121,15 @@ class Cargo extends Base {
 
             $cargos = $cargos
                 ->select('cargos.*')
-                ->leftJoin('packages AS package', 'cargos.id', '=', 'package.cargo_id')
+                ->leftJoin('packages', 'cargos.id', '=', 'packages.cargo_id')
+                ->leftJoin('carriers', 'cargos.carrier_id', '=', 'carriers.id')
                 ->whereRaw('(
-                    package.id LIKE ?
+                    packages.id LIKE ?
+                    OR packages.tracking_number LIKE ?
+                    OR carriers.name LIKE ?
                     OR cargos.id LIKE ?
                     OR cargos.receipt_number LIKE ?
-                    )', [$q, $q, $q]
+                    )', [$q, $q, $q, $q, $q]
                 );
         }
 

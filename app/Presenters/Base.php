@@ -15,4 +15,24 @@ abstract class Base {
     {
         $this->model = $model;
     }
+
+    /**
+     * Presents the created at datetime.
+     *
+     * @return string
+     */
+    public function createdAt()
+    {
+        return date('m/d/y g:i A', strtotime($this->model->created_at));
+    }
+
+    /**
+     * Presents the updated at datetime.
+     *
+     * @return string
+     */
+    public function updatedAt()
+    {
+        return date('m/d/y g:i A', strtotime($this->model->updated_at));
+    }
 }

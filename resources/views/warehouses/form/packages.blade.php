@@ -2,6 +2,7 @@
 <table id="packages" class="table table-bordered table-striped table-condensed">
     <thead>
         <tr>
+            <th>ID</th>
             <th>Status</th>
             <th>Type</th>
             <th>Length</th>
