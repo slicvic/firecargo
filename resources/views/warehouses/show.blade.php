@@ -33,7 +33,7 @@
                     <h5>Pieces</h5>
                 </div>
                 <div class="ibox-content">
-                    @include('warehouses.metric_system_notice')
+                    @include('warehouses._metric_system_notice')
                     {!! @view('packages._list_warehouse', ['packages' => $packages]) !!}
                 </div>
             </div>

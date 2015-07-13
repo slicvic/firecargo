@@ -92,7 +92,7 @@
                 $btn.toggleClass('collapsed');
 
                 if ($btn.hasClass('collapsed')) {
-                    var $packagesTr = $('<tr><td colspan="8"><div class="text-center col-sm-10 col-sm-offset-1"><h5 class="alert alert-warning">Loading...</h5></div></td></tr>')
+                    var $packagesTr = $('<tr><td colspan="8"><div class="text-center col-sm-10 col-sm-offset-1"><h5 class="alert alert-warning">Loading packages...</h5></div></td></tr>')
                     $parentTr.after($packagesTr);
                     $btn.html('<i class="fa fa-minus"></i>');
                     $.get('/packages/ajax-cargo-packages/' + $btn.attr('data-warehouse-id')).done(function(data) {

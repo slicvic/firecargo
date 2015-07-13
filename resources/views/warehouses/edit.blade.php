@@ -83,7 +83,7 @@
         <div class="ibox">
             <div class="ibox-title"><h5>Pieces</h5></div>
             <div class="ibox-content">
-                @include('warehouses.metric_system_notice')
+                @include('warehouses._metric_system_notice')
                 <button type="button" id="btnNewPackage" class="btn btn-success"><i class="fa fa-plus"></i> Add New</button>
                 <br><br>
                 <table class="table table-condensed">
