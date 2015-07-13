@@ -38,19 +38,19 @@
                         <div class="clear hr-line-dashed"></div>
 
                         <div class="pull-right">
-                            {!! $pagination = $cargos->appends(['sortby' => $input['sortby'], 'order' => $input['order']])->render() !!}
+                            {!! $pagination = $cargos->appends(['sort' => $input['sort'], 'order' => $input['order']])->render() !!}
                         </div>
 
                         <table class="datatable table table-striped">
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th><a href="/cargos?sortby=id&order={{ $orderInverse }}">ID {!! $input['sortby'] == 'id' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
+                                    <th><a href="/cargos?sort=id&order={{ $orderInverse }}">ID {!! $input['sort'] == 'id' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
                                     <th>Receipt Number</th>
                                     <th>Carrier</th>
-                                    <th><a href="/cargos?sortby=departed&order={{ $orderInverse }}">Departed {!! $input['sortby'] == 'departed' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
-                                    <th><a href="/cargos?sortby=created&order={{ $orderInverse }}">Created {!! $input['sortby'] == 'created' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
-                                    <th><a href="/cargos?sortby=updated&order={{ $orderInverse }}">Updated {!! $input['sortby'] == 'updated' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
+                                    <th><a href="/cargos?sort=departed&order={{ $orderInverse }}">Departed {!! $input['sort'] == 'departed' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
+                                    <th><a href="/cargos?sort=created&order={{ $orderInverse }}">Created {!! $input['sort'] == 'created' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
+                                    <th><a href="/cargos?sort=updated&order={{ $orderInverse }}">Updated {!! $input['sort'] == 'updated' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

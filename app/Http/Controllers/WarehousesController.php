@@ -46,7 +46,7 @@ class WarehousesController extends BaseAuthController {
     {
         // Prepare input
         $input['limit'] = $request->input('limit', 10);
-        $input['sortby'] = $request->input('sortby', 'id');
+        $input['sort'] = $request->input('sort', 'id');
         $input['order'] = $request->input('order', 'desc');
         $input['q'] = $request->input('q');
         $input['status'] = $request->input('status');
@@ -55,7 +55,7 @@ class WarehousesController extends BaseAuthController {
         $criteria['status'] = $input['status'];
         $criteria['q'] = $input['q'];
         $criteria['company_id'] = $this->user->company_id;
-        $warehouses = Warehouse::search($criteria, $input['sortby'], $input['order'], $input['limit']);
+        $warehouses = Warehouse::search($criteria, $input['sort'], $input['order'], $input['limit']);
 
         return view('warehouses.index', [
             'warehouses' => $warehouses,

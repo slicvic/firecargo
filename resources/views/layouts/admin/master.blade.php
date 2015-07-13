@@ -145,7 +145,7 @@
 
             <div class="footer">
                 <div>
-                    <strong>Copyright</strong> {{ env('APP_NAME') }} &copy; 2015-{{ date('Y') }}
+                    <strong>Copyright</strong> {{ env('APP_NAME') }} &copy; 2014-{{ date('Y') }}
                 </div>
             </div>
         </div>

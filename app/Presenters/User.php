@@ -18,7 +18,7 @@ class User extends BasePresenter {
      */
     public function fullname()
     {
-        return trim($this->model->first_name . ' ' . $this->model->last_name);
+        return trim("{$this->model->first_name} {$this->model->last_name}");
     }
 
     /**

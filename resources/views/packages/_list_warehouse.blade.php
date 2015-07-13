@@ -15,7 +15,7 @@
     </thead>
     <tbody>
         @foreach ($packages as $package)
-            <tr>
+            <tr class="{{ $package->present()->colorStatus() }}">
                 <td>{{ $package->id }}</td>
                 <td>{!! $package->present()->cargoLink() !!}</td>
                 <td>{{ $package->present()->type() }}</td>

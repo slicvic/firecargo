@@ -22,6 +22,8 @@ class Carrier extends Base {
 
     protected $fillable = [
         'name',
+        'code',
+        'prefix',
         'created_by_user_id'
     ];
 
@@ -79,7 +81,7 @@ class Carrier extends Base {
     private function sanitizeName($name)
     {
         // Strip all non-alpha characters except for spaces
-        $name = preg_replace('/[^a-z ]/i', '', $name);
+        $name = preg_replace('/[^a-z0-9()\/ ]/i', '', $name);
         // Strip consecutive spaces
         $name = preg_replace('/\s+/S', ' ', $name);
         // Trim and uppercase

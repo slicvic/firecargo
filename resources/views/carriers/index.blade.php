@@ -10,6 +10,8 @@
 
 @section('thead')
     <th>ID</th>
+    <th>Prefix</th>
+    <th>Code</th>
     <th>Name</th>
     <th>Action</th>
 @stop
@@ -18,6 +20,8 @@
     @foreach ($carriers as $carrier)
        <tr>
             <td>{{ $carrier->id }}</td>
+            <td>{{ $carrier->prefix }}</td>
+            <td>{{ $carrier->code }}</td>
             <td>{{ $carrier->name }}</td>
             <td>
                 <div class="btn-group">

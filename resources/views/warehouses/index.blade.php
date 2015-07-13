@@ -46,22 +46,22 @@
                         <div class="clear hr-line-dashed"></div>
 
                         <div class="pull-right">
-                            {!! $pagination = $warehouses->appends(['sortby' => $input['sortby'], 'order' => $input['order']])->render() !!}
+                            {!! $pagination = $warehouses->appends(['sort' => $input['sort'], 'order' => $input['order']])->render() !!}
                         </div>
 
                         <table class="datatable table table-striped">
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th><a href="/warehouses?sortby=id&order={{ $orderInverse }}">ID {!! $input['sortby'] == 'id' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
+                                    <th><a href="/warehouses?sort=id&order={{ $orderInverse }}">ID {!! $input['sort'] == 'id' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
                                     <th>Pieces</th>
                                     <th>Gross Weight</th>
                                     <th>Volume</th>
                                     <th>Shipper</th>
                                     <th>Consignee</th>
-                                    <th><a href="/warehouses?sortby=arrived&order={{ $orderInverse }}">Arrived {!! $input['sortby'] == 'arrived' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
-                                    <th><a href="/warehouses?sortby=created&order={{ $orderInverse }}">Created {!! $input['sortby'] == 'created' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
-                                    <th><a href="/warehouses?sortby=updated&order={{ $orderInverse }}">Updated {!! $input['sortby'] == 'updated' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
+                                    <th><a href="/warehouses?sort=arrived&order={{ $orderInverse }}">Arrived {!! $input['sort'] == 'arrived' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
+                                    <th><a href="/warehouses?sort=created&order={{ $orderInverse }}">Created {!! $input['sort'] == 'created' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
+                                    <th><a href="/warehouses?sort=updated&order={{ $orderInverse }}">Updated {!! $input['sort'] == 'updated' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

@@ -67,7 +67,7 @@ class Warehouse extends BasePresenter {
      */
     public function shipperLink()
     {
-        return sprintf('<a href="/accounts/edit/%s">%s</a> <i class="fa fa-link"></i>', $this->model->shipper_user_id, $this->model->shipper->present()->company());
+        return sprintf('<a target="_blank" href="/accounts/edit/%s">%s</a> <i class="fa fa-link"></i>', $this->model->shipper_user_id, $this->model->shipper->present()->company());
     }
 
     /**
@@ -77,7 +77,7 @@ class Warehouse extends BasePresenter {
      */
     public function consigneeLink()
     {
-        return sprintf('<a href="/accounts/edit/%s">%s</a> <i class="fa fa-link"></i>', $this->model->consignee_user_id, $this->model->consignee->present()->company());
+        return sprintf('<a target="_blank" href="/accounts/edit/%s">%s</a> <i class="fa fa-link"></i>', $this->model->consignee_user_id, $this->model->consignee->present()->company());
     }
 
     /**

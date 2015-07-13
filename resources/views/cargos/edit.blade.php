@@ -36,10 +36,12 @@
                     <label class="control-label col-sm-2">Receipt #</label>
                     <div class="col-sm-4">
                         <input required type="text" name="cargo[receipt_number]" placeholder="" class="form-control" value="{{ $cargo->receipt_number }}">
+                        <p class="help-block">Air Waybill, Bill of Lading or Container #</p>
+
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Departure Date</label>
+                    <label class="control-label col-sm-2">Departure</label>
                     <div class="col-sm-4">
                         <div class="input-group">
                             <input required type="text" name="cargo[departed_at]" class="date form-control" value="{{ $cargo->present()->departedAt() }}">

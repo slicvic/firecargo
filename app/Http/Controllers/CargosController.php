@@ -41,14 +41,14 @@ class CargosController extends BaseAuthController {
     {
         // Prepare input
         $input['limit'] = $request->input('limit', 10);
-        $input['sortby'] = $request->input('sortby', 'id');
+        $input['sort'] = $request->input('sort', 'id');
         $input['order'] = $request->input('order', 'desc');
         $input['q'] = $request->input('q');
 
         // Perform query
         $criteria['q'] = $input['q'];
         $criteria['company_id'] = $this->user->company_id;
-        $cargos = Cargo::search($criteria, $input['sortby'], $input['order'], $input['limit']);
+        $cargos = Cargo::search($criteria, $input['sort'], $input['order'], $input['limit']);
 
         return view('cargos.index', [
             'cargos' => $cargos,
