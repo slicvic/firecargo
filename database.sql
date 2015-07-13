@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:8889
--- Generation Time: Jul 13, 2015 at 04:40 AM
+-- Generation Time: Jul 13, 2015 at 04:37 PM
 -- Server version: 5.5.34
 -- PHP Version: 5.5.10
 
@@ -363,9 +363,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `site_id`, `company_id`, `email`, `password`, `company_name`, `first_name`, `last_name`, `dob`, `id_number`, `phone`, `mobile_phone`, `autoship_setting`, `remember_token`, `logins`, `last_login`, `created_at`, `updated_at`) VALUES
-(1020, NULL, 1, 'admin@gmail.com', '$2y$10$sEfSOgxx.ljd15h0BCtx0u6tNpVDmUi/JBk2UGXQ9IqO9/wlSCkhe', '', 'Victor', 'Admin', '2011-11-11', '13212121212', '1234567', '7654321', 1, 'iBTOyPkb7QWKpRxztfEApWd5QbVRcgs275dMKPyOp1KvAM9whnVYpzCTUgqw', 118, '2015-07-12 15:50:06', '2015-01-29 04:41:09', '2015-07-12 21:51:23'),
+(1020, NULL, 1, 'admin@gmail.com', '$2y$10$1jCgi5z6Q47X3B5nJMVtM.xgFEVKCKklHJMxXWYYu1H0yCiiYOcPK', '', 'Victor', 'Admin', '2011-11-11', '13212121212', '1234567', '7654321', 1, '2iEXSVt7jaPCKZaddxpuIvcsUs3uRZufLg1X5tCWMK14mbLRA8SH7O6A3l44', 121, '2015-07-13 14:31:09', '2015-01-29 04:41:09', '2015-07-13 14:32:13'),
 (1060, NULL, 2, 'agent@gmail.com', '$2y$10$/KHLLdkQiLuyV6h/bcVjGOk2bK0CETqQxsIF/baD6d6MsZs2/HDrO', '', 'Jose', 'Agent', '0000-00-00', '', '', '', 1, 'YuyZukuzoq1hB2x7o2XN87gMORKpAn844JAqAYnRwu1bnksWVlV16cURmvpz', 6, '2015-07-11 01:39:21', '2015-07-07 20:30:59', '2015-07-11 01:39:29'),
-(1092, NULL, 1, '', NULL, 'AMAZON', '', '', '0000-00-00', '', '', '', 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-11 21:38:50', '2015-07-11 21:38:50'),
+(1092, NULL, 1, '', '$2y$10$joFtVVUdIlpHFrvNjAXBdOut/9aX3YSwbvjlY/TRcHHwYkrlkwQMO', 'AMAZON', '', '', '0000-00-00', '', '', '', 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-11 21:38:50', '2015-07-13 14:32:02'),
 (1093, NULL, 1, '', NULL, 'EBAY', '', '', '0000-00-00', '', '', '', 1, NULL, 0, '0000-00-00 00:00:00', '2015-07-11 22:12:07', '2015-07-11 22:12:07');
 
 -- --------------------------------------------------------
