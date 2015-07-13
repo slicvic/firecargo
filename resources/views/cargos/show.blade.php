@@ -29,32 +29,7 @@
                     <h5>Pieces</h5>
                 </div>
                 <div class="ibox-content">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Warehouse</th>
-                                <th>Type</th>
-                                <th>L x W x H</th>
-                                <th>Weight</th>
-                                <th>Description</th>
-                                <th>Tracking #</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($cargo->packages as $package)
-                                <tr>
-                                    <td>{{ $package->id }}</td>
-                                    <td>{!! $package->present()->warehouseLink() !!}</td>
-                                    <td>{{ $package->type->name }}</td>
-                                    <td>{{ $package->present()->dimensions() }}</td>
-                                    <td>{{ $package->present()->weight() }}</td>
-                                    <td>{{ $package->description }}</td>
-                                    <td>{{ $package->tracking_number }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    {!! view('packages._list_cargo', ['packages' => $cargo->packages]) !!}
                 </div>
             </div>
         </div>

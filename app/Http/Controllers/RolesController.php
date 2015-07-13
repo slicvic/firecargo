@@ -47,7 +47,7 @@ class RolesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('roles.form', ['role' => new Role]);
+        return view('roles.edit', ['role' => new Role]);
     }
 
     /**
@@ -77,7 +77,7 @@ class RolesController extends BaseAuthController {
     {
         $role = Role::findOrFail($id);
 
-        return view('roles.form', ['role' => $role]);
+        return view('roles.edit', ['role' => $role]);
     }
 
     /**

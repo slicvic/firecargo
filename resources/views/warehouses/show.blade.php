@@ -33,37 +33,8 @@
                     <h5>Pieces</h5>
                 </div>
                 <div class="ibox-content">
-                    @include('warehouses._alert_us_metric_system')
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>L x W x H</th>
-                                <th>Weight</th>
-                                <th>Description</th>
-                                <th>Tracking #</th>
-                                <th>Invoice #</th>
-                                <th>Invoice $</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($packages as $package)
-                                <tr>
-                                    <td>{{ $package->id }}</td>
-                                    <td>{{ $package->present()->type() }}</td>
-                                    <td>{{ $package->present()->status() }}</td>
-                                    <td>{{ $package->present()->dimensions() }}</td>
-                                    <td>{{ $package->present()->weight() }}</td>
-                                    <td>{{ $package->description }}</td>
-                                    <td>{{ $package->tracking_number }}</td>
-                                    <td>{{ $package->invoice_number }}</td>
-                                    <td>{{ $package->invoice_amount }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    @include('warehouses.metric_system_notice')
+                    {!! @view('packages._list_warehouse', ['packages' => $packages]) !!}
                 </div>
             </div>
         </div>

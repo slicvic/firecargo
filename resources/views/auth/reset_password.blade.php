@@ -1,41 +1,26 @@
-@extends('layouts.frontend.master')
+@extends('layouts.auth.master')
 
 @section('content')
-<div class="row">
-	<div class="col-md-6 col-md-offset-3">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h1>Reset your password</h1>
-			</div>
-			<div class="panel-body">
-				<form data-parsley-validate id="reset-password-form" action="{{ Request::fullUrl() }}" method="post" class="form-horizontal">
-					<div class="flash"></div>
+	<div class="ibox-content">
+	    <h2 class="font-bold">Reset your password</h2>
+	    <p>New passwords must be a mininum of 8 characters in length.</p>
+		<div class="row">
+		    <div class="col-lg-12">
+	        	<form action="{{ Request::fullUrl() }}" method="post" class="m-t">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
-					<div class="form-group">
-						<div id="error-container1" class="col-sm-12">
-							<div class="input-group">
-								<div class="input-group-addon"><i class="fa fa-lock"></i></div>
-								<input id="password" type="password" name="password" class="form-control input-lg" placeholder="New password" data-parsley-errors-container="#error-container1" data-parsley-minlength="6" required>
-							</div>
-						</div>
+	                <div class="form-group">
+						<input type="password" name="password" class="form-control input-lg" placeholder="New password" required>
 					</div>
-					<div class="form-group">
-						<div id="error-container2" class="col-sm-12">
-							<div class="input-group">
-								<div class="input-group-addon"><i class="fa fa-lock"></i></div>
-								<input type="password" class="form-control input-lg" placeholder="Confirm new password" data-parsley-equalto="#password" data-parsley-errors-container="#error-container2" required>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-sm-12 text-right">
-							<button type="submit" class="btn btn-lg btn-success">Change</button>
-							<a href="/login">Log In</a>
-						</div>
-					</div>
+	                <div class="form-group">
+	                    <input type="password" name="confirm_password" class="form-control input-lg" placeholder="Confirm new password" required>
+	                </div>
+					<button type="submit" class="btn btn-primary block full-width m-b">Reset password</button>
+					<a href="/login">
+	                    <small>Sign in to your account</small>
+	                </a>
 				</form>
 			</div>
 		</div>
 	</div>
-</div>
 @stop
+

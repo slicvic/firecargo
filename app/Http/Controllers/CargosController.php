@@ -86,7 +86,7 @@ class CargosController extends BaseAuthController {
             $nestablePackages[$package->warehouse_id][] = $package;
         }
 
-        return view('cargos.form', [
+        return view('cargos.edit', [
             'cargo' => new Cargo,
             'nestablePackages' => $nestablePackages
         ]);
@@ -153,7 +153,7 @@ class CargosController extends BaseAuthController {
             $nestablePackages[$package->warehouse_id][] = $package;
         }
 
-        return view('cargos.form', [
+        return view('cargos.edit', [
             'cargo' =>  $cargo,
             'nestablePackages' => $nestablePackages
         ]);

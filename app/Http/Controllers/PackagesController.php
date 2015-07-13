@@ -34,7 +34,7 @@ class PackagesController extends BaseAuthController {
     {
         $packages = Package::where(['warehouse_id' => $warehouseId, 'company_id' => $this->user->company_id])->get();
 
-        return view('packages.index_ajax', ['packages' => $packages]);
+        return view('packages._list_warehouse', ['packages' => $packages]);
     }
 
     /**
@@ -46,6 +46,6 @@ class PackagesController extends BaseAuthController {
     {
         $packages = Package::where(['cargo_id' => $cargoId, 'company_id' => $this->user->company_id])->get();
 
-        return view('packages.index_ajax', ['packages' => $packages]);
+        return view('packages._list_cargo', ['packages' => $packages]);
     }
 }

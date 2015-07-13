@@ -13,7 +13,7 @@ use App\Helpers\Html;
 use App\Helpers\Flash;
 use App\Events\UserLoggedIn;
 use App\Events\UserJoined;
-
+use App\Helpers\Mailer;
 /**
  * AuthController
  *
@@ -32,28 +32,24 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Handles a login request.
+     * Logs in a user.
      *
      * @return Response
      */
     public function postLogin(Request $request)
     {
-        $input = $request->only('username', 'password');
+        $input = $request->only('email', 'password');
 
         // Validate input
-        $validator = Validator::make($input, [
-            'username' => 'required',
+        $rules = [
+            'email' => 'required|email',
             'password' => 'required'
-        ]);
+        ];
 
-        if ($validator->fails())
-        {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
+        $this->validate($input, $rules);
 
         // Authenticate user
-        $user = User::validateCredentials($input['username'], $input['password']);
+        $user = User::validateCredentials($input['email'], $input['password']);
 
         if ($user)
         {
@@ -61,11 +57,8 @@ class AuthController extends BaseController {
             Event::fire(new UserLoggedIn($user));
             return redirect('dashboard');
         }
-        else
-        {
-            Flash::error('The email or password your entered is incorrect.');
-            return redirect()->back()->withInput();
-        }
+
+        return $this->redirectBackWithError('These credentials do not match our records.');
     }
 
     /**
@@ -79,7 +72,7 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Handles a signup request.
+     * Signs up a new user.
      *
      * @return Response
      */
@@ -91,7 +84,7 @@ class AuthController extends BaseController {
         $rules = [
             'site_id' => 'required',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
+            'password' => 'required|min:8',
             'first_name' => 'required',
             'last_name' => 'required'
         ];
@@ -122,7 +115,7 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Shows the forgot password form.
+     * Shows the form for recovering a user's password.
      *
      * @return Response
      */
@@ -132,37 +125,38 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Handles forgot password request.
+     * Sends a password recovery token to the user.
      *
      * @return Response
      */
     public function postForgotPassword(Request $request)
     {
         $input = $request->only('email');
-        $validator = Validator::make($input, ['email' => 'required|email']);
 
-        if ($validator->fails())
+        // Validate input
+        $this->validate($input, ['email' => 'required|email']);
+
+        // Verify user
+        $user = User::where('email', '=', $input['email'])->first();
+
+        // Send password recovery
+        if ($user)
         {
-            Flash::error($validator);
-        }
-        else {
-            if ($user = User::where('email', '=', $input['email'])->first())
-            {
-                Mailer::sendPasswordRecovery($user);
-                // @TODO: change message
-                Flash::info('<a href="/reset-password?email=' . $user->email . '&token=' . $user->makePasswordRecoveryToken() . '">Click here to reset your password</a>');
-            }
-
+            Mailer::sendPasswordRecovery($user);
+            // TODO: change message
             // Show success message regardless
             // @TODO: uncomment
-            //Flash::info('An email with instructions on how to reset your password has been sent.');
+            //
+            Flash::success('<a href="/reset-password?email=' . $user->email . '&token=' . $user->makePasswordRecoveryToken() . '">Click here to reset your password</a>');
+            return redirect()->back();
+            //return $this->redirectBackWithSuccess('An email with instructions on how to reset your password has been sent.');
         }
 
-        return redirect()->back();
+        return $this->redirectBackWithError('This email address is not associated with any account.');
     }
 
     /**
-     * Shows the password reset form.
+     * Shows the form for resetting a user's password.
      *
      * @return Response
      */
@@ -172,41 +166,35 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Handles a password reset request.
+     * Resets a user's password.
      *
      * @return Response
      */
     public function postResetPassword(Request $request)
     {
-        $input = $request->only('email', 'token', 'password');
+        $input = $request->only('email', 'token', 'password', 'confirm_password');
 
         // Validate input
-        $validator = Validator::make($input, [
+        $rules = [
             'email' => 'required|email',
             'token' => 'required',
-            'password' => 'required'
-        ]);
+            'password' => 'required|min:8',
+            'confirm_password' => 'required|same:password'
+        ];
 
-        if ($validator->fails())
-        {
-            Flash::error($validator);
-            return redirect()->back();
-        }
+        $this->validate($input, $rules);
 
-        // Reset password
+        // Verify user
         $user = User::where('email', '=', $input['email'])->first();
 
-        if ($user && $user->checkPasswordRecoveryToken($input['token']))
+        // Reset password
+        if ($user && $user->verifyPasswordRecoveryToken($input['token']))
         {
             $user->password = $input['password'];
             $user->save();
-            Flash::success('Your password has been reset successfully.');
-            return redirect('login');
+            return $this->redirectWithSuccess('login', 'Your password was reset successfully.');
         }
-        else
-        {
-            Flash::error('Password reset failed.');
-            return redirect()->back();
-        }
+
+        return $this->redirectBackWithError('Password reset failed.');
     }
 }

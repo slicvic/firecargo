@@ -48,7 +48,7 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('package_types.form', ['type' => new PackageType]);
+        return view('package_types.edit', ['type' => new PackageType]);
     }
 
     /**
@@ -78,7 +78,7 @@ class PackageTypesController extends BaseAuthController {
     {
         $type = PackageType::findOrFail($id);
 
-        return view('package_types.form', ['type' => $type]);
+        return view('package_types.edit', ['type' => $type]);
     }
 
     /**

@@ -47,7 +47,7 @@ class CarriersController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('carriers.form', ['carrier' => new Carrier]);
+        return view('carriers.edit', ['carrier' => new Carrier]);
     }
 
     /**
@@ -77,7 +77,7 @@ class CarriersController extends BaseAuthController {
     {
         $carrier = Carrier::findOrFail($id);
 
-        return view('carriers.form', ['carrier' => $carrier]);
+        return view('carriers.edit', ['carrier' => $carrier]);
     }
 
     /**

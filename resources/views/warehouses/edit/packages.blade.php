@@ -13,11 +13,11 @@
         </tr>
     </thead>
 
-    {!! view('warehouses.form.package', ['package' => new \App\Models\Package()]) !!}
+    {!! view('warehouses.edit.package', ['package' => new \App\Models\Package()]) !!}
 
     @if (count($packages))
         @foreach ($packages as $package)
-            {!! view('warehouses.form.package', ['package' => $package]) !!}
+            {!! view('warehouses.edit.package', ['package' => $package]) !!}
         @endforeach
     @endif
 </table>

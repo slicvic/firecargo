@@ -83,7 +83,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('warehouses.form', ['warehouse' => new Warehouse]);
+        return view('warehouses.edit', ['warehouse' => new Warehouse]);
     }
 
     /**
@@ -131,7 +131,7 @@ class WarehousesController extends BaseAuthController {
     public function getEdit($id)
     {
         $warehouse = Warehouse::findOrFailByIdAndCurrentUserCompanyId($id);
-        return view('warehouses.form', ['warehouse' => $warehouse]);
+        return view('warehouses.edit', ['warehouse' => $warehouse]);
     }
 
     /**

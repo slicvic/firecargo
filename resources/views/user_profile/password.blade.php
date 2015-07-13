@@ -12,7 +12,7 @@
             <div class="form-group">
                 <label class="col-md-3 control-label">New Password</label>
                 <div class="col-md-5">
-                    <input id="new" type="password" name="new_password" class="form-control" data-parsley-minlength="6" required>
+                    <input id="new" type="password" name="new_password" class="form-control" data-parsley-minlength="8" required>
                 </div>
             </div>
             <div class="form-group">

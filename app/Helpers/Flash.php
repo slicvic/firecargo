@@ -12,7 +12,9 @@ class Flash {
     private static $sessionKey = 'cool_flash_message';
 
     /**
-     * @var string  The levels.
+     * The flash levels.
+     *
+     * @var string
      */
     const SUCCESS = 'success';
     const INFO    = 'info';

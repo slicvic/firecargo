@@ -47,7 +47,7 @@ class SitesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('sites.form', ['site' => new Site]);
+        return view('sites.edit', ['site' => new Site]);
     }
 
     /**
@@ -77,7 +77,7 @@ class SitesController extends BaseAuthController {
     {
         $site = Site::findOrFail($id);
 
-        return view('sites.form', ['site' => $site]);
+        return view('sites.edit', ['site' => $site]);
     }
 
     /**

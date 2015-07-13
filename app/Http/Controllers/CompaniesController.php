@@ -46,7 +46,7 @@ class CompaniesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('companies.form', ['company' => new Company]);
+        return view('companies.edit', ['company' => new Company]);
     }
 
     /**
@@ -84,7 +84,7 @@ class CompaniesController extends BaseAuthController {
     {
         $company = Company::findOrFail($id);
 
-        return view('companies.form', ['company' => $company]);
+        return view('companies.edit', ['company' => $company]);
     }
 
     /**

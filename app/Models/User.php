@@ -133,7 +133,7 @@ class User extends Base implements AuthenticatableInterface {
      */
     private function makePlainPasswordRecoveryToken()
     {
-        return $this->email . ':' . $this->password . ':' . $this->created_at;
+        return $this->email . '$$$$$' . $this->password . '$$$$$' . $this->created_at;
     }
 
     /**
@@ -142,7 +142,7 @@ class User extends Base implements AuthenticatableInterface {
      * @param  string  $token
      * @return bool
      */
-    public function checkPasswordRecoveryToken($token)
+    public function verifyPasswordRecoveryToken($token)
     {
         return Hash::check($this->makePlainPasswordRecoveryToken(), base64_decode(urldecode($token)));
     }

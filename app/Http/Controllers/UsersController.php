@@ -49,7 +49,7 @@ class UsersController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('users.form', ['user' => new User]);
+        return view('users.edit', ['user' => new User]);
     }
 
     /**
@@ -67,7 +67,7 @@ class UsersController extends BaseAuthController {
             'first_name' => 'required_without:company_name',
             'last_name' => 'required_without:company_name',
             'company_name' => 'required_without:first_name,last_name',
-            'password' => 'min:6'
+            'password' => 'min:8'
         ];
 
         $this->validate($input['user'], $rules);
@@ -102,7 +102,7 @@ class UsersController extends BaseAuthController {
     {
         $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
 
-        return view('users.form', ['user' => $user]);
+        return view('users.edit', ['user' => $user]);
     }
 
     /**

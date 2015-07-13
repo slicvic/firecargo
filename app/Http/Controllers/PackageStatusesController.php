@@ -48,7 +48,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('package_statuses.form', ['status' => new PackageStatus]);
+        return view('package_statuses.edit', ['status' => new PackageStatus]);
     }
 
     /**
@@ -80,7 +80,7 @@ class PackageStatusesController extends BaseAuthController {
     {
         $status = PackageStatus::findOrFailByIdAndCurrentUserCompanyId($id);
 
-        return view('package_statuses.form', ['status' => $status]);
+        return view('package_statuses.edit', ['status' => $status]);
     }
 
     /**

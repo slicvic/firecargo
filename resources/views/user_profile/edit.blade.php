@@ -50,7 +50,7 @@
                         <div class="col-md-10">
                             <label class="checkbox-inline">
                                 <input type="checkbox" name="user[autoship_setting]" value="1"{{ Input::old('user.autoship_setting', $user->autoship_setting) ? ' checked' : '' }}> Yes
-                                @include('user_profile._alert_autoship_packages')
+                                @include('user_profile.autoship_notice')
                             </label>
                         </div>
                     </div>

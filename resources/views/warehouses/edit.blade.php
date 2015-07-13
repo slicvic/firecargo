@@ -83,7 +83,7 @@
         <div class="ibox">
             <div class="ibox-title"><h5>Pieces</h5></div>
             <div class="ibox-content">
-                @include('warehouses._alert_us_metric_system')
+                @include('warehouses.metric_system_notice')
                 <button type="button" id="btnNewPackage" class="btn btn-success"><i class="fa fa-plus"></i> Add New</button>
                 <br><br>
                 <table class="table table-condensed">
@@ -105,7 +105,7 @@
                     </tbody>
                 </table>
 
-                {!! view('warehouses.form.packages', ['warehouse' => $warehouse]) !!}
+                {!! view('warehouses.edit.packages', ['warehouse' => $warehouse]) !!}
             </div>
         </div>
         <div class="form-group">
