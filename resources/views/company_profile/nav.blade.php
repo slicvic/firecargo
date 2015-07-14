@@ -7,7 +7,7 @@
         <button type="button" id="btnEditLogo" class="btn btn-link btn-block"><i class="fa fa-pencil"></i> Edit Logo</button>
         <div id="dzErrorMessage" class="text-danger"></div>
        <div class="list-group">
-            <a href="/company/edit-profile" class="btn btn-block btn-primary">Edit Profile</a>
+            <a href="/company/edit-profile" class="btn btn-block btn-primary">Edit Company Profile</a>
         </div>
     </div>
 </div>
