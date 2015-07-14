@@ -79,6 +79,14 @@ class Package extends Base {
     }
 
     /**
+     * Gets the cargo.
+     */
+    public function cargo()
+    {
+        return $this->belongsTo('App\Models\Cargo');
+    }
+
+    /**
      * Calculates the volume weight of the package in pounds.
      *
      * @param  int  $precision

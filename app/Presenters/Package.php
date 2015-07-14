@@ -67,7 +67,7 @@ class Package extends BasePresenter {
     public function cargoLink()
     {
         return ($this->model->cargo_id)
-            ? sprintf('<a target="_blank" href="/cargos/show/%s">%s (%s)</a> <i class="fa fa-link"></i>', $this->model->cargo_id, $this->model->cargo->name, $this->model->cargo->reference_number) :
+            ? sprintf('<a target="_blank" href="/cargos/show/%s">%s (%s)</a> <i class="fa fa-link"></i>', $this->model->cargo_id, $this->model->cargo->carrier->name, $this->model->cargo->reference_number) :
             'N/A';
     }
 
