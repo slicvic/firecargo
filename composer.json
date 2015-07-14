@@ -6,7 +6,6 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "5.0.*",
-		"ensepar/tcpdf": "^5.0",
 		"intervention/image": "^2.3",
 		"tecnick.com/tcpdf": "^6.2"
 	},
