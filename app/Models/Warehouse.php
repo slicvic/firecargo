@@ -3,6 +3,7 @@
 use DB;
 use App\Helpers\Math;
 use App\Models\CompanyTrait;
+use App\Models\WarehouseStatus;
 use App\Presenters\PresentableTrait;
 
 /**
@@ -20,6 +21,7 @@ class Warehouse extends Base {
 
     protected $fillable = [
         'shipper_user_id',
+        'status_id',
         'consignee_user_id',
         'carrier_id',
         'arrived_at',
@@ -132,28 +134,6 @@ class Warehouse extends Base {
         }
 
         return parent::setAttribute($key, $value);
-    }
-
-    /**
-     * Returns the warehouse color status (red, green or yellow)
-     *
-     * @return string
-     */
-    public function determineColorStatus()
-    {
-        $totalPackages = Package::where(['warehouse_id' => $this->id])->count();
-        $totalPackagesShipped = Package::whereRaw('warehouse_id = ? AND cargo_id IS NOT NULL', [$this->id])->count();
-
-        if ($totalPackages - $totalPackagesShipped == 0)
-        {
-            return 'green';
-        }
-        elseif ($totalPackages - $totalPackagesShipped > 0)
-        {
-            return 'yellow';
-        }
-
-        return 'red';
     }
 
     /**
@@ -277,28 +257,32 @@ class Warehouse extends Base {
             'updated' => 'updated_at',
         ];
 
-        $orderBy = array_key_exists($orderBy, $sortColumns) ? $sortColumns[$orderBy] : 'id';
+        $statuses = [
+            'pending' => WarehouseStatus::STATUS_PENDING,
+            'complete' => WarehouseStatus::STATUS_COMPLETE,
+            'new' => WarehouseStatus::STATUS_NEW
+        ];
+
+        // Determine sort order
+        $orderBy = array_key_exists($orderBy, $sortColumns) ? $sortColumns[$orderBy] : $sortColumns['id'];
         $order = ($order == 'asc') ? 'asc' : 'desc';
 
         $warehouses = Warehouse::whereRaw('1')
             ->orderBy('warehouses.' . $orderBy, $order);
 
-        /*if ( ! empty($criteria['status'])) {
-            switch ($criteria['status']) {
-                case 'pending':
-                    $warehouses = $warehouses->whereRaw('warehouses.container_id IS NULL');
-                    break;
-                case 'processed':
-                    $warehouses = $warehouses->whereRaw('warehouses.container_id IS NOT NULL');
-                    break;
-            }
-        }*/
+        // Filter by status
+        if ( ! empty($criteria['status']) && array_key_exists($criteria['status'], $statuses))
+        {
+            $warehouses = $warehouses->where('warehouses.status_id', '=', $statuses[$criteria['status']]);
+        }
 
+        // Filter by company id
         if ( ! empty($criteria['company_id']))
         {
             $warehouses = $warehouses->where('warehouses.company_id', '=', $criteria['company_id']);
         }
 
+        // Free text search
         if ( ! empty($criteria['q']))
         {
             $q = '%' . $criteria['q'] . '%';
@@ -307,7 +291,6 @@ class Warehouse extends Base {
                 ->select('warehouses.*')
                 ->leftJoin('users AS consignee', 'warehouses.consignee_user_id', '=', 'consignee.id')
                 ->leftJoin('users AS shipper', 'warehouses.shipper_user_id', '=', 'shipper.id')
-                //->leftJoin('containers AS container', 'warehouses.container_id', '=', 'container.id')
                 ->whereRaw('(
                     warehouses.id LIKE ?
                     OR consignee.id LIKE ?

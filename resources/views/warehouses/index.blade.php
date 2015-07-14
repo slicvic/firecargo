@@ -32,8 +32,9 @@
                                     <label>Status</label>
                                     <select class="form-control" name="status">
                                         <option value="">All</option>
+                                        <option{{ $input['status'] == 'new' ? ' selected' : '' }} value="new">New</option>
                                         <option{{ $input['status'] == 'pending' ? ' selected' : '' }} value="pending">Pending</option>
-                                        <option{{ $input['status'] == 'processed' ? ' selected' : '' }} value="processed">Processed</option>
+                                        <option{{ $input['status'] == 'complete' ? ' selected' : '' }} value="complete">Complete</option>
                                     </select>
                                 </div>
                                 @if ($input['q'] || $input['status'])

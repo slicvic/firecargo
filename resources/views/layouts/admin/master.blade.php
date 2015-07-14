@@ -74,7 +74,7 @@
                             </ul>
                         </div>
                         <div class="logo-element">
-                            IN+
+                            FC
                         </div>
                     </li>
 
@@ -83,19 +83,20 @@
                     </li>
 
                     @if ($user->isAdmin() || $user->isAgent())
-                        <li{{ preg_match('/warehouse/', $uri) ? ' class=active' : '' }}>
-                            <a href="#"><i class="fa fa-cube"></i> <span class="nav-label">Warehouses</span> <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level collapse">
-                                <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses">Warehouses</a></li>
-                                <li{{ (Request::is('warehouses/create')) ? ' class=active' : '' }}><a href="/warehouses/create">Add Warehouse</a></li>
-                            </ul>
-                        </li>
 
                         <li{{ preg_match('/cargos/', $uri) ? ' class=active' : '' }}>
                             <a href="#"><i class="fa fa-plane"></i> <span class="nav-label">Cargos</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 <li{{ (Request::is('cargos')) ? ' class=active' : '' }}><a href="/cargos">Cargos</a></li>
                                 <li{{ (Request::is('cargos/create')) ? ' class=active' : '' }}><a href="/cargos/create">Create Cargo</a></li>
+                            </ul>
+                        </li>
+
+                        <li{{ preg_match('/warehouse/', $uri) ? ' class=active' : '' }}>
+                            <a href="#"><i class="fa fa-cube"></i> <span class="nav-label">Warehouses</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses">Warehouses</a></li>
+                                <li{{ (Request::is('warehouses/create')) ? ' class=active' : '' }}><a href="/warehouses/create">Add Warehouse</a></li>
                             </ul>
                         </li>
 

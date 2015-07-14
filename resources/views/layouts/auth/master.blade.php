@@ -20,7 +20,7 @@
     <div class="passwordBox animated fadeInDown">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="text-center" style="margin-bottom:30px;">{{ env('APP_NAME') }}</h1>
+                <h1 class="text-center" style="margin-bottom:30px;">{!! env('APP_NAME_HTML') !!}</h1>
                 {!! \App\Helpers\Flash::getAsHTML() !!}
                 @yield('content')
             </div>

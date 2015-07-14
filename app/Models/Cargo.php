@@ -20,7 +20,7 @@ class Cargo extends Base {
 
     protected $fillable = [
         'carrier_id',
-        'receipt_number',
+        'reference_number',
         'departed_at'
     ];
 
@@ -51,7 +51,7 @@ class Cargo extends Base {
             case 'departed_at':
                 $value = date('Y-m-d H:i:s', strtotime($value));
                 break;
-            case 'receipt_number':
+            case 'reference_number':
                 $value = strtoupper($value);
                 break;
         }
@@ -128,7 +128,7 @@ class Cargo extends Base {
                     OR packages.tracking_number LIKE ?
                     OR carriers.name LIKE ?
                     OR cargos.id LIKE ?
-                    OR cargos.receipt_number LIKE ?
+                    OR cargos.reference_number LIKE ?
                     )', [$q, $q, $q, $q, $q]
                 );
         }

@@ -1,6 +1,7 @@
 <?php namespace App\Presenters;
 
 use App\Presenters\Base as BasePresenter;
+use App\Models\WarehouseStatus;
 
 /**
  * Warehouse
@@ -87,12 +88,13 @@ class Warehouse extends BasePresenter {
      */
     public function colorStatus()
     {
-        switch ($this->model->determineColorStatus())
+        switch ($this->model->status_id)
         {
-            case 'green':
-                return 'success';
-            case 'yellow':
+            case WarehouseStatus::STATUS_PENDING:
                 return 'warning';
+            case WarehouseStatus::STATUS_COMPLETE:
+                return 'success';
+            case WarehouseStatus::STATUS_NEW:
             default:
                 return 'danger';
         }

@@ -33,10 +33,10 @@
             <div class="ibox-content">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Receipt #</label>
+                    <label class="control-label col-sm-2">Reference #</label>
                     <div class="col-sm-4">
-                        <input required type="text" name="cargo[receipt_number]" placeholder="" class="form-control" value="{{ $cargo->receipt_number }}">
-                        <p class="help-block">Air Waybill, Bill of Lading or Container #</p>
+                        <input required type="text" name="cargo[reference_number]" placeholder="" class="form-control" value="{{ $cargo->reference_number }}">
+                        <p class="help-block">e.g. Air Waybill, Bill of Lading or Container #</p>
 
                     </div>
                 </div>

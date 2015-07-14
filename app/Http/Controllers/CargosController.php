@@ -209,7 +209,7 @@ class CargosController extends BaseAuthController {
         // Prepare rules
         $rules = [
             'departed_at' => 'required',
-            'receipt_number' => 'required',
+            'reference_number' => 'required',
             'carrier_id' => 'required_without:carrier_name',
             'carrier_name' => 'required_without:carrier_id',
         ];

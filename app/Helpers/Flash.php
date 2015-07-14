@@ -9,17 +9,12 @@ use Session;
  */
 class Flash {
 
-    private static $sessionKey = 'cool_flash_message';
-
-    /**
-     * The flash levels.
-     *
-     * @var string
-     */
     const SUCCESS = 'success';
     const INFO    = 'info';
     const WARNING = 'warning';
     const ERROR   = 'error';
+
+    private static $sessionKey = 'cool_flash_message';
 
     /**
      * Sets a success message.

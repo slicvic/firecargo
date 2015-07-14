@@ -59,7 +59,7 @@
                                 <tr>
                                     <td><button class="btn-expand-row btn btn-link btn-sm" data-warehouse-id="{{ $cargo->id }}"><i class="fa fa-plus"></i></button></td>
                                     <td>{{ $cargo->id }}</td>
-                                    <td>{{ $cargo->receipt_number }}</td>
+                                    <td>{{ $cargo->reference_number }}</td>
                                     <td>{{ $cargo->present()->carrier() }}</td>
                                     <td>{{ $cargo->present()->departedAt() }}</td>
                                     <td>{{ $cargo->present()->createdAt() }}</td>

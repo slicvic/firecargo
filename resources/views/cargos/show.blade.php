@@ -45,8 +45,8 @@
                             <td>{{ $cargo->id }}</td>
                         </tr>
                         <tr>
-                            <th>Receipt #</th>
-                            <td>{{ $cargo->receipt_number }}</td>
+                            <th>Reference #</th>
+                            <td>{{ $cargo->reference_number }}</td>
                         </tr>
                         <tr>
                             <th>Departed</th>
