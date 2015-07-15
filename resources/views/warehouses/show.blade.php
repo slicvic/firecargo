@@ -1,38 +1,34 @@
-<?php $packages = $warehouse->packages; ?>
+@extends('layouts.admin.page')
 
-@extends('layouts.admin.master')
+@section('title')
+    Warehouse # {{ $warehouse->id }}
+@stop
 
-@section('content')
+@section('subtitle')
+    <ol class="breadcrumb">
+        <li>
+            <a href="/warehouses">Warehouses</a>
+        </li>
+        <li class="active">
+            <strong>Detail</strong>
+        </li>
+    </ol>
+@stop
 
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-sm-4">
-        <h2>Warehouse # {{ $warehouse->id }}</h2>
-        <ol class="breadcrumb">
-            <li>
-                <a href="/warehouses">Warehouses</a>
-            </li>
-            <li class="active">
-                <strong>Detail</strong>
-            </li>
-        </ol>
-    </div>
-    <div class="col-sm-8">
-        <div class="title-action">
-            <a href="/warehouses/edit/{{ $warehouse->id }}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
-            <a target="_blank" href="/warehouses/print-receipt/{{ $warehouse->id }}" class="btn btn-success"><i class="fa fa-print"></i> Print Receipt</a>
-            <a target="_blank" href="/warehouses/print-label/{{ $warehouse->id }}" class="btn btn-success"><i class="fa fa-print"></i> Print Label</a>
-        </div>
-    </div>
-</div>
+@section('actions')
+    <a href="/warehouses/edit/{{ $warehouse->id }}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+    <a target="_blank" href="/warehouses/print-receipt/{{ $warehouse->id }}" class="btn btn-success"><i class="fa fa-print"></i> Print Receipt</a>
+    <a target="_blank" href="/warehouses/print-label/{{ $warehouse->id }}" class="btn btn-success"><i class="fa fa-print"></i> Print Label</a>
+@stop
 
-<div class="wrapper wrapper-content">
+@section('page_content')
     @include('warehouses._metric_system_notice')
     <div class="row">
         <div class="col-md-9">
             <div class="ibox">
                 <div class="ibox-content">
                     <h2>Pieces ({{ $warehouse->packages->count() }})</h2>
-                    {!! @view('packages._list_warehouse', ['packages' => $packages]) !!}
+                    @include('packages._list_warehouse', ['packages' => $warehouse->packages])
                 </div>
             </div>
         </div>
@@ -59,7 +55,7 @@
                         </tr>
                         <tr>
                             <th>Pieces</th>
-                            <td><span class="label label-danger">{{ count($packages) }}</span></td>
+                            <td><span class="label label-danger">{{ $warehouse->packages->count() }}</span></td>
                         </tr>
                         <tr>
                             <th>Total Value</th>
@@ -86,6 +82,4 @@
             </div>
         </div>
     </div>
-</div>
-
 @stop

@@ -1,4 +1,6 @@
-<?php $address = $user->address ?: new App\Models\Address; ?>
+@extends('user_profile.layout')
+
+@section('user_profile_content')
 <form action="/account/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="row">
@@ -44,7 +46,7 @@
                         <div class="col-md-10">
                             <label class="checkbox-inline">
                                 <input type="checkbox" name="user[autoship_setting]" value="1"{{ Input::old('user.autoship_setting', $user->autoship_setting) ? ' checked' : '' }}> Yes
-                                @include('user_profile.autoship_notice')
+                                @include('user_profile._autoship_notice')
                             </label>
                         </div>
                     </div>
@@ -91,7 +93,7 @@
                         <label class="control-label col-sm-2">Country</label>
                         <div class="col-sm-3">
                             <select name="address[country_id]" class="form-control">
-                                @foreach (\App\Models\Country::all() as $country)
+                                @foreach ($countries as $country)
                                     <option{{ ($country->id == Input::old('address.country_id', $address->country_id)) ? ' selected' : '' }} value="{{ $country->id }}">{{ $country->name }}</option>
                                 @endforeach
                             </select>
@@ -108,3 +110,4 @@
         </div>
     </div>
 </form>
+@stop

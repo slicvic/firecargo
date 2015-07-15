@@ -1,15 +1,11 @@
-<?php $isAdmin = Auth::user()->isAdmin(); ?>
-
-@extends('layouts.admin.model.index')
+@extends('layouts.admin.page.index')
 
 @section('icon', 'building-o')
 @section('title', 'Sites')
 @section('subtitle', 'Manage Sites')
 
 @section('actions')
-    @if ($isAdmin)
-        <a href="/sites/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Site</a>
-    @endif
+    <a href="/sites/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Site</a>
 @stop
 
 @section('thead')

@@ -1,4 +1,6 @@
-<?php $address = $company->address ?: new App\Models\Address; ?>
+@extends('company_profile.layout')
+
+@section('company_profile_content')
 <form action="/company/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="ibox">
@@ -72,7 +74,7 @@
                 <label class="control-label col-sm-2">Country</label>
                 <div class="col-sm-3">
                     <select name="address[country_id]" class="form-control">
-                        @foreach (\App\Models\Country::all() as $country)
+                        @foreach ($countries as $country)
                             <option{{ ($country->id == Input::old('address.country_id', $address->country_id)) ? ' selected' : '' }} value="{{ $country->id }}">{{ $country->name }}</option>
                         @endforeach
                     </select>
@@ -87,3 +89,4 @@
         </div>
     </div>
 </form>
+@stop

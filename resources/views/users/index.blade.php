@@ -1,4 +1,4 @@
-@extends('layouts.admin.model.index')
+@extends('layouts.admin.page.index')
 
 @section('icon', 'group')
 @section('title', 'Accounts')
@@ -22,6 +22,7 @@
 @stop
 
 @section('script')
+<script>
     jQuery(function() {
         $('table').dataTable({
             //'aaSorting': [[ 0, 'desc' ]],
@@ -30,4 +31,5 @@
             'ajax': '/accounts/ajax-datatable',
         });
     });
+</script>
 @stop

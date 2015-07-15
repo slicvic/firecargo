@@ -49,7 +49,7 @@ class UsersController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('users.edit', ['user' => new User]);
+        return view('users.edit', ['user' => new User, 'address' => new Address]);
     }
 
     /**
@@ -95,7 +95,10 @@ class UsersController extends BaseAuthController {
     {
         $user = ($this->authUser->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
 
-        return view('users.edit', ['user' => $user]);
+        return view('users.edit', [
+            'user' => $user,
+            'address' => $user->address ?: new Address
+        ]);
     }
 
     /**

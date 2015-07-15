@@ -20,7 +20,7 @@ $(function() {
             flash = $('#flashMessage'),
             submit = $(this).find('button');
 
-        if (!form.valid()) return;
+        if (!form.valid()) return false;
 
         submit.attr('disabled', true);
         flash.html('');

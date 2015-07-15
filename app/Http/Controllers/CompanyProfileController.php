@@ -10,6 +10,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 use App\Models\Company;
 use App\Models\Address;
+use App\Models\Country;
 use Flash;
 
 /**
@@ -39,10 +40,9 @@ class CompanyProfileController extends BaseAuthController {
      */
     public function getProfile()
     {
-        $company = $this->authUser->company;
-        $view = view('company_profile.show', ['company' => $company]);
-
-        return view('company_profile.layout', ['company' => $company, 'content' => $view]);
+        return view('company_profile.show', [
+            'company' => $this->authUser->company,
+        ]);
     }
 
     /**
@@ -52,10 +52,11 @@ class CompanyProfileController extends BaseAuthController {
      */
     public function getEditProfile()
     {
-        $company = $this->authUser->company;
-        $view = view('company_profile.edit', ['company' => $company]);
-
-        return view('company_profile.layout', ['company' => $company, 'content' => $view]);
+        return view('company_profile.edit', [
+            'company' => $this->authUser->company,
+            'countries' => Country::all(),
+            'address' => $this->authUser->company->address ?: new Address
+        ]);
     }
 
     /**

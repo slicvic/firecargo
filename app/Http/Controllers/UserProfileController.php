@@ -11,7 +11,9 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 use App\Models\User;
 use App\Models\Address;
+use App\Models\Country;
 use Flash;
+
 
 /**
  * UserProfileController
@@ -39,9 +41,7 @@ class UserProfileController extends BaseAuthController {
      */
     public function getProfile()
     {
-        $view = view('user_profile.show', ['user' => $this->authUser]);
-
-        return view('user_profile.layout', ['content' => $view]);
+        return view('user_profile.show', ['user' => $this->authUser]);
     }
 
     /**
@@ -51,9 +51,11 @@ class UserProfileController extends BaseAuthController {
      */
     public function getEdit()
     {
-        $view = view('user_profile.edit', ['user' => $this->authUser]);
-
-        return view('user_profile.layout', ['content' => $view]);
+        return view('user_profile.edit', [
+            'user' => $this->authUser,
+            'address' => $this->authUser->address ?: new Address,
+            'countries' => Country::all()
+        ]);
     }
 
     /**
@@ -98,9 +100,7 @@ class UserProfileController extends BaseAuthController {
      */
     public function getPassword()
     {
-        $view = view('user_profile.password');
-
-        return view('user_profile.layout', ['content' => $view]);
+        return view('user_profile.password');
     }
 
     /**

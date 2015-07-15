@@ -5,7 +5,7 @@ var main = {
 
 	initEvents: function() {
 		// Bind jQuery validate
-		$('form').validate();
+		if ($('form').length) $('form').validate();
 
 		// Bind table delete button
 		$('table').on('click', '.btn-delete', function() {

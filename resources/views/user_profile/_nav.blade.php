@@ -1,5 +1,5 @@
 <div class="ibox">
-   <div class="ibox-content text-center">
+    <div class="ibox-content text-center">
         <h1>{{ Auth::user()->present()->fullname() }}</h1>
         <div id="photoContainer" class="m-b-sm">
             <img class="img-circle" src="{{ Auth::user()->getProfilePhotoURL('md') }}" style="width:200px;height:200px">

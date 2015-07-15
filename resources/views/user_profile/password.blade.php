@@ -1,8 +1,11 @@
+@extends('user_profile.layout')
+
+@section('user_profile_content')
 <div class="ibox">
     <div class="ibox-content">
         <h2>Change Password</h2>
         <form action="/account/password" method="post" class="form-horizontal">
-            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="form-group">
                 <label class="col-md-3 control-label">Current Password</label>
                 <div class="col-md-5">
@@ -29,3 +32,4 @@
         </form>
     </div>
 </div>
+@stop

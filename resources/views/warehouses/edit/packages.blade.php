@@ -1,4 +1,3 @@
-<?php $packages = $warehouse->packages; ?>
 <table id="packages" class="table table-bordered table-striped-tbody table-condensed">
     <thead>
         <tr>
@@ -16,9 +15,7 @@
 
     {!! view('warehouses.edit.package', ['package' => new \App\Models\Package()]) !!}
 
-    @if (count($packages))
-        @foreach ($packages as $package)
-            {!! view('warehouses.edit.package', ['package' => $package]) !!}
-        @endforeach
-    @endif
+    @foreach ($warehouse->packages as $package)
+        @include('warehouses.edit.package', ['package' => $package])
+    @endforeach
 </table>

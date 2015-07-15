@@ -1,4 +1,4 @@
-@extends('layouts.admin.model.index')
+@extends('layouts.admin.page.index')
 
 @section('icon', 'truck')
 @section('title', 'Carriers')

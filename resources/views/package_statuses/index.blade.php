@@ -1,4 +1,4 @@
-@extends('layouts.admin.model.index')
+@extends('layouts.admin.page.index')
 
 @section('icon', 'info-circle')
 @section('title', 'Package Statuses')
@@ -16,7 +16,7 @@
 @stop
 
 @section('tbody')
-    <?php foreach ($statuses as $status): ?>
+    @foreach ($statuses as $status)
        <tr>
             <td>{{ $status->id }}</td>
             <td>{{ $status->name }}</td>
@@ -28,6 +28,6 @@
                 </div>
             </td>
        </tr>
-    <?php endforeach; ?>
+    @endforeach
 @stop
 
