@@ -56,7 +56,11 @@ class WarehousesController extends BaseAuthController {
         // Prepare search criteria
         $criteria['status'] = $input['status'];
         $criteria['q'] = $input['q'];
-        $criteria['company_id'] = $this->authUser->company_id;
+
+        if ( ! $this->authUser->isAdmin())
+        {
+            $criteria['company_id'] = $this->authUser->company_id;
+        }
 
         // Run query
         $warehouses = Warehouse::search($criteria, $input['sort'], $input['order'], $input['limit']);

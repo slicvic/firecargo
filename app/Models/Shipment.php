@@ -45,6 +45,16 @@ class Shipment extends Base {
     }
 
     /**
+     * Gets the company relation.
+     *
+     * @return Company
+     */
+    public function company()
+    {
+        return $this->belongsTo('App\Models\Company');
+    }
+
+    /**
      * Overrides parent method to sanitize certain attributes.
      *
      * @see parent::setAttribute()

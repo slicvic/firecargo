@@ -51,6 +51,7 @@
                     <thead>
                         <tr>
                             <th></th>
+                            @if (Auth::user()->isAdmin()) {!! '<th>Master</th>' !!} @endif
                             <th><a href="/warehouses?sort=id&order={{ $oppositeOrder }}">Number {!! $input['sort'] == 'id' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
                             <th>Pieces</th>
                             <th>Gross Weight</th>
@@ -67,6 +68,7 @@
                         @foreach ($warehouses as $warehouse)
                         <tr class="{{ $warehouse->present()->colorStatus() }}">
                             <td><button class="btn-toggle-packages btn btn-link btn-sm" data-warehouse-id="{{ $warehouse->id }}"><i class="fa fa-plus"></i></button></td>
+                            @if (Auth::user()->isAdmin()) {!! '<td>' . $warehouse->company->name . '</td>' !!} @endif
                             <td>{{ $warehouse->id }}</td>
                             <td><span class="label label-danger">{{ $warehouse->packages->count() }}</span></td>
                             <td>{{ $warehouse->present()->grossWeight() }}</td>

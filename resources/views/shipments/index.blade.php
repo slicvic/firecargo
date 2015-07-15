@@ -40,9 +40,10 @@
             <thead>
                 <tr>
                     <th></th>
+                    @if (Auth::user()->isAdmin()) {!! '<th>Master</th>' !!} @endif
                     <th><a href="/shipments?sort=id&order={{ $oppositeOrder }}">Number {!! $input['sort'] == 'id' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
                     <th>Pieces</th>
-                    <th>Reference Number</th>
+                    <th>Reference #</th>
                     <th>Carrier</th>
                     <th><a href="/shipments?sort=departed&order={{ $oppositeOrder }}">Departed {!! $input['sort'] == 'departed' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
                     <th><a href="/shipments?sort=created&order={{ $oppositeOrder }}">Created {!! $input['sort'] == 'created' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
@@ -54,6 +55,7 @@
                 @foreach ($shipments as $shipment)
                 <tr>
                     <td><button class="btn-toggle-packages btn btn-link btn-sm" data-warehouse-id="{{ $shipment->id }}"><i class="fa fa-plus"></i></button></td>
+                    @if (Auth::user()->isAdmin()) {!! '<td>' . $shipment->company->name . '</td>' !!} @endif
                     <td>{{ $shipment->id }}</td>
                     <td><span class="label label-danger">{{ $shipment->packages()->count() }}</span></td>
                     <td>{{ $shipment->reference_number }}</td>

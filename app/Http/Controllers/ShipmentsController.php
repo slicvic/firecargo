@@ -46,7 +46,11 @@ class ShipmentsController extends BaseAuthController {
 
         // Perform search criteria
         $criteria['q'] = $input['q'];
-        $criteria['company_id'] = $this->authUser->company_id;
+
+        if ( ! $this->authUser->isAdmin())
+        {
+            $criteria['company_id'] = $this->authUser->company_id;
+        }
 
         // Run query
         $shipments = Shipment::search($criteria, $input['sort'], $input['order'], $input['limit']);

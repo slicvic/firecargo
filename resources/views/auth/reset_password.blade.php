@@ -9,10 +9,10 @@
         	<form action="{{ Request::fullUrl() }}" method="post" class="m-t">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
-					<input type="password" name="password" class="form-control input-lg" placeholder="New password" required>
+					<input type="password" id="password" name="password" class="form-control input-lg" placeholder="New password" minlength="8" required>
 				</div>
                 <div class="form-group">
-                    <input type="password" name="confirm_password" class="form-control input-lg" placeholder="Confirm new password" required>
+                    <input type="password" name="confirm_password" class="form-control input-lg" placeholder="Confirm new password" equalto="#password" required>
                 </div>
 				<button type="submit" class="btn btn-primary block full-width m-b">Reset password</button>
 				<a href="/login">

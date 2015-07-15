@@ -13,9 +13,14 @@ trait CompanyTrait {
      */
     public static function findOrFailByIdAndCurrentUserCompanyId($id)
     {
-        return self::where('id', '=', $id)
-            ->where('company_id', '=', Auth::user()->company_id)
-            ->firstOrFail();
+        $query = self::where('id', '=', $id);
+
+        if ( ! Auth::user()->isAdmin())
+        {
+            $query = $query->where('company_id', '=', Auth::user()->company_id);
+        }
+
+        return $query->firstOrFail();
     }
 
     /**
@@ -27,9 +32,14 @@ trait CompanyTrait {
      */
     public static function findByIdAndCompanyId($id, $companyId)
     {
-        return self::where('id', '=', $id)
-            ->where('company_id', '=', $companyId)
-            ->first();
+        $query = self::where('id', '=', $id);
+
+        if ( ! Auth::user()->isAdmin())
+        {
+            $query = $query->where('company_id', '=', Auth::user()->company_id);
+        }
+
+        return $query->first();
     }
 
     /**
@@ -55,10 +65,18 @@ trait CompanyTrait {
      */
     public static function allByCompanyId(array $companyId, $orderBy = 'id', $order = 'DESC', $columns = ['*'])
     {
-        $model = self::whereIn('company_id', $companyId)
-            ->orderBy($orderBy, $order);
+        if (Auth::user()->isAdmin())
+        {
+            $query = self::whereRaw('1');
+        }
+        else
+        {
+            $query = self::whereIn('company_id', $companyId);
+        }
 
-        return $model->get($columns);
+        $query = $query->orderBy($orderBy, $order);
+
+        return $query->get($columns);
     }
 
     /**

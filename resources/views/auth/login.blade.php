@@ -11,7 +11,7 @@
 					<input type="email" name="email" class="form-control" placeholder="Enter your email" value="{{ Input::old('email') }}" required="">
 				</div>
                 <div class="form-group">
-                    <input type="password" name="password" class="form-control" placeholder="Enter password" required="">
+                    <input type="password" name="password" class="form-control" placeholder="Enter password" required minlength="8">
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b">Sign in</button>
                 <a href="/forgot-password">

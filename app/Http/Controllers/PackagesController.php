@@ -32,7 +32,14 @@ class PackagesController extends BaseAuthController {
      */
     public function getAjaxWarehousePackages(Request $request, $warehouseId)
     {
-        $packages = Package::where(['warehouse_id' => $warehouseId, 'company_id' => $this->authUser->company_id])->get();
+        $criteria['warehouse_id'] = $warehouseId;
+
+        if ( ! $this->authUser->isAdmin())
+        {
+            $criteria['company_id'] = $this->authUser->company_id;
+        }
+
+        $packages = Package::where($criteria)->get();
 
         return view('packages._list_warehouse', ['packages' => $packages]);
     }
@@ -44,7 +51,14 @@ class PackagesController extends BaseAuthController {
      */
     public function getAjaxShipmentPackages(Request $request, $shipmentId)
     {
-        $packages = Package::where(['shipment_id' => $shipmentId, 'company_id' => $this->authUser->company_id])->get();
+        $criteria['shipment_id'] = $shipmentId;
+
+        if ( ! $this->authUser->isAdmin())
+        {
+            $criteria['company_id'] = $this->authUser->company_id;
+        }
+
+        $packages = Package::where($criteria)->get();
 
         return view('packages._list_shipment', ['packages' => $packages]);
     }
