@@ -10,7 +10,7 @@
 
 @section('thead')
     <th>ID</th>
-    Master Company</th>
+    <th>Master</th>
     <th>Name</th>
     <th>Action</th>
 @stop

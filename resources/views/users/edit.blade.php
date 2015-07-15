@@ -20,24 +20,6 @@
 @section('page_content')
 <form action="/accounts/{{ $user->exists ? 'update/' . $user->id : 'store' }}" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-    @if (Auth::user()->isAdmin())
-        <div class="panel panel-warning">
-            <div class="panel-heading"><h5>Admin Panel</h5></div>
-            <div class="panel-body">
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Company</label>
-                    <div class="col-sm-5">
-                        <select required class="form-control" name="user[company_id]">
-                            <option value="">- Choose -</option>
-                            @foreach (\App\Models\Company::all() as $company)
-                                <option{{ ($company->id == Input::old('user.company_id', $user->company_id)) ? ' selected' : '' }} value="{{ $company->id }}">{{ $company->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
     <div class="row">
         <div class="col-lg-12">
             <div class="tabs-container">
@@ -48,6 +30,19 @@
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane active">
                         <div class="panel-body">
+                            @if (Auth::user()->isAdmin())
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2">Master</label>
+                                    <div class="col-sm-5">
+                                        <select required class="form-control" name="user[company_id]">
+                                            <option value="">- Choose -</option>
+                                            @foreach (\App\Models\Company::all() as $company)
+                                                <option{{ ($company->id == Input::old('user.company_id', $user->company_id)) ? ' selected' : '' }} value="{{ $company->id }}">{{ $company->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Account Type</label>
                                 <div class="col-sm-10">
@@ -56,6 +51,9 @@
                                             <input required{{ ($role->id == Input::old('user.role_id', $user->role_id)) ? ' checked' : '' }} type="radio" name="user[role_id]" value="{{ $role->id }}"> {{ ucwords($role->name) }}
                                         </label>
                                     @endforeach
+                                    <div>
+                                        <label for="user[role_id]" class="error"></label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="clear hr-line-dashed"></div>

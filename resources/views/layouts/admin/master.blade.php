@@ -38,6 +38,8 @@
 
     <!-- Form Validation -->
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/validate/jquery.validate.min.js"></script>
+    <!--<script src="/assets/plugins/parsleyjs/parsley.min.js"></script>
+    <link href="/assets/plugins/parsleyjs/parsley.css" rel="stylesheet">-->
 
     <!-- iChecks -->
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/iCheck/icheck.min.js"></script>
