@@ -155,13 +155,17 @@ class UsersController extends BaseAuthController {
 
         // Get sort column and order
         $sortColumns = [
-            'id',
             'company_name',
             'full_name',
             'email',
             'phone',
-            'mobile_phone'
+            'mobile_phone',
+            'role_id',
+            'is_active'
         ];
+
+        $sortColumns = $this->authUser->isAdmin() ? array_merge(['id', 'company_id'], $sortColumns) : array_merge(['id'], $sortColumns);
+
         $orderBy = isset($input['order'][0]) && isset($sortColumns[$input['order'][0]['column']]) ? $sortColumns[$input['order'][0]['column']] : 'id';
         $order = isset($input['order'][0]) ? $input['order'][0]['dir'] : 'desc';
 
@@ -192,14 +196,7 @@ class UsersController extends BaseAuthController {
                 sprintf('<a href="/accounts/edit/%s" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a>', $user->id)
             ];
 
-            if ($this->authUser->isAdmin())
-            {
-                $data = array_merge([$user->id, $user->company->name], $data);
-            }
-            else
-            {
-                $data = array_merge([$user->id], $data);
-            }
+            $data = $this->authUser->isAdmin() ? array_merge([$user->id, $user->company->name], $data) : array_merge([$user->id], $data);
 
             $response['data'][] = $data;
         }

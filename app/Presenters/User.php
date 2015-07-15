@@ -41,7 +41,22 @@ class User extends BasePresenter {
      */
     public function role()
     {
-        return ($this->model->role_id) ? '<div class="badge badge-warning">' . $this->model->role->name . '</div>' : '';
+        switch ($this->model->role_id)
+        {
+            case Role::ADMIN:
+                $cssClass = 'primary';
+                break;
+            case Role::AGENT:
+                $cssClass = 'success';
+                break;
+            case Role::CLIENT:
+                $cssClass = 'danger';
+                break;
+            default:
+                $cssClass = 'default';
+        }
+
+        return ($this->model->role_id) ? sprintf('<div class="badge badge-%s">%s</div>', $cssClass, $this->model->role->name) : '';
     }
 
     /**
