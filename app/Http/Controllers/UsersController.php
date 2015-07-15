@@ -153,7 +153,7 @@ class UsersController extends BaseAuthController {
         $limit = isset($input['length']) ? (int) $input['length'] : 10;
         $offset = isset($input['start']) ? (int) $input['start'] : 0;
 
-        // Get sort column and order
+        // Get sort order
         $sortColumns = [
             'company_name',
             'full_name',
@@ -163,7 +163,6 @@ class UsersController extends BaseAuthController {
             'role_id',
             'is_active'
         ];
-
         $sortColumns = $this->authUser->isAdmin() ? array_merge(['id', 'company_id'], $sortColumns) : array_merge(['id'], $sortColumns);
 
         $orderBy = isset($input['order'][0]) && isset($sortColumns[$input['order'][0]['column']]) ? $sortColumns[$input['order'][0]['column']] : 'id';
