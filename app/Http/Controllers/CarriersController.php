@@ -25,7 +25,7 @@ class CarriersController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('admin');
+        $this->middleware('agent');
     }
 
     /**
