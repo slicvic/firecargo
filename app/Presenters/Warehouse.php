@@ -70,7 +70,7 @@ class Warehouse extends BasePresenter {
      */
     public function shipperLink()
     {
-        return Html::link('/accounts/edit/' . $this->model->shipper_user_id, $this->model->shipper->present()->company(), ['target' => '_blank'], TRUE);
+        return Html::link('/accounts/edit/' . $this->model->shipper_user_id, $this->model->shipper->present()->company(), ['target' => ''], TRUE);
     }
 
     /**
@@ -80,7 +80,7 @@ class Warehouse extends BasePresenter {
      */
     public function consigneeLink()
     {
-        return Html::link('/accounts/edit/' . $this->model->consignee_user_id, $this->model->consignee->present()->company(), ['target' => '_blank'], TRUE);
+        return Html::link('/accounts/edit/' . $this->model->consignee_user_id, $this->model->consignee->present()->company(), ['target' => ''], TRUE);
     }
 
     /**

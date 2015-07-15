@@ -58,7 +58,7 @@ class Package extends BasePresenter {
      */
     public function warehouseLink()
     {
-        return Html::link('/warehouses/show/' . $this->model->warehouse_id, $this->model->warehouse_id, ['target' => '_blank'], TRUE);
+        return Html::link('/warehouses/show/' . $this->model->warehouse_id, $this->model->warehouse_id, ['target' => ''], TRUE);
     }
 
     /**
@@ -73,7 +73,7 @@ class Package extends BasePresenter {
             return Html::link(
                 '/shipments/show/' . $this->model->shipment_id,
                 $this->model->shipment->carrier->name . ' (' . $this->model->shipment->reference_number . ')',
-                ['target' => '_blank'],
+                ['target' => ''],
                 TRUE
             );
 
