@@ -45,14 +45,17 @@ class Carrier extends Base {
     /**
      * Retrieves a list of carriers for a jquery autocomplete field.
      *
-     * @param  string $keyword  A search term
+     * @param  string $q  A search term
      * @return User[]
      */
-    public static function autocompleteSearch($term)
+    public static function autocompleteSearch($q)
     {
-        $term = '%' . $term . '%';
+        $q = '%' . $q . '%';
         $where = '(id LIKE ? OR name LIKE ?)';
-        return Carrier::whereRaw($where, [$term, $term])->get();
+
+        return Carrier::whereRaw($where, [$q, $q])
+            ->limit(25)
+            ->get();
     }
 
     /**
@@ -65,7 +68,7 @@ class Carrier extends Base {
         switch ($key)
         {
             case 'name':
-                $value = $this->sanitizeName($value);
+                $value = self::sanitizeName($value);
                 break;
         }
 
@@ -73,19 +76,20 @@ class Carrier extends Base {
     }
 
     /**
-     * Sanitizes a carrier name in preparation for database.
+     * Sanitizes a carrier name for database storage
      *
      * @param  string  $name
      * @return string
      */
-    private function sanitizeName($name)
+    public static function sanitizeName($name)
     {
-        // Strip all non-alpha characters except for spaces
+        // Strip all non-alpha-numeric characters except spaces, (), /
         $name = preg_replace('/[^a-z0-9()\/ ]/i', '', $name);
         // Strip consecutive spaces
         $name = preg_replace('/\s+/S', ' ', $name);
         // Trim and uppercase
         $name = strtoupper(trim($name));
+
         return $name;
     }
 }

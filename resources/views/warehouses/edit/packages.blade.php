@@ -1,8 +1,9 @@
 <?php $packages = $warehouse->packages; ?>
-<table id="packages" class="table table-bordered table-striped table-condensed">
+<table id="packages" class="table table-bordered table-striped-tbody table-condensed">
     <thead>
         <tr>
-            <th>ID</th>
+            <th><button type="button" class="btn-toggle-detail-all btn btn-sm btn-link"><i class="fa fa-plus"></i></button></th>
+            <th>#</th>
             <th>Status</th>
             <th>Type</th>
             <th>Length</th>

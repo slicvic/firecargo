@@ -1,3 +1,3 @@
-# SSG
+# FireCargo
 
-A virtual locker for your online shopping written in Laravel 5.0.
+A SaaS web application for freight forwarders to manage their cargos, warehouses and customer relationships. Written in Laravel 5.0.

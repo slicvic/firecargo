@@ -12,12 +12,12 @@
     <th>ID</th>
     @if (Auth::user()->isAdmin()) {!! '<th>Master</th>' !!} @endif
     <th>Company</th>
-    <th>First Name</th>
-    <th>Last Name</th>
+    <th>Name</th>
     <th>Email</th>
     <th>Phone</th>
     <th>Mobile</th>
     <th>Type</th>
+    <th>Login Allowed?</th>
     <th>Action</th>
 @stop
 

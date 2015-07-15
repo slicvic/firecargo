@@ -23,7 +23,9 @@ class Site extends Base {
     ];
 
     /**
-     * Gets the company.
+     * Gets the company relation.
+     *
+     * @return Company
      */
     public function company()
     {

@@ -23,11 +23,13 @@ class User extends Base implements AuthenticatableInterface {
     protected $table = 'users';
 
     protected $fillable = [
+        'company_id',
+        'role_id',
+        'is_active',
         'email',
         'password',
         'company_name',
-        'first_name',
-        'last_name',
+        'full_name',
         'dob',
         'id_number',
         'phone',
@@ -36,7 +38,9 @@ class User extends Base implements AuthenticatableInterface {
     ];
 
     /**
-     * Gets the packages.
+     * Gets the packages relation.
+     *
+     * @return Package[]
      */
     public function packages()
     {
@@ -44,15 +48,19 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the roles.
+     * Gets the role relation.
+     *
+     * @return Role
      */
-    public function roles()
+    public function role()
     {
-        return $this->belongsToMany('App\Models\Role', 'roles_users');
+        return $this->belongsTo('App\Models\Role');
     }
 
     /**
-     * Gets the address.
+     * Gets the address relation.
+     *
+     * @return Address
      */
     public function address()
     {
@@ -60,7 +68,9 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the site.
+     * Gets the site relation.
+     *
+     * @return Site
      */
     public function site()
     {
@@ -68,7 +78,9 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the company.
+     * Gets the company relation.
+     *
+     * @return Company
      */
     public function company()
     {
@@ -82,7 +94,7 @@ class User extends Base implements AuthenticatableInterface {
      */
     public function isAgent()
     {
-        return $this->hasRole(Role::AGENT);
+        return ($this->role_id == Role::AGENT);
     }
 
     /**
@@ -92,7 +104,7 @@ class User extends Base implements AuthenticatableInterface {
      */
     public function isAdmin()
     {
-        return $this->hasRole(Role::ADMIN);
+        return ($this->role_id == Role::ADMIN);
     }
 
     /**
@@ -102,18 +114,7 @@ class User extends Base implements AuthenticatableInterface {
      */
     public function isClient()
     {
-        return $this->hasRole(Role::CLIENT);
-    }
-
-    /**
-     * Determines if the user has the given role.
-     *
-     * @param  int  $roleId
-     * @return bool
-     */
-    public function hasRole($roleId)
-    {
-        return in_array($roleId, $this->roles->lists('id'));
+        return ($this->role_id == Role::CLIENT);
     }
 
     /**
@@ -156,9 +157,8 @@ class User extends Base implements AuthenticatableInterface {
     {
         switch ($key)
         {
-            case 'first_name':
-            case 'last_name':
-                $value = ucfirst(strtolower(trim($value)));
+            case 'full_name':
+                $value = ucwords(strtolower(trim($value)));
                 break;
 
             case 'company_name':
@@ -168,25 +168,13 @@ class User extends Base implements AuthenticatableInterface {
             case 'password':
                 $value = empty($value) ? $this->password : Hash::make($value);
                 break;
-
-            case 'dob':
-                if (is_string($value)) {
-                    $value = date('Y-m-d', strtotime($value));
-                }
-                else if (is_array($value) && isset($value['year'], $value['month'], $value['day'])) {
-                    $value = date('Y-m-d', strtotime($value['year'] . '/' . $value['month'] . '/' . $value['day']));
-                }
-                else {
-                    $value = NULL;
-                }
-                break;
         }
 
         return parent::setAttribute($key, $value);
     }
 
     /**
-     * Checks if a profile photo image file exists.
+     * Checks if a profile photo has been uploaded.
      *
      * @param  string  $size  sm|md
      * @return bool
@@ -216,9 +204,8 @@ class User extends Base implements AuthenticatableInterface {
         return asset('assets/admin/img/avatar.png');
     }
 
-
     /**
-     * Validates the specified credentials.
+     * Validates the given credentials.
      *
      * @param  string  $username
      * @param  string  $password
@@ -226,11 +213,10 @@ class User extends Base implements AuthenticatableInterface {
      */
     public static function validateCredentials($username, $password)
     {
-        $user = User::where('id', $username)
-            ->orWhere('email', $username)
+        $user = User::where(['email' => $username, 'is_active' => TRUE])
             ->first();
 
-        if ($user && Hash::check($password, $user->password) && $user->hasRole(Role::LOGIN))
+        if ($user && Hash::check($password, $user->password))
         {
             return $user;
         }
@@ -239,56 +225,56 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Retrieves a list of users for a jquery autocomplete field.
-     *
-     * @param  string  $term       A search query
-     * @param  int     $companyId
-     * @return User[]
-     */
-    public static function autocompleteSearch($term, $companyId)
-    {
-        $term = '%' . $term . '%';
-        $where = '(id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
-        $where .= ' AND company_id IN (?)';
-
-        return User::whereRaw($where, [$term, $term, $term, $term, $term, $term, $term, $companyId])->get();
-    }
-
-    /**
-     * Retrieves a list of users for a jquery datatable.
+     * Finds all the users with the given criteria.
      *
      * @param  string   $criteria  List of criterias
      * @param  int      $offset
      * @param  int      $limit
      * @param  string   $orderBy
      * @param  string   $order
-     * @return [total => X, users => User[]]
+     * @return [total => X, users => User[]] or User[]
      */
-    public static function datatableSearch(array $criteria = [], $offset = 0, $limit = 10, $orderBy = 'id', $order = 'DESC')
+    public static function search(array $criteria = [], $offset = 0, $limit = 10, $orderBy = 'id', $order = 'DESC')
     {
         $sql = '1';
         $bindings = [];
 
-        if ( ! empty($criteria['company_id']))
+        // Filter by company id
+        if (isset($criteria['company_id']) && is_array($criteria['company_id']))
         {
             $sql .= ' AND company_id IN (' . implode(',', $criteria['company_id']) . ')';
         }
 
+        // Filter by role id
+        if (isset($criteria['role_id']) && is_array($criteria['role_id']))
+        {
+            $sql .= ' AND role_id IN (' . implode(',', $criteria['role_id']) . ')';
+        }
+
+        // Full text search
         if ( ! empty($criteria['q']))
         {
             $q = '%' . $criteria['q'] . '%';
-            $sql .= ' AND (id LIKE ? OR first_name LIKE ? OR last_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
-            $bindings = [$q, $q, $q, $q, $q, $q, $q];
+            $sql .= ' AND (id LIKE ? OR full_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
+            $bindings = [$q, $q, $q, $q, $q, $q];
         }
 
+        // Run query
+        $result = [];
+
         $query = User::whereRaw($sql, $bindings);
-        $total = $query->count();
-        $results = $query
+
+        if (isset($criteria['count']))
+        {
+            $result['total'] = $query->count();
+        }
+
+        $result['users'] = $query
             ->orderBy($orderBy, $order)
             ->offset($offset)
             ->limit($limit)
             ->get();
 
-        return ['total' => $total, 'users' => $results];
+        return isset($criteria['count']) ? $result : $result['users'];
     }
 }

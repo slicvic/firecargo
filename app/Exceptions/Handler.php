@@ -5,7 +5,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exception\HttpResponseException;
 
 use App\Exceptions\ValidationException;
-use App\Helpers\Flash;
+use Flash;
 
 class Handler extends ExceptionHandler {
 

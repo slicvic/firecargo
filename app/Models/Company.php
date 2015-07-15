@@ -25,7 +25,9 @@ class Company extends Base {
     ];
 
     /**
-     * Gets the address.
+     * Gets the address relation.
+     *
+     * @return Address
      */
     public function address()
     {
@@ -33,7 +35,7 @@ class Company extends Base {
     }
 
     /**
-     * Checks if logo image file exists.
+     * Checks if a logo has been uploaded.
      *
      * @param  string  $size  sm|md|lg
      * @return bool

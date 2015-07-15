@@ -21,14 +21,7 @@
     <!-- Custom styles for this template -->
     <link href="/assets/frontend/css/justified-nav.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="/assets/vendor/parsleyjs/parsley.css">
-    <script src="/assets/vendor/parsleyjs/parsley.min.js"></script>
-    <script src="/assets/vendor/parsleyjs/es.js"></script>
-
-    <link rel="stylesheet" href="/assets/vendor/datatables/css/jquery.dataTables.min.css">
-    <script src="/assets/vendor/datatables/js/jquery.dataTables.min.js"></script>
-
-    <link rel="stylesheet" href="/assets/vendor/bootstrap.vertical-tabs.min.css">
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/validate/jquery.validate.min.js"></script>
 
     <link rel="stylesheet" href="/assets/frontend/css/main.css">
     <script src="/assets/frontend/js/main.js"></script>
@@ -52,7 +45,7 @@
 
         </div>
 
-        {!! \App\Helpers\Flash::getAsHTML() !!}
+        {!! Flash::getHtml() !!}
 
         @yield('content')
 

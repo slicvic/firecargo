@@ -10,18 +10,18 @@ use Illuminate\Contracts\Auth\Guard;
 abstract class BaseAuthController extends BaseController {
 
     /**
-     * The authentication object.
+     * The auth guard.
      *
-     * @var Auth
+     * @var Guard
      */
     protected $auth;
 
     /**
      * The currently logged in user.
      *
-     * @var User
+     * @var Auth
      */
-    protected $user;
+    protected $authUser;
 
     /**
      * Constructor.
@@ -32,7 +32,8 @@ abstract class BaseAuthController extends BaseController {
     public function __construct(Guard $auth)
     {
         $this->auth = $auth;
-        $this->user = $auth->user();
+        $this->authUser = $auth->user();
+
         $this->middleware('auth');
     }
 }

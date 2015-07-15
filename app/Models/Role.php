@@ -9,12 +9,10 @@ use Auth;
  */
 class Role extends Base {
 
-    const LOGIN     = 1;
-    const ADMIN     = 2;
+    const ADMIN     = 1;
     const AGENT     = 3;
     const CLIENT    = 4;
     const SHIPPER   = 5;
-    const CONSIGNEE = 6;
 
     protected $table = 'roles';
 
@@ -28,7 +26,7 @@ class Role extends Base {
     ];
 
     /**
-     * Retrives the friendly roles.
+     * Retrieves roles based on the current user's role.
      *
      * @return Role[]
      */

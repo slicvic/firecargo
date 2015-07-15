@@ -1,7 +1,7 @@
 <div class="ibox">
     <div class="ibox-content">
         <h2>Change Password</h2>
-        <form data-parsley-validate action="/account/password" method="post" class="form-horizontal">
+        <form action="/account/password" method="post" class="form-horizontal">
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
             <div class="form-group">
                 <label class="col-md-3 control-label">Current Password</label>
@@ -12,13 +12,13 @@
             <div class="form-group">
                 <label class="col-md-3 control-label">New Password</label>
                 <div class="col-md-5">
-                    <input id="new" type="password" name="new_password" class="form-control" data-parsley-minlength="8" required>
+                    <input id="new" type="password" name="new_password" class="form-control" minlength="8" required>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-3 control-label">Confirm Password</label>
                 <div class="col-md-5">
-                    <input type="password" name="confirm_password" class="form-control" data-parsley-equalto="#new" required>
+                    <input type="password" name="confirm_password" class="form-control" equalto="#new" required>
                 </div>
             </div>
             <div class="form-group">

@@ -14,6 +14,10 @@
 
     <script src="/assets/vendor/inspinia/Static_Seed_Project/js/jquery-2.1.1.js"></script>
     <script src="/assets/vendor/inspinia/Static_Seed_Project/js/bootstrap.min.js"></script>
+
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/validate/jquery.validate.min.js"></script>
+
+    <script src="/assets/auth/js/main.js"></script>
 </head>
 
 <body class="gray-bg">
@@ -21,7 +25,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h1 class="text-center" style="margin-bottom:30px;">{!! env('APP_NAME_HTML') !!}</h1>
-                {!! \App\Helpers\Flash::getAsHTML() !!}
+                {!! Flash::getHtml() !!}
                 @yield('content')
             </div>
         </div>

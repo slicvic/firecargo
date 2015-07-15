@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
 use App\Models\Carrier;
-use App\Helpers\Flash;
+use Flash;
 
 /**
  * CarriersController
@@ -128,7 +128,7 @@ class CarriersController extends BaseAuthController {
         {
             $response[] = [
                 'id'    => $carrier->id,
-                'label' => $carrier->present()->name(TRUE)
+                'label' => $carrier->present()->name()
             ];
         }
 

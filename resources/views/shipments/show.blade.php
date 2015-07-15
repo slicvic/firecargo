@@ -4,10 +4,10 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-4">
-        <h2>Cargo # {{ $cargo->id }}</h2>
+        <h2>Shipment # {{ $shipment->id }}</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="/cargos">Cargos</a>
+                <a href="/shipments">Shipments</a>
             </li>
             <li class="active">
                 <strong>Detail</strong>
@@ -16,7 +16,7 @@
     </div>
     <div class="col-sm-8">
         <div class="title-action">
-            <a href="/cargos/edit/{{ $cargo->id }}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+            <a href="/shipments/edit/{{ $shipment->id }}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
         </div>
     </div>
 </div>
@@ -25,36 +25,32 @@
     <div class="row">
         <div class="col-md-9">
             <div class="ibox">
-                <div class="ibox-title">
-                    <h5>Pieces</h5>
-                </div>
                 <div class="ibox-content">
-                    {!! view('packages._list_cargo', ['packages' => $cargo->packages]) !!}
+                    <h2>Pieces ({{ $shipment->packages->count() }})</h2>
+                    {!! view('packages._list_shipment', ['packages' => $shipment->packages]) !!}
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="ibox">
-                <div class="ibox-title">
-                    <h5>Summary</h5>
-                </div>
                 <div class="ibox-content">
+                    <h2>Summary</h2>
                     <table class="table table-responsive">
                         <tr>
-                            <th class="col-sm-2">ID</th>
-                            <td>{{ $cargo->id }}</td>
-                        </tr>
-                        <tr>
-                            <th>Reference #</th>
-                            <td>{{ $cargo->reference_number }}</td>
+                            <th>Ref #</th>
+                            <td><span class="label label-danger ">{{ $shipment->reference_number }}</span></td>
                         </tr>
                         <tr>
                             <th>Departed</th>
-                            <td>{{ $cargo->present()->departedAt() }}</td>
+                            <td>{{ $shipment->present()->departedAt() }}</td>
                         </tr>
                         <tr>
                             <th>Carrier</th>
-                            <td>{{ $cargo->present()->carrier() }}</td>
+                            <td>{{ $shipment->present()->carrier() }}</td>
+                        </tr>
+                        <tr>
+                            <th>Total Value</th>
+                            <td><span class="label label-primary">{{ $shipment->present()->totalValue() }}</span></td>
                         </tr>
                     </table>
                 </div>

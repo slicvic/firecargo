@@ -18,44 +18,30 @@ class User extends BasePresenter {
      */
     public function fullname()
     {
-        return trim("{$this->model->first_name} {$this->model->last_name}");
+        return $this->model->full_name;
     }
 
     /**
      * Presents the company name, otherwise the full name.
      *
-     * @param  bool  $appendId  Whether or not to append the user's id.
+     * @param  bool  $showId  Whether to show the id along with the name.
      * @return string
      */
-    public function company($appendId = FALSE)
+    public function company($showId = FALSE)
     {
         $name = $this->model->company_name ?: $this->fullname();
 
-        return ($appendId) ? "$name ({$this->model->id})" : $name;
+        return ($showId) ? "$name ({$this->model->id})" : $name;
     }
 
     /**
-     * Presents the roles.
+     * Presents the role.
      *
      * @return HTML string
      */
-    public function roles()
+    public function role()
     {
-        if ( ! $roles = $this->model->roles)
-        {
-            return '';
-        }
-
-        $html = '<div>';
-
-        foreach ($roles->lists('name') as $role)
-        {
-            $html .= '<div class="badge badge-warning btns-xs">' . ucfirst($role) . '</div><br>';
-        }
-
-        $html .= '</div>';
-
-        return $html;
+        return ($this->model->role_id) ? '<div class="badge badge-warning">' . $this->model->role->name . '</div>' : '';
     }
 
     /**

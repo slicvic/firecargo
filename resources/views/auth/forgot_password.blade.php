@@ -9,7 +9,7 @@
 	        	<form action="/forgot-password" method="post" class="m-t">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<div class="form-group">
-						<input type="email" name="email" class="form-control input-lg" placeholder="Your email address" data-parsley-errors-container="#error-container3" value="{{ Input::old('email') }}" required>
+						<input type="email" name="email" class="form-control input-lg" placeholder="Your email address" value="{{ Input::old('email') }}" required>
 					</div>
 					<button type="submit" class="btn btn-primary block full-width m-b">Send new password</button>
 					<a href="/login">

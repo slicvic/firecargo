@@ -20,7 +20,7 @@
 @section('form')
     <div class="iboxx">
         <div class="iboxx-content">
-            <form data-parsley-validate action="/companies/{{ $company->exists ? 'update/' . $company->id : 'store' }}" method="post" class="form-horizontal">
+            <form action="/companies/{{ $company->exists ? 'update/' . $company->id : 'store' }}" method="post" class="form-horizontal">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                     <label class="control-label col-sm-2">Name</label>

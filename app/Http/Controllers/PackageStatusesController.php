@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
 use App\Models\PackageStatus;
-use App\Helpers\Flash;
+use Flash;
 
 /**
  * PackageStatusesController
@@ -65,7 +65,7 @@ class PackageStatusesController extends BaseAuthController {
 
         // Create status
         $status = new PackageStatus($input);
-        $status->company_id = $this->user->company_id;
+        $status->company_id = $this->authUser->company_id;
         $status->save();
 
         return $this->redirectWithSuccess('package-statuses', 'Package status created.');

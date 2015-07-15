@@ -1,61 +1,69 @@
-<?php namespace App\Helpers;
+<?php namespace App\Session;
 
 use Session;
 
 /**
- * Flash Message Helper.
+ * Flash
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
 class Flash {
 
+    /**
+     * Levels of messages that can be emitted.
+     */
     const SUCCESS = 'success';
     const INFO    = 'info';
     const WARNING = 'warning';
     const ERROR   = 'error';
 
-    private static $sessionKey = 'cool_flash_message';
+    /**
+     * The session key we're storing the messages in.
+     *
+     * @var string
+     */
+    private $sessionKey = 'flash_message';
 
     /**
-     * Sets a success message.
+     * Emits a success message.
      *
      * @param  string  $message
      * @return void
      */
-    public static function success($message)
+    public function success($message)
     {
-        self::set(self::SUCCESS, $message);
+        $this->set(self::SUCCESS, $message);
     }
 
     /**
-     * Sets an info message.
+     * Emits an info message.
      *
      * @param  string  $message
      * @return void
      */
-    public static function info($message)
+    public function info($message)
     {
-        self::set(self::INFO, $message);
+        $this->set(self::INFO, $message);
     }
 
     /**
-     * Sets a warning message.
+     * Emits a warning message.
      *
      * @param  string  $message
      * @return void
      */
-    public static function warning($message)
+    public function warning($message)
     {
-        self::set(self::WARNING, $message);
+        $this->set(self::WARNING, $message);
     }
 
     /**
-     * Sets an error message.
+     * Emits an error message.
      *
-     * @param  string|array|\Illuminate\Validation\Validator|\Illuminate\Support\MessageBag  $message
+     * @param  string|array|Validator|MessageBag  $message
      * @return void
      */
-    public static function error($message)
+    public function error($message)
     {
         if ($message instanceof \Illuminate\Validation\Validator)
         {
@@ -66,27 +74,27 @@ class Flash {
             $message = $message->all(':message');
         }
 
-        self::set(self::ERROR, $message);
+        $this->set(self::ERROR, $message);
     }
 
     /**
-     * Gets the plain message.
+     * Retrieves a message.
      *
      * @return array|NULL
      */
-    public static function get()
+    public function get()
     {
-        return Session::pull(self::$sessionKey, NULL);
+        return Session::pull($this->sessionKey, NULL);
     }
 
     /**
-     * Renders the message as a an HTML view.
+     * Retrieves a message and renders it as an HTML view.
      *
      * @return string|NULL
      */
-    public static function getAsHTML()
+    public function getHtml()
     {
-        $value = self::get();
+        $value = $this->get();
 
         if ($value === NULL)
         {
@@ -97,10 +105,22 @@ class Flash {
     }
 
     /**
-     * Makes the HTML view for a message.
+     * Stores a message in the session.
+     *
+     * @param   string        $level    success|info|warning|error
+     * @param   string|array  $message
+     * @return  string
+     */
+    private function set($level, $message)
+    {
+        Session::flash($this->sessionKey, ['level' => $level, 'message' => $message]);
+    }
+
+    /**
+     * Builds the HTML view for a message.
      *
      * @param  string  $level  success|info|warning|error
-     * @param  string|array|\App\Exceptions\ValidationException|\Illuminate\Validation\Validator|\Illuminate\Support\MessageBag  $message
+     * @param  string|array|ValidationException|Validator|MessageBag  $message
      * @return string
      */
     public static function view($message, $level = 'error')
@@ -150,17 +170,5 @@ class Flash {
 
         return view('flash_messages.' . $level, ['message' => $message])
             ->render();
-    }
-
-    /**
-     * Sets a message.
-     *
-     * @param   string        $level    success|info|warning|error
-     * @param   string|array  $message
-     * @return  string
-     */
-    private static function set($level, $message)
-    {
-        Session::flash(self::$sessionKey, ['level' => $level, 'message' => $message]);
     }
 }

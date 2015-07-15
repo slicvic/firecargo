@@ -26,7 +26,7 @@ class Package extends Base {
     protected $fillable = [
         'type_id',
         'status_id',
-        'cargo_id',
+        'shipment_id',
         'length',
         'width',
         'height',
@@ -39,7 +39,9 @@ class Package extends Base {
     ];
 
     /**
-     * Gets the currently assigned warehouse.
+     * Gets the warehouse relation.
+     *
+     * @return Warehouse
      */
     public function warehouse()
     {
@@ -47,15 +49,9 @@ class Package extends Base {
     }
 
     /**
-     * Gets the original warehouse this package came in.
-     */
-    public function originalWarehouse()
-    {
-        return $this->belongsTo('App\Models\Warehouse', 'original_warehouse_id');
-    }
-
-    /**
-     * Gets the package type.
+     * Gets the package type relation.
+     *
+     * @return PackageType
      */
     public function type()
     {
@@ -63,7 +59,9 @@ class Package extends Base {
     }
 
     /**
-     * Gets the status.
+     * Gets the status relation.
+     *
+     * @return PackageStatus
      */
     public function status()
     {
@@ -71,7 +69,9 @@ class Package extends Base {
     }
 
     /**
-     * Gets the company.
+     * Gets the company relation.
+     *
+     * @return Company
      */
     public function company()
     {
@@ -79,11 +79,13 @@ class Package extends Base {
     }
 
     /**
-     * Gets the cargo.
+     * Gets the shipment relation.
+     *
+     * @return Shipment
      */
-    public function cargo()
+    public function shipment()
     {
-        return $this->belongsTo('App\Models\Cargo');
+        return $this->belongsTo('App\Models\Shipment');
     }
 
     /**
@@ -118,20 +120,21 @@ class Package extends Base {
     }
 
     /**
-     * Retrieves all packages that have not yet been assigned to a cargo by the
+     * Retrieves all packages that have not yet been shipped by the
      * current user's company id.
      *
      * @return array
      */
-    public static function allPendingCargoByCurrentUserCompany()
+    public static function allPendingShipmentByCurrentUserCompany()
     {
         $packages = Package::where([
-            'packages.cargo_id' => NULL,
+            'packages.shipment_id' => NULL,
             'packages.ship' => TRUE,
             'warehouses.company_id' => Auth::user()->company_id
         ])
         ->join('warehouses', 'packages.warehouse_id', '=', 'warehouses.id')
         ->select('packages.*')
+        ->orderBy('warehouses.id', 'asc')
         ->get();
 
         return $packages;

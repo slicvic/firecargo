@@ -12,18 +12,22 @@
             </div>
         </div>
     </div>
-
     <div class="wrapper wrapper-content">
         <div class="row">
             <div class="col-lg-12">
-                {!! \App\Helpers\Flash::getAsHTML() !!}
+                {!! Flash::getHtml() !!}
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
-                        @if ($input['q'])
-                            <h2>{{ $warehouses->count() }} results found for: <span class="text-navy">"{{ $input['q'] }}"</span></h2>
-                        @endif
+                        <h2>
+                            @if ($input['q'])
+                                {{ $warehouses->count() }} results found for: <span class="text-navy">"{{ $input['q'] }}"</span>
+                            @else
+                                Showing {{ $warehouses->firstItem() }} - {{ $warehouses->lastItem() }} of {{ $warehouses->count() }} records
+                            @endif
+                        </h2>
+
                         <div class="title-action">
-                            <form class="form-inline pull-sright" method="get" action="/warehouses">
+                            <form class="form-inline" method="get" action="/warehouses">
                                 <div class="form-group">
                                     <label>Search</label>
                                     <input type="text" class="form-control" name="q" value="{{ $input['q'] }}">
@@ -54,24 +58,24 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th><a href="/warehouses?sort=id&order={{ $orderInverse }}">ID {!! $input['sort'] == 'id' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
+                                    <th><a href="/warehouses?sort=id&order={{ $oppositeOrder }}">Number {!! $input['sort'] == 'id' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
                                     <th>Pieces</th>
                                     <th>Gross Weight</th>
                                     <th>Volume</th>
                                     <th>Shipper</th>
                                     <th>Consignee</th>
-                                    <th><a href="/warehouses?sort=arrived&order={{ $orderInverse }}">Arrived {!! $input['sort'] == 'arrived' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
-                                    <th><a href="/warehouses?sort=created&order={{ $orderInverse }}">Created {!! $input['sort'] == 'created' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
-                                    <th><a href="/warehouses?sort=updated&order={{ $orderInverse }}">Updated {!! $input['sort'] == 'updated' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
+                                    <th><a href="/warehouses?sort=arrived&order={{ $oppositeOrder }}">Arrived {!! $input['sort'] == 'arrived' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
+                                    <th><a href="/warehouses?sort=created&order={{ $oppositeOrder }}">Created {!! $input['sort'] == 'created' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
+                                    <th><a href="/warehouses?sort=updated&order={{ $oppositeOrder }}">Updated {!! $input['sort'] == 'updated' ? '<i class="fa fa-angle-' . ($input['order'] == 'asc' ? 'up' : 'down') . '"></i>' : '' !!}</a></th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($warehouses as $warehouse)
                                 <tr class="{{ $warehouse->present()->colorStatus() }}">
-                                    <td><button class="btn-expand-row btn btn-link btn-sm" data-warehouse-id="{{ $warehouse->id }}"><i class="fa fa-plus"></i></button></td>
+                                    <td><button class="btn-toggle-packages btn btn-link btn-sm" data-warehouse-id="{{ $warehouse->id }}"><i class="fa fa-plus"></i></button></td>
                                     <td>{{ $warehouse->id }}</td>
-                                    <td><span class="label label-success">{{ $warehouse->packages->count() }}</span></td>
+                                    <td><span class="label label-danger">{{ $warehouse->packages->count() }}</span></td>
                                     <td>{{ $warehouse->present()->grossWeight() }}</td>
                                     <td>{{ $warehouse->present()->volumeWeight() }}</td>
                                     <td>{!! $warehouse->present()->shipperLink() !!}</td>
@@ -98,20 +102,19 @@
             </div>
         </div>
     </div>
-
     <script>
         $(function() {
-            $('table').on('click', '.btn-expand-row', function() {
+            $('table').on('click', '.btn-toggle-packages', function() {
                 var $btn = $(this);
                 var $parentTr = $btn.closest('tr');
                 $btn.toggleClass('collapsed');
 
                 if ($btn.hasClass('collapsed')) {
-                    var $packagesTr = $('<tr><td colspan="12"><div class="text-center col-sm-10 col-sm-offset-1"><h5 class="alert alert-warning">Loading packages...</h5></div></td></tr>')
+                    var $packagesTr = $('<tr><td colspan="11"><h5 class="alert alert-warning text-center">Loading packages...</h5></td></tr>')
                     $parentTr.after($packagesTr);
                     $btn.html('<i class="fa fa-minus"></i>');
                     $.get('/packages/ajax-warehouse-packages/' + $btn.attr('data-warehouse-id')).done(function(data) {
-                        $packagesTr.find('td > div').html(data);
+                        $packagesTr.find('td').html(data);
                     });
                 }
                 else {

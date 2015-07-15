@@ -32,17 +32,24 @@
     <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.responsive.js"></script>
     <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
 
-    <!-- Parsley Validation -->
-    <link rel="stylesheet" href="/assets/vendor/parsleyjs/parsley.css">
-    <script src="/assets/vendor/parsleyjs/parsley.min.js"></script>
+    <!-- Form Wizard -->
+    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/steps/jquery.steps.css" rel="stylesheet">
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/steps/jquery.steps.min.js"></script>
+
+    <!-- Form Validation -->
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/validate/jquery.validate.min.js"></script>
 
     <!-- iChecks -->
     <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/iCheck/icheck.min.js"></script>
     <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/iCheck/custom.css" rel="stylesheet">
 
-    <!-- Date/Time Picker -->
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/datapicker/bootstrap-datepicker.js"></script>
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+    <!-- Date Picker-->
+    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/datepicker/datepicker3.css" rel="stylesheet">
+
+    <!-- jQuery UI -->
+    <link rel="stylesheet" href="/assets/vendor/jquery-ui/jquery-ui.min.css">
+    <script src="/assets/vendor/jquery-ui/jquery-ui.min.js"></script>
 
     <!-- Main -->
     <link rel="stylesheet" type="text/css" href="/assets/admin/css/main.css">
@@ -61,9 +68,10 @@
                             <span><img alt="image" class="img-circle" src="{{ Auth::user()->getProfilePhotoURL() }}" style="width:48px;height:48px"></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                                    <span class="block m-t-xs"><strong class="font-bold">{{ $user->present()->fullname() }}</strong> <b class="caret"></b></span>
+                                    <span class="block m-t-xs"><strong class="font-bold">{{ $user->present()->fullname() }}</strong></span>
+                                    <span class="text-muted text-xs block">{{ $user->role->name }} <b class="caret"></b></span>
                                 </span>
-                                </a>
+                            </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
                                 <li><a href="/account/profile">My Profile</a></li>
                                 @if ( ! Auth::user()->isClient())
@@ -84,11 +92,11 @@
 
                     @if ($user->isAdmin() || $user->isAgent())
 
-                        <li{{ preg_match('/cargos/', $uri) ? ' class=active' : '' }}>
-                            <a href="#"><i class="fa fa-plane"></i> <span class="nav-label">Cargos</span> <span class="fa arrow"></span></a>
+                        <li{{ preg_match('/shipments/', $uri) ? ' class=active' : '' }}>
+                            <a href="#"><i class="fa fa-plane"></i> <span class="nav-label">Shipments</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                <li{{ (Request::is('cargos')) ? ' class=active' : '' }}><a href="/cargos">Cargos</a></li>
-                                <li{{ (Request::is('cargos/create')) ? ' class=active' : '' }}><a href="/cargos/create">Create Cargo</a></li>
+                                <li{{ (Request::is('shipments')) ? ' class=active' : '' }}><a href="/shipments">Shipments</a></li>
+                                <li{{ (Request::is('shipments/create')) ? ' class=active' : '' }}><a href="/shipments/create">Create Shipment</a></li>
                             </ul>
                         </li>
 

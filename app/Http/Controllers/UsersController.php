@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Address;
-use App\Helpers\Flash;
+use Flash;
 
 /**
  * UsersController
@@ -63,10 +63,10 @@ class UsersController extends BaseAuthController {
 
         // Validate input
         $rules = [
+            'role_id' => 'required',
             'email' => 'email|unique:users,email',
-            'first_name' => 'required_without:company_name',
-            'last_name' => 'required_without:company_name',
-            'company_name' => 'required_without:first_name,last_name',
+            'full_name' => 'required_without:company_name',
+            'company_name' => 'required_without:full_name',
             'password' => 'min:8'
         ];
 
@@ -74,17 +74,10 @@ class UsersController extends BaseAuthController {
 
         // Create user
         $user = new User($input['user']);
-        $user->company_id = $this->user->isAdmin() ? $input['user']['company_id'] : $this->user->company_id;
 
         if ( ! $user->save())
         {
             return $this->redirectBackWithError('Account creation failed, please try again.');
-        }
-
-        // Assign roles
-        if ($input['roles'])
-        {
-            $user->roles()->sync($input['roles'] );
         }
 
         // Create address
@@ -100,7 +93,7 @@ class UsersController extends BaseAuthController {
      */
     public function getEdit(Request $request, $id)
     {
-        $user = ($this->user->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
+        $user = ($this->authUser->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
 
         return view('users.edit', ['user' => $user]);
     }
@@ -116,23 +109,20 @@ class UsersController extends BaseAuthController {
 
         // Validate input
         $rules = [
+            'role_id' => 'required',
             'email' => 'email|unique:users,email,' . $id,
-            'first_name' => 'required_without:company_name',
-            'last_name' => 'required_without:company_name',
-            'company_name' => 'required_without:first_name,last_name',
+            'full_name' => 'required_without:company_name',
+            'company_name' => 'required_without:full_name',
             'password' => 'min:6'
         ];
 
         $this->validate($input['user'], $rules);
 
         // Update user
-        $user = $this->user->isAdmin() ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
-        $user->company_id = $this->user->isAdmin() ? $input['user']['company_id'] : $user->company_id;
+
+        $user = $this->authUser->isAdmin() ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
         $user->fill($input['user']);
         $user->save();
-
-        // Update roles
-        $user->roles()->sync($input['roles'] ?: []);
 
         // Update address
         if ($user->address)
@@ -164,8 +154,7 @@ class UsersController extends BaseAuthController {
         $sortColumns = [
             'id',
             'company_name',
-            'first_name',
-            'last_name',
+            'full_name',
             'email',
             'phone',
             'mobile_phone'
@@ -175,10 +164,11 @@ class UsersController extends BaseAuthController {
 
         // Create search criteria
         $criteria['q'] = empty($input['search']['value']) ? NULL : $input['search']['value'];
-        $criteria['company_id'] = $this->user->isAdmin() ? NULL : [$this->user->company_id];
+        $criteria['company_id'] = $this->authUser->isAdmin() ? NULL : [$this->authUser->company_id];
+        $criteria['count'] = TRUE;
 
         // Retrieve results
-        $results = User::datatableSearch($criteria, $offset, $limit, $orderBy, $order);
+        $results = User::search($criteria, $offset, $limit, $orderBy, $order);
 
         // Process response
         $response = [];
@@ -190,16 +180,16 @@ class UsersController extends BaseAuthController {
         {
             $data = [
                 $user->company_name,
-                $user->first_name,
-                $user->last_name,
+                $user->full_name,
                 $user->email,
                 $user->phone,
                 $user->mobile_phone,
-                $user->present()->roles(),
+                $user->present()->role(),
+                $user->is_active ? '<div class="badge badge-primary">Yes</div>' : '<div class="badge badge-danger">No</div>',
                 sprintf('<a href="/accounts/edit/%s" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a>', $user->id)
             ];
 
-            if ($this->user->isAdmin())
+            if ($this->authUser->isAdmin())
             {
                 $data = array_merge([$user->id, $user->company->name], $data);
             }
@@ -222,15 +212,15 @@ class UsersController extends BaseAuthController {
      */
     private function prepareInput(Request $request)
     {
-        $input = $request->only('user', 'roles', 'address');
+        $input = $request->only('user', 'address');
 
-        if ( ! $this->user->isAdmin())
+        $input['user']['is_active'] = isset($input['user']['is_active']);
+        $input['user']['company_id'] = $this->authUser->isAdmin() ? $input['user']['company_id'] : $this->authUser->company_id;
+
+        if ( ! $this->authUser->isAdmin() && $input['user']['role_id'] == Role::ADMIN)
         {
             // Prohibit setting "admin" role
-            if ($input['roles'] && in_array(Role::ADMIN, $input['roles']))
-            {
-                $input['roles'] = array_diff($input['roles'], [Role::ADMIN]);
-            }
+            $input['user']['role_id'] = NULL;
         }
 
         return $input;

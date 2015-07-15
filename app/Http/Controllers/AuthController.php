@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\Site;
 use App\Models\Role;
 use App\Helpers\Html;
-use App\Helpers\Flash;
+use Flash;
 use App\Events\UserLoggedIn;
 use App\Events\UserJoined;
 use App\Helpers\Mailer;

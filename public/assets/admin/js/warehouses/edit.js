@@ -45,28 +45,30 @@ $(function() {
     $('form').on('submit', function() {
         event.preventDefault();
 
-        var $form = $(this),
-            $flash = $('#flashMessage'),
-            $submit = $(this).find('button');
+        var form = $(this),
+            flash = $('#flashMessage'),
+            submit = $(this).find('button');
 
-        $submit.attr('disabled', true);
-        $flash.html('');
+        if (!form.valid()) return false;
 
-        $.post($form.attr('action'), $form.serialize(), 'json')
+        submit.attr('disabled', true);
+        flash.html('');
+
+        $.post(form.attr('action'), form.serialize(), 'json')
             .done(function(data) {
                 window.location = data.redirect_url;
             })
             .fail(function(xhr) {
                 var data = JSON.parse(xhr.responseText);
-                $flash.html(data.error);
+                flash.html(data.error);
                 $('html, body').scrollTop(0);
-                $submit.attr('disabled', false);
+                submit.attr('disabled', false);
             });
     });
 
     // Package Manager
     var PackageMgr = {
-        $pkgTemplate: null,
+        pkgTemplate: null,
 
         init: function() {
             this.initEvents();
@@ -75,43 +77,75 @@ $(function() {
 
         initEvents: function() {
             var me = this;
-            me.$pkgTemplate = $('#packages > tbody.package-template').clone().removeClass('package-template').removeAttr('style');
+
+            // Prepare package template
+            me.pkgTemplate = $('#packages > tbody.package-template')
+                .clone()
+                .removeClass('package-template, hidden');
             $('#packages > tbody.package-template').remove();
 
             $('#packages').on('click', '.btn-clone-package', me.clonePackage);
             $('#packages').on('click', '.btn-remove-package', me.removePackage);
             $('#btnNewPackage').on('click', me.newPackage);
             $('#packages').on('keyup', '.metric', me.updateTotals);
+
+            $('#packages').on('click', '.btn-toggle-detail', function() {
+                var btn = $(this);
+                btn.toggleClass('collapsed');
+                btn.closest('tr').next('tr').toggleClass('hidden');
+                if (btn.hasClass('collapsed')) {
+                    btn.html('<i class="fa fa-minus"></i>');
+                }
+                else{
+                    btn.html('<i class="fa fa-plus"></i>');
+                }
+            });
+
+            $('.btn-toggle-detail-all').click(function() {
+                var btn = $(this);
+                btn.toggleClass('collapsed');
+                if (btn.hasClass('collapsed')) {
+                    btn.html('<i class="fa fa-minus"></i>');
+                    $('#packages .btn-toggle-detail').html('<i class="fa fa-minus"></i>').addClass('collapsed');
+                    $('#packages .package-detail').removeClass('hidden');
+                }
+                else{
+                    btn.html('<i class="fa fa-plus"></i>');
+                    $('#packages .btn-toggle-detail').html('<i class="fa fa-plus"></i>').removeClass('collapsed');
+                    $('#packages .package-detail').addClass('hidden');
+                }
+            });
         },
 
         clonePackage: function() {
-            var total = PackageMgr.countPackages();
-            var $clonedPkg = $(this).closest('tbody').clone();
+            var totalPkgs = PackageMgr.countPackages();
+            var newPkg = PackageMgr.pkgTemplate.clone();
 
-            $clonedPkg.find('.unique').val('');
-            $clonedPkg.find('.id').html('NEW');
-
-            $clonedPkg.find('input, select, textarea').each(function() {
-                $(this).attr('name', 'packages[new_' + total + '][' + $(this).attr('data-name') + ']');
+            $(this).closest('tbody').find('input, select, textarea').each(function() {
+                var nameAttr = $(this).attr('data-name');
+                newPkg
+                    .find('[data-name="' + nameAttr + '"]')
+                    .attr('name', 'packages[new_' + totalPkgs + '][' + nameAttr + ']')
+                    .val($(this).val());
             });
 
-            $('#packages').append($clonedPkg);
-            $('#totalPackages').html(1 + total);
+            $('#packages').append(newPkg);
+            $('#totalPackages').html(1 + totalPkgs);
 
             PackageMgr.updateTotals();
         },
 
         newPackage: function() {
-            var total = PackageMgr.countPackages();
-            var $newPkg = PackageMgr.$pkgTemplate.clone();
+            var totalPkgs = PackageMgr.countPackages();
+            var newPkg = PackageMgr.pkgTemplate.clone();
 
-            $newPkg.find('input, select, textarea').each(function() {
+            newPkg.find('input, select, textarea').each(function() {
                 $(this).val('');
-                $(this).attr('name', 'packages[new_' + total + '][' + $(this).attr('data-name') + ']');
+                $(this).attr('name', 'packages[new_' + totalPkgs + '][' + $(this).attr('data-name') + ']');
             });
 
-            $('#packages').append($newPkg);
-            $('#totalPackages').html(1 + total);
+            $('#packages').append(newPkg);
+            $('#totalPackages').html(1 + totalPkgs);
 
             PackageMgr.updateTotals();
         },
@@ -142,9 +176,9 @@ $(function() {
             volumeWeight = Math.round(volumeWeight);
 
             $('#totalPackages').html(PackageMgr.countPackages());
-            $('#grossWeight').html(grossWeight + ' lb(s)');
-            $('#volumeWeight').html(volumeWeight + ' lb(s)');
-            $('#chargeWeight').html((volumeWeight > grossWeight ? volumeWeight : grossWeight) + ' lb(s)');
+            $('#grossWeight').html(grossWeight);
+            $('#volumeWeight').html(volumeWeight);
+            $('#chargeWeight').html((volumeWeight > grossWeight) ? volumeWeight : grossWeight);
         }
     };
 

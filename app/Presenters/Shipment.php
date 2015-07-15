@@ -1,13 +1,14 @@
 <?php namespace App\Presenters;
 
 use App\Presenters\Base as BasePresenter;
+use App\Helpers\Currency;
 
 /**
- * Cargo
+ * Shipment
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Cargo extends BasePresenter {
+class Shipment extends BasePresenter {
 
     /**
      * Presents the carrier name.
@@ -29,5 +30,15 @@ class Cargo extends BasePresenter {
         $format = 'm/d/Y';
 
         return $this->model->exists ? date($format, strtotime($this->model->departed_at)) : date($format);
+    }
+
+    /**
+     * Presents the total value.
+     *
+     * @return string
+     */
+    public function totalValue()
+    {
+        return ($this->model->exists) ? Currency::formatDollar($this->model->calculateTotalValue()) : '';
     }
 }

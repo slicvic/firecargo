@@ -7,7 +7,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
 use App\Exceptions\ValidationException;
-use App\Helpers\Flash;
+use Flash;
 
 /**
  * BaseController

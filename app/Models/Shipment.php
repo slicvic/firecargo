@@ -6,17 +6,17 @@ use App\Models\CompanyTrait;
 use App\Presenters\PresentableTrait;
 
 /**
- * Cargo
+ * Shipment
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Cargo extends Base {
+class Shipment extends Base {
 
     use CompanyTrait, PresentableTrait;
 
-    protected $table = 'cargos';
+    protected $table = 'shipments';
 
-    protected $presenter = 'App\Presenters\Cargo';
+    protected $presenter = 'App\Presenters\Shipment';
 
     protected $fillable = [
         'carrier_id',
@@ -25,7 +25,9 @@ class Cargo extends Base {
     ];
 
     /**
-     * Gets the packages.
+     * Gets the packages relation.
+     *
+     * @return Package[]
      */
     public function packages()
     {
@@ -33,7 +35,9 @@ class Cargo extends Base {
     }
 
     /**
-     * Gets the carrier.
+     * Gets the carrier relation.
+     *
+     * @return Carrier
      */
     public function carrier()
     {
@@ -60,10 +64,10 @@ class Cargo extends Base {
     }
 
     /**
-     * Attaches the given packages to the cargo.
+     * Attaches the given packages to the shipment.
      *
      * WARNING: After this operation is complete only the packages in the array
-     * will remain in the cargo.
+     * will remain in the shipment.
      *
      * @param  array  $packageIds
      * @param  bool   $detaching
@@ -71,23 +75,34 @@ class Cargo extends Base {
      * */
     public function syncPackages(array $packageIds, $detaching = TRUE)
     {
-        // First lets detach those packages not in $packageIds
+        // First lets detach the packages not in $packageIds
         if ($detaching)
         {
             Package::whereNotIn('id', $packageIds)
-                ->where('cargo_id', '=', $this->id)
-                ->update(['cargo_id' => NULL]);
+                ->where('shipment_id', '=', $this->id)
+                ->update(['shipment_id' => NULL]);
         }
 
         // Next, we will attach the given packages
         if (count($packageIds))
         {
-            Package::whereIn('id', $packageIds)->update(['cargo_id' => $this->id]);
+            Package::whereIn('id', $packageIds)->update(['shipment_id' => $this->id]);
         }
     }
 
     /**
-     * Finds all cargos with the given criteria.
+     * Calculates the total cost of the warehouse.
+     *
+     * @return float
+     */
+    public function calculateTotalValue()
+    {
+        return DB::table('packages')->where('shipment_id', '=', $this->id)
+            ->sum('invoice_amount');
+    }
+
+    /**
+     * Finds all shipments with the given criteria.
      *
      * @param  array|null  $criteria
      * @param  string      $orderBy
@@ -97,6 +112,7 @@ class Cargo extends Base {
      */
     public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
+        // Define valid sort columns
         $sortColumns = [
             'id' => 'id',
             'departed' => 'departed_at',
@@ -104,37 +120,40 @@ class Cargo extends Base {
             'updated' => 'updated_at'
         ];
 
+        // Determine sort order
         $orderBy = array_key_exists($orderBy, $sortColumns) ? $sortColumns[$orderBy] : 'id';
         $order = ($order == 'asc') ? 'asc' : 'desc';
 
-        $cargos = Cargo::whereRaw('1')
-            ->orderBy('cargos.' . $orderBy, $order);
+        $shipments = Shipment::whereRaw('1')
+            ->orderBy('shipments.' . $orderBy, $order);
 
+        // Filter by company id
         if ( ! empty($criteria['company_id']))
         {
-            $cargos = $cargos->where('cargos.company_id', '=', $criteria['company_id']);
+            $shipments = $shipments->where('shipments.company_id', '=', $criteria['company_id']);
         }
 
+        // Full text search
         if ( ! empty($criteria['q']))
         {
             $q = '%' . $criteria['q'] . '%';
 
-            $cargos = $cargos
-                ->select('cargos.*')
-                ->leftJoin('packages', 'cargos.id', '=', 'packages.cargo_id')
-                ->leftJoin('carriers', 'cargos.carrier_id', '=', 'carriers.id')
+            $shipments = $shipments
+                ->select('shipments.*')
+                ->leftJoin('packages', 'shipments.id', '=', 'packages.shipment_id')
+                ->leftJoin('carriers', 'shipments.carrier_id', '=', 'carriers.id')
                 ->whereRaw('(
                     packages.id LIKE ?
                     OR packages.tracking_number LIKE ?
                     OR carriers.name LIKE ?
-                    OR cargos.id LIKE ?
-                    OR cargos.reference_number LIKE ?
+                    OR shipments.id LIKE ?
+                    OR shipments.reference_number LIKE ?
                     )', [$q, $q, $q, $q, $q]
                 );
         }
 
-        $cargos = $cargos->paginate($perPage);
+        $shipments = $shipments->paginate($perPage);
 
-        return $cargos;
+        return $shipments;
     }
 }

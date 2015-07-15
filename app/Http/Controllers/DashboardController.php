@@ -19,12 +19,12 @@ class DashboardController extends BaseAuthController {
      */
     public function getIndex()
     {
-        if ($this->user->isAdmin())
+        if ($this->authUser->isAdmin())
         {
             // TODO
             return view('dashboard.admins.index');
         }
-        elseif ($this->user->isAgent())
+        elseif ($this->authUser->isAgent())
         {
             // TODO
             return view('dashboard.agents.index');

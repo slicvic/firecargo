@@ -29,7 +29,9 @@ class Warehouse extends Base {
     ];
 
     /**
-     * Gets the shipper.
+     * Gets the shipper relation.
+     *
+     * @return User
      */
     public function shipper()
     {
@@ -37,7 +39,9 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the consignee.
+     * Gets the consignee relation.
+     *
+     * @return User
      */
     public function consignee()
     {
@@ -45,7 +49,9 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the carrier.
+     * Gets the carrier relation.
+     *
+     * @return Carrier
      */
     public function carrier()
     {
@@ -53,7 +59,9 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the company.
+     * Gets the company relation.
+     *
+     * @return Company
      */
     public function company()
     {
@@ -61,7 +69,9 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the packages.
+     * Gets the packages relation.
+     *
+     * @return Package[]
      */
     public function packages()
     {
@@ -98,42 +108,30 @@ class Warehouse extends Base {
                 $package = Package::firstOrNew(['id' => $id]);
                 $package->fill($data);
                 $package->warehouse_id = $this->id;
-                $package->original_warehouse_id = $package->original_warehouse_id ?: $this->id;
                 $package->company_id = $this->company_id;
-                $package->ship = ($package->cargo_id) ? $package->ship : $this->consignee->autoship_setting;
+                $package->ship = ($package->shipment_id) ? $package->ship : $this->consignee->autoship_setting;
                 $package->save();
             }
         }
     }
 
     /**
-     * Overrides parent method to sanitize certain attributes.
+     * Creates/updates the given packages and attaches them to the warehouse.
      *
-     * @see parent::setAttribute()
+     * @param  array  $packages
+     * @return void
      */
-    public function setAttribute($key, $value)
+    public function createOrUpdatePackages(array $packages)
     {
-        switch ($key)
+        foreach ($packages as $id => $data)
         {
-            case 'arrived_at':
-
-                if (is_string($value))
-                {
-                    $value = date('Y-m-d H:i:s', strtotime($value));
-                }
-                else if (is_array($value) && isset($value['date'], $value['time']))
-                {
-                    $value = date('Y-m-d H:i:s', strtotime($value['date'] . ' ' . $value['time']));
-                }
-                else
-                {
-                    $value = NULL;
-                }
-
-                break;
+            $package = Package::firstOrNew(['id' => $id]);
+            $package->fill($data);
+            $package->warehouse_id = $this->id;
+            $package->company_id = $this->company_id;
+            $package->ship = ($package->shipment_id) ? $package->ship : $this->consignee->autoship_setting;
+            $package->save();
         }
-
-        return parent::setAttribute($key, $value);
     }
 
     /**
@@ -240,6 +238,17 @@ class Warehouse extends Base {
     }
 
     /**
+     * Calculates the total cost of the warehouse.
+     *
+     * @return float
+     */
+    public function calculateTotalValue()
+    {
+        return DB::table('packages')->where('warehouse_id', '=', $this->id)
+            ->sum('invoice_amount');
+    }
+
+    /**
      * Finds all warehouses with the given criteria.
      *
      * @param  array|null  $criteria
@@ -250,6 +259,7 @@ class Warehouse extends Base {
      */
     public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
+        // Define valid sort columns
         $sortColumns = [
             'id' => 'id',
             'arrived' => 'arrived_at',
@@ -257,6 +267,7 @@ class Warehouse extends Base {
             'updated' => 'updated_at',
         ];
 
+        // Define valid status filters
         $statuses = [
             'pending' => WarehouseStatus::STATUS_PENDING,
             'complete' => WarehouseStatus::STATUS_COMPLETE,
@@ -282,7 +293,7 @@ class Warehouse extends Base {
             $warehouses = $warehouses->where('warehouses.company_id', '=', $criteria['company_id']);
         }
 
-        // Free text search
+        // Full text search
         if ( ! empty($criteria['q']))
         {
             $q = '%' . $criteria['q'] . '%';
@@ -294,11 +305,10 @@ class Warehouse extends Base {
                 ->whereRaw('(
                     warehouses.id LIKE ?
                     OR consignee.id LIKE ?
-                    OR consignee.first_name LIKE ?
-                    OR consignee.last_name LIKE ?
+                    OR consignee.full_name LIKE ?
                     OR shipper.id LIKE ?
                     OR shipper.company_name LIKE ?
-                    )', [$q, $q, $q, $q, $q, $q]
+                    )', [$q, $q, $q, $q, $q]
                 );
         }
 

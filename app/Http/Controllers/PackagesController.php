@@ -32,20 +32,20 @@ class PackagesController extends BaseAuthController {
      */
     public function getAjaxWarehousePackages(Request $request, $warehouseId)
     {
-        $packages = Package::where(['warehouse_id' => $warehouseId, 'company_id' => $this->user->company_id])->get();
+        $packages = Package::where(['warehouse_id' => $warehouseId, 'company_id' => $this->authUser->company_id])->get();
 
         return view('packages._list_warehouse', ['packages' => $packages]);
     }
 
     /**
-     * Shows the packages for a specific cargo.
+     * Shows the packages for a specific shipment.
      *
      * @return Response
      */
-    public function getAjaxCargoPackages(Request $request, $cargoId)
+    public function getAjaxShipmentPackages(Request $request, $shipmentId)
     {
-        $packages = Package::where(['cargo_id' => $cargoId, 'company_id' => $this->user->company_id])->get();
+        $packages = Package::where(['shipment_id' => $shipmentId, 'company_id' => $this->authUser->company_id])->get();
 
-        return view('packages._list_cargo', ['packages' => $packages]);
+        return view('packages._list_shipment', ['packages' => $packages]);
     }
 }

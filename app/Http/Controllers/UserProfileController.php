@@ -11,7 +11,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 use App\Models\User;
 use App\Models\Address;
-use App\Helpers\Flash;
+use Flash;
 
 /**
  * UserProfileController
@@ -39,7 +39,7 @@ class UserProfileController extends BaseAuthController {
      */
     public function getProfile()
     {
-        $view = view('user_profile.show', ['user' => $this->user]);
+        $view = view('user_profile.show', ['user' => $this->authUser]);
 
         return view('user_profile.layout', ['content' => $view]);
     }
@@ -51,7 +51,7 @@ class UserProfileController extends BaseAuthController {
      */
     public function getEdit()
     {
-        $view = view('user_profile.edit', ['user' => $this->user]);
+        $view = view('user_profile.edit', ['user' => $this->authUser]);
 
         return view('user_profile.layout', ['content' => $view]);
     }
@@ -67,25 +67,25 @@ class UserProfileController extends BaseAuthController {
 
         // Validate input
         $rules = [
-            'email' => 'required|email|unique:users,email,' . $this->user->id,
-            'first_name' => 'required',
-            'last_name' => 'required'
+            'email' => 'required|email|unique:users,email,' . $this->authUser->id,
+            'full_name' => 'required'
         ];
 
         $this->validate($input['user'], $rules);
 
         // Update user
         $input['user']['autoship_setting'] = isset($input['user']['autoship_setting']);
-        $this->user->update($input['user']);
+        unset($input['user']['company_id']);
+        $this->authUser->update($input['user']);
 
         // Update address
-        if ($this->user->address)
+        if ($this->authUser->address)
         {
-            $this->user->address->update($input['address']);
+            $this->authUser->address->update($input['address']);
         }
         else
         {
-            $this->user->address()->save(new Address($input['address']));
+            $this->authUser->address()->save(new Address($input['address']));
         }
 
         return $this->redirectBackWithSuccess('Your profile was updated.');
@@ -122,13 +122,13 @@ class UserProfileController extends BaseAuthController {
         $this->validate($input, $rules);
 
         // Change password
-        if ( ! Hash::check($input['current_password'], $this->user->password))
+        if ( ! Hash::check($input['current_password'], $this->authUser->password))
         {
             return $this->redirectBackWithError('The password you entered does not match your current one.');
         }
 
-        $this->user->password = $input['new_password'];
-        $this->user->save();
+        $this->authUser->password = $input['new_password'];
+        $this->authUser->save();
 
         return $this->redirectBackWithSuccess('Your password was changed successfully.');
     }
@@ -154,7 +154,7 @@ class UserProfileController extends BaseAuthController {
         }
 
         // Create destination directory
-        $destination = public_path() . '/uploads/users/' . $this->user->id . '/images/profile/';
+        $destination = public_path() . '/uploads/users/' . $this->authUser->id . '/images/profile/';
 
         if ( ! file_exists($destination))
         {

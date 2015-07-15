@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Company;
 use App\Models\Address;
-use App\Helpers\Flash;
+use Flash;
 
 /**
  * CompaniesController

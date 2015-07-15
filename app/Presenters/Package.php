@@ -1,6 +1,8 @@
 <?php namespace App\Presenters;
 
 use App\Presenters\Base as BasePresenter;
+use App\Helpers\Currency;
+use App\Helpers\Html;
 
 /**
  * Package
@@ -56,19 +58,28 @@ class Package extends BasePresenter {
      */
     public function warehouseLink()
     {
-        return sprintf('<a target="_blank" href="/warehouses/show/%s">%s</a> <i class="fa fa-link"></i>', $this->model->warehouse_id, $this->model->warehouse_id);
+        return Html::link('/warehouses/show/' . $this->model->warehouse_id, $this->model->warehouse_id, ['target' => '_blank'], TRUE);
     }
 
     /**
-     * Presents the cargo link.
+     * Presents the shipment link.
      *
      * @return string
      */
-    public function cargoLink()
+    public function shipmentLink()
     {
-        return ($this->model->cargo_id)
-            ? sprintf('<a target="_blank" href="/cargos/show/%s">%s (%s)</a> <i class="fa fa-link"></i>', $this->model->cargo_id, $this->model->cargo->carrier->name, $this->model->cargo->reference_number) :
-            'N/A';
+        if ($this->model->shipment_id)
+        {
+            return Html::link(
+                '/shipments/show/' . $this->model->shipment_id,
+                $this->model->shipment->carrier->name . ' (' . $this->model->shipment->reference_number . ')',
+                ['target' => '_blank'],
+                TRUE
+            );
+
+        }
+
+        return 'N/A';
     }
 
     /**
@@ -78,21 +89,17 @@ class Package extends BasePresenter {
      */
     public function colorStatus()
     {
-        return ($this->model->cargo_id) ? 'success' : 'danger';
+        return ($this->model->shipment_id) ? 'success' : 'danger';
     }
 
     /**
-     * Presents a string representation.
+     * Presents the invoice amount.
      *
+     * @param bool $showSign
      * @return string
      */
-    public function toString()
+    public function invoiceAmount($showSign = TRUE)
     {
-        return sprintf('# %s - %s - %s - %s',
-            $this->model->id,
-            $this->type(),
-            $this->dimensions(),
-            $this->weight()
-        );
+        return ($this->model->exists) ? Currency::formatDollar($this->model->invoice_amount, $showSign) : '';
     }
 }

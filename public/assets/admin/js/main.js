@@ -4,6 +4,9 @@ var main = {
 	},
 
 	initEvents: function() {
+		// Bind jQuery validate
+		$('form').validate();
+
 		// Bind table delete button
 		$('table').on('click', '.btn-delete', function() {
 		    if (!confirm('Are you sure you want to delete this item?')) {
@@ -22,7 +25,7 @@ var main = {
 		});
 
 		// Bind iChecks
-		$('input[type=checkbox]').iCheck({
+		$('input[type=checkbox], input[type=radio]').iCheck({
 			checkboxClass: 'icheckbox_square-green',
 			radioClass: 'iradio_square-green',
 		});

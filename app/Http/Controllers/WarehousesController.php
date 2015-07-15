@@ -12,10 +12,11 @@ use Illuminate\Pagination\Paginator;
 use App\Models\Warehouse;
 use App\Models\Package;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\Carrier;
-use App\Helpers\Flash;
 use App\Pdf\Warehouse as WarehousePdf;
 use App\Exceptions\ValidationException;
+use Flash;
 
 /**
  * WarehousesController
@@ -44,23 +45,24 @@ class WarehousesController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
-        // Prepare input
         $input['limit'] = $request->input('limit', 10);
         $input['sort'] = $request->input('sort', 'id');
         $input['order'] = $request->input('order', 'desc');
         $input['q'] = $request->input('q');
         $input['status'] = $request->input('status');
 
-        // Perform query
+        // Prepare search criteria
         $criteria['status'] = $input['status'];
         $criteria['q'] = $input['q'];
-        $criteria['company_id'] = $this->user->company_id;
+        $criteria['company_id'] = $this->authUser->company_id;
+
+        // Run query
         $warehouses = Warehouse::search($criteria, $input['sort'], $input['order'], $input['limit']);
 
         return view('warehouses.index', [
             'warehouses' => $warehouses,
             'input' => $input,
-            'orderInverse' => ($input['order'] === 'asc') ? 'desc' : 'asc',
+            'oppositeOrder' => ($input['order'] === 'asc') ? 'desc' : 'asc',
         ]);
     }
 
@@ -104,8 +106,12 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Create warehouse
-        $warehouse = new Warehouse($input['warehouse']);
-        $warehouse->company_id = $this->user->company_id;
+        $warehouse = new Warehouse;
+        $warehouse->arrived_at = date('Y-m-d H:i:s', strtotime($input['warehouse']['date'] . ' ' . $input['warehouse']['time']));
+        $warehouse->shipper_user_id = $input['warehouse']['shipper_user_id'];
+        $warehouse->consignee_user_id = $input['warehouse']['consignee_user_id'];
+        $warehouse->carrier_id = $input['warehouse']['carrier_id'];
+        $warehouse->company_id = $this->authUser->company_id;
 
         if ( ! $warehouse->save())
         {
@@ -160,7 +166,11 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Update warehouse
-        $warehouse->update($input['warehouse']);
+        $warehouse->arrived_at = date('Y-m-d H:i:s', strtotime($input['warehouse']['date'] . ' ' . $input['warehouse']['time']));
+        $warehouse->shipper_user_id = $input['warehouse']['shipper_user_id'];
+        $warehouse->consignee_user_id = $input['warehouse']['consignee_user_id'];
+        $warehouse->carrier_id = $input['warehouse']['carrier_id'];
+        $warehouse->save();
 
         // Update packages
         $warehouse->syncPackages($input['packages'] ?: []);
@@ -200,16 +210,28 @@ class WarehousesController extends BaseAuthController {
     public function getAjaxShipperConsigneeAutocomplete(Request $request)
     {
         $input = $request->only('term');
-        $response = [];
 
+        // Return nothing if search term does not meet length requirement
         if (strlen($input['term']) < 2)
         {
-            return response()->json($response);
+            return response()->json([]);
         }
 
-        foreach(User::autocompleteSearch($input['term'], $this->user->company_id) as $user)
+        // Prepare search criteria
+        $criteria['q'] = $input['term'];
+        $criteria['company_id'] = [$this->authUser->company_id];
+
+        // Run query
+        $users = User::search($criteria, 0, 25);
+
+        $response = [];
+
+        foreach($users as $user)
         {
-            $response[] = ['id' => $user->id, 'label' => $user->present()->company(TRUE)];
+            $response[] = [
+                'id' => $user->id,
+                'label' => $user->present()->company()
+            ];
         }
 
         return response()->json($response);
@@ -229,11 +251,11 @@ class WarehousesController extends BaseAuthController {
 
         // Prepare rules
         $warehouseRules = [
-            'shipper_user_id' => 'required',
-            'consignee_user_id' => 'required',
-            'arrived_at' => 'required',
-            'carrier_id' => 'required_without:carrier_name',
-            'carrier_name' => 'required_without:carrier_id',
+            'shipper_name' => 'required|min:3',
+            'consignee_name' => 'required|min:5',
+            'carrier_name' => 'required|min:3',
+            'date' => 'required',
+            'time' => 'required',
         ];
 
         // Validate input
@@ -248,11 +270,33 @@ class WarehousesController extends BaseAuthController {
         if (empty($input['warehouse']['carrier_id']))
         {
             $carrier = Carrier::firstOrCreate(['name' => $input['warehouse']['carrier_name']]);
+
             $input['warehouse']['carrier_id'] = $carrier->id;
         }
 
-        // Not a real attribute
-        unset($input['warehouse']['carrier_name']);
+        // Create a new shipper account if necessary
+        if (empty($input['warehouse']['shipper_user_id']))
+        {
+            $shipper = User::firstOrCreate([
+                'company_name' => $input['warehouse']['shipper_name'],
+                'company_id' => $this->authUser->company_id,
+                'role_id' => Role::SHIPPER
+            ]);
+
+            $input['warehouse']['shipper_user_id'] = $shipper->id;
+        }
+
+        // Create a new consignee account if necessary
+        if (empty($input['warehouse']['consignee_user_id']))
+        {
+            $consignee = User::firstOrCreate([
+                'full_name' => $input['warehouse']['consignee_name'],
+                'company_id' => $this->authUser->company_id,
+                'role_id' => Role::CLIENT
+            ]);
+
+            $input['warehouse']['consignee_user_id'] = $consignee->id;
+        }
 
         return $input;
     }

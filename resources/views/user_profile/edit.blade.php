@@ -1,5 +1,5 @@
 <?php $address = $user->address ?: new App\Models\Address; ?>
-<form data-parsley-validate action="/account/profile" method="post" class="form-horizontal">
+<form action="/account/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="row">
         <div class="col-md-12">
@@ -7,21 +7,15 @@
                 <div class="ibox-content">
                     <h2>Personal Information</h2>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">First Name</label>
+                        <label class="control-label col-sm-2">Name</label>
                         <div class="col-sm-5">
-                            <input type="text" name="user[first_name]" placeholder="First Name" class="form-control" value="{{ Input::old('user.first_name', $user->first_name) }}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Last Name</label>
-                        <div class="col-sm-5">
-                            <input type="text" name="user[last_name]" placeholder="Last Name" class="form-control" value="{{ Input::old('user.last_name', $user->last_name) }}">
+                            <input required type="text" name="user[full_name]" class="form-control" value="{{ Input::old('user.full_name', $user->full_name) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Email</label>
                         <div class="col-sm-5">
-                            <input type="email" name="user[email]" placeholder="Email" class="form-control" value="{{ Input::old('user.email', $user->email) }}">
+                            <input required type="email" name="user[email]" class="form-control" value="{{ Input::old('user.email', $user->email) }}">
                         </div>
                     </div>
                     <div class="form-group">

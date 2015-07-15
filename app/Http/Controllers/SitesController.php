@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
 use App\Models\Site;
-use App\Helpers\Flash;
+use Flash;
 
 /**
  * SitesController

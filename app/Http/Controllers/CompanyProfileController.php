@@ -10,7 +10,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 use App\Models\Company;
 use App\Models\Address;
-use App\Helpers\Flash;
+use Flash;
 
 /**
  * CompanyProfileController
@@ -39,7 +39,7 @@ class CompanyProfileController extends BaseAuthController {
      */
     public function getProfile()
     {
-        $company = $this->user->company;
+        $company = $this->authUser->company;
         $view = view('company_profile.show', ['company' => $company]);
 
         return view('company_profile.layout', ['company' => $company, 'content' => $view]);
@@ -52,7 +52,7 @@ class CompanyProfileController extends BaseAuthController {
      */
     public function getEditProfile()
     {
-        $company = $this->user->company;
+        $company = $this->authUser->company;
         $view = view('company_profile.edit', ['company' => $company]);
 
         return view('company_profile.layout', ['company' => $company, 'content' => $view]);
@@ -72,16 +72,16 @@ class CompanyProfileController extends BaseAuthController {
         $this->validate($input['company'], $rules);
 
         // Update company
-        $this->user->company->update($input['company']);
+        $this->authUser->company->update($input['company']);
 
         // Update address
-        if ($this->user->company->address)
+        if ($this->authUser->company->address)
         {
-            $this->user->company->address->update($input['address']);
+            $this->authUser->company->address->update($input['address']);
         }
         else
         {
-            $this->user->company->address()->save(new Address($input['address']));
+            $this->authUser->company->address()->save(new Address($input['address']));
         }
 
         return $this->redirectBackWithSuccess('Company updated.');
@@ -108,7 +108,7 @@ class CompanyProfileController extends BaseAuthController {
         }
 
         // Create destination directory
-        $destination = public_path() . '/uploads/companies/' . $this->user->company->id . '/images/logo/';
+        $destination = public_path() . '/uploads/companies/' . $this->authUser->company->id . '/images/logo/';
 
         if ( ! file_exists($destination))
         {

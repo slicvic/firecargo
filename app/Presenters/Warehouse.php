@@ -2,6 +2,8 @@
 
 use App\Presenters\Base as BasePresenter;
 use App\Models\WarehouseStatus;
+use App\Helpers\Currency;
+use App\Helpers\Html;
 
 /**
  * Warehouse
@@ -31,34 +33,34 @@ class Warehouse extends BasePresenter {
     /**
      * Presents the carrier name.
      *
-     * @param  bool  $appendId
+     * @param  bool  $showId
      * @return string
      */
-    public function carrier($appendId = FALSE)
+    public function carrier($showId = FALSE)
     {
-        return ($this->model->exists) ? $this->model->carrier->present()->name($appendId) : '';
+        return ($this->model->exists) ? $this->model->carrier->present()->name($showId) : '';
     }
 
     /**
      * Presents the consignee name.
      *
-     * @param  bool  $appendId
+     * @param  bool  $showId
      * @return string
      */
-    public function consignee($appendId = FALSE)
+    public function consignee($showId = FALSE)
     {
-        return ($this->model->exists) ? $this->model->consignee->present()->company($appendId) : '';
+        return ($this->model->exists) ? $this->model->consignee->present()->company($showId) : '';
     }
 
     /**
      * Presents the shipper name.
      *
-     * @param  bool  $appendId  Whether or not to append the user's id.
+     * @param  bool  $showId
      * @return string
      */
-    public function shipper($appendId = FALSE)
+    public function shipper($showId = FALSE)
     {
-        return ($this->model->exists) ? $this->model->shipper->present()->company($appendId) : '';
+        return ($this->model->exists) ? $this->model->shipper->present()->company($showId) : '';
     }
 
     /**
@@ -68,7 +70,7 @@ class Warehouse extends BasePresenter {
      */
     public function shipperLink()
     {
-        return sprintf('<a target="_blank" href="/accounts/edit/%s">%s</a> <i class="fa fa-link"></i>', $this->model->shipper_user_id, $this->model->shipper->present()->company());
+        return Html::link('/accounts/edit/' . $this->model->shipper_user_id, $this->model->shipper->present()->company(), ['target' => '_blank'], TRUE);
     }
 
     /**
@@ -78,7 +80,7 @@ class Warehouse extends BasePresenter {
      */
     public function consigneeLink()
     {
-        return sprintf('<a target="_blank" href="/accounts/edit/%s">%s</a> <i class="fa fa-link"></i>', $this->model->consignee_user_id, $this->model->consignee->present()->company());
+        return Html::link('/accounts/edit/' . $this->model->consignee_user_id, $this->model->consignee->present()->company(), ['target' => '_blank'], TRUE);
     }
 
     /**
@@ -128,5 +130,15 @@ class Warehouse extends BasePresenter {
     public function chargeWeight()
     {
         return round($this->model->calculateChargeWeight()) . ' Lbs';
+    }
+
+    /**
+     * Presents the total value.
+     *
+     * @return string
+     */
+    public function totalValue()
+    {
+        return ($this->model->exists) ? Currency::formatDollar($this->model->calculateTotalValue()) : '';
     }
 }

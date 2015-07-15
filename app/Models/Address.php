@@ -21,27 +21,13 @@ class Address extends Base {
     ];
 
     /**
-     * Gets the country.
+     * Gets the country relation.
+     *
+     * @return Country
      */
     public function country()
     {
         return $this->belongsTo('App\Models\Country');
-    }
-
-    /**
-     * Gets the user.
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User', 'user_id');
-    }
-
-    /**
-     * Gets the company.
-     */
-    public function company()
-    {
-        return $this->belongsTo('App\Models\User', 'company_id');
     }
 
     /**

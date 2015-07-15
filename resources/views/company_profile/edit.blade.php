@@ -1,5 +1,5 @@
 <?php $address = $company->address ?: new App\Models\Address; ?>
-<form data-parsley-validate action="/company/profile" method="post" class="form-horizontal">
+<form action="/company/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="ibox">
         <div class="ibox-content">
@@ -7,7 +7,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Company Name</label>
                 <div class="col-sm-4">
-                    <input  type="text" name="company[name]" placeholder="Name" class="form-control" value="{{ Input::old('company.name', $company->name) }}">
+                    <input required type="text" name="company[name]" placeholder="Name" class="form-control" value="{{ Input::old('company.name', $company->name) }}">
                 </div>
             </div>
         </div>

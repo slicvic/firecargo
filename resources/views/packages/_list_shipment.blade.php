@@ -1,15 +1,14 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>#</th>
             <th>Warehouse</th>
             <th>Type</th>
             <th>L x W x H</th>
             <th>Weight</th>
             <th>Tracking #</th>
-            <th>Invoice #</th>
-            <th>Invoice $</th>
-            <th>Description</th>
+            <th>Inv #</th>
+            <th>Inv $</th>
         </tr>
     </thead>
     <tbody>
@@ -22,8 +21,7 @@
                 <td>{{ $package->present()->weight() }}</td>
                 <td>{{ $package->tracking_number }}</td>
                 <td>{{ $package->invoice_number }}</td>
-                <td>{{ $package->invoice_amount }}</td>
-                <td>{{ $package->description }}</td>
+                <td>{{ $package->present()->invoiceAmount() }}</td>
             </tr>
         @endforeach
     </tbody>
