@@ -13,15 +13,15 @@
     <!-- Bootstrap core CSS -->
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 
-    <link rel="stylesheet" href="/assets/vendor/bootstrap/bootstrap.min.css">
-    <script src="/assets/vendor/bootstrap/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/assets/plugins/bootstrap/bootstrap.min.css">
+    <script src="/assets/plugins/bootstrap/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="/assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
 
     <!-- Custom styles for this template -->
     <link href="/assets/frontend/css/justified-nav.css" rel="stylesheet">
 
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/validate/jquery.validate.min.js"></script>
 
     <link rel="stylesheet" href="/assets/frontend/css/main.css">
     <script src="/assets/frontend/js/main.js"></script>

@@ -54,7 +54,6 @@ class CompanyProfileController extends BaseAuthController {
     {
         return view('company_profile.edit', [
             'company' => $this->authUser->company,
-            'countries' => Country::all(),
             'address' => $this->authUser->company->address ?: new Address
         ]);
     }

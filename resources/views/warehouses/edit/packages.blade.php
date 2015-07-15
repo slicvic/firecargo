@@ -13,7 +13,7 @@
         </tr>
     </thead>
 
-    {!! view('warehouses.edit.package', ['package' => new \App\Models\Package()]) !!}
+    @include('warehouses.edit.package', ['package' => new \App\Models\Package()])
 
     @foreach ($warehouse->packages as $package)
         @include('warehouses.edit.package', ['package' => $package])

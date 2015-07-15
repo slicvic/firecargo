@@ -107,7 +107,9 @@
                             </tr>
                         </tbody>
                     </table>
-                    {!! view('warehouses.edit.packages', ['warehouse' => $warehouse]) !!}
+
+                    @include('warehouses.edit.packages')
+
                 </div>
             </div>
         </div>

@@ -25,7 +25,7 @@
         <div class="ibox">
             <div class="ibox-content">
                 <h2>Pieces ({{ $shipment->packages->count() }})</h2>
-                {!! view('packages._list_shipment', ['packages' => $shipment->packages]) !!}
+                @include('packages._list_shipment', ['packages' => $shipment->packages])
             </div>
         </div>
     </div>

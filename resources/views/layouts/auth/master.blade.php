@@ -6,16 +6,16 @@
 
     <title{{ env('APP_NAME') }}</title>
 
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/animate.css" rel="stylesheet">
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/style.css" rel="stylesheet">
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/animate.css" rel="stylesheet">
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/style.css" rel="stylesheet">
 
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/jquery-2.1.1.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/bootstrap.min.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/jquery-2.1.1.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/bootstrap.min.js"></script>
 
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/validate/jquery.validate.min.js"></script>
 
     <script src="/assets/auth/js/main.js"></script>
 </head>

@@ -2,6 +2,7 @@
 
 @section('content')
 <section class="content-header">
-    <h1>Welcome Client</small></h1>
+    <h1>Under Construction</h1>
 </section>
 @stop
+

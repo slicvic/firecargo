@@ -55,7 +55,7 @@ class AuthController extends BaseController {
         {
             // Fire event
             Event::fire(new UserLoggedIn($user));
-            return redirect('dashboard');
+            return redirect('/warehouses');
         }
 
         return $this->redirectBackWithError('These credentials do not match our records.');

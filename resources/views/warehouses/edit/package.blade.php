@@ -4,14 +4,14 @@
         <td><span class="label label-{{ $package->exists ? 'success' : 'danger' }}">{{ $package->exists ? $package->id : 'NEW' }}</span></td>
         <td>
             <select name="packages[{{ $package->id }}][status_id]" data-name="status_id" class="form-control">
-                @foreach(\App\Models\PackageStatus::allByCurrentUserCompanyId('is_default', 'desc') as $status)
+                @foreach($packageStatuses as $status)
                     <option{{ ($status->id == $package->status_id) ? ' selected' : '' }} value="{{ $status->id }}">{{ $status->name }}</option>
                 @endforeach
             </select>
         </td>
         <td>
             <select name="packages[{{ $package->id }}][type_id]" data-name="type_id" class="form-control">
-                @foreach(\App\Models\PackageType::all() as $type)
+                @foreach($packageTypes as $type)
                     <option{{ ($type->id == $package->type_id) ? ' selected' : '' }} value="{{ $type->id }}">{{ $type->name }}</option>
                 @endforeach
             </select>

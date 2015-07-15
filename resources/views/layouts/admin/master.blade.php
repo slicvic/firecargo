@@ -8,48 +8,48 @@
 
     <title>{{ env('APP_NAME')}}</title>
 
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/animate.css" rel="stylesheet">
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/style.css" rel="stylesheet">
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/animate.css" rel="stylesheet">
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/style.css" rel="stylesheet">
 
     <!-- Mainly scripts -->
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/jquery-2.1.1.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/bootstrap.min.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/jquery-2.1.1.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/bootstrap.min.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/inspinia.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/pace/pace.min.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/inspinia.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/pace/pace.min.js"></script>
 
     <!-- DataTables -->
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/dataTables/jquery.dataTables.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.responsive.js"></script>
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.responsive.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
 
     <!-- Form Wizard -->
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/steps/jquery.steps.css" rel="stylesheet">
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/steps/jquery.steps.min.js"></script>
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/plugins/steps/jquery.steps.css" rel="stylesheet">
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/steps/jquery.steps.min.js"></script>
 
     <!-- Form Validation -->
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/validate/jquery.validate.min.js"></script>
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/validate/jquery.validate.min.js"></script>
 
     <!-- iChecks -->
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/iCheck/icheck.min.js"></script>
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/iCheck/icheck.min.js"></script>
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/plugins/iCheck/custom.css" rel="stylesheet">
 
     <!-- Date Picker-->
-    <script src="/assets/vendor/inspinia/Static_Seed_Project/js/plugins/datepicker/bootstrap-datepicker.js"></script>
-    <link href="/assets/vendor/inspinia/Static_Seed_Project/css/plugins/datepicker/datepicker3.css" rel="stylesheet">
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/plugins/datepicker/datepicker3.css" rel="stylesheet">
 
     <!-- jQuery UI -->
-    <link rel="stylesheet" href="/assets/vendor/jquery-ui/jquery-ui.min.css">
-    <script src="/assets/vendor/jquery-ui/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="/assets/plugins/jquery-ui/jquery-ui.min.css">
+    <script src="/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
 
     <!-- Main -->
     <link rel="stylesheet" type="text/css" href="/assets/admin/css/main.css">

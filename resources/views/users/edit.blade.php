@@ -140,11 +140,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Country</label>
                                 <div class="col-sm-3">
-                                    <select name="address[country_id]" class="form-control">
-                                        @foreach (\App\Models\Country::all() as $country)
-                                            <option{{ ($country->id == Input::old('address.country_id', $address->country_id)) ? ' selected' : '' }} value="{{ $country->id }}">{{ $country->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    @include('countries._select', ['name' => 'address[country_id]', 'selected' => Input::old('address.country_id', $address->country_id)])
                                 </div>
                             </div>
                         </div>

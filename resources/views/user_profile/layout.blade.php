@@ -13,6 +13,6 @@
     </div>
 </div>
 
-<script src="/assets/vendor/dropzone/dropzone.min.js"></script>
+<script src="/assets/plugins/dropzone/dropzone.min.js"></script>
 <script src="/assets/admin/js/pages/user-profile.js"></script>
 @stop

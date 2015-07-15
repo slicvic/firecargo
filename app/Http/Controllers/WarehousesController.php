@@ -11,6 +11,8 @@ use Illuminate\Pagination\Paginator;
 
 use App\Models\Warehouse;
 use App\Models\Package;
+use App\Models\PackageStatus;
+use App\Models\PackageType;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Carrier;
@@ -85,7 +87,11 @@ class WarehousesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('warehouses.edit', ['warehouse' => new Warehouse]);
+        return view('warehouses.edit', [
+            'warehouse' => new Warehouse,
+            'packageStatuses' => PackageStatus::allByCurrentUserCompanyId('is_default', 'desc'),
+            'packageTypes' => PackageType::all()
+        ]);
     }
 
     /**
@@ -137,7 +143,12 @@ class WarehousesController extends BaseAuthController {
     public function getEdit($id)
     {
         $warehouse = Warehouse::findOrFailByIdAndCurrentUserCompanyId($id);
-        return view('warehouses.edit', ['warehouse' => $warehouse]);
+
+        return view('warehouses.edit', [
+            'warehouse' => $warehouse,
+            'packageStatuses' => PackageStatus::allByCurrentUserCompanyId('is_default', 'desc'),
+            'packageTypes' => PackageType::all()
+        ]);
     }
 
     /**

@@ -11,7 +11,6 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 use App\Models\User;
 use App\Models\Address;
-use App\Models\Country;
 use Flash;
 
 
@@ -53,8 +52,7 @@ class UserProfileController extends BaseAuthController {
     {
         return view('user_profile.edit', [
             'user' => $this->authUser,
-            'address' => $this->authUser->address ?: new Address,
-            'countries' => Country::all()
+            'address' => $this->authUser->address ?: new Address
         ]);
     }
 
