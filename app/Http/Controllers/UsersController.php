@@ -59,7 +59,7 @@ class UsersController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $this->prepareInput($request);
+        $input = $this->beforeValidate($request);
 
         // Validate input
         $rules = [
@@ -93,7 +93,12 @@ class UsersController extends BaseAuthController {
      */
     public function getEdit(Request $request, $id)
     {
-        $user = ($this->authUser->isAdmin()) ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
+        $user = User::find($id);
+
+        if ( ! $user)
+        {
+            return $this->redirectBackWithError('Account not found.');
+        }
 
         return view('users.edit', [
             'user' => $user,
@@ -108,7 +113,7 @@ class UsersController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $this->prepareInput($request);
+        $input = $this->beforeValidate($request);
 
         // Validate input
         $rules = [
@@ -122,10 +127,14 @@ class UsersController extends BaseAuthController {
         $this->validate($input['user'], $rules);
 
         // Update user
+        $user = User::find($id);
 
-        $user = $this->authUser->isAdmin() ? User::findOrFail($id) : User::findOrFailByIdAndCurrentUserCompanyId($id);
-        $user->fill($input['user']);
-        $user->save();
+        if ( ! $user)
+        {
+            return $this->redirectBackWithError('Account not found.');
+        }
+
+        $user->update($input['user']);
 
         // Update address
         if ($user->address)
@@ -149,11 +158,7 @@ class UsersController extends BaseAuthController {
     {
         $input = $request->all();
 
-        // Get the limit and offset
-        $limit = isset($input['length']) ? (int) $input['length'] : 10;
-        $offset = isset($input['start']) ? (int) $input['start'] : 0;
-
-        // Get sort order
+        // Sortable columns
         $sortColumns = [
             'company_name',
             'full_name',
@@ -163,26 +168,34 @@ class UsersController extends BaseAuthController {
             'role_id',
             'is_active'
         ];
-        $sortColumns = $this->authUser->isAdmin() ? array_merge(['id', 'company_id'], $sortColumns) : array_merge(['id'], $sortColumns);
+
+        // Prepare search criteria
+        $criteria['q'] = empty($input['search']['value']) ? NULL : $input['search']['value'];
+        $criteria['company_id'] = $this->authUser->isAdmin() ? NULL : $this->authUser->company_id;
+
+        // Build query
+        $query = User::buildDatatableQuery($criteria);
+
+        // Run query
+        $total = $query->count();
 
         $orderBy = isset($input['order'][0]) && isset($sortColumns[$input['order'][0]['column']]) ? $sortColumns[$input['order'][0]['column']] : 'id';
         $order = isset($input['order'][0]) ? $input['order'][0]['dir'] : 'desc';
+        $limit = isset($input['length']) ? (int) $input['length'] : 10;
+        $offset = isset($input['start']) ? (int) $input['start'] : 0;
 
-        // Create search criteria
-        $criteria['q'] = empty($input['search']['value']) ? NULL : $input['search']['value'];
-        $criteria['company_id'] = $this->authUser->isAdmin() ? NULL : [$this->authUser->company_id];
-        $criteria['count'] = TRUE;
-
-        // Retrieve results
-        $results = User::search($criteria, $offset, $limit, $orderBy, $order);
+        $users = $query->orderBy($orderBy, $order)
+            ->offset($offset)
+            ->limit($limit)
+            ->get();
 
         // Process response
         $response = [];
-        $response['recordsFiltered'] = $results['total'];
-        $response['recordsTotal'] = $results['total'];
+        $response['recordsFiltered'] = $total;
+        $response['recordsTotal'] = $total;
         $response['data'] = [];
 
-        foreach($results['users'] as $user)
+        foreach($users as $user)
         {
             $data = [
                 $user->company_name,
@@ -209,18 +222,11 @@ class UsersController extends BaseAuthController {
      * @param  Request $request
      * @return array
      */
-    private function prepareInput(Request $request)
+    private function beforeValidate(Request $request)
     {
         $input = $request->only('user', 'address');
 
         $input['user']['is_active'] = isset($input['user']['is_active']);
-        $input['user']['company_id'] = $this->authUser->isAdmin() ? $input['user']['company_id'] : $this->authUser->company_id;
-
-        if ( ! $this->authUser->isAdmin() && $input['user']['role_id'] == Role::ADMIN)
-        {
-            // Prohibit setting "admin" role
-            $input['user']['role_id'] = NULL;
-        }
 
         return $input;
     }

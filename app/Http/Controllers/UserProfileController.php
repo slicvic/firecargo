@@ -75,7 +75,6 @@ class UserProfileController extends BaseAuthController {
 
         // Update user
         $input['user']['autoship_setting'] = isset($input['user']['autoship_setting']);
-        unset($input['user']['company_id']);
         $this->authUser->update($input['user']);
 
         // Update address

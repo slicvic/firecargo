@@ -39,7 +39,7 @@ class Package extends Base {
     ];
 
     /**
-     * Gets the warehouse relation.
+     * Gets the warehouse.
      *
      * @return Warehouse
      */
@@ -49,7 +49,7 @@ class Package extends Base {
     }
 
     /**
-     * Gets the package type relation.
+     * Gets the package type.
      *
      * @return PackageType
      */
@@ -59,7 +59,7 @@ class Package extends Base {
     }
 
     /**
-     * Gets the status relation.
+     * Gets the status.
      *
      * @return PackageStatus
      */
@@ -69,17 +69,7 @@ class Package extends Base {
     }
 
     /**
-     * Gets the company relation.
-     *
-     * @return Company
-     */
-    public function company()
-    {
-        return $this->belongsTo('App\Models\Company');
-    }
-
-    /**
-     * Gets the shipment relation.
+     * Gets the shipment.
      *
      * @return Shipment
      */

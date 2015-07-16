@@ -76,7 +76,12 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $type = PackageType::findOrFail($id);
+        $type = PackageType::find($id);
+
+        if ( ! $type)
+        {
+            return $this->redirectBackWithError('Package type not found.');
+        }
 
         return view('package_types.edit', ['type' => $type]);
     }
@@ -94,7 +99,14 @@ class PackageTypesController extends BaseAuthController {
         $this->validate($input, PackageType::$rules);
 
         // Update package type
-        PackageType::updateById($id, $input);
+        $type = PackageType::find($id);
+
+        if ( ! $type)
+        {
+            return $this->redirectBackWithError('Package type not found.');
+        }
+
+        $type->update($input);
 
         return $this->redirectBackWithSuccess('Package type updated.');
     }
@@ -106,7 +118,18 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        // TODO
-        return redirect()->back();
+        $type = PackageType::find($id);
+
+        if ( ! $type)
+        {
+            return $this->redirectBackWithError('Package type not found.');
+        }
+
+        if ( ! $type->delete())
+        {
+            return $this->redirectBackWithError('Package type delete failed.');
+        }
+
+        return $this->redirectBackWithSuccess('Package type deleted.');
     }
 }

@@ -115,7 +115,7 @@ class CompanyProfileController extends BaseAuthController {
             mkdir($destination, 0775, TRUE);
         }
 
-        // Make thumbnails
+        // Generate thumbnails
         $dimensions = [
             'sm' => 100,
             'md' => 200,

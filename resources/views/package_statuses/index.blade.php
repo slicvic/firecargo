@@ -9,6 +9,7 @@
 @stop
 
 @section('thead')
+    @if (Auth::user()->isAdmin())<th>Master</th>@endif
     <th>ID</th>
     <th>Name</th>
     <th>Default?</th>
@@ -18,6 +19,7 @@
 @section('tbody')
     @foreach ($statuses as $status)
        <tr>
+            @if (Auth::user()->isAdmin())<td>{{ $status->company ? $status->company->name : 'N/A' }}</td>@endif
             <td>{{ $status->id }}</td>
             <td>{{ $status->name }}</td>
             <td>{!! $status->is_default ? '<i class="fa fa-check"></i>' : '' !!}</td>

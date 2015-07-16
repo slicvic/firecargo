@@ -37,8 +37,26 @@ class User extends Base implements AuthenticatableInterface {
         'autoship_setting'
     ];
 
+
     /**
-     * Gets the packages relation.
+     * Save the model to the database.
+     *
+     * @param  array  $options
+     * @return bool
+     */
+    public function save(array $options = array())
+    {
+        if ( ! Auth::user()->isAdmin() && $this->role_id == Role::ADMIN)
+        {
+            // Only admins may assign "admin" role.
+            $this->role_id = NULL;
+        }
+
+        return parent::save($options);
+    }
+
+    /**
+     * Gets the packages.
      *
      * @return Package[]
      */
@@ -48,7 +66,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the role relation.
+     * Gets the role.
      *
      * @return Role
      */
@@ -58,7 +76,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the address relation.
+     * Gets the address.
      *
      * @return Address
      */
@@ -68,23 +86,13 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the site relation.
+     * Gets the site.
      *
      * @return Site
      */
     public function site()
     {
         return $this->belongsTo('App\Models\Site');
-    }
-
-    /**
-     * Gets the company relation.
-     *
-     * @return Company
-     */
-    public function company()
-    {
-        return $this->belongsTo('App\Models\Company');
     }
 
     /**
@@ -225,56 +233,41 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Finds all the users with the given criteria.
+     * Builds a search query for finding users for a populating a jquery datatable.
      *
      * @param  string   $criteria  List of criterias
-     * @param  int      $offset
-     * @param  int      $limit
-     * @param  string   $orderBy
-     * @param  string   $order
-     * @return [total => X, users => User[]] or User[]
+     * @return Builder
      */
-    public static function search(array $criteria = [], $offset = 0, $limit = 10, $orderBy = 'id', $order = 'DESC')
+    public static function buildDatatableQuery(array $criteria = [])
     {
-        $sql = '1';
-        $bindings = [];
+        $query = User::query();
 
-        // Filter by company id
-        if (isset($criteria['company_id']) && is_array($criteria['company_id']))
+        if (isset($criteria['company_id']))
         {
-            $sql .= ' AND company_id IN (' . implode(',', $criteria['company_id']) . ')';
+            // Filter by company
+
+            $query = $query->where('company_id', '=', $criteria['company_id']);
         }
 
-        // Filter by role id
         if (isset($criteria['role_id']) && is_array($criteria['role_id']))
         {
-            $sql .= ' AND role_id IN (' . implode(',', $criteria['role_id']) . ')';
+            // Filter by role
+
+            $query = $query->whereIn('role_id', $criteria['role_id']);
         }
 
-        // Full text search
         if ( ! empty($criteria['q']))
         {
+            // Full text search
+
             $q = '%' . $criteria['q'] . '%';
-            $sql .= ' AND (id LIKE ? OR full_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)';
-            $bindings = [$q, $q, $q, $q, $q, $q];
+
+            $query->whereRaw(
+                '(id LIKE ? OR full_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)',
+                [$q, $q, $q, $q, $q, $q]
+            );
         }
 
-        // Run query
-        $result = [];
-
-        $query = User::whereRaw($sql, $bindings);
-
-        if (isset($criteria['count']))
-        {
-            $result['total'] = $query->count();
-        }
-
-        $result['users'] = $query
-            ->orderBy($orderBy, $order)
-            ->offset($offset)
-            ->limit($limit)
-            ->get();
-
-        return isset($criteria['count']) ? $result : $result['users'];
+        return $query;
     }
 }

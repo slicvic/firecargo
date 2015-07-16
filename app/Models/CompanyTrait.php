@@ -5,114 +5,107 @@ use Auth;
 trait CompanyTrait {
 
     /**
-     * Finds a record by the id and current user's company id and
-     * throws exception if the record is not found.
+     * Gets the company.
      *
-     * @param  int  $id
-     * @return array
+     * @return Company
      */
-    public static function findOrFailByIdAndCurrentUserCompanyId($id)
+    public function company()
     {
-        $query = self::where('id', '=', $id);
+        return $this->belongsTo('App\Models\Company');
+    }
+
+    /**
+     * Filters query by company id.
+     *
+     * @param  Builder  $query
+     * @param  int      $companyId
+     * @return Builder
+     */
+    public function scopeFilterByCompany($query, $companyId = NULL)
+    {
+        if ( ! $companyId)
+        {
+            if (Auth::user()->isAdmin())
+            {
+                return $query;
+            }
+            else
+            {
+                $companyId = Auth::user()->company_id;
+            }
+        }
+
+        return $query->where('company_id', '=', $companyId);
+    }
+
+    /**
+     * Find a model by its primary key.
+     *
+     * @param  mixed  $id
+     * @param  array  $columns
+     * @return \Illuminate\Support\Collection|static|null
+     */
+    public static function find($id, $columns = array('*'))
+    {
+        $query = static::query();
 
         if ( ! Auth::user()->isAdmin())
         {
             $query = $query->where('company_id', '=', Auth::user()->company_id);
         }
 
-        return $query->firstOrFail();
+        return $query->find($id, $columns);
     }
 
     /**
-     * Finds a record by the id and the company id.
+     * Find a model by its primary key or throw an exception.
      *
-     * @param  int  $id
-     * @param  int  $companyId
-     * @return array
+     * @param  mixed  $id
+     * @param  array  $columns
+     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public static function findByIdAndCompanyId($id, $companyId)
+    public static function findOrFail($id, $columns = array('*'))
     {
-        $query = self::where('id', '=', $id);
+        $query = static::query();
 
         if ( ! Auth::user()->isAdmin())
         {
             $query = $query->where('company_id', '=', Auth::user()->company_id);
         }
 
-        return $query->first();
-    }
+        $result = $query->find($id, $columns);
 
-    /**
-     * Finds a record by the id and the current user's company id.
-     *
-     * @param  int  $id
-     * @return array
-     */
-    public static function findByIdAndCurrentUserCompanyId($id)
-    {
-        return self::findByIdAndCompanyId($id, Auth::user()->company_id);
-    }
-
-    /**
-     * Finds all records by the company id.
-     *
-     * @param  array   $companyId
-     * @param  string  $perPage
-     * @param  string  $orderBy
-     * @param  string  $order
-     * @param  array   $columns
-     * @return Model[]
-     */
-    public static function allByCompanyId(array $companyId, $orderBy = 'id', $order = 'DESC', $columns = ['*'])
-    {
-        if (Auth::user()->isAdmin())
+        if (is_array($id))
         {
-            $query = self::whereRaw('1');
+            if (count($result) == count(array_unique($id))) return $result;
+        }
+        elseif ( ! is_null($result))
+        {
+            return $result;
+        }
+
+        throw (new ModelNotFoundException)->setModel(get_class($this->model));
+    }
+
+    /**
+     * Save the model to the database.
+     *
+     * @param  array  $options
+     * @return bool
+     */
+    public function save(array $options = array())
+    {
+        if (Auth::user()->isAdmin() && ! $this->company_id)
+        {
+            $this->company_id = Auth::user()->company_id;
         }
         else
         {
-            $query = self::whereIn('company_id', $companyId);
+            $this->company_id = Auth::user()->company_id;
         }
 
-        $query = $query->orderBy($orderBy, $order);
-
-        return $query->get($columns);
-    }
-
-    /**
-     * Finds all records by the current user's company id.
-     *
-     * @param  string  $perPage
-     * @param  string  $orderBy
-     * @param  string  $order
-     * @param  array   $columns
-     * @return Model[]
-     */
-    public static function allByCurrentUserCompanyId($orderBy = 'id', $order = 'DESC', $columns = ['*'])
-    {
-        return self::allByCompanyId([NULL, Auth::user()->company_id], $orderBy, $order, $columns);
-    }
-
-    /**
-     * Updates a record by the id and the current user's company id.
-     *
-     * @param  int    $id
-     * @param  array  $attributes
-     * @return bool|null
-     */
-    public static function updateByIdAndCurrentUserCompanyId($id, $attributes)
-    {
-        return self::where(['id' => $id, 'company_id' => Auth::user()->company_id])->update($attributes);
-    }
-
-    /**
-     * Deletes a record by the id and the current user's company id.
-     *
-     * @param  int  $id
-     * @return bool|null
-     */
-    public static function deleteByIdAndCurrentUserCompanyId($id)
-    {
-        return self::where(['id' => $id, 'company_id' => Auth::user()->company_id])->delete();
+        return parent::save($options);
     }
 }

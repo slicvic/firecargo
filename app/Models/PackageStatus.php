@@ -18,6 +18,7 @@ class PackageStatus extends Base {
     ];
 
     protected $fillable = [
+        'company_id',
         'name',
         'is_default'
     ];
@@ -36,7 +37,7 @@ class PackageStatus extends Base {
             // Unset the previous default status
             PackageStatus::where('company_id', $this->company_id)
                 ->where('id', '<>', $this->id)
-                ->update(['is_default' => 0]);
+                ->update(['is_default' => FALSE]);
         }
 
         return $result;

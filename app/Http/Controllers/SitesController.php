@@ -57,7 +57,7 @@ class SitesController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $request->only('name', 'company_id');
+        $input = $request->all();
 
         // Validate input
         $this->validate($input, Site::$rules);
@@ -75,7 +75,12 @@ class SitesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $site = Site::findOrFail($id);
+        $site = Site::find($id);
+
+        if ( ! $site)
+        {
+            return $this->redirectBackWithError('Site not found.');
+        }
 
         return view('sites.edit', ['site' => $site]);
     }
@@ -87,13 +92,20 @@ class SitesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->only('name', 'company_id');
+        $input = $request->all();
 
         // Validate input
         $this->validate($input, Site::$rules);
 
         // Update site
-        Site::updateById($id, $input);
+        $site = Site::find($id);
+
+        if ( ! $site)
+        {
+            return $this->redirectBackWithError('Site not found.');
+        }
+
+        $site->update($input);
 
         return $this->redirectBackWithSuccess('Site updated.');
     }

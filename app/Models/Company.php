@@ -25,7 +25,7 @@ class Company extends Base {
     ];
 
     /**
-     * Gets the address relation.
+     * Gets the address.
      *
      * @return Address
      */

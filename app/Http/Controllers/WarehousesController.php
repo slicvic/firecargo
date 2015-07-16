@@ -47,20 +47,17 @@ class WarehousesController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
+        // Extract input
         $input['limit'] = $request->input('limit', 10);
         $input['sort'] = $request->input('sort', 'id');
-        $input['order'] = $request->input('order', 'desc');
+        $input['order'] = $request->input('order', 'DESC');
         $input['q'] = $request->input('q');
         $input['status'] = $request->input('status');
 
         // Prepare search criteria
         $criteria['status'] = $input['status'];
         $criteria['q'] = $input['q'];
-
-        if ( ! $this->authUser->isAdmin())
-        {
-            $criteria['company_id'] = $this->authUser->company_id;
-        }
+        $criteria['company_id'] = $this->authUser->isAdmin() ? NULL : $this->authUser->company_id;
 
         // Run query
         $warehouses = Warehouse::search($criteria, $input['sort'], $input['order'], $input['limit']);
@@ -79,7 +76,12 @@ class WarehousesController extends BaseAuthController {
      */
     public function getShow(Request $request, $id)
     {
-        $warehouse = Warehouse::findOrFailByIdAndCurrentUserCompanyId($id);
+        $warehouse = Warehouse::find($id);
+
+        if ( ! $warehouse)
+        {
+            return $this->redirectBackWithError('Warehouse not found.');
+        }
 
         return view('warehouses.show', ['warehouse' => $warehouse]);
     }
@@ -91,11 +93,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('warehouses.edit', [
-            'warehouse' => new Warehouse,
-            'packageStatuses' => PackageStatus::allByCurrentUserCompanyId('is_default', 'desc'),
-            'packageTypes' => PackageType::all()
-        ]);
+        return $this->getEditForm(new Warehouse);
     }
 
     /**
@@ -108,7 +106,7 @@ class WarehousesController extends BaseAuthController {
         // Prepare and validate input
         try
         {
-            $input = $this->prepareAndValidateInput($request);
+            $input = $this->prepareAndValidate($request);
         }
         catch (ValidationException $e)
         {
@@ -121,7 +119,6 @@ class WarehousesController extends BaseAuthController {
         $warehouse->shipper_user_id = $input['warehouse']['shipper_user_id'];
         $warehouse->consignee_user_id = $input['warehouse']['consignee_user_id'];
         $warehouse->carrier_id = $input['warehouse']['carrier_id'];
-        $warehouse->company_id = $this->authUser->company_id;
 
         if ( ! $warehouse->save())
         {
@@ -131,7 +128,7 @@ class WarehousesController extends BaseAuthController {
         // Create packages
         if ($input['packages'])
         {
-            $warehouse->syncPackages($input['packages'], FALSE);
+            $warehouse->createOrUpdatePackages($input['packages']);
         }
 
         Flash::success('Warehouse created.');
@@ -146,13 +143,14 @@ class WarehousesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $warehouse = Warehouse::findOrFailByIdAndCurrentUserCompanyId($id);
+        $warehouse = Warehouse::find($id);
 
-        return view('warehouses.edit', [
-            'warehouse' => $warehouse,
-            'packageStatuses' => PackageStatus::allByCurrentUserCompanyId('is_default', 'desc'),
-            'packageTypes' => PackageType::all()
-        ]);
+        if ( ! $warehouse)
+        {
+            return $this->redirectBackWithError('Warehouse not found.');
+        }
+
+        return $this->getEditForm($warehouse);
     }
 
     /**
@@ -162,8 +160,8 @@ class WarehousesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        // Make sure warehouse exists before proceeding
-        $warehouse = Warehouse::findByIdAndCurrentUserCompanyId($id);
+        // Find warehouse
+        $warehouse = Warehouse::find($id);
 
         if ( ! $warehouse)
         {
@@ -173,7 +171,7 @@ class WarehousesController extends BaseAuthController {
         // Prepare and validate input
         try
         {
-            $input = $this->prepareAndValidateInput($request);
+            $input = $this->prepareAndValidate($request);
         }
         catch (ValidationException $e)
         {
@@ -188,7 +186,10 @@ class WarehousesController extends BaseAuthController {
         $warehouse->save();
 
         // Update packages
-        $warehouse->syncPackages($input['packages'] ?: []);
+        if ($input['packages'])
+        {
+            $warehouse->createOrUpdatePackages($input['packages']);
+        }
 
         Flash::success('Warehouse updated.');
 
@@ -226,7 +227,7 @@ class WarehousesController extends BaseAuthController {
     {
         $input = $request->only('term');
 
-        // Return nothing if search term does not meet length requirement
+        // Return nothing if search term is not at least 2 characters long
         if (strlen($input['term']) < 2)
         {
             return response()->json([]);
@@ -234,11 +235,12 @@ class WarehousesController extends BaseAuthController {
 
         // Prepare search criteria
         $criteria['q'] = $input['term'];
-        $criteria['company_id'] = [$this->authUser->company_id];
+        $criteria['company_id'] = $this->authUser->company_id;
 
         // Run query
-        $users = User::search($criteria, 0, 25);
+        $users = User::buildDatatableQuery($criteria)->limit(25)->get();
 
+        // Process response
         $response = [];
 
         foreach($users as $user)
@@ -253,6 +255,21 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
+     * Creates the form for creating and editing a warehouse.
+     *
+     * @param  Warehouse $warehouse
+     * @return View
+     */
+    private function getEditForm(Warehouse $warehouse)
+    {
+        return view('warehouses.edit', [
+            'warehouse'       => $warehouse,
+            'packageStatuses' => PackageStatus::filterByCompany()->orderBy('is_default', 'DESC')->get(),
+            'packageTypes'    => PackageType::orderBy('name', 'ASC')->get()
+        ]);
+    }
+
+    /**
      * Validates and prepares the given request input for creating and updating
      * a warehouse.
      *
@@ -260,7 +277,7 @@ class WarehousesController extends BaseAuthController {
      * @return array
      * @throws ValidationException
      */
-    private function prepareAndValidateInput(Request $request)
+    private function prepareAndValidate(Request $request)
     {
         $input = $request->only('warehouse', 'packages');
 
@@ -293,7 +310,7 @@ class WarehousesController extends BaseAuthController {
         if (empty($input['warehouse']['shipper_user_id']))
         {
             $shipper = User::firstOrCreate([
-                'company_name' => $input['warehouse']['shipper_name'],
+                'company_name' => trim($input['warehouse']['shipper_name']),
                 'company_id' => $this->authUser->company_id,
                 'role_id' => Role::SHIPPER
             ]);
@@ -305,7 +322,7 @@ class WarehousesController extends BaseAuthController {
         if (empty($input['warehouse']['consignee_user_id']))
         {
             $consignee = User::firstOrCreate([
-                'full_name' => $input['warehouse']['consignee_name'],
+                'full_name' => trim($input['warehouse']['consignee_name']),
                 'company_id' => $this->authUser->company_id,
                 'role_id' => Role::CLIENT
             ]);

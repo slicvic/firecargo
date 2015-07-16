@@ -47,7 +47,7 @@ class RolesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('roles.edit', ['role' => new Role]);
+        return $this->redirectBackWithError('Action disabled.');
     }
 
     /**
@@ -57,15 +57,7 @@ class RolesController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $request->all();
-
-        // Validate input
-        $this->validate($input, Role::$rules);
-
-        // Create role
-        Role::create($input);
-
-        return $this->redirectWithSuccess('roles', 'Role created.');
+        return $this->redirectBackWithError('Action disabled.');
     }
 
     /**
@@ -75,7 +67,12 @@ class RolesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $role = Role::findOrFail($id);
+        $role = Role::find($id);
+
+        if ( ! $role)
+        {
+            return $this->redirectBackWithError('Role not found.');
+        }
 
         return view('roles.edit', ['role' => $role]);
     }
@@ -93,7 +90,14 @@ class RolesController extends BaseAuthController {
         $this->validate($input, Role::$rules);
 
         // Update role
-        Role::updateById($id, $input);
+        $role = Role::find($id);
+
+        if ( ! $role)
+        {
+            return $this->redirectBackWithError('Role not found.');
+        }
+
+        $role->update($input);
 
         return $this->redirectBackWithSuccess('Role updated.');
     }
@@ -105,7 +109,6 @@ class RolesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        // TODO
-        return redirect()->back();
+        return $this->redirectBackWithError('Action disabled.');
     }
 }

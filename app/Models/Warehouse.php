@@ -29,7 +29,7 @@ class Warehouse extends Base {
     ];
 
     /**
-     * Gets the shipper relation.
+     * Gets the shipper.
      *
      * @return User
      */
@@ -39,7 +39,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the consignee relation.
+     * Gets the consignee.
      *
      * @return User
      */
@@ -49,7 +49,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the carrier relation.
+     * Gets the carrier.
      *
      * @return Carrier
      */
@@ -59,17 +59,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the company relation.
-     *
-     * @return Company
-     */
-    public function company()
-    {
-        return $this->belongsTo('App\Models\Company');
-    }
-
-    /**
-     * Gets the packages relation.
+     * Gets the packages.
      *
      * @return Package[]
      */
@@ -128,7 +118,6 @@ class Warehouse extends Base {
             $package = Package::firstOrNew(['id' => $id]);
             $package->fill($data);
             $package->warehouse_id = $this->id;
-            $package->company_id = $this->company_id;
             $package->ship = ($package->shipment_id) ? $package->ship : $this->consignee->autoship_setting;
             $package->save();
         }
@@ -257,48 +246,51 @@ class Warehouse extends Base {
      * @param  int         $perPage
      * @return array
      */
-    public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
+    public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'DESC', $perPage = 15)
     {
-        // Define valid sort columns
+        // Sort columns
         $sortColumns = [
-            'id' => 'id',
+            'id'      => 'id',
             'arrived' => 'arrived_at',
             'created' => 'created_at',
             'updated' => 'updated_at',
         ];
 
-        // Define valid status filters
+        // Status filters
         $statuses = [
-            'pending' => WarehouseStatus::STATUS_PENDING,
+            'pending'  => WarehouseStatus::STATUS_PENDING,
             'complete' => WarehouseStatus::STATUS_COMPLETE,
-            'new' => WarehouseStatus::STATUS_NEW
+            'new'      => WarehouseStatus::STATUS_NEW
         ];
 
-        // Determine sort order
-        $orderBy = array_key_exists($orderBy, $sortColumns) ? $sortColumns[$orderBy] : $sortColumns['id'];
-        $order = ($order == 'asc') ? 'asc' : 'desc';
+        // Build query
+        $orderBy = $sortColumns[array_key_exists($orderBy, $sortColumns) ? $orderBy : 'id'];
+        $order = (strtoupper(trim($order)) == 'ASC') ? 'ASC' : 'DESC';
 
-        $warehouses = Warehouse::whereRaw('1')
-            ->orderBy('warehouses.' . $orderBy, $order);
+        $query = Warehouse::query()
+            ->orderBy("warehouses.{$orderBy}", $order);
 
-        // Filter by status
-        if ( ! empty($criteria['status']) && array_key_exists($criteria['status'], $statuses))
+        if (isset($criteria['status']) && array_key_exists($criteria['status'], $statuses))
         {
-            $warehouses = $warehouses->where('warehouses.status_id', '=', $statuses[$criteria['status']]);
+            // Filter by status
+
+            $query = $query->where('warehouses.status_id', '=', $statuses[$criteria['status']]);
         }
 
-        // Filter by company id
-        if ( ! empty($criteria['company_id']))
+        if (isset($criteria['company_id']))
         {
-            $warehouses = $warehouses->where('warehouses.company_id', '=', $criteria['company_id']);
+            // Filter by company
+
+            $query = $query->where('warehouses.company_id', '=', $criteria['company_id']);
         }
 
-        // Full text search
         if ( ! empty($criteria['q']))
         {
+            // Full text search
+
             $q = '%' . $criteria['q'] . '%';
 
-            $warehouses = $warehouses
+            $query = $query
                 ->select('warehouses.*')
                 ->leftJoin('users AS consignee', 'warehouses.consignee_user_id', '=', 'consignee.id')
                 ->leftJoin('users AS shipper', 'warehouses.shipper_user_id', '=', 'shipper.id')
@@ -312,7 +304,7 @@ class Warehouse extends Base {
                 );
         }
 
-        $warehouses = $warehouses->paginate($perPage);
+        $warehouses = $query->paginate($perPage);
 
         return $warehouses;
     }

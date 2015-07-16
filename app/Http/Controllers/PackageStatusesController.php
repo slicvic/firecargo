@@ -36,7 +36,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $statuses = PackageStatus::allByCurrentUserCompanyId();
+        $statuses = PackageStatus::filterByCompany()->get();
 
         return view('package_statuses.index', ['statuses' => $statuses]);
     }
@@ -64,9 +64,7 @@ class PackageStatusesController extends BaseAuthController {
         $this->validate($input, PackageStatus::$rules);
 
         // Create status
-        $status = new PackageStatus($input);
-        $status->company_id = $this->authUser->company_id;
-        $status->save();
+        PackageStatus::create($input);
 
         return $this->redirectWithSuccess('package-statuses', 'Package status created.');
     }
@@ -78,7 +76,12 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $status = PackageStatus::findOrFailByIdAndCurrentUserCompanyId($id);
+        $status = PackageStatus::find($id);
+
+        if ( ! $status)
+        {
+            return $this->redirectBackWithError('Package status not found.');
+        }
 
         return view('package_statuses.edit', ['status' => $status]);
     }
@@ -96,9 +99,14 @@ class PackageStatusesController extends BaseAuthController {
         $this->validate($input, PackageStatus::$rules);
 
         // Update status
-        $status = PackageStatus::findOrFailByIdAndCurrentUserCompanyId($id);
-        $status->fill($input);
-        $status->save();
+        $status = PackageStatus::find($id);
+
+        if ( ! $status)
+        {
+            return $this->redirectBackWithError('Package status not found.');
+        }
+
+        $status->update($input);
 
         return $this->redirectBackWithSuccess('Package status updated.');
     }
@@ -110,11 +118,18 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        if (PackageStatus::deleteByIdAndCurrentUserCompanyId($id))
+        $status = PackageStatus::find($id);
+
+        if ( ! $status)
         {
-            return $this->redirectBackWithSuccess('Package status deleted.');
+            return $this->redirectBackWithError('Package status not found.');
         }
 
-        return $this->redirectBackWithError('Package status delete failed.');
+        if ( ! $status->delete())
+        {
+            return $this->redirectBackWithError('Package status delete failed.');
+        }
+
+        return $this->redirectBackWithSuccess('Package status deleted.');
     }
 }

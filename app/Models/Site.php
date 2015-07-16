@@ -21,14 +21,4 @@ class Site extends Base {
         'company_id',
         'name',
     ];
-
-    /**
-     * Gets the company relation.
-     *
-     * @return Company
-     */
-    public function company()
-    {
-        return $this->belongsTo('App\Models\Company');
-    }
 }

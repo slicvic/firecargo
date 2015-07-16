@@ -1,13 +1,13 @@
 <?php namespace App\Handlers\Events;
 
-use App\Events\UserLoggedIn;
-use App\Events\UserJoined;
-
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldBeQueued;
-
 use Auth;
+
+use App\Events\UserLoggedIn;
+use App\Events\UserJoined;
 use App\Helpers\Mailer;
+use App\Models\LogUserVisit;
 
 class UserEventHandler {
 

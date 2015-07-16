@@ -43,7 +43,7 @@ class AuthController extends BaseController {
         // Validate input
         $rules = [
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required|min:8'
         ];
 
         $this->validate($input, $rules);
@@ -51,14 +51,14 @@ class AuthController extends BaseController {
         // Authenticate user
         $user = User::validateCredentials($input['email'], $input['password']);
 
-        if ($user)
+        if ( ! $user)
         {
-            // Fire event
-            Event::fire(new UserLoggedIn($user));
-            return redirect('/warehouses');
+            return $this->redirectBackWithError('These credentials do not match our records.');
         }
 
-        return $this->redirectBackWithError('These credentials do not match our records.');
+        // Fire event
+        Event::fire(new UserLoggedIn($user));
+        return redirect('/warehouses');
     }
 
     /**
@@ -140,19 +140,19 @@ class AuthController extends BaseController {
         $user = User::where('email', '=', $input['email'])->first();
 
         // Send password recovery
-        if ($user)
+        if ( ! $user)
         {
-            Mailer::sendPasswordRecovery($user);
-            // TODO: change message
-            // Show success message regardless
-            // @TODO: uncomment
-            //
-            Flash::success('<a href="/reset-password?email=' . $user->email . '&token=' . $user->makePasswordRecoveryToken() . '">Click here to reset your password</a>');
-            return redirect()->back();
-            //return $this->redirectBackWithSuccess('An email with instructions on how to reset your password has been sent.');
+            return $this->redirectBackWithError('This email address is not associated with any account.');
         }
 
-        return $this->redirectBackWithError('This email address is not associated with any account.');
+        Mailer::sendPasswordRecovery($user);
+        // TODO: change message
+        // Show success message regardless
+        // @TODO: uncomment
+        //
+        Flash::success('<a href="/reset-password?email=' . $user->email . '&token=' . $user->makePasswordRecoveryToken() . '">Click here to reset your password</a>');
+        return redirect()->back();
+        //return $this->redirectBackWithSuccess('An email with instructions on how to reset your password has been sent.');
     }
 
     /**
@@ -188,13 +188,14 @@ class AuthController extends BaseController {
         $user = User::where('email', '=', $input['email'])->first();
 
         // Reset password
-        if ($user && $user->verifyPasswordRecoveryToken($input['token']))
+        if ( ! $user || ! $user->verifyPasswordRecoveryToken($input['token']))
         {
-            $user->password = $input['password'];
-            $user->save();
-            return $this->redirectWithSuccess('login', 'Your password was reset successfully.');
+            return $this->redirectBackWithError('Password reset failed.');
         }
 
-        return $this->redirectBackWithError('Password reset failed.');
+        $user->password = $input['password'];
+        $user->save();
+
+        return $this->redirectWithSuccess('login', 'Your password was reset successfully.');
     }
 }

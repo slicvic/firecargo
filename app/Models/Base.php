@@ -11,14 +11,57 @@ use Auth;
 abstract class Base extends Model {
 
     /**
-     * Updates a record by the id.
+     * Saves the model to the database and logs the transaction.
      *
-     * @param  int    $id
-     * @param  array  $input
-     * @return bool|null
+     * @param  array  $options
+     * @return bool
      */
-    public static function updateById($id, $input)
+    public function save(array $options = array())
     {
-        return self::where(['id' => $id])->update($input);
+        $logAction = $this->exists ? LogUserAction::UPDATE : LogUserAction::CREATE;
+
+        $result = parent::save($options);
+
+        if ($result && Auth::check() && ! ($this instanceof LogUserAction))
+        {
+            $this->writeLog($logAction);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Deletes the model from the database.
+     *
+     * @return bool|null
+     * @throws \Exception
+     */
+    public function delete()
+    {
+        $result = parent::delete();
+
+        if ($result)
+        {
+            $this->writeLog(LogUserAction::DELETE);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Logs the database operation.
+     *
+     *
+     * @param  string  $action  create|read|update|delete
+     * @return void
+     */
+    private function writeLog($action)
+    {
+        $log = new LogUserAction;
+        $log->user_id = Auth::user()->id;
+        $log->action = $action;
+        $log->record_id = $this->id;
+        $log->table_name = $this->table;
+        $log->save();
     }
 }

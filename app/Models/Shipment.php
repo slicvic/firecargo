@@ -25,7 +25,7 @@ class Shipment extends Base {
     ];
 
     /**
-     * Gets the packages relation.
+     * Gets the packages.
      *
      * @return Package[]
      */
@@ -35,23 +35,13 @@ class Shipment extends Base {
     }
 
     /**
-     * Gets the carrier relation.
+     * Gets the carrier.
      *
      * @return Carrier
      */
     public function carrier()
     {
         return $this->belongsTo('App\Models\Carrier');
-    }
-
-    /**
-     * Gets the company relation.
-     *
-     * @return Company
-     */
-    public function company()
-    {
-        return $this->belongsTo('App\Models\Company');
     }
 
     /**
@@ -122,7 +112,7 @@ class Shipment extends Base {
      */
     public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
-        // Define valid sort columns
+        // Sort columns
         $sortColumns = [
             'id' => 'id',
             'departed' => 'departed_at',
@@ -131,7 +121,7 @@ class Shipment extends Base {
         ];
 
         // Determine sort order
-        $orderBy = array_key_exists($orderBy, $sortColumns) ? $sortColumns[$orderBy] : 'id';
+        $orderBy = array_key_exists($orderBy, $sortColumns) ? $sortColumns[$orderBy] : $sortColumns['id'];
         $order = ($order == 'asc') ? 'asc' : 'desc';
 
         $shipments = Shipment::whereRaw('1')
