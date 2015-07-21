@@ -1,6 +1,6 @@
 <?php namespace App\Presenters;
 
-use App\Presenters\Presenter as BasePresenter;
+use App\Presenters\BasePresenter;
 
 /**
  * Carrier

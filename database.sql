@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:8889
--- Generation Time: Jul 21, 2015 at 08:25 PM
+-- Generation Time: Jul 21, 2015 at 11:39 PM
 -- Server version: 5.5.34
 -- PHP Version: 5.5.10
 
@@ -38,7 +38,7 @@ CREATE TABLE `accounts` (
   PRIMARY KEY (`id`),
   KEY `company_id` (`company_id`),
   KEY `role_id` (`type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `accounts`
@@ -52,7 +52,8 @@ INSERT INTO `accounts` (`id`, `company_id`, `type_id`, `user_id`, `name`, `first
 (10, 1, 1, NULL, 'Lucky Luchy', 'Lucky', 'Luchy', 'luckyluchy421@gmail.com', '', '', '', 1, '2015-07-21 03:19:13', '2015-07-21 03:19:13'),
 (11, 1, 1, NULL, 'Lucky Luchy', 'Lucky', 'Luchy', 'luckyluchy4210@gmail.com', '', '', '', 1, '2015-07-21 03:19:56', '2015-07-21 03:19:56'),
 (12, 1, 1, 1150, 'Lucky41 Luchy41', 'Lucky41', 'Luchy41', 'lucky555@gmail.com', '', '', '', 1, '2015-07-21 03:22:15', '2015-07-21 03:26:27'),
-(13, 1, 1, 1151, 'Pepito Billetero', 'Pepito', 'Billetero', 'pepito@gmail.com', '', '', '', 1, '2015-07-21 03:30:57', '2015-07-21 03:31:57');
+(13, 1, 1, 1151, 'Pepito Billetero', 'Pepito', 'Billetero', 'pepito@gmail.com', '', '', '', 1, '2015-07-21 03:30:57', '2015-07-21 03:31:57'),
+(14, 1, 1, 1149, 'Lucky4 Luchy4', 'Lucky4', 'Luchy4', 'luckyluchy421111110@gmail.com', '', '', '', 1, '2015-07-21 21:33:09', '2015-07-21 21:33:09');
 
 -- --------------------------------------------------------
 
@@ -429,7 +430,7 @@ CREATE TABLE `log_user_actions` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=64 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=70 ;
 
 --
 -- Dumping data for table `log_user_actions`
@@ -498,7 +499,13 @@ INSERT INTO `log_user_actions` (`id`, `user_id`, `action`, `table_name`, `record
 (60, 1, 'update', 'packages', 177, '2015-07-21 18:10:44', '2015-07-21 18:10:44'),
 (61, 1, 'update', 'packages', 178, '2015-07-21 18:10:44', '2015-07-21 18:10:44'),
 (62, 1, 'create', 'warehouses', 108, '2015-07-21 18:12:16', '2015-07-21 18:12:16'),
-(63, 1, 'create', 'packages', 179, '2015-07-21 18:12:16', '2015-07-21 18:12:16');
+(63, 1, 'create', 'packages', 179, '2015-07-21 18:12:16', '2015-07-21 18:12:16'),
+(64, 1, 'update', 'users', 1, '2015-07-21 20:56:39', '2015-07-21 20:56:39'),
+(65, 1, 'update', 'shipments', 29, '2015-07-21 21:01:35', '2015-07-21 21:01:35'),
+(66, 1, 'create', 'shipments', 31, '2015-07-21 21:05:29', '2015-07-21 21:05:29'),
+(67, 1, 'update', 'shipments', 29, '2015-07-21 21:05:39', '2015-07-21 21:05:39'),
+(68, 1, 'create', 'accounts', 14, '2015-07-21 21:33:09', '2015-07-21 21:33:09'),
+(69, 1, 'update', 'users', 1149, '2015-07-21 21:33:09', '2015-07-21 21:33:09');
 
 -- --------------------------------------------------------
 
@@ -540,8 +547,8 @@ CREATE TABLE `packages` (
 INSERT INTO `packages` (`id`, `company_id`, `warehouse_id`, `type_id`, `status_id`, `shipment_id`, `length`, `width`, `height`, `weight`, `description`, `invoice_number`, `invoice_amount`, `tracking_number`, `ship`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (174, 1, 106, 1, 1, NULL, 12, 12, 12, 12, '', '', 0.0000, '', 1, '2015-07-21 15:49:45', '2015-07-21 16:54:21', '0000-00-00 00:00:00'),
 (175, 1, 106, 6, 1, 30, 12, 12, 12, 12, '', '', 0.0000, '', 1, '2015-07-21 15:49:45', '2015-07-21 17:55:04', '0000-00-00 00:00:00'),
-(176, 1, 107, 1, 4, 29, 12, 11, 23, 34, '', '', 0.0000, '', 1, '2015-07-21 16:54:00', '2015-07-21 18:10:44', '0000-00-00 00:00:00'),
-(177, 1, 107, 1, 4, 29, 12, 11, 23, 34, '', '', 0.0000, '', 1, '2015-07-21 16:54:00', '2015-07-21 18:10:44', '0000-00-00 00:00:00'),
+(176, 1, 107, 1, 4, 29, 12, 11, 23, 34, '', '', 0.0000, '', 1, '2015-07-21 16:54:00', '2015-07-21 21:05:39', '0000-00-00 00:00:00'),
+(177, 1, 107, 1, 4, 29, 12, 11, 23, 34, '', '', 0.0000, '', 1, '2015-07-21 16:54:00', '2015-07-21 21:05:39', '0000-00-00 00:00:00'),
 (178, 1, 107, 1, 4, 30, 12, 11, 23, 34, '', '', 0.0000, '', 1, '2015-07-21 16:54:00', '2015-07-21 18:10:44', '0000-00-00 00:00:00'),
 (179, 1, 108, 1, 4, NULL, 33, 33, 33, 33, '', '', 0.0000, '', 1, '2015-07-21 18:12:16', '2015-07-21 18:12:16', '0000-00-00 00:00:00');
 
@@ -680,18 +687,21 @@ CREATE TABLE `shipments` (
   `departed_at` datetime NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
+  `creator_user_id` int(11) DEFAULT NULL,
+  `updater_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `company_id` (`company_id`),
   KEY `carrier_id` (`carrier_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
 
 --
 -- Dumping data for table `shipments`
 --
 
-INSERT INTO `shipments` (`id`, `company_id`, `carrier_id`, `reference_number`, `departed_at`, `created_at`, `updated_at`) VALUES
-(29, 1, 648, '23123123123', '2015-07-21 00:00:00', '2015-07-21 17:31:50', '2015-07-21 17:31:50'),
-(30, 1, 586, 'ADASDASDASD', '2015-07-21 00:00:00', '2015-07-21 17:46:35', '2015-07-21 17:55:04');
+INSERT INTO `shipments` (`id`, `company_id`, `carrier_id`, `reference_number`, `departed_at`, `created_at`, `updated_at`, `creator_user_id`, `updater_user_id`) VALUES
+(29, 1, 648, '23123123123', '2015-07-21 00:00:00', '2015-07-21 17:31:50', '2015-07-21 21:01:35', NULL, 1),
+(30, 1, 586, 'ADASDASDASD', '2015-07-21 00:00:00', '2015-07-21 17:46:35', '2015-07-21 17:55:04', NULL, NULL),
+(31, 1, 770, 'ASDASD', '2015-07-21 00:00:00', '2015-07-21 21:05:29', '2015-07-21 21:05:29', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -746,7 +756,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `company_id`, `role_id`, `firstname`, `lastname`, `email`, `password`, `active`, `remember_token`, `logins`, `last_login`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'Slicx', 'Vicx', 'vmlantigua@gmail.com', '$2y$10$F6qNSi3uFaE47opz3UItTuIbuGK53xO2kI7uLLnALfyFlnTE89j.u', 1, 'hQOyuIrJISmE5NYscNpOkNfsqpQc58sGC7pbnkJ65T4w9rUPu2dUQEL3VdAj', 157, '2015-07-21 16:26:19', '2015-01-29 04:41:09', '2015-07-21 16:26:19'),
+(1, 1, 1, 'Slicx', 'Vicx', 'vmlantigua@gmail.com', '$2y$10$F6qNSi3uFaE47opz3UItTuIbuGK53xO2kI7uLLnALfyFlnTE89j.u', 1, 'hQOyuIrJISmE5NYscNpOkNfsqpQc58sGC7pbnkJ65T4w9rUPu2dUQEL3VdAj', 158, '2015-07-21 20:56:39', '2015-01-29 04:41:09', '2015-07-21 20:56:39'),
 (1142, 1, 9, 'Pablo', 'Pueblo', 'client@gmail.com', '$2y$10$YVETz6HFt5ytFpB.ddVWu.ckE5l0VbOW450Hqcvb3QZQttaAYaTya', 1, '1GZhzpgG7SQrm9YDKVU545RX0N0YytYBXHDdezxGfl4Q4NI9F6kRR9YQUaZE', 4, '2015-07-21 02:11:09', '0000-00-00 00:00:00', '2015-07-21 02:11:30'),
 (1143, 1, 9, 'Admin', 'Man', 'vmlantiguadd@gmail.com', '$2y$10$Dk/dBUQlzG1nk/uB0B7kGeEp/n1yzlc5UTyTJGyzmrUx8Wm4upFrO', 1, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:01:57', '2015-07-21 03:05:28'),
 (1144, 1, 9, 'Lucky', 'Luchy', 'luckyluchy@gmail.com', '$2y$10$YEab0YSkv.ErBAeXv7ELSud4c6K.TbmVKYc4GKKXWYyV7LHA6FWSa', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:09:30', '2015-07-21 03:09:30'),
@@ -754,7 +764,7 @@ INSERT INTO `users` (`id`, `company_id`, `role_id`, `firstname`, `lastname`, `em
 (1146, 1, 9, 'Lucky', 'Luchy', 'luckyluchy42@gmail.com', '$2y$10$IIo.qzcH7reFGkX7gWNuBOWhy66hh/8/8/.bvMqZnLG7LuAWNQcKW', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:17:24', '2015-07-21 03:17:24'),
 (1147, 1, 9, 'Lucky', 'Luchy', 'luckyluchy421@gmail.com', '$2y$10$o828eFdx4y2jRewyL3Ad8uLbkhWvRcU/2wYa8S7w2gEAihxmlErnC', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:19:13', '2015-07-21 03:19:13'),
 (1148, 1, 9, 'Lucky', 'Luchy', 'luckyluchy4210@gmail.com', '$2y$10$UkbbLUt6V7IwEQ8xhwsCKO0tn5WZgTlyXhujq45qXR4r4YPt15tnq', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:19:56', '2015-07-21 03:19:56'),
-(1149, 1, 9, 'Lucky4', 'Luchy4', 'luckyluchy421111110@gmail.com', '$2y$10$Npa0dKuQdfmcgDB6j8z.IeMiHmuPzpwYvBNWqBMZJoVlihGPO1hRO', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:21:54', '2015-07-21 03:21:54'),
+(1149, 2, 9, 'Lucky4', 'Luchy4', 'luckyluchy421111110@gmail.com', '$2y$10$Npa0dKuQdfmcgDB6j8z.IeMiHmuPzpwYvBNWqBMZJoVlihGPO1hRO', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:21:54', '2015-07-21 21:33:09'),
 (1150, 1, 9, 'Lucky41', 'Luchy41', 'lucky555@gmail.com', '$2y$10$8pa/8dEXA3aC4uS8clRsbutgoqsS5ytpiYal.5awDu0kvcWBnYuQW', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:22:15', '2015-07-21 03:30:36'),
 (1151, 1, 9, 'Pepito', 'Billetero', 'pepito@gmail.com', '$2y$10$1CuPYbPMjWocKfng3lHIduW3EUUEBUe/05HXaLxoL/GmQrO8jtMUa', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:30:57', '2015-07-21 03:31:57');
 

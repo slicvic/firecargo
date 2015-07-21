@@ -3,11 +3,11 @@
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Presenter
+ * BasePresenter
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-abstract class Presenter {
+abstract class BasePresenter {
 
     protected $model;
 

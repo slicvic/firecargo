@@ -78,7 +78,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $status = PackageStatus::find($id);
+        $status = PackageStatus::findMine($id);
 
         if ( ! $status)
         {
@@ -103,7 +103,7 @@ class PackageStatusesController extends BaseAuthController {
         $this->validate($input, PackageStatus::$rules);
 
         // Update status
-        $status = PackageStatus::find($id);
+        $status = PackageStatus::findMine($id);
 
         if ( ! $status)
         {
@@ -124,7 +124,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        $status = PackageStatus::find($id);
+        $status = PackageStatus::findMine($id);
 
         if ( ! $status)
         {

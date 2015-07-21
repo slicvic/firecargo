@@ -38,7 +38,7 @@ class UsersController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
-        $users = User::mine()->get();
+        $users = User::with('company')->get();
 
         return view('users.index', ['users' => $users]);
     }

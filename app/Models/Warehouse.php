@@ -50,7 +50,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the warehouse shipper.
+     * Gets the shipper.
      *
      * @return Account
      */
@@ -60,7 +60,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the warehouse consignee.
+     * Gets the consignee.
      *
      * @return Account
      */
@@ -70,7 +70,27 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the warehouse carrier.
+     * Gets the creator.
+     *
+     * @return Carrier
+     */
+    public function creator()
+    {
+        return $this->belongsTo('App\Models\User', 'creator_user_id');
+    }
+
+    /**
+     * Gets the last updater.
+     *
+     * @return Carrier
+     */
+    public function updater()
+    {
+        return $this->belongsTo('App\Models\User', 'updater_user_id');
+    }
+
+    /**
+     * Gets the carrier.
      *
      * @return Carrier
      */
@@ -268,6 +288,7 @@ class Warehouse extends Base {
                 ->select('warehouses.*')
                 ->leftJoin('accounts AS consignees', 'warehouses.consignee_account_id', '=', 'consignees.id')
                 ->leftJoin('accounts AS shippers', 'warehouses.shipper_account_id', '=', 'shippers.id')
+                ->leftJoin('carriers', 'warehouses.carrier_id', '=', 'carriers.id')
                 ->groupBy('warehouses.id')
                 ->whereRaw('(
                     warehouses.id LIKE ?
@@ -279,7 +300,9 @@ class Warehouse extends Base {
                     OR shippers.name LIKE ?
                     OR shippers.firstname LIKE ?
                     OR shippers.lastname LIKE ?
+                    OR carriers.name LIKE ?
                     )', [
+                    $search,
                     $search,
                     $search,
                     $search,
@@ -292,7 +315,9 @@ class Warehouse extends Base {
                 ]);
         }
 
-        $warehouses = $query->paginate($perPage);
+        $warehouses = $query
+            ->with('creator', 'updater', 'shipper', 'consignee', 'carrier', 'company')
+            ->paginate($perPage);
 
         return $warehouses;
     }

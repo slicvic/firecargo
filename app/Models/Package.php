@@ -27,6 +27,7 @@ class Package extends Base {
 
     /**
      * Soft delete timestamp.
+     *
      * @var array
      */
     protected $dates = ['deleted_at'];
@@ -50,7 +51,7 @@ class Package extends Base {
     ];
 
     /**
-     * Gets the parent warehouse.
+     * Gets the warehouse.
      *
      * @return Warehouse
      */
@@ -80,7 +81,7 @@ class Package extends Base {
     }
 
     /**
-     * Gets the parent shipment.
+     * Gets the shipment.
      *
      * @return Shipment
      */
@@ -122,6 +123,7 @@ class Package extends Base {
 
     /**
      * Retrieves all packages eligible for shipment that are still pending shipment.
+     * by the given company id.
      *
      * @param  int  $companyId
      * @return array

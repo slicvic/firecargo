@@ -47,6 +47,7 @@ class ShipmentsController extends BaseAuthController {
 
         $criteria['search'] = $params['search'];
         $criteria['company_id'] = $this->authUser->isAdmin() ? NULL : $this->authUser->company_id;
+
         $shipments = Shipment::search($criteria, $params['sort'], $params['order'], $params['limit']);
 
         return view('shipments.index', [
@@ -64,7 +65,7 @@ class ShipmentsController extends BaseAuthController {
      */
     public function getShow(Request $request, $id)
     {
-        $shipment = Shipment::find($id);
+        $shipment = Shipment::findMine($id);
 
         if ( ! $shipment)
         {
@@ -135,7 +136,7 @@ class ShipmentsController extends BaseAuthController {
     public function getEdit($id)
     {
         // Lookup shipment
-        $shipment = Shipment::find($id);
+        $shipment = Shipment::findMine($id);
 
         if ( ! $shipment)
         {
@@ -177,7 +178,7 @@ class ShipmentsController extends BaseAuthController {
         try
         {
             // Lookup shipment
-            $shipment = Shipment::find($id);
+            $shipment = Shipment::findMine($id);
 
             if ( ! $shipment)
             {

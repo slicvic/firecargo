@@ -57,6 +57,7 @@ class WarehousesController extends BaseAuthController {
         $criteria['status'] = $params['status'];
         $criteria['search'] = $params['search'];
         $criteria['company_id'] = $this->authUser->isAdmin() ? NULL : $this->authUser->company_id;
+
         $warehouses = Warehouse::search($criteria, $params['sort'], $params['order'], $params['limit']);
 
         return view('warehouses.index', [
@@ -74,7 +75,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getShow(Request $request, $id)
     {
-        $warehouse = Warehouse::find($id);
+        $warehouse = Warehouse::findMine($id);
 
         if ( ! $warehouse)
         {
@@ -130,7 +131,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $warehouse = Warehouse::find($id);
+        $warehouse = Warehouse::findMine($id);
 
         if ( ! $warehouse)
         {
@@ -152,7 +153,7 @@ class WarehousesController extends BaseAuthController {
         try
         {
             // Lookup warehouse
-            $warehouse = Warehouse::find($id);
+            $warehouse = Warehouse::findMine($id);
 
             if ( ! $warehouse)
             {
@@ -184,7 +185,13 @@ class WarehousesController extends BaseAuthController {
      */
     public function getPrintReceipt(Request $request, $warehouseId)
     {
-        $warehouse = Warehouse::findOrFailByIdAndCurrentUserCompanyId($warehouseId);
+        $warehouse = Warehouse::findMine($warehouseId);
+
+        if ( ! $warehouse)
+        {
+            return $this->redirectBackWithError('Warehouse not found.');
+        }
+
         WarehousePdf::getReceipt($warehouse);
     }
 
@@ -197,7 +204,13 @@ class WarehousesController extends BaseAuthController {
      */
     public function getPrintLabel(Request $request, $warehouseId)
     {
-        $warehouse = Warehouse::findOrFailByIdAndCurrentUserCompanyId($warehouseId);
+        $warehouse = Warehouse::findMine($warehouseId);
+
+        if ( ! $warehouse)
+        {
+            return $this->redirectBackWithError('Warehouse not found.');
+        }
+
         WarehousePdf::getLabel($warehouse);
     }
 

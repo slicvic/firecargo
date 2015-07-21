@@ -99,7 +99,7 @@ class AccountsController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $account = Account::find($id);
+        $account = Account::findMine($id);
 
         if ( ! $account)
         {
@@ -133,7 +133,7 @@ class AccountsController extends BaseAuthController {
         $this->validate($input['account'], $rules);
 
         // Update account
-        $account = Account::find($id);
+        $account = Account::findMine($id);
 
         if ( ! $account)
         {

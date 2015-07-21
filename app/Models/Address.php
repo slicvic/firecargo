@@ -27,7 +27,7 @@ class Address extends Base {
     ];
 
     /**
-     * Gets the address country.
+     * Gets the country.
      *
      * @return Country
      */

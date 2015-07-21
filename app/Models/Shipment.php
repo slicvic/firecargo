@@ -3,6 +3,7 @@
 use DB;
 
 use App\Presenters\PresentableTrait;
+use App\Observers\ShipmentObserver;
 
 /**
  * Shipment
@@ -33,7 +34,19 @@ class Shipment extends Base {
     ];
 
     /**
-     * Gets the shipment packages.
+     * Registers model events.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        Shipment::observe(new ShipmentObserver);
+    }
+
+    /**
+     * Gets the packages.
      *
      * @return Package[]
      */
@@ -43,13 +56,33 @@ class Shipment extends Base {
     }
 
     /**
-     * Gets the shipment carrier.
+     * Gets the carrier.
      *
      * @return Carrier
      */
     public function carrier()
     {
         return $this->belongsTo('App\Models\Carrier');
+    }
+
+    /**
+     * Gets the creator.
+     *
+     * @return Carrier
+     */
+    public function creator()
+    {
+        return $this->belongsTo('App\Models\User', 'creator_user_id');
+    }
+
+    /**
+     * Gets the last updater.
+     *
+     * @return Carrier
+     */
+    public function updater()
+    {
+        return $this->belongsTo('App\Models\User', 'updater_user_id');
     }
 
     /**
@@ -162,7 +195,9 @@ class Shipment extends Base {
                 ]);
         }
 
-        $shipments = $shipments->paginate($perPage);
+        $shipments = $shipments
+            ->with('carrier', 'creator', 'updater', 'company')
+            ->paginate($perPage);
 
         return $shipments;
     }

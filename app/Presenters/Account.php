@@ -1,6 +1,6 @@
 <?php namespace App\Presenters;
 
-use App\Presenters\Presenter as BasePresenter;
+use App\Presenters\BasePresenter;
 use App\Models\AccountType;
 use Html;
 
@@ -28,7 +28,7 @@ class Account extends BasePresenter {
      */
     public function address()
     {
-        return ($this->model->address) ? $this->model->address->toString() : '';
+        return ($address = $this->model->address) ? $address->toString() : NULL;
     }
 
     /**

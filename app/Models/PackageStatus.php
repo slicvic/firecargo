@@ -18,6 +18,7 @@ class PackageStatus extends Base {
 
     /**
      * Rules for validation.
+     *
      * @var array
      */
     public static $rules = [

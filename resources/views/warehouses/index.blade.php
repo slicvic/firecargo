@@ -57,6 +57,7 @@
                                 <th>Pieces</th>
                                 <th>Gross Weight</th>
                                 <th>Volume</th>
+                                <th>Carrier</th>
                                 <th>Shipper</th>
                                 <th>Consignee</th>
                                 <th>{!! Html::linkToSorting('/warehouses', 'Arrived', 'arrived_at', $params['sort'], $params['order']) !!}</th>
@@ -74,6 +75,7 @@
                                 <td><span class="label label-danger">{{ $warehouse->packages->count() }}</span></td>
                                 <td>{{ $warehouse->present()->grossWeight() }}</td>
                                 <td>{{ $warehouse->present()->volumeWeight() }}</td>
+                                <td>{{ $warehouse->present()->carrier() }}</td>
                                 <td>{!! $warehouse->present()->shipperLink() !!}</td>
                                 <td>{!! $warehouse->present()->consigneeLink() !!}</td>
                                 <td>{{ $warehouse->present()->arrivedAt(FALSE) }}</td>

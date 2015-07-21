@@ -15,7 +15,7 @@ trait CompanyTrait {
     }
 
     /**
-     * Filters query by the current user's company id.
+     * Filters a query by the current user's company id.
      *
      * @param  Builder  $query
      * @param  int      $companyId
@@ -28,60 +28,22 @@ trait CompanyTrait {
         return $query->where('company_id', '=', $companyId);
     }
 
-    public function findMine($id)
-    {
-        //$query = static::query(['id' => $id])
-    }
-
     /**
-     * Find a model by its primary key.
+     * Finds a model by its id and company id.
      *
-     * @param  mixed  $id
-     * @param  array  $columns
-     * @return \Illuminate\Support\Collection|static|null
+     * @param  int  $id
+     * @return Model|null
      */
-    public static function find($id, $columns = array('*'))
+    public static function findMine($id)
     {
-        $query = static::query();
+        $query = static::query(['id' => $id]);
 
         if ( ! Auth::user()->isAdmin())
         {
             $query = $query->where('company_id', '=', Auth::user()->company_id);
         }
 
-        return $query->find($id, $columns);
-    }
-
-    /**
-     * Find a model by its primary key or throw an exception.
-     *
-     * @param  mixed  $id
-     * @param  array  $columns
-     * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
-     *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
-     */
-    public static function findOrFail($id, $columns = array('*'))
-    {
-        $query = static::query();
-
-        if ( ! Auth::user()->isAdmin())
-        {
-            $query = $query->where('company_id', '=', Auth::user()->company_id);
-        }
-
-        $result = $query->find($id, $columns);
-
-        if (is_array($id))
-        {
-            if (count($result) == count(array_unique($id))) return $result;
-        }
-        elseif ( ! is_null($result))
-        {
-            return $result;
-        }
-
-        throw (new ModelNotFoundException)->setModel(get_class($this->model));
+        return $query->first();
     }
 
     /**

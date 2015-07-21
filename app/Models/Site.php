@@ -16,6 +16,7 @@ class Site extends Base {
 
     /**
      * Rules for validation.
+     *
      * @var array
      */
     public static $rules = [

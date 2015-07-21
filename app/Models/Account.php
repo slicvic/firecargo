@@ -75,7 +75,7 @@ class Account extends Base {
     }
 
     /**
-     * Gets the account user.
+     * Gets the account parent user.
      *
      * NOTE: ONLY "CLIENT" ACCOUNTS HAVE A USER.
      *

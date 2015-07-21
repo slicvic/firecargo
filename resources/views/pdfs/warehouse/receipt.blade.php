@@ -142,7 +142,7 @@ RECEIVED FOR:<br><br>
             <br>
             <br>
             <br>
-            <small>CREATED BY: {{ Auth::user()->present()->name() }} using {{ env('APP_NAME') }}</small>
+            <small>CREATED BY: {{ Auth::user()->present()->fullname() }} using {{ env('APP_NAME') }}</small>
         </td>
     </tr>
 </table>

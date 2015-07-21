@@ -10,6 +10,7 @@
 
 @section('thead')
     <th>ID</th>
+    <th>Company</th>
     <th>Name</th>
     <th>Email</th>
     <th>Role</th>
@@ -21,6 +22,7 @@
     @foreach ($users as $user)
         <tr>
             <td>{{ $user->id }}</td>
+            <td>{{ $user->company->name }}</td>
             <td>{{ $user->present()->fullname() }}</td>
             <td>{{ $user->email }}</td>
             <td>{!! $user->present()->role() !!}</td>

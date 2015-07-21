@@ -1,6 +1,6 @@
 <?php namespace App\Presenters;
 
-use App\Presenters\Presenter as BasePresenter;
+use App\Presenters\BasePresenter;
 use App\Models\WarehouseStatus;
 use App\Helpers\Currency;
 use Html;
@@ -31,13 +31,49 @@ class Warehouse extends BasePresenter {
     }
 
     /**
+     * Presents the created timestamp and creator name.
+     *
+     * @return string
+     */
+    public function createdAt()
+    {
+        $creator = ($this->model->creator_user_id) ? $this->model->creator->present()->fullname() : NULL;
+        $date = date('m/d/y g:i A', strtotime($this->model->created_at));
+
+        if ( ! $creator)
+        {
+            return $date;
+        }
+
+        return $date . ' by ' . $creator;
+    }
+
+    /**
+     * Presents the updated timestamp and updater name.
+     *
+     * @return string
+     */
+    public function updatedAt()
+    {
+        $updater = ($this->model->updater_user_id) ? $this->model->updater->present()->fullname() : NULL;
+        $date = date('m/d/y g:i A', strtotime($this->model->created_at));
+
+        if ( ! $updater)
+        {
+            return $date;
+        }
+
+        return $date . ' by ' . $updater;
+    }
+
+    /**
      * Presents the warehouse carrier name.
      *
      * @return string
      */
     public function carrier()
     {
-        return ($this->model->exists) ? $this->model->carrier->present()->name() : '';
+        return ($this->model->carrier_id) ? $this->model->carrier->present()->name() : NULL;
     }
 
     /**
@@ -47,7 +83,7 @@ class Warehouse extends BasePresenter {
      */
     public function consignee()
     {
-        return ($this->model->exists) ? $this->model->consignee->present()->name() : '';
+        return ($this->model->consignee_user_id) ? $this->model->consignee->present()->name() : NULL;
     }
 
     /**
@@ -57,7 +93,7 @@ class Warehouse extends BasePresenter {
      */
     public function shipper()
     {
-        return ($this->model->exists) ? $this->model->shipper->present()->name() : '';
+        return ($this->model->shipper_user_id) ? $this->model->shipper->present()->name() : NULL;
     }
 
     /**
@@ -146,6 +182,6 @@ class Warehouse extends BasePresenter {
      */
     public function totalValue()
     {
-        return ($this->model->exists) ? Currency::formatDollar($this->model->calculateTotalValue()) : '';
+        return ($this->model->exists) ? Currency::formatDollar($this->model->calculateTotalValue()) : NULL;
     }
 }
