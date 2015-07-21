@@ -15,6 +15,9 @@ var main = {
 		    }
 		});
 
+		// Bind datatable
+		$('.datatable').DataTable();
+
 		// Bind date picker
 		$('.date').datepicker({
 		    //todayBtn: 'linked',

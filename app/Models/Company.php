@@ -12,20 +12,29 @@ class Company extends Base {
 
     use PresentableTrait;
 
-    protected $presenter = 'App\Presenters\Company';
-
+    /**
+     * @var string
+     */
     protected $table = 'companies';
 
+    /**
+     * @var Presenter
+     */
+    protected $presenter = 'App\Presenters\Company';
+
+    /**
+     * @var array
+     */
     protected $fillable = [
         'name',
         'corp_code',
         'email',
         'phone',
-        'fax'
+        'fax',
     ];
 
     /**
-     * Gets the address.
+     * Gets the company address.
      *
      * @return Address
      */
@@ -35,7 +44,7 @@ class Company extends Base {
     }
 
     /**
-     * Checks if a logo has been uploaded.
+     * Checks if the company has a logo.
      *
      * @param  string  $size  sm|md|lg
      * @return bool
@@ -48,7 +57,7 @@ class Company extends Base {
     }
 
     /**
-     * Gets the logo URL.
+     * Gets the company logo URL.
      *
      * @param  string  $size  sm|md|lg
      * @return string

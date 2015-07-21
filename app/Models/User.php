@@ -8,6 +8,7 @@ use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
 use App\Presenters\PresentableTrait;
 use App\Models\CompanyTrait;
+use App\Observers\UserObserver;
 
 /**
  * User
@@ -18,55 +19,43 @@ class User extends Base implements AuthenticatableInterface {
 
     use AuthenticableTrait, CompanyTrait, PresentableTrait;
 
-    protected $presenter = 'App\Presenters\User';
-
+    /**
+     * @var string
+     */
     protected $table = 'users';
 
+    /**
+     * @var Presenter
+     */
+    protected $presenter = 'App\Presenters\User';
+
+    /**
+     * @var array
+     */
     protected $fillable = [
         'company_id',
         'role_id',
-        'is_active',
+        'active',
         'email',
         'password',
-        'company_name',
-        'full_name',
-        'dob',
-        'id_number',
-        'phone',
-        'mobile_phone',
-        'autoship_setting'
+        'firstname',
+        'lastname'
     ];
 
-
     /**
-     * Save the model to the database.
+     * Registers model events.
      *
-     * @param  array  $options
-     * @return bool
+     * @return void
      */
-    public function save(array $options = array())
+    public static function boot()
     {
-        if ( ! Auth::user()->isAdmin() && $this->role_id == Role::ADMIN)
-        {
-            // Only admins may assign "admin" role.
-            $this->role_id = NULL;
-        }
+        parent::boot();
 
-        return parent::save($options);
+        User::observe(new UserObserver);
     }
 
     /**
-     * Gets the packages.
-     *
-     * @return Package[]
-     */
-    public function packages()
-    {
-        return $this->hasMany('App\Models\Package');
-    }
-
-    /**
-     * Gets the role.
+     * Gets the role of the user.
      *
      * @return Role
      */
@@ -76,53 +65,45 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the address.
+     * Gets the account associated with the user.
      *
-     * @return Address
+     * NOTE: ONLY "CLIENT" USERS HAVE AN ACCOUNT.
+     *
+     * @return Account
      */
-    public function address()
+    public function account()
     {
-        return $this->hasOne('App\Models\Address');
+        return $this->hasOne('App\Models\Account');
     }
 
     /**
-     * Gets the site.
-     *
-     * @return Site
-     */
-    public function site()
-    {
-        return $this->belongsTo('App\Models\Site');
-    }
-
-    /**
-     * Determines if the user is an agent.
+     * Checks if the user is an agent.
      *
      * @return bool
      */
     public function isAgent()
     {
-        return ($this->role_id == Role::AGENT);
+        return ((int) $this->role_id === Role::SUPER_AGENT);
     }
 
     /**
-     * Determines if the user is an admin.
+     * Checks if the user is an administrator.
      *
      * @return bool
      */
     public function isAdmin()
     {
-        return ($this->role_id == Role::ADMIN);
+        return ((int) $this->role_id === Role::SUPER_ADMIN);
     }
 
     /**
-     * Determines if the user is a client.
+     * Checks if the user is a client.
      *
      * @return bool
      */
     public function isClient()
     {
-        return ($this->role_id == Role::CLIENT);
+        return ((int) $this->role_id === Role::CLIENT);
     }
 
     /**
@@ -146,7 +127,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Determines if a password recovery token is valid.
+     * Checks if a password recovery token is valid.
      *
      * @param  string  $token
      * @return bool
@@ -157,7 +138,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Overrides parent method to sanitize certain attributes.
+     * Overrides parent method to sanitize attributes.
      *
      * @see parent::setAttribute()
      */
@@ -165,12 +146,9 @@ class User extends Base implements AuthenticatableInterface {
     {
         switch ($key)
         {
-            case 'full_name':
+            case 'firstname':
+            case 'lastname':
                 $value = ucwords(strtolower(trim($value)));
-                break;
-
-            case 'company_name':
-                $value = strtoupper(trim($value));
                 break;
 
             case 'password':
@@ -215,14 +193,13 @@ class User extends Base implements AuthenticatableInterface {
     /**
      * Validates the given credentials.
      *
-     * @param  string  $username
+     * @param  string  $email
      * @param  string  $password
-     * @return User|false
+     * @return User|FALSE
      */
-    public static function validateCredentials($username, $password)
+    public static function validateCredentials($email, $password)
     {
-        $user = User::where(['email' => $username, 'is_active' => TRUE])
-            ->first();
+        $user = User::where(['email' => $email, 'active' => TRUE])->first();
 
         if ($user && Hash::check($password, $user->password))
         {
@@ -233,37 +210,31 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Builds a search query for finding users for a populating a jquery datatable.
+     * Finds all users matching the given criteria.
      *
      * @param  string   $criteria  List of criterias
      * @return Builder
      */
-    public static function buildDatatableQuery(array $criteria = [])
+    public static function search(array $criteria = [])
     {
         $query = User::query();
 
         if (isset($criteria['company_id']))
         {
-            // Filter by company
-
             $query = $query->where('company_id', '=', $criteria['company_id']);
         }
 
-        if (isset($criteria['role_id']) && is_array($criteria['role_id']))
+        if (isset($criteria['role_id']))
         {
-            // Filter by role
-
             $query = $query->whereIn('role_id', $criteria['role_id']);
         }
 
-        if ( ! empty($criteria['q']))
+        if ( ! empty($criteria['search']))
         {
-            // Full text search
-
             $q = '%' . $criteria['q'] . '%';
 
             $query->whereRaw(
-                '(id LIKE ? OR full_name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)',
+                '(id LIKE ? OR name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)',
                 [$q, $q, $q, $q, $q, $q]
             );
         }

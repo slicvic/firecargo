@@ -1,6 +1,6 @@
 <?php namespace App\Presenters;
 
-use App\Presenters\Base as BasePresenter;
+use App\Presenters\Presenter as BasePresenter;
 use App\Models\Role;
 use App\Helpers\Html;
 
@@ -12,26 +12,13 @@ use App\Helpers\Html;
 class User extends BasePresenter {
 
     /**
-     * Presents the full name.
+     * Presents the fullname.
      *
      * @return string
      */
     public function fullname()
     {
-        return $this->model->full_name;
-    }
-
-    /**
-     * Presents the company name, otherwise the full name.
-     *
-     * @param  bool  $showId  Whether to show the id along with the name.
-     * @return string
-     */
-    public function company($showId = FALSE)
-    {
-        $name = $this->model->company_name ?: $this->fullname();
-
-        return ($showId) ? "$name ({$this->model->id})" : $name;
+        return "{$this->model->firstname} {$this->model->lastname}";
     }
 
     /**
@@ -41,31 +28,24 @@ class User extends BasePresenter {
      */
     public function role()
     {
+        if ( ! $this->model->role_id)
+        {
+            return '';
+        }
+
         switch ($this->model->role_id)
         {
-            case Role::ADMIN:
+            case Role::SUPER_ADMIN:
                 $cssClass = 'primary';
                 break;
-            case Role::AGENT:
+            case Role::SUPER_AGENT:
                 $cssClass = 'success';
                 break;
             case Role::CLIENT:
                 $cssClass = 'danger';
                 break;
-            default:
-                $cssClass = 'default';
         }
 
-        return ($this->model->role_id) ? sprintf('<div class="badge badge-%s">%s</div>', $cssClass, $this->model->role->name) : '';
-    }
-
-    /**
-     * Presents the address.
-     *
-     * @return string
-     */
-    public function address()
-    {
-        return ($this->model->address) ? $this->model->address->asString() : '';
+        return sprintf('<div class="badge badge-%s">%s</div>', $cssClass, $this->model->role->name);
     }
 }

@@ -28,11 +28,13 @@ class PackagesController extends BaseAuthController {
     /**
      * Shows the packages for a specific warehouse.
      *
+     * @param  Request  $request
+     * @param  int      $warehouseId
      * @return Response
      */
     public function getAjaxWarehousePackages(Request $request, $warehouseId)
     {
-        $packages = Package::filterByCompany()->where(['warehouse_id' => $warehouseId])->get();
+        $packages = Package::mine()->where(['warehouse_id' => $warehouseId])->get();
 
         return view('packages._list_warehouse', ['packages' => $packages]);
     }
@@ -40,11 +42,13 @@ class PackagesController extends BaseAuthController {
     /**
      * Shows the packages for a specific shipment.
      *
+     * @param  Request  $request
+     * @param  int      $warehouseId
      * @return Response
      */
     public function getAjaxShipmentPackages(Request $request, $shipmentId)
     {
-        $packages = Package::filterByCompany()->where(['shipment_id' => $shipmentId])->get();
+        $packages = Package::mine()->where(['shipment_id' => $shipmentId])->get();
 
         return view('packages._list_shipment', ['packages' => $packages]);
     }

@@ -22,7 +22,7 @@
             @if (Auth::user()->isAdmin())<td>{{ $status->company ? $status->company->name : 'N/A' }}</td>@endif
             <td>{{ $status->id }}</td>
             <td>{{ $status->name }}</td>
-            <td>{!! $status->is_default ? '<i class="fa fa-check"></i>' : '' !!}</td>
+            <td>{!! $status->default ? '<i class="fa fa-check"></i>' : '' !!}</td>
             <td>
                 <div class="btn-group">
                     <a href="/package-statuses/edit/{{ $status->id }}" class="btn-white btn btn-sm">Edit</a>

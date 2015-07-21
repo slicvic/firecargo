@@ -13,18 +13,19 @@ abstract class Base extends Model {
     /**
      * Saves the model to the database and logs the transaction.
      *
+     * @todo  turn on log write
      * @param  array  $options
      * @return bool
      */
-    public function save(array $options = array())
+    public function sasdasdave(array $options = array())
     {
-        $logAction = $this->exists ? LogUserAction::UPDATE : LogUserAction::CREATE;
+        $queryType = $this->exists ? LogUserAction::UPDATE : LogUserAction::CREATE;
 
         $result = parent::save($options);
 
         if ($result && Auth::check() && ! ($this instanceof LogUserAction))
         {
-            $this->writeLog($logAction);
+            $this->writeLog($queryType);
         }
 
         return $result;

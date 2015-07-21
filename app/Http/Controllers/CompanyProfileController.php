@@ -61,6 +61,7 @@ class CompanyProfileController extends BaseAuthController {
     /**
      * Updates the company's profile.
      *
+     * @param  Request  $request
      * @return Redirector
      */
     public function postProfile(Request $request)
@@ -90,6 +91,7 @@ class CompanyProfileController extends BaseAuthController {
     /**
      * Uploads the company's logo.
      *
+     * @param  Request  $request
      * @return JsonResponse
      */
     public function postAjaxUploadLogo(Request $request)

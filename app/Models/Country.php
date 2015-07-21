@@ -7,5 +7,8 @@
  */
 class Country extends Base {
 
+    /**
+     * @var string
+     */
     protected $table = 'countries';
 }

@@ -53,6 +53,7 @@ class SitesController extends BaseAuthController {
     /**
      * Creates a new site.
      *
+     * @param  Request  $request
      * @return Redirector
      */
     public function postStore(Request $request)
@@ -71,6 +72,7 @@ class SitesController extends BaseAuthController {
     /**
      * Shows the form for editing a site.
      *
+     * @param  int  $id
      * @return Response
      */
     public function getEdit($id)
@@ -88,6 +90,8 @@ class SitesController extends BaseAuthController {
     /**
      * Updates a specific site.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Redirector
      */
     public function postUpdate(Request $request, $id)

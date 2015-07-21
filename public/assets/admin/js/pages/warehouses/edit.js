@@ -24,7 +24,11 @@ $(function() {
         select: function(event, ui) {
             $('#shipperId').val(ui.item.id);
         }
-    });
+    }).autocomplete('instance')._renderItem = function(ul, item) {
+        return $('<li>')
+            .append('<a>' + item.id + ' - ' + item.label + '</a>')
+            .appendTo(ul);
+    };
 
     // Bind consignee autocomplete
     $('#consignee').keyup(function() {
@@ -39,7 +43,11 @@ $(function() {
             $('#consigneeId').val(ui.item.id);
             return false;
         }
-    });
+    }).autocomplete('instance')._renderItem = function(ul, item) {
+        return $('<li>')
+            .append('<a>' + item.id + ' - ' + item.label + '</a>')
+            .appendTo(ul);
+    };
 
     // Bind form submit
     $('form').on('submit', function() {

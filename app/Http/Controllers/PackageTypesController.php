@@ -54,6 +54,7 @@ class PackageTypesController extends BaseAuthController {
     /**
      * Creates a new package type.
      *
+     * @param  Request  $request
      * @return Redirector
      */
     public function postStore(Request $request)
@@ -72,6 +73,7 @@ class PackageTypesController extends BaseAuthController {
     /**
      * Shows the form for editing a package type.
      *
+     * @param  int  $id
      * @return Response
      */
     public function getEdit($id)
@@ -89,6 +91,8 @@ class PackageTypesController extends BaseAuthController {
     /**
      * Updates a specific package type.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Redirector
      */
     public function postUpdate(Request $request, $id)
@@ -114,6 +118,8 @@ class PackageTypesController extends BaseAuthController {
     /**
      * Deletes a specific package type.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Redirector
      */
     public function getDelete(Request $request, $id)

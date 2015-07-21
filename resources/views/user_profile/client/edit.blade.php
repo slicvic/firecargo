@@ -9,27 +9,33 @@
                 <div class="ibox-content">
                     <h2>Personal Information</h2>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Name</label>
+                        <label class="control-label col-sm-2">First Name</label>
                         <div class="col-sm-5">
-                            <input required type="text" name="user[full_name]" class="form-control" value="{{ Input::old('user.full_name', $user->full_name) }}">
+                            <input required type="text" name="account[firstname]" class="form-control" value="{{ Input::old('account.firstname', $account->firstname) }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Last Name</label>
+                        <div class="col-sm-5">
+                            <input required type="text" name="account[lastname]" class="form-control" value="{{ Input::old('account.lastname', $account->lastname) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Email</label>
                         <div class="col-sm-5">
-                            <input required type="email" name="user[email]" class="form-control" value="{{ Input::old('user.email', $user->email) }}">
+                            <input required type="email" name="account[email]" class="form-control" value="{{ Input::old('account.email', $account->email) }}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Mobile Phone</label>
+                        <label class="control-label col-sm-2">Phone</label>
                         <div class="col-sm-4">
-                            <input type="text" name="user[mobile_phone]" placeholder="Mobile Phone" class="form-control" value="{{ Input::old('user.mobile_phone', $user->mobile_phone) }}">
+                            <input type="text" name="account[phone]" placeholder="Phone" class="form-control" value="{{ Input::old('account.phone', $account->phone) }}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Other Phone</label>
+                        <label class="control-label col-sm-2">Mobile</label>
                         <div class="col-sm-4">
-                            <input type="text" name="user[phone]" placeholder="Home Phone" class="form-control" value="{{ Input::old('user.phone', $user->phone) }}">
+                            <input type="text" name="account[mobile_phone]" placeholder="Mobile" class="form-control" value="{{ Input::old('account.mobile_phone', $account->mobile_phone) }}">
                         </div>
                     </div>
                 </div>
@@ -45,8 +51,8 @@
                         <label class="col-md-2 control-label">Auto-ship Packages?</label>
                         <div class="col-md-10">
                             <label class="checkbox-inline">
-                                <input type="checkbox" name="user[autoship_setting]" value="1"{{ Input::old('user.autoship_setting', $user->autoship_setting) ? ' checked' : '' }}> Yes
-                                @include('user_profile._autoship_notice')
+                                <input type="checkbox" name="account[autoship]" value="1"{{ Input::old('account.autoship', $account->autoship) ? ' checked' : '' }}> Yes
+                                @include('user_profile.client._autoship_notice')
                             </label>
                         </div>
                     </div>

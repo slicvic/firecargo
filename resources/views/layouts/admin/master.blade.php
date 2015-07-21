@@ -112,16 +112,17 @@
                             </ul>
                         </li>
 
-                        <li{{ (Request::is('accounts') || Request::is('users/*')) ? ' class=active' : '' }}>
+                        <li{{ (Request::is('accounts') || Request::is('accounts/*')) ? ' class=active' : '' }}>
                             <a href="/accounts"><i class="fa fa-users"></i><span>Accounts</span></a>
                         </li>
 
-                        <li{{ preg_match('/carriers|sites|company|package-|companies|roles/', $uri) ? ' class=active' : '' }}>
+                        <li{{ preg_match('/carriers|sites|company|package-|companies|roles|users/', $uri) ? ' class=active' : '' }}>
                             <a href="#"><i class="fa fa-cog"></i> <span class="nav-label">Settings</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 @if ($user->isAdmin())
-                                    <li{{ (Request::is('roles') || Request::is('roles/*')) ? ' class=active' : '' }}><a href="/roles">Roles</a></li>
+                                    <li{{ (Request::is('users') || Request::is('users/*')) ? ' class=active' : '' }}><a href="/users">Users</a></li>
                                     <li{{ (Request::is('companies') || Request::is('companies/*')) ? ' class=active' : '' }}><a href="/companies">Companies</a></li>
+                                    <li{{ (Request::is('roles') || Request::is('roles/*')) ? ' class=active' : '' }}><a href="/roles">Roles</a></li>
                                     <li{{ (Request::is('package-types') || Request::is('package-types/*')) ? ' class=active' : '' }}><a href="/package-types">Package Types</a></li>
                                     <li{{ (Request::is('carriers') || Request::is('carriers/*')) ? ' class=active' : '' }}><a href="/carriers">Carriers</a></li>
                                     <li{{ (Request::is('sites') || Request::is('sites/*')) ? ' class=active' : '' }}><a href="/sites">Sites</a></li>

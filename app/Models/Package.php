@@ -17,12 +17,25 @@ class Package extends Base {
 
     use PresentableTrait, SoftDeletes, CompanyTrait;
 
-    protected $presenter = 'App\Presenters\Package';
-
+    /**
+     * @var string
+     */
     protected $table = 'packages';
 
+    /**
+     * @var array
+     */
+    protected $presenter = 'App\Presenters\Package';
+
+    /**
+     * Soft delete timestamp.
+     * @var array
+     */
     protected $dates = ['deleted_at'];
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'type_id',
         'status_id',
@@ -39,7 +52,7 @@ class Package extends Base {
     ];
 
     /**
-     * Gets the warehouse.
+     * Gets the parent warehouse.
      *
      * @return Warehouse
      */
@@ -59,7 +72,7 @@ class Package extends Base {
     }
 
     /**
-     * Gets the status.
+     * Gets the package status.
      *
      * @return PackageStatus
      */
@@ -69,7 +82,7 @@ class Package extends Base {
     }
 
     /**
-     * Gets the shipment.
+     * Gets the parent shipment.
      *
      * @return Shipment
      */
@@ -90,7 +103,7 @@ class Package extends Base {
     }
 
     /**
-     * Calculates the cubic feet.
+     * Calculates the package cubic feet.
      *
      * @return float
      */
@@ -100,7 +113,7 @@ class Package extends Base {
     }
 
     /**
-     * Calculates the cubic meter.
+     * Calculates the package cubic meter.
      *
      * @return float
      */
@@ -110,17 +123,17 @@ class Package extends Base {
     }
 
     /**
-     * Retrieves all packages that have not yet been shipped by the
-     * current user's company id.
+     * Retrieves all packages that have not yet been assigned to a shipment.
      *
+     * @param  int  $companyId
      * @return array
      */
-    public static function allPendingShipmentByCurrentUserCompany()
+    public static function allPendingShipmentByCompanyId($companyId)
     {
         $packages = Package::where([
             'packages.shipment_id' => NULL,
             'packages.ship' => TRUE,
-            'warehouses.company_id' => Auth::user()->company_id
+            'warehouses.company_id' => $companyId
         ])
         ->join('warehouses', 'packages.warehouse_id', '=', 'warehouses.id')
         ->select('packages.*')

@@ -21,7 +21,7 @@ TEL: {{ $company->phone }}<br>
 EMAIL: {{ $company->email }}<br><br>
 
 RECEIVED FOR:<br><br>
-{{ strtoupper($consignee->present()->fullname()) }}<br>
+{{ strtoupper($consignee->present()->name()) }}<br>
 {!! strtoupper($consignee->present()->address()) !!}<br>
         </td>
         <td width="40%">
@@ -142,7 +142,7 @@ RECEIVED FOR:<br><br>
             <br>
             <br>
             <br>
-            <small>CREATED BY: {{ Auth::user()->present()->fullname() }} using {{ env('APP_NAME') }}</small>
+            <small>CREATED BY: {{ Auth::user()->present()->name() }} using {{ env('APP_NAME') }}</small>
         </td>
     </tr>
 </table>

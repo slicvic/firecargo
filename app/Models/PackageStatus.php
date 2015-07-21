@@ -11,20 +11,30 @@ class PackageStatus extends Base {
 
     use CompanyTrait;
 
+    /**
+     * @var string
+     */
     protected $table = 'package_statuses';
 
+    /**
+     * Rules for validation.
+     * @var array
+     */
     public static $rules = [
         'name' => 'required'
     ];
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'company_id',
         'name',
-        'is_default'
+        'default'
     ];
 
     /**
-     * Overrides parent method to add setting default status.
+     * Overrides parent method to set default status.
      *
      * @see parent::save()
      */
@@ -32,12 +42,12 @@ class PackageStatus extends Base {
     {
         $result = parent::save($options);
 
-        if ($result && $this->is_default)
+        if ($result && $this->default)
         {
             // Unset the previous default status
             PackageStatus::where('company_id', $this->company_id)
                 ->where('id', '<>', $this->id)
-                ->update(['is_default' => FALSE]);
+                ->update(['default' => FALSE]);
         }
 
         return $result;

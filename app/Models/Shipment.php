@@ -14,10 +14,19 @@ class Shipment extends Base {
 
     use CompanyTrait, PresentableTrait;
 
+    /**
+     * @var string
+     */
     protected $table = 'shipments';
 
+    /**
+     * @var Presenter
+     */
     protected $presenter = 'App\Presenters\Shipment';
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'carrier_id',
         'reference_number',
@@ -25,7 +34,7 @@ class Shipment extends Base {
     ];
 
     /**
-     * Gets the packages.
+     * Gets the shipment packages.
      *
      * @return Package[]
      */
@@ -35,7 +44,7 @@ class Shipment extends Base {
     }
 
     /**
-     * Gets the carrier.
+     * Gets the shipment carrier.
      *
      * @return Carrier
      */
@@ -45,7 +54,7 @@ class Shipment extends Base {
     }
 
     /**
-     * Overrides parent method to sanitize certain attributes.
+     * Overrides parent method to sanitize attributes.
      *
      * @see parent::setAttribute()
      */
@@ -122,7 +131,7 @@ class Shipment extends Base {
 
         // Determine sort order
         $orderBy = array_key_exists($orderBy, $sortColumns) ? $sortColumns[$orderBy] : $sortColumns['id'];
-        $order = ($order == 'asc') ? 'asc' : 'desc';
+        $order = ($order === 'ASC') ? 'ASC' : 'DESC';
 
         $shipments = Shipment::whereRaw('1')
             ->orderBy('shipments.' . $orderBy, $order);

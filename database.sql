@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:8889
--- Generation Time: Jul 16, 2015 at 05:47 PM
+-- Generation Time: Jul 21, 2015 at 06:03 AM
 -- Server version: 5.5.34
 -- PHP Version: 5.5.10
 
@@ -13,8 +13,73 @@ SET time_zone = "+00:00";
 --
 -- Database: `cargo`
 --
-CREATE DATABASE IF NOT EXISTS `cargo` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-USE `cargo`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accounts`
+--
+
+CREATE TABLE `accounts` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(10) unsigned NOT NULL,
+  `type_id` int(11) unsigned DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `firstname` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `lastname` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `phone` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `mobile_phone` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `fax` varchar(39) NOT NULL,
+  `autoship` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `company_id` (`company_id`),
+  KEY `role_id` (`type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`id`, `company_id`, `type_id`, `user_id`, `name`, `firstname`, `lastname`, `email`, `phone`, `mobile_phone`, `fax`, `autoship`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1142, 'Pablo Pueblo', 'Pablo', 'Pueblo', 'client@gmail.com', '233', '4454', '', 1, '0000-00-00 00:00:00', '2015-07-21 01:42:45'),
+(2, 1, 2, NULL, ' ddd', 'First', 'Last', 'em@gmail.com', '123', '789', '456', 1, '2015-07-21 01:31:52', '2015-07-21 01:47:36'),
+(3, 1, 2, NULL, ' ', '', '', '', '', '', '', 1, '2015-07-21 01:32:08', '2015-07-21 01:32:08'),
+(4, 1, 2, NULL, ' ', '', '', '', '', '', '', 1, '2015-07-21 01:32:26', '2015-07-21 01:32:26'),
+(5, 1, 2, NULL, 'papa', '', '', '', '', '', '', 1, '2015-07-21 01:43:27', '2015-07-21 01:43:27'),
+(6, 1, 2, NULL, 'MAMA PAPA', '', '', '', '', '', '', 1, '2015-07-21 01:44:33', '2015-07-21 01:44:33'),
+(7, 1, 1, NULL, 'Lucky Luchy', 'Lucky', 'Luchy', 'luckyluchy@gmail.com', '', '', '', 1, '2015-07-21 03:09:30', '2015-07-21 03:09:30'),
+(8, 1, 1, NULL, 'Lucky Luchy', 'Lucky', 'Luchy', 'luckyluchy2@gmail.com', '', '', '', 1, '2015-07-21 03:16:28', '2015-07-21 03:16:28'),
+(9, 1, 1, NULL, 'Lucky Luchy', 'Lucky', 'Luchy', 'luckyluchy42@gmail.com', '', '', '', 1, '2015-07-21 03:17:24', '2015-07-21 03:17:24'),
+(10, 1, 1, NULL, 'Lucky Luchy', 'Lucky', 'Luchy', 'luckyluchy421@gmail.com', '', '', '', 1, '2015-07-21 03:19:13', '2015-07-21 03:19:13'),
+(11, 1, 1, NULL, 'Lucky Luchy', 'Lucky', 'Luchy', 'luckyluchy4210@gmail.com', '', '', '', 1, '2015-07-21 03:19:56', '2015-07-21 03:19:56'),
+(12, 1, 1, 1150, 'Lucky41 Luchy41', 'Lucky41', 'Luchy41', 'lucky555@gmail.com', '', '', '', 1, '2015-07-21 03:22:15', '2015-07-21 03:26:27'),
+(13, 1, 1, 1151, 'Pepito Billetero', 'Pepito', 'Billetero', 'pepito@gmail.com', '', '', '', 1, '2015-07-21 03:30:57', '2015-07-21 03:31:57');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account_types`
+--
+
+CREATE TABLE `account_types` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `account_types`
+--
+
+INSERT INTO `account_types` (`id`, `name`) VALUES
+(1, 'Registered Client'),
+(2, 'Client'),
+(3, 'Consignee'),
+(4, 'Shipper');
 
 -- --------------------------------------------------------
 
@@ -24,7 +89,7 @@ USE `cargo`;
 
 CREATE TABLE `addresses` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) unsigned DEFAULT NULL,
+  `account_id` bigint(20) unsigned DEFAULT NULL,
   `company_id` int(10) unsigned DEFAULT NULL,
   `address1` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `address2` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -35,29 +100,25 @@ CREATE TABLE `addresses` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `user_id` (`user_id`),
+  UNIQUE KEY `user_id` (`account_id`),
   UNIQUE KEY `company_id` (`company_id`),
-  KEY `user_id_2` (`user_id`),
+  KEY `user_id_2` (`account_id`),
   KEY `company_id_2` (`company_id`),
   KEY `country_id` (`country_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=92 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=107 ;
 
 --
 -- Dumping data for table `addresses`
 --
 
-INSERT INTO `addresses` (`id`, `user_id`, `company_id`, `address1`, `address2`, `city`, `state`, `postal_code`, `country_id`, `created_at`, `updated_at`) VALUES
-(81, 1114, NULL, '', '', '', '', '', 1, '2015-07-15 21:30:16', '2015-07-15 21:30:16'),
-(82, NULL, 3, '', '', '', '', '', NULL, '2015-07-16 03:42:10', '2015-07-16 03:42:10'),
-(83, NULL, 1, '', '', '', '', '', 1, '2015-07-16 03:47:01', '2015-07-16 03:47:01'),
-(84, 1, NULL, '', '', '', '', '', 1, '2015-07-16 04:12:52', '2015-07-16 04:12:52'),
-(85, 1117, NULL, '', '', '', '', '', 1, '2015-07-16 04:13:05', '2015-07-16 04:13:05'),
-(86, 1118, NULL, '', '', '', '', '', 1, '2015-07-16 12:28:26', '2015-07-16 12:28:26'),
-(87, 1119, NULL, '', '', '', '', '', 1, '2015-07-16 12:28:37', '2015-07-16 12:28:37'),
-(88, 1120, NULL, '', '', '', '', '', 1, '2015-07-16 12:28:45', '2015-07-16 12:28:45'),
-(89, 1121, NULL, '', '', '', '', '', 1, '2015-07-16 12:28:55', '2015-07-16 12:28:55'),
-(90, 1122, NULL, '', '', '', '', '', 1, '2015-07-16 12:29:09', '2015-07-16 12:29:09'),
-(91, 1123, NULL, '', '', '', '', '', 1, '2015-07-16 12:29:21', '2015-07-16 12:29:21');
+INSERT INTO `addresses` (`id`, `account_id`, `company_id`, `address1`, `address2`, `city`, `state`, `postal_code`, `country_id`, `created_at`, `updated_at`) VALUES
+(84, 1, NULL, '6320 NW 114TH AVE', 'ASDASDASD', 'DORAL', 'FLORIDA', '33178', 1, '2015-07-16 04:12:52', '2015-07-21 00:14:23'),
+(101, 3, NULL, '', '', '', '', '', 1, '2015-07-21 01:32:08', '2015-07-21 01:32:08'),
+(102, 4, NULL, '', '', '', '', '', 1, '2015-07-21 01:32:26', '2015-07-21 01:32:26'),
+(103, 5, NULL, '', '', '', '', '', 1, '2015-07-21 01:43:27', '2015-07-21 01:43:27'),
+(104, 6, NULL, '', '', '', '', '', 1, '2015-07-21 01:44:33', '2015-07-21 01:44:33'),
+(105, 2, NULL, '6320 NW 114TH AVE', 'KK', 'DORAL', 'FLORIDA', '33178', 1, '2015-07-21 01:47:21', '2015-07-21 01:48:04'),
+(106, NULL, 1, '6320 NW 114TH AVE', '', 'DORAL', 'FLORIDA', '33178', 1, '2015-07-21 03:39:22', '2015-07-21 03:39:22');
 
 -- --------------------------------------------------------
 
@@ -80,7 +141,7 @@ CREATE TABLE `carriers` (
 --
 
 INSERT INTO `carriers` (`id`, `name`, `code`, `prefix`, `created_at`, `updated_at`) VALUES
-(531, 'AMERICAN AIRLINES', 'AA', '001', '2015-07-13 22:33:34', '2015-07-15 19:17:14'),
+(531, 'AMERICAN AIRLINES', 'AA', '001', '2015-07-13 22:33:34', '2015-07-21 02:05:49'),
 (532, 'CONTINENTAL AIRLINES', 'CO', '005', '2015-07-13 22:33:34', '2015-07-13 22:33:34'),
 (533, 'DELTA AIR LINES', 'DL', '006', '2015-07-13 22:33:34', '2015-07-13 22:33:34'),
 (534, 'DELTA AIR LINES', 'NW', '012', '2015-07-13 22:33:34', '2015-07-13 22:33:34'),
@@ -332,9 +393,9 @@ CREATE TABLE `companies` (
 --
 
 INSERT INTO `companies` (`id`, `name`, `corp_code`, `phone`, `fax`, `email`, `created_at`, `updated_at`) VALUES
-(1, 'Lantigua Group', 'LG', '', '', '', '2015-03-23 22:58:37', '2015-07-15 19:36:29'),
+(1, 'Lantigua Group', 'LG', '123', '456', '789@gmail.com', '2015-03-23 22:58:37', '2015-07-21 03:39:22'),
 (2, 'Sion Services Group', 'SSG', '', '', '', '2015-03-23 22:59:07', '2015-07-09 14:39:34'),
-(3, 'test', 'test2xx', '', '', '', '2015-07-16 03:42:10', '2015-07-16 03:42:26');
+(3, 'TESTxad22', 'test2xx22', '', '', '', '2015-07-16 03:42:10', '2015-07-21 02:07:46');
 
 -- --------------------------------------------------------
 
@@ -371,7 +432,7 @@ CREATE TABLE `log_user_actions` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=64 ;
 
 --
 -- Dumping data for table `log_user_actions`
@@ -404,7 +465,43 @@ INSERT INTO `log_user_actions` (`id`, `user_id`, `action`, `table_name`, `record
 (24, 1, 'create', 'carriers', 769, '2015-07-16 15:43:58', '2015-07-16 15:43:58'),
 (25, 1, 'create', 'users', 1126, '2015-07-16 15:43:58', '2015-07-16 15:43:58'),
 (26, 1, 'create', 'users', 1127, '2015-07-16 15:43:58', '2015-07-16 15:43:58'),
-(27, 1, 'create', 'warehouses', 102, '2015-07-16 15:43:58', '2015-07-16 15:43:58');
+(27, 1, 'create', 'warehouses', 102, '2015-07-16 15:43:58', '2015-07-16 15:43:58'),
+(28, 1, 'update', 'users', 1, '2015-07-17 19:16:37', '2015-07-17 19:16:37'),
+(29, 1, 'update', 'roles', 3, '2015-07-17 19:23:12', '2015-07-17 19:23:12'),
+(30, 1, 'update', 'roles', 8, '2015-07-17 19:27:00', '2015-07-17 19:27:00'),
+(31, 1, 'update', 'roles', 9, '2015-07-17 19:27:19', '2015-07-17 19:27:19'),
+(32, 1, 'update', 'roles', 4, '2015-07-17 19:27:28', '2015-07-17 19:27:28'),
+(33, 1, 'update', 'roles', 5, '2015-07-17 19:27:41', '2015-07-17 19:27:41'),
+(34, 1, 'create', 'users', 1128, '2015-07-17 20:00:27', '2015-07-17 20:00:27'),
+(35, 1, 'create', 'addresses', 92, '2015-07-17 20:00:27', '2015-07-17 20:00:27'),
+(36, 1, 'update', 'users', 1128, '2015-07-17 20:01:14', '2015-07-17 20:01:14'),
+(37, 1, 'update', 'addresses', 92, '2015-07-17 20:01:14', '2015-07-17 20:01:14'),
+(38, 1, 'update', 'users', 1128, '2015-07-17 20:01:23', '2015-07-17 20:01:23'),
+(39, 1, 'update', 'addresses', 92, '2015-07-17 20:01:23', '2015-07-17 20:01:23'),
+(40, 1, 'update', 'users', 1128, '2015-07-17 20:01:33', '2015-07-17 20:01:33'),
+(41, 1, 'update', 'addresses', 92, '2015-07-17 20:01:33', '2015-07-17 20:01:33'),
+(42, 1, 'update', 'users', 1128, '2015-07-17 20:01:36', '2015-07-17 20:01:36'),
+(43, 1, 'update', 'addresses', 92, '2015-07-17 20:01:36', '2015-07-17 20:01:36'),
+(44, 1, 'update', 'users', 1128, '2015-07-17 20:01:39', '2015-07-17 20:01:39'),
+(45, 1, 'update', 'addresses', 92, '2015-07-17 20:01:39', '2015-07-17 20:01:39'),
+(46, 1, 'update', 'users', 1128, '2015-07-17 20:01:43', '2015-07-17 20:01:43'),
+(47, 1, 'update', 'addresses', 92, '2015-07-17 20:01:43', '2015-07-17 20:01:43'),
+(48, 1, 'update', 'users', 1128, '2015-07-17 20:01:50', '2015-07-17 20:01:50'),
+(49, 1, 'update', 'addresses', 92, '2015-07-17 20:01:50', '2015-07-17 20:01:50'),
+(50, 1, 'update', 'users', 1128, '2015-07-17 20:01:54', '2015-07-17 20:01:54'),
+(51, 1, 'update', 'addresses', 92, '2015-07-17 20:01:54', '2015-07-17 20:01:54'),
+(52, 1, 'update', 'users', 1128, '2015-07-17 20:01:59', '2015-07-17 20:01:59'),
+(53, 1, 'update', 'addresses', 92, '2015-07-17 20:01:59', '2015-07-17 20:01:59'),
+(54, 1, 'update', 'users', 1128, '2015-07-17 20:20:27', '2015-07-17 20:20:27'),
+(55, 1, 'update', 'addresses', 92, '2015-07-17 20:20:27', '2015-07-17 20:20:27'),
+(56, 1, 'update', 'users', 1128, '2015-07-17 20:21:09', '2015-07-17 20:21:09'),
+(57, 1, 'update', 'addresses', 92, '2015-07-17 20:21:09', '2015-07-17 20:21:09'),
+(58, 1, 'update', 'users', 1128, '2015-07-17 20:21:28', '2015-07-17 20:21:28'),
+(59, 1, 'update', 'addresses', 92, '2015-07-17 20:21:28', '2015-07-17 20:21:28'),
+(60, 1, 'update', 'users', 1128, '2015-07-17 20:25:07', '2015-07-17 20:25:07'),
+(61, 1, 'update', 'addresses', 92, '2015-07-17 20:25:07', '2015-07-17 20:25:07'),
+(62, 1, 'update', 'users', 1128, '2015-07-17 20:32:27', '2015-07-17 20:32:27'),
+(63, 1, 'update', 'addresses', 92, '2015-07-17 20:32:27', '2015-07-17 20:32:27');
 
 -- --------------------------------------------------------
 
@@ -454,18 +551,6 @@ CREATE TABLE `packages` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=171 ;
 
 --
--- Dumping data for table `packages`
---
-
-INSERT INTO `packages` (`id`, `company_id`, `warehouse_id`, `type_id`, `status_id`, `shipment_id`, `length`, `width`, `height`, `weight`, `description`, `invoice_number`, `invoice_amount`, `tracking_number`, `ship`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(165, 2, 98, 1, 1, 27, 0, 0, 0, 0, '', '', 0.0000, '', 1, '2015-07-15 22:19:11', '2015-07-15 22:19:24', '0000-00-00 00:00:00'),
-(166, 2, 98, 1, 1, NULL, 0, 0, 0, 0, '', '', 0.0000, '', 1, '2015-07-15 22:19:11', '2015-07-15 22:19:11', '0000-00-00 00:00:00'),
-(167, 1, 100, 1, 1, 28, 1, 235, 3, 4, '', '', 0.0000, '', 1, '2015-07-16 13:21:42', '2015-07-16 15:43:37', '0000-00-00 00:00:00'),
-(168, 1, 100, 1, 1, NULL, 4, 331, 2, 1, '', '', 0.0000, '', 1, '2015-07-16 13:23:45', '2015-07-16 15:40:11', '0000-00-00 00:00:00'),
-(169, 1, 101, 1, 1, NULL, 12, 12, 12, 12, '', '', 0.0000, '', 1, '2015-07-16 15:41:26', '2015-07-16 15:42:06', '0000-00-00 00:00:00'),
-(170, 1, 101, 1, 1, NULL, 3, 3, 3, 3, '', '', 0.0000, '', 1, '2015-07-16 15:41:26', '2015-07-16 15:42:06', '0000-00-00 00:00:00');
-
---
 -- Triggers `packages`
 --
 DROP TRIGGER IF EXISTS `update_warehouse_status`;
@@ -512,19 +597,19 @@ DELIMITER ;
 CREATE TABLE `package_statuses` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` int(10) unsigned NOT NULL,
-  `is_default` tinyint(3) unsigned DEFAULT NULL,
+  `default` tinyint(3) unsigned DEFAULT NULL,
   `name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `company_id` (`company_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `package_statuses`
 --
 
-INSERT INTO `package_statuses` (`id`, `company_id`, `is_default`, `name`, `created_at`, `updated_at`) VALUES
+INSERT INTO `package_statuses` (`id`, `company_id`, `default`, `name`, `created_at`, `updated_at`) VALUES
 (1, 2, 1, 'Recibido USA', '0000-00-00 00:00:00', '2015-07-16 03:30:48'),
 (2, 2, 0, 'En proceso de despacho USA', '0000-00-00 00:00:00', '2015-07-16 03:30:48'),
 (3, 2, 0, 'Despachado desde USA', '0000-00-00 00:00:00', '2015-07-16 03:30:48'),
@@ -542,7 +627,7 @@ CREATE TABLE `package_types` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `package_types`
@@ -572,31 +657,19 @@ CREATE TABLE `roles` (
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
+  `weight` tinyint(3) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `roles`
 --
 
-INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'Administrative user, has access to everything.', '0000-00-00 00:00:00', '2015-07-16 03:57:48'),
-(3, 'Agent', 'An employee of registered company', '0000-00-00 00:00:00', '2015-07-14 23:31:19'),
-(4, 'Client', 'A consignee / customer of registered company', '0000-00-00 00:00:00', '2015-07-14 15:32:30'),
-(5, 'Shipper', 'A shipper of registered company', '0000-00-00 00:00:00', '2015-07-08 03:37:09');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `roles_users`
---
-
-CREATE TABLE `roles_users` (
-  `user_id` bigint(20) unsigned NOT NULL,
-  `role_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`user_id`,`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`, `weight`) VALUES
+(1, 'Super Admin', 'Administrative user, has access to everything.', '0000-00-00 00:00:00', '2015-07-16 03:57:48', 255),
+(3, 'Super Agent', 'Owner of a registered company', '0000-00-00 00:00:00', '2015-07-17 19:23:12', 100),
+(9, 'Client', 'Customer of a company', '0000-00-00 00:00:00', '2015-07-17 19:27:19', 1);
 
 -- --------------------------------------------------------
 
@@ -616,14 +689,6 @@ CREATE TABLE `shipments` (
   KEY `company_id` (`company_id`),
   KEY `carrier_id` (`carrier_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
-
---
--- Dumping data for table `shipments`
---
-
-INSERT INTO `shipments` (`id`, `company_id`, `carrier_id`, `reference_number`, `departed_at`, `created_at`, `updated_at`) VALUES
-(27, 2, 587, '3256456456', '2015-07-15 00:00:00', '2015-07-15 22:19:24', '2015-07-15 22:19:24'),
-(28, 1, 768, '23423423423', '2015-07-16 00:00:00', '2015-07-16 15:43:37', '2015-07-16 15:43:37');
 
 -- --------------------------------------------------------
 
@@ -656,52 +721,39 @@ INSERT INTO `sites` (`id`, `company_id`, `name`, `created_at`, `updated_at`) VAL
 
 CREATE TABLE `users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `site_id` int(10) unsigned DEFAULT NULL,
   `company_id` int(10) unsigned NOT NULL,
   `role_id` int(11) unsigned DEFAULT NULL,
-  `company_name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `full_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `first_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `last_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `firstname` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `lastname` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `dob` date NOT NULL,
-  `id_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-  `phone` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `mobile_phone` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `autoship_setting` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `is_active` tinyint(3) unsigned NOT NULL,
-  `remember_token` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `active` tinyint(3) unsigned NOT NULL,
+  `remember_token` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `logins` int(10) unsigned NOT NULL DEFAULT '0',
   `last_login` datetime NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `site_id` (`site_id`),
   KEY `company_id` (`company_id`),
   KEY `role_id` (`role_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1128 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1152 ;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `site_id`, `company_id`, `role_id`, `company_name`, `full_name`, `first_name`, `last_name`, `email`, `password`, `dob`, `id_number`, `phone`, `mobile_phone`, `autoship_setting`, `is_active`, `remember_token`, `logins`, `last_login`, `created_at`, `updated_at`) VALUES
-(1, NULL, 1, 1, '', 'Slicvic', 'Slic', 'Vic', 'vmlantigua@gmail.com', '$2y$10$F6qNSi3uFaE47opz3UItTuIbuGK53xO2kI7uLLnALfyFlnTE89j.u', '2011-11-11', '13212121212', '', '', 1, 1, 'C74Ta18z0KnPINOyCJ2Pv57JFCIqhQAeq9EenfSTTRLzRiWF5fVbmXC2VpgD', 144, '2015-07-16 12:01:52', '2015-01-29 04:41:09', '2015-07-16 15:39:46'),
-(1114, NULL, 2, 1, '', 'Test', '', '', 'agent@gmail.com', '$2y$10$o0cekZ5ppbOqBCr8pSp/c.2S2zDRGpRNdUa.DTZMFHCumqqBlEJBO', '0000-00-00', '', '', '', 1, 1, '18bXNhh4yYAGSwHKDiawYrjn8WHsNcYzuIMavBhTn2D2pCqU2LSB8BV7F1DZ', 2, '2015-07-16 01:56:39', '2015-07-15 21:30:16', '2015-07-16 04:24:36'),
-(1115, NULL, 2, 5, 'AMAZON', '', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-15 22:19:11', '2015-07-15 22:19:11'),
-(1116, NULL, 2, 4, '', 'Lionel Messi', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-15 22:19:11', '2015-07-15 22:19:11'),
-(1117, NULL, 1, 3, 'TESTX', '', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-16 04:13:05', '2015-07-16 04:15:33'),
-(1118, NULL, 1, 4, 'ASDSD', '', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-16 12:28:26', '2015-07-16 12:28:26'),
-(1119, NULL, 2, 3, 'ASDASD', '', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-16 12:28:37', '2015-07-16 12:28:37'),
-(1120, NULL, 1, 3, 'ASD', '', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-16 12:28:45', '2015-07-16 12:28:45'),
-(1121, NULL, 1, 3, 'ASDASD', '', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-16 12:28:55', '2015-07-16 12:28:55'),
-(1122, NULL, 2, 3, 'ASDASDASD', '', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-16 12:29:09', '2015-07-16 12:29:09'),
-(1123, NULL, 1, 4, 'ASDASD', '', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-16 12:29:21', '2015-07-16 12:29:21'),
-(1124, NULL, 1, 5, 'NERDO SHIPPER', '', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-16 15:41:26', '2015-07-16 15:41:26'),
-(1125, NULL, 1, 4, '', 'Nerdo Consignee', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-16 15:41:26', '2015-07-16 15:41:26'),
-(1126, NULL, 1, 5, 'PASSS', '', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-16 15:43:58', '2015-07-16 15:43:58'),
-(1127, NULL, 1, 4, '', 'Conssssss', '', '', '', NULL, '0000-00-00', '', '', '', 1, 0, NULL, 0, '0000-00-00 00:00:00', '2015-07-16 15:43:58', '2015-07-16 15:43:58');
+INSERT INTO `users` (`id`, `company_id`, `role_id`, `firstname`, `lastname`, `email`, `password`, `active`, `remember_token`, `logins`, `last_login`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 'Slic', 'Vic', 'vmlantigua@gmail.com', '$2y$10$F6qNSi3uFaE47opz3UItTuIbuGK53xO2kI7uLLnALfyFlnTE89j.u', 1, 'hQOyuIrJISmE5NYscNpOkNfsqpQc58sGC7pbnkJ65T4w9rUPu2dUQEL3VdAj', 155, '2015-07-21 02:11:35', '2015-01-29 04:41:09', '2015-07-21 02:11:35'),
+(1142, 1, 9, 'Pablo', 'Pueblo', 'client@gmail.com', '$2y$10$YVETz6HFt5ytFpB.ddVWu.ckE5l0VbOW450Hqcvb3QZQttaAYaTya', 1, '1GZhzpgG7SQrm9YDKVU545RX0N0YytYBXHDdezxGfl4Q4NI9F6kRR9YQUaZE', 4, '2015-07-21 02:11:09', '0000-00-00 00:00:00', '2015-07-21 02:11:30'),
+(1143, 1, 9, 'Admin', 'Man', 'vmlantiguadd@gmail.com', '$2y$10$Dk/dBUQlzG1nk/uB0B7kGeEp/n1yzlc5UTyTJGyzmrUx8Wm4upFrO', 1, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:01:57', '2015-07-21 03:05:28'),
+(1144, 1, 9, 'Lucky', 'Luchy', 'luckyluchy@gmail.com', '$2y$10$YEab0YSkv.ErBAeXv7ELSud4c6K.TbmVKYc4GKKXWYyV7LHA6FWSa', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:09:30', '2015-07-21 03:09:30'),
+(1145, 1, 9, 'Lucky', 'Luchy', 'luckyluchy2@gmail.com', '$2y$10$gBVN8nOHR/5M5Z2HJQHoh.C9rvwOh2j7J/zxiJXO1wobgyad52bPu', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:16:28', '2015-07-21 03:16:28'),
+(1146, 1, 9, 'Lucky', 'Luchy', 'luckyluchy42@gmail.com', '$2y$10$IIo.qzcH7reFGkX7gWNuBOWhy66hh/8/8/.bvMqZnLG7LuAWNQcKW', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:17:24', '2015-07-21 03:17:24'),
+(1147, 1, 9, 'Lucky', 'Luchy', 'luckyluchy421@gmail.com', '$2y$10$o828eFdx4y2jRewyL3Ad8uLbkhWvRcU/2wYa8S7w2gEAihxmlErnC', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:19:13', '2015-07-21 03:19:13'),
+(1148, 1, 9, 'Lucky', 'Luchy', 'luckyluchy4210@gmail.com', '$2y$10$UkbbLUt6V7IwEQ8xhwsCKO0tn5WZgTlyXhujq45qXR4r4YPt15tnq', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:19:56', '2015-07-21 03:19:56'),
+(1149, 1, 9, 'Lucky4', 'Luchy4', 'luckyluchy421111110@gmail.com', '$2y$10$Npa0dKuQdfmcgDB6j8z.IeMiHmuPzpwYvBNWqBMZJoVlihGPO1hRO', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:21:54', '2015-07-21 03:21:54'),
+(1150, 1, 9, 'Lucky41', 'Luchy41', 'lucky555@gmail.com', '$2y$10$8pa/8dEXA3aC4uS8clRsbutgoqsS5ytpiYal.5awDu0kvcWBnYuQW', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:22:15', '2015-07-21 03:30:36'),
+(1151, 1, 9, 'Pepito', 'Billetero', 'pepito@gmail.com', '$2y$10$1CuPYbPMjWocKfng3lHIduW3EUUEBUe/05HXaLxoL/GmQrO8jtMUa', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:30:57', '2015-07-21 03:31:57');
 
 -- --------------------------------------------------------
 
@@ -713,8 +765,8 @@ CREATE TABLE `warehouses` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `company_id` int(10) unsigned NOT NULL,
   `status_id` int(10) unsigned DEFAULT '1',
-  `shipper_user_id` bigint(20) unsigned NOT NULL,
-  `consignee_user_id` bigint(20) unsigned NOT NULL,
+  `shipper_account_id` bigint(20) unsigned NOT NULL,
+  `consignee_account_id` bigint(20) unsigned NOT NULL,
   `carrier_id` bigint(20) unsigned DEFAULT NULL,
   `notes` varchar(1000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `arrived_at` datetime NOT NULL,
@@ -723,20 +775,10 @@ CREATE TABLE `warehouses` (
   PRIMARY KEY (`id`),
   KEY `courier_id` (`carrier_id`),
   KEY `company_id` (`company_id`),
-  KEY `shipper_user_id` (`shipper_user_id`),
-  KEY `consignee_user_id` (`consignee_user_id`),
+  KEY `shipper_user_id` (`shipper_account_id`),
+  KEY `consignee_user_id` (`consignee_account_id`),
   KEY `status_id` (`status_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=103 ;
-
---
--- Dumping data for table `warehouses`
---
-
-INSERT INTO `warehouses` (`id`, `company_id`, `status_id`, `shipper_user_id`, `consignee_user_id`, `carrier_id`, `notes`, `arrived_at`, `created_at`, `updated_at`) VALUES
-(98, 2, 2, 1115, 1116, 648, '', '2015-07-15 22:18:00', '2015-07-15 22:19:11', '2015-07-15 22:19:11'),
-(100, 1, 2, 1, 1118, 531, '', '2015-07-16 13:21:00', '2015-07-16 13:21:42', '2015-07-16 13:21:42'),
-(101, 1, 1, 1124, 1125, 648, '', '2015-07-16 15:40:00', '2015-07-16 15:41:26', '2015-07-16 15:41:26'),
-(102, 1, 1, 1126, 1127, 769, '', '2015-07-16 15:43:00', '2015-07-16 15:43:58', '2015-07-16 15:43:58');
 
 -- --------------------------------------------------------
 
@@ -769,8 +811,7 @@ INSERT INTO `warehouse_statuses` (`id`, `name`, `color`) VALUES
 --
 ALTER TABLE `addresses`
   ADD CONSTRAINT `addresses_countries_countryid` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`),
-  ADD CONSTRAINT `fk_addresses_companies_companyid` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_addresses_users_userid` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_addresses_companies_companyid` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `packages`
@@ -806,15 +847,4 @@ ALTER TABLE `sites`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `fk_users_companies_companyid` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
-  ADD CONSTRAINT `fk_users_roles_roleid` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`),
-  ADD CONSTRAINT `fk_users_sites_siteid` FOREIGN KEY (`site_id`) REFERENCES `sites` (`id`);
-
---
--- Constraints for table `warehouses`
---
-ALTER TABLE `warehouses`
-  ADD CONSTRAINT `fk_warehouses_carriers_carrierid` FOREIGN KEY (`carrier_id`) REFERENCES `carriers` (`id`),
-  ADD CONSTRAINT `fk_warehouses_companies_companyid` FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`),
-  ADD CONSTRAINT `fk_warehouses_users_consigneeid` FOREIGN KEY (`consignee_user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `fk_warehouses_users_shipperuserid` FOREIGN KEY (`shipper_user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `fk_warehouses_warehousestatuses_statusid` FOREIGN KEY (`status_id`) REFERENCES `warehouse_statuses` (`id`);
+  ADD CONSTRAINT `fk_users_roles_roleid` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`);

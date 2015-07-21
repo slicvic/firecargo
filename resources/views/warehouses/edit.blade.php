@@ -50,14 +50,14 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Shipper</label>
                         <div class="col-sm-5">
-                            <input type="hidden" id="shipperId" name="warehouse[shipper_user_id]" value="{{ $warehouse->shipper_user_id }}">
+                            <input type="hidden" id="shipperId" name="warehouse[shipper_account_id]" value="{{ $warehouse->shipper_account_id }}">
                             <input required type="text" id="shipper" name="warehouse[shipper_name]" class="form-control" value="{{ $warehouse->present()->shipper() }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Consignee</label>
                         <div class="col-sm-5">
-                            <input type="hidden" id="consigneeId" name="warehouse[consignee_user_id]" value="{{ $warehouse->consignee_user_id }}">
+                            <input type="hidden" id="consigneeId" name="warehouse[consignee_account_id]" value="{{ $warehouse->consignee_account_id }}">
                             <input required type="text" id="consignee" name="warehouse[consignee_name]" class="form-control" value="{{ $warehouse->present()->consignee() }}">
                         </div>
                     </div>

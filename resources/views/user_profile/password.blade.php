@@ -21,7 +21,7 @@
             <div class="form-group">
                 <label class="col-md-3 control-label">Confirm Password</label>
                 <div class="col-md-5">
-                    <input type="password" name="confirm_password" class="form-control" equalto="#new" required>
+                    <input type="password" name="confirm_new_password" class="form-control" equalto="#new" required>
                 </div>
             </div>
             <div class="form-group">

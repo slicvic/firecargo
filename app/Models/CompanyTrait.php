@@ -5,7 +5,7 @@ use Auth;
 trait CompanyTrait {
 
     /**
-     * Gets the company.
+     * Gets the associated company.
      *
      * @return Company
      */
@@ -15,25 +15,15 @@ trait CompanyTrait {
     }
 
     /**
-     * Filters query by company id.
+     * Filters query by the current user's company id.
      *
      * @param  Builder  $query
      * @param  int      $companyId
      * @return Builder
      */
-    public function scopeFilterByCompany($query, $companyId = NULL)
+    public function scopeMine($query)
     {
-        if ( ! $companyId)
-        {
-            if (Auth::user()->isAdmin())
-            {
-                return $query;
-            }
-            else
-            {
-                $companyId = Auth::user()->company_id;
-            }
-        }
+        $companyId = Auth::user()->company_id;
 
         return $query->where('company_id', '=', $companyId);
     }

@@ -105,19 +105,4 @@ abstract class BaseController extends Controller {
 
         return redirect()->back()->withInput();
     }
-
-    /**
-     * Returns a new JSON response from the application.
-     *
-     * @param  string|array  $data
-     * @param  int           $status
-     * @param  string        $message  A success flash message
-     * @return JsonResponse
-     */
-    protected function jsonResponseWithSuccess($message, $data = array(), $status = 200)
-    {
-        Flash::success($message);
-
-        return response()->json($data, $status);
-    }
 }

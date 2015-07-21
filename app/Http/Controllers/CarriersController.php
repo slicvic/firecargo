@@ -53,6 +53,7 @@ class CarriersController extends BaseAuthController {
     /**
      * Creates a new carrier.
      *
+     * @param  Request  $request
      * @return Redirector
      */
     public function postStore(Request $request)
@@ -71,6 +72,7 @@ class CarriersController extends BaseAuthController {
     /**
      * Shows the form for editing a carrier.
      *
+     * @param  int  $id
      * @return Response
      */
     public function getEdit($id)
@@ -88,6 +90,8 @@ class CarriersController extends BaseAuthController {
     /**
      * Updates a specific carrier.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Redirector
      */
     public function postUpdate(Request $request, $id)
@@ -113,6 +117,8 @@ class CarriersController extends BaseAuthController {
     /**
      * Deletes a specific carrier.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Redirector
      */
     public function getDelete(Request $request, $id)
@@ -135,6 +141,7 @@ class CarriersController extends BaseAuthController {
     /**
      * Retrieves a list of carriers for a jquery autocomplete field.
      *
+     * @param  Request  $request
      * @return JsonResponse
      */
     public function getAjaxAutocomplete(Request $request)
@@ -144,6 +151,7 @@ class CarriersController extends BaseAuthController {
 
         if (strlen($input['term']) < 2)
         {
+            // Return nothing
             return response()->json($response);
         }
 

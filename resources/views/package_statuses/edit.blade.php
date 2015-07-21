@@ -29,7 +29,7 @@
     <div class="form-group">
         <label class="control-label col-sm-2">Default?</label>
         <div class="col-sm-4">
-            <input type="checkbox" name="is_default" class="form-control" value="1"{{ Input::old('is_default', $status->is_default) ? ' checked' : '' }}>
+            <input type="checkbox" name="default" class="form-control" value="1"{{ Input::old('default', $status->default) ? ' checked' : '' }}>
         </div>
     </div>
     <div class="form-group">

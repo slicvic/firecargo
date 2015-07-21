@@ -36,7 +36,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getIndex()
     {
-        $statuses = PackageStatus::filterByCompany()->get();
+        $statuses = PackageStatus::mine()->get();
 
         return view('package_statuses.index', ['statuses' => $statuses]);
     }
@@ -54,11 +54,12 @@ class PackageStatusesController extends BaseAuthController {
     /**
      * Creates a new package status.
      *
+     * @param  Request  $request
      * @return Redirector
      */
     public function postStore(Request $request)
     {
-        $input = $request->only('name', 'is_default');
+        $input = $request->only('name', 'default');
 
         // Validate input
         $this->validate($input, PackageStatus::$rules);
@@ -72,6 +73,7 @@ class PackageStatusesController extends BaseAuthController {
     /**
      * Shows the form for editing a package status.
      *
+     * @param  int  $id
      * @return Response
      */
     public function getEdit($id)
@@ -89,11 +91,13 @@ class PackageStatusesController extends BaseAuthController {
     /**
      * Updates a specific package status.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Redirector
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->only('name', 'is_default');
+        $input = $request->only('name', 'default');
 
         // Validate input
         $this->validate($input, PackageStatus::$rules);
@@ -114,6 +118,8 @@ class PackageStatusesController extends BaseAuthController {
     /**
      * Deletes a specific package status.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Redirector
      */
     public function getDelete(Request $request, $id)

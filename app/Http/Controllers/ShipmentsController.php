@@ -35,6 +35,7 @@ class ShipmentsController extends BaseAuthController {
     /**
      * Shows a list of shipments.
      *
+     * @param  Request  $request
      * @return Response
      */
     public function getIndex(Request $request)
@@ -65,6 +66,8 @@ class ShipmentsController extends BaseAuthController {
     /**
      * Shows a specific shipment.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Response
      */
     public function getShow(Request $request, $id)
@@ -84,7 +87,7 @@ class ShipmentsController extends BaseAuthController {
         $nestablePackages = [];
 
         // Get all packages not assigned to a shipment
-        $packages = Package::allPendingShipmentByCurrentUserCompany();
+        $packages = Package::allPendingShipmentByCompanyId($this->authUser->company_id);
 
         foreach ($packages as $package)
         {
@@ -100,6 +103,7 @@ class ShipmentsController extends BaseAuthController {
     /**
      * Creates a new shipment.
      *
+     * @param  Request  $request
      * @return JsonResponse
      */
     public function postStore(Request $request)
@@ -140,6 +144,7 @@ class ShipmentsController extends BaseAuthController {
     /**
      * Shows the form for editing a shipment.
      *
+     * @param  int  $id
      * @return Response
      */
     public function getEdit($id)
@@ -170,6 +175,8 @@ class ShipmentsController extends BaseAuthController {
     /**
      * Updates a specific shipment.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return JsonResponse
      */
     public function postUpdate(Request $request, $id)

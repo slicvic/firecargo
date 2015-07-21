@@ -1,6 +1,6 @@
 <?php namespace App\Presenters;
 
-use App\Presenters\Base as BasePresenter;
+use App\Presenters\Presenter as BasePresenter;
 
 /**
  * Company
@@ -16,6 +16,6 @@ class Company extends BasePresenter {
      */
     public function address()
     {
-        return ($this->model->address) ? $this->model->address->asString() : '';
+        return ($this->model->address) ? $this->model->address->toString() : '';
     }
 }

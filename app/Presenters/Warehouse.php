@@ -1,6 +1,6 @@
 <?php namespace App\Presenters;
 
-use App\Presenters\Base as BasePresenter;
+use App\Presenters\Presenter as BasePresenter;
 use App\Models\WarehouseStatus;
 use App\Helpers\Currency;
 use App\Helpers\Html;
@@ -49,7 +49,7 @@ class Warehouse extends BasePresenter {
      */
     public function consignee($showId = FALSE)
     {
-        return ($this->model->exists) ? $this->model->consignee->present()->company($showId) : '';
+        return ($this->model->exists) ? $this->model->consignee->present()->name($showId) : '';
     }
 
     /**
@@ -60,7 +60,7 @@ class Warehouse extends BasePresenter {
      */
     public function shipper($showId = FALSE)
     {
-        return ($this->model->exists) ? $this->model->shipper->present()->company($showId) : '';
+        return ($this->model->exists) ? $this->model->shipper->present()->name($showId) : '';
     }
 
     /**
@@ -70,7 +70,7 @@ class Warehouse extends BasePresenter {
      */
     public function shipperLink()
     {
-        return Html::link('/accounts/edit/' . $this->model->shipper_user_id, $this->model->shipper->present()->company(), ['target' => ''], TRUE);
+        return Html::link('/accounts/edit/' . $this->model->shipper_account_id, $this->model->shipper->present()->name(), ['target' => ''], TRUE);
     }
 
     /**
@@ -80,7 +80,7 @@ class Warehouse extends BasePresenter {
      */
     public function consigneeLink()
     {
-        return Html::link('/accounts/edit/' . $this->model->consignee_user_id, $this->model->consignee->present()->company(), ['target' => ''], TRUE);
+        return Html::link('/accounts/edit/' . $this->model->consignee_account_id, $this->model->consignee->present()->name(), ['target' => ''], TRUE);
     }
 
     /**

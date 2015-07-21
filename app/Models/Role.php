@@ -9,31 +9,31 @@ use Auth;
  */
 class Role extends Base {
 
-    const ADMIN     = 1;
-    const AGENT     = 3;
-    const CLIENT    = 4;
-    const SHIPPER   = 5;
+    /**
+     * @var int
+     */
+    const SUPER_ADMIN = 1;
+    const SUPER_AGENT = 3;
+    const CLIENT      = 9;
 
+    /**
+     * @var string
+     */
     protected $table = 'roles';
 
+    /**
+     * Rules for validation.
+     * @var array
+     */
     public static $rules = [
         'name' => 'required',
     ];
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'name',
         'description'
     ];
-
-    /**
-     * Retrieves roles based on the current user's role.
-     *
-     * @return Role[]
-     */
-    public static function allFiltered()
-    {
-        $except = Auth::user()->isAdmin() ? [] : [self::ADMIN];
-
-        return Role::whereNotIn('id', $except)->get();
-    }
 }

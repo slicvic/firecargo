@@ -53,6 +53,7 @@ class RolesController extends BaseAuthController {
     /**
      * Creates a new role.
      *
+     * @param  Request  $request
      * @return Redirector
      */
     public function postStore(Request $request)
@@ -63,6 +64,7 @@ class RolesController extends BaseAuthController {
     /**
      * Shows the form for editing a role.
      *
+     * @param  int  $id
      * @return Response
      */
     public function getEdit($id)
@@ -80,6 +82,8 @@ class RolesController extends BaseAuthController {
     /**
      * Updates a specific role.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Redirector
      */
     public function postUpdate(Request $request, $id)
@@ -105,6 +109,8 @@ class RolesController extends BaseAuthController {
     /**
      * Deletes a specific role.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Redirector
      */
     public function getDelete(Request $request, $id)

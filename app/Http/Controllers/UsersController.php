@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Role;
-use App\Models\Address;
 use Flash;
 
 /**
@@ -29,7 +28,7 @@ class UsersController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('agent');
+        $this->middleware('admin');
     }
 
     /**
@@ -39,7 +38,9 @@ class UsersController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
-        return view('users.index');
+        $users = User::mine()->get();
+
+        return view('users.index', ['users' => $users]);
     }
 
     /**
@@ -49,12 +50,13 @@ class UsersController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('users.edit', ['user' => new User, 'address' => new Address]);
+        return view('users.edit', ['user' => new User]);
     }
 
     /**
      * Creates a new user.
      *
+     * @param  Request  $request
      * @return Redirector
      */
     public function postStore(Request $request)
@@ -63,11 +65,12 @@ class UsersController extends BaseAuthController {
 
         // Validate input
         $rules = [
+            'company_id' => 'required',
             'role_id' => 'required',
-            'email' => 'email|unique:users,email',
-            'full_name' => 'required_without:company_name',
-            'company_name' => 'required_without:full_name',
-            'password' => 'min:8'
+            'email' => 'required|email|unique:users,email',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'password' => 'required|min:8'
         ];
 
         $this->validate($input['user'], $rules);
@@ -77,18 +80,17 @@ class UsersController extends BaseAuthController {
 
         if ( ! $user->save())
         {
-            return $this->redirectBackWithError('Account creation failed, please try again.');
+            return $this->redirectBackWithError('User creation failed, please try again.');
         }
 
-        // Create address
-        $user->address()->save(new Address($input['address']));
-
-        return $this->redirectWithSuccess('accounts', 'Account created.');
+        return $this->redirectWithSuccess('users', 'User created.');
     }
 
     /**
      * Shows the form for editing a user.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Response
      */
     public function getEdit(Request $request, $id)
@@ -97,18 +99,17 @@ class UsersController extends BaseAuthController {
 
         if ( ! $user)
         {
-            return $this->redirectBackWithError('Account not found.');
+            return $this->redirectBackWithError('User not found.');
         }
 
-        return view('users.edit', [
-            'user' => $user,
-            'address' => $user->address ?: new Address
-        ]);
+        return view('users.edit', ['user' => $user]);
     }
 
     /**
      * Updates a specific user.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Redirector
      */
     public function postUpdate(Request $request, $id)
@@ -117,11 +118,12 @@ class UsersController extends BaseAuthController {
 
         // Validate input
         $rules = [
+            'company_id' => 'required',
             'role_id' => 'required',
-            'email' => 'email|unique:users,email,' . $id,
-            'full_name' => 'required_without:company_name',
-            'company_name' => 'required_without:full_name',
-            'password' => 'min:6'
+            'email' => 'required|email|unique:users,email,' . $id,
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'password' => 'min:8'
         ];
 
         $this->validate($input['user'], $rules);
@@ -131,89 +133,12 @@ class UsersController extends BaseAuthController {
 
         if ( ! $user)
         {
-            return $this->redirectBackWithError('Account not found.');
+            return $this->redirectBackWithError('User not found.');
         }
 
         $user->update($input['user']);
 
-        // Update address
-        if ($user->address)
-        {
-            $user->address->update($input['address']);
-        }
-        else
-        {
-            $user->address()->save(new Address($input['address']));
-        }
-
-        return $this->redirectBackWithSuccess('Account updated.');
-    }
-
-    /**
-     * Retrieves a list of users for a jQuery DataTable.
-     *
-     * @return JsonResponse
-     */
-    public function getAjaxDatatable(Request $request)
-    {
-        $input = $request->all();
-
-        // Sortable columns
-        $sortColumns = [
-            'company_name',
-            'full_name',
-            'email',
-            'phone',
-            'mobile_phone',
-            'role_id',
-            'is_active'
-        ];
-
-        // Prepare search criteria
-        $criteria['q'] = empty($input['search']['value']) ? NULL : $input['search']['value'];
-        $criteria['company_id'] = $this->authUser->isAdmin() ? NULL : $this->authUser->company_id;
-
-        // Build query
-        $query = User::buildDatatableQuery($criteria);
-
-        // Run query
-        $total = $query->count();
-
-        $orderBy = isset($input['order'][0]) && isset($sortColumns[$input['order'][0]['column']]) ? $sortColumns[$input['order'][0]['column']] : 'id';
-        $order = isset($input['order'][0]) ? $input['order'][0]['dir'] : 'desc';
-        $limit = isset($input['length']) ? (int) $input['length'] : 10;
-        $offset = isset($input['start']) ? (int) $input['start'] : 0;
-
-        $users = $query->orderBy($orderBy, $order)
-            ->offset($offset)
-            ->limit($limit)
-            ->get();
-
-        // Process response
-        $response = [];
-        $response['recordsFiltered'] = $total;
-        $response['recordsTotal'] = $total;
-        $response['data'] = [];
-
-        foreach($users as $user)
-        {
-            $data = [
-                $user->company_name,
-                $user->full_name,
-                $user->email,
-                $user->phone,
-                $user->mobile_phone,
-                $user->present()->role(),
-                $user->is_active ? '<div class="badge badge-primary">Yes</div>' : '<div class="badge badge-danger">No</div>',
-                sprintf('<a href="/accounts/edit/%s" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a>', $user->id)
-            ];
-
-            $data = $this->authUser->isAdmin() ? array_merge([$user->id, $user->company->name], $data) : array_merge([$user->id], $data);
-
-            $response['data'][] = $data;
-        }
-
-        return response()->json($response);
+        return $this->redirectBackWithSuccess('User updated.');
     }
 
     /**
@@ -224,9 +149,9 @@ class UsersController extends BaseAuthController {
      */
     private function beforeValidate(Request $request)
     {
-        $input = $request->only('user', 'address');
+        $input = $request->only('user');
 
-        $input['user']['is_active'] = isset($input['user']['is_active']);
+        $input['user']['active'] = isset($input['user']['active']);
 
         return $input;
     }

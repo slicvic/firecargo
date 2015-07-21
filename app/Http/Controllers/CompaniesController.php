@@ -52,6 +52,7 @@ class CompaniesController extends BaseAuthController {
     /**
      * Creates a new company.
      *
+     * @param  Request  $request
      * @return Redirector
      */
     public function postStore(Request $request)
@@ -81,6 +82,7 @@ class CompaniesController extends BaseAuthController {
     /**
      * Shows the form for editing a company.
      *
+     * @param  int  $id
      * @return Response
      */
     public function getEdit($id)
@@ -98,6 +100,8 @@ class CompaniesController extends BaseAuthController {
     /**
      * Updates a specific company.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Redirector
      */
     public function postUpdate(Request $request, $id)

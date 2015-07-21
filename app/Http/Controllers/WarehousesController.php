@@ -13,7 +13,8 @@ use App\Models\Warehouse;
 use App\Models\Package;
 use App\Models\PackageStatus;
 use App\Models\PackageType;
-use App\Models\User;
+use App\Models\Account;
+
 use App\Models\Role;
 use App\Models\Carrier;
 use App\Pdf\Warehouse as WarehousePdf;
@@ -43,6 +44,7 @@ class WarehousesController extends BaseAuthController {
     /**
      * Displays a list of warehouses.
      *
+     * @param  Request  $request
      * @return Response
      */
     public function getIndex(Request $request)
@@ -72,6 +74,8 @@ class WarehousesController extends BaseAuthController {
     /**
      * Shows a specific warehouse.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return Response
      */
     public function getShow(Request $request, $id)
@@ -99,6 +103,7 @@ class WarehousesController extends BaseAuthController {
     /**
      * Creates a new warehouse.
      *
+     * @param  Request  $request
      * @return JsonResponse
      */
     public function postStore(Request $request)
@@ -116,8 +121,8 @@ class WarehousesController extends BaseAuthController {
         // Create warehouse
         $warehouse = new Warehouse;
         $warehouse->arrived_at = date('Y-m-d H:i:s', strtotime($input['warehouse']['date'] . ' ' . $input['warehouse']['time']));
-        $warehouse->shipper_user_id = $input['warehouse']['shipper_user_id'];
-        $warehouse->consignee_user_id = $input['warehouse']['consignee_user_id'];
+        $warehouse->shipper_account_id = $input['warehouse']['shipper_account_id'];
+        $warehouse->consignee_account_id = $input['warehouse']['consignee_account_id'];
         $warehouse->carrier_id = $input['warehouse']['carrier_id'];
 
         if ( ! $warehouse->save())
@@ -139,6 +144,7 @@ class WarehousesController extends BaseAuthController {
     /**
      * Shows the form for editing a warehouse.
      *
+     * @param  int  $id
      * @return Response
      */
     public function getEdit($id)
@@ -156,6 +162,8 @@ class WarehousesController extends BaseAuthController {
     /**
      * Updates a specific warehouse.
      *
+     * @param  Request  $request
+     * @param  int      $id
      * @return JsonResponse
      */
     public function postUpdate(Request $request, $id)
@@ -180,8 +188,8 @@ class WarehousesController extends BaseAuthController {
 
         // Update warehouse
         $warehouse->arrived_at = date('Y-m-d H:i:s', strtotime($input['warehouse']['date'] . ' ' . $input['warehouse']['time']));
-        $warehouse->shipper_user_id = $input['warehouse']['shipper_user_id'];
-        $warehouse->consignee_user_id = $input['warehouse']['consignee_user_id'];
+        $warehouse->shipper_account_id = $input['warehouse']['shipper_account_id'];
+        $warehouse->consignee_account_id = $input['warehouse']['consignee_account_id'];
         $warehouse->carrier_id = $input['warehouse']['carrier_id'];
         $warehouse->save();
 
@@ -199,6 +207,8 @@ class WarehousesController extends BaseAuthController {
     /**
      * Displays the warehouse receipt PDF.
      *
+     * @param  Request  $request
+     * @param  int      $warehouseId
      * @return void
      */
     public function getPrintReceipt(Request $request, $warehouseId)
@@ -210,6 +220,8 @@ class WarehousesController extends BaseAuthController {
     /**
      * Displays the warehouse shipping label PDF.
      *
+     * @param  Request  $request
+     * @param  int      $warehouseId
      * @return void
      */
     public function getPrintLabel(Request $request, $warehouseId)
@@ -221,33 +233,27 @@ class WarehousesController extends BaseAuthController {
     /**
      * Retrieves a list of shippers & consignees for a jquery autocomplete field.
      *
+     * @param  Request  $request
      * @return JsonResponse
      */
     public function getAjaxShipperConsigneeAutocomplete(Request $request)
     {
         $input = $request->only('term');
-
-        // Return nothing if search term is not at least 2 characters long
-        if (strlen($input['term']) < 2)
-        {
-            return response()->json([]);
-        }
-
-        // Prepare search criteria
-        $criteria['q'] = $input['term'];
-        $criteria['company_id'] = $this->authUser->company_id;
-
-        // Run query
-        $users = User::buildDatatableQuery($criteria)->limit(25)->get();
-
-        // Process response
         $response = [];
 
-        foreach($users as $user)
+        if (strlen($input['term']) < 2)
+        {
+            // Return nothing
+            return response()->json($response);
+        }
+
+        $accounts = Account::autocompleteSearch($input['term'])->mine()->limit(25)->get();
+
+        foreach($accounts as $account)
         {
             $response[] = [
-                'id' => $user->id,
-                'label' => $user->present()->company()
+                'id'    => $account->id,
+                'label' => $account->present()->name()
             ];
         }
 
@@ -264,7 +270,7 @@ class WarehousesController extends BaseAuthController {
     {
         return view('warehouses.edit', [
             'warehouse'       => $warehouse,
-            'packageStatuses' => PackageStatus::filterByCompany()->orderBy('is_default', 'DESC')->get(),
+            'packageStatuses' => PackageStatus::mine()->orderBy('default', 'DESC')->get(),
             'packageTypes'    => PackageType::orderBy('name', 'ASC')->get()
         ]);
     }
@@ -307,7 +313,7 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Create a new shipper account if necessary
-        if (empty($input['warehouse']['shipper_user_id']))
+        if (empty($input['warehouse']['shipper_account_id']))
         {
             $shipper = User::firstOrCreate([
                 'company_name' => trim($input['warehouse']['shipper_name']),
@@ -315,11 +321,11 @@ class WarehousesController extends BaseAuthController {
                 'role_id' => Role::SHIPPER
             ]);
 
-            $input['warehouse']['shipper_user_id'] = $shipper->id;
+            $input['warehouse']['shipper_account_id'] = $shipper->id;
         }
 
         // Create a new consignee account if necessary
-        if (empty($input['warehouse']['consignee_user_id']))
+        if (empty($input['warehouse']['consignee_account_id']))
         {
             $consignee = User::firstOrCreate([
                 'full_name' => trim($input['warehouse']['consignee_name']),
@@ -327,7 +333,7 @@ class WarehousesController extends BaseAuthController {
                 'role_id' => Role::CLIENT
             ]);
 
-            $input['warehouse']['consignee_user_id'] = $consignee->id;
+            $input['warehouse']['consignee_account_id'] = $consignee->id;
         }
 
         return $input;

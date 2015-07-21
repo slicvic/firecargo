@@ -15,41 +15,50 @@ class Warehouse extends Base {
 
     use CompanyTrait, PresentableTrait;
 
-    protected $presenter = 'App\Presenters\Warehouse';
-
+    /**
+     * @var string
+     */
     protected $table = 'warehouses';
 
+    /**
+     * @var Presenter
+     */
+    protected $presenter = 'App\Presenters\Warehouse';
+
+    /**
+     * @var array
+     */
     protected $fillable = [
-        'shipper_user_id',
+        'shipper_account_id',
         'status_id',
-        'consignee_user_id',
+        'consignee_account_id',
         'carrier_id',
         'arrived_at',
         'notes'
     ];
 
     /**
-     * Gets the shipper.
+     * Gets the warehouse shipper.
      *
      * @return User
      */
     public function shipper()
     {
-        return $this->belongsTo('App\Models\User', 'shipper_user_id');
+        return $this->belongsTo('App\Models\User', 'shipper_account_id');
     }
 
     /**
-     * Gets the consignee.
+     * Gets the warehouse consignee.
      *
      * @return User
      */
     public function consignee()
     {
-        return $this->belongsTo('App\Models\User', 'consignee_user_id');
+        return $this->belongsTo('App\Models\User', 'consignee_account_id');
     }
 
     /**
-     * Gets the carrier.
+     * Gets the warehouse carrier.
      *
      * @return Carrier
      */
@@ -59,7 +68,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the packages.
+     * Gets the warehouse packages.
      *
      * @return Package[]
      */
@@ -69,44 +78,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Creates/updates the given packages and attaches them to the warehouse.
-     *
-     * WARNING: After this operation is complete only the packages in the array
-     * will remain in the warehouse.
-     *
-     * @param  array  $packages
-     * @param  bool   $detaching
-     * @return void
-     */
-    public function syncPackages(array $packages, $detaching = TRUE)
-    {
-        $packageIds = array_keys($packages);
-
-        // First lets detach those packages not in $packageIds
-        if ($detaching)
-        {
-            Package::whereNotIn('id', $packageIds)
-                ->where('warehouse_id', '=', $this->id)
-                ->update(['warehouse_id' => NULL]);
-        }
-
-        // Next, we will create or update the given packages
-        if (count($packages))
-        {
-            foreach ($packages as $id => $data)
-            {
-                $package = Package::firstOrNew(['id' => $id]);
-                $package->fill($data);
-                $package->warehouse_id = $this->id;
-                $package->company_id = $this->company_id;
-                $package->ship = ($package->shipment_id) ? $package->ship : $this->consignee->autoship_setting;
-                $package->save();
-            }
-        }
-    }
-
-    /**
-     * Creates/updates the given packages and attaches them to the warehouse.
+     * Creates or updates the given packages and attaches them to the warehouse.
      *
      * @param  array  $packages
      * @return void
@@ -168,7 +140,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Calculates the cubic feet.
+     * Calculates the warehouse cubic feet.
      *
      * @return float
      */
@@ -192,7 +164,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Calculates the cubic meter.
+     * Calculates the warehouse cubic meter.
      *
      * @return float
      */
@@ -265,7 +237,7 @@ class Warehouse extends Base {
 
         // Build query
         $orderBy = $sortColumns[array_key_exists($orderBy, $sortColumns) ? $orderBy : 'id'];
-        $order = (strtoupper(trim($order)) == 'ASC') ? 'ASC' : 'DESC';
+        $order = (strtoupper(trim($order)) === 'ASC') ? 'ASC' : 'DESC';
 
         $query = Warehouse::query()
             ->orderBy("warehouses.{$orderBy}", $order);
@@ -292,8 +264,8 @@ class Warehouse extends Base {
 
             $query = $query
                 ->select('warehouses.*')
-                ->leftJoin('users AS consignee', 'warehouses.consignee_user_id', '=', 'consignee.id')
-                ->leftJoin('users AS shipper', 'warehouses.shipper_user_id', '=', 'shipper.id')
+                ->leftJoin('users AS consignee', 'warehouses.consignee_account_id', '=', 'consignee.id')
+                ->leftJoin('users AS shipper', 'warehouses.shipper_account_id', '=', 'shipper.id')
                 ->whereRaw('(
                     warehouses.id LIKE ?
                     OR consignee.id LIKE ?

@@ -34,6 +34,7 @@ class AuthController extends BaseController {
     /**
      * Logs in a user.
      *
+     * @param  Request  $request
      * @return Response
      */
     public function postLogin(Request $request)
@@ -74,6 +75,7 @@ class AuthController extends BaseController {
     /**
      * Signs up a new user.
      *
+     * @param  Request  $request
      * @return Response
      */
     public function postSignup(Request $request)
@@ -127,6 +129,7 @@ class AuthController extends BaseController {
     /**
      * Sends a password recovery token to the user.
      *
+     * @param  Request  $request
      * @return Response
      */
     public function postForgotPassword(Request $request)
@@ -168,6 +171,7 @@ class AuthController extends BaseController {
     /**
      * Resets a user's password.
      *
+     * @param  Request  $request
      * @return Response
      */
     public function postResetPassword(Request $request)

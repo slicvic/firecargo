@@ -12,32 +12,45 @@ class Carrier extends Base {
 
     use PresentableTrait;
 
-    protected $presenter = 'App\Presenters\Carrier';
-
+    /**
+     * @var string
+     */
     protected $table = 'carriers';
 
+    /**
+     * @var Presenter
+     */
+    protected $presenter = 'App\Presenters\Carrier';
+
+    /**
+     * Rules for validation.
+     *
+     * @var array
+     */
     public static $rules = [
         'name' => 'required'
     ];
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'name',
         'code',
         'prefix',
-        'creator_user_id'
     ];
 
     /**
-     * Retrieves a list of carriers for a jquery autocomplete field.
+     * Finds carriers matching the given search term.
      *
-     * @param  string $q  A search term
+     * @param  string  $searchTerm
      * @return User[]
      */
-    public static function autocompleteSearch($q)
+    public static function autocompleteSearch($searchTerm)
     {
-        $q = '%' . $q . '%';
+        $searchTerm = '%' . $searchTerm . '%';
 
-        return Carrier::whereRaw('id LIKE ? OR name LIKE ?', [$q, $q])
+        return Carrier::whereRaw('id LIKE ? OR name LIKE ?', [$searchTerm, $searchTerm])
             ->limit(25)
             ->get();
     }
@@ -60,7 +73,7 @@ class Carrier extends Base {
     }
 
     /**
-     * Sanitizes a carrier name for database storage
+     * Sanitizes a carrier name.
      *
      * @param  string  $name
      * @return string

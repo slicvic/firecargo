@@ -9,8 +9,14 @@ use DB;
  */
 class Address extends Base {
 
+    /**
+     * @var string
+     */
     protected $table = 'addresses';
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'address1',
         'address2',
@@ -21,7 +27,7 @@ class Address extends Base {
     ];
 
     /**
-     * Gets the country.
+     * Gets the address country.
      *
      * @return Country
      */
@@ -31,7 +37,7 @@ class Address extends Base {
     }
 
     /**
-     * Overrides parent method to sanitize certain attributes.
+     * Overrides parent method to sanitize attributes.
      *
      * @see parent::setAttribute()
      */
@@ -51,11 +57,12 @@ class Address extends Base {
     }
 
     /**
-     * Converts the address into an array.
+     * Converts the address into a friendly string.
      *
-     * @return array
+     * @param  string  $lineSeparator
+     * @return string
      */
-    public function asArray()
+    public function toString($lineSeparator = '<br>')
     {
         $address = [];
 
@@ -95,17 +102,6 @@ class Address extends Base {
             $address[] = $this->country->name;
         }
 
-        return $address;
-    }
-
-    /**
-     * Converts the address into a string.
-     *
-     * @param  string  $lineSeparator
-     * @return string
-     */
-    public function asString($lineSeparator = '<br>')
-    {
-        return implode($lineSeparator, $this->asArray());
+        return implode($lineSeparator, $address);
     }
 }
