@@ -28,6 +28,11 @@ trait CompanyTrait {
         return $query->where('company_id', '=', $companyId);
     }
 
+    public function findMine($id)
+    {
+        //$query = static::query(['id' => $id])
+    }
+
     /**
      * Find a model by its primary key.
      *
@@ -80,16 +85,23 @@ trait CompanyTrait {
     }
 
     /**
-     * Save the model to the database.
+     * Saves the model to the database.
      *
      * @param  array  $options
      * @return bool
      */
     public function save(array $options = array())
     {
-        if (Auth::user()->isAdmin() && ! $this->company_id)
+        if (Auth::user()->isAdmin())
         {
-            $this->company_id = Auth::user()->company_id;
+            if ($this->company_id)
+            {
+                // Do nothing
+            }
+            else
+            {
+                $this->company_id = Auth::user()->company_id;
+            }
         }
         else
         {

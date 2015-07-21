@@ -51,20 +51,20 @@
                         <label class="control-label col-sm-2">Shipper</label>
                         <div class="col-sm-5">
                             <input type="hidden" id="shipperId" name="warehouse[shipper_account_id]" value="{{ $warehouse->shipper_account_id }}">
-                            <input required type="text" id="shipper" name="warehouse[shipper_name]" class="form-control" value="{{ $warehouse->present()->shipper() }}">
+                            <input required type="text" id="shipper" name="warehouse[shipper]" class="form-control" value="{{ $warehouse->present()->shipper() }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Consignee</label>
                         <div class="col-sm-5">
                             <input type="hidden" id="consigneeId" name="warehouse[consignee_account_id]" value="{{ $warehouse->consignee_account_id }}">
-                            <input required type="text" id="consignee" name="warehouse[consignee_name]" class="form-control" value="{{ $warehouse->present()->consignee() }}">
+                            <input required type="text" id="consignee" name="warehouse[consignee]" class="form-control" value="{{ $warehouse->present()->consignee() }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Delivered By</label>
                         <div class="col-sm-5">
-                            <input required type="text" id="carrier" name="warehouse[carrier_name]" class="form-control" value="{{ $warehouse->present()->carrier() }}">
+                            <input required type="text" id="carrier" name="warehouse[carrier]" class="form-control" value="{{ $warehouse->present()->carrier() }}">
                             <input type="hidden" id="carrierId" name="warehouse[carrier_id]" value="{{ $warehouse->carrier_id }}">
                         </div>
                     </div>

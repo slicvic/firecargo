@@ -4,7 +4,6 @@ use DB;
 use Auth;
 
 use App\Presenters\PresentableTrait;
-use App\Models\CompanyTrait;
 use App\Observers\AccountObserver;
 
 /**
@@ -78,7 +77,7 @@ class Account extends Base {
     /**
      * Gets the account user.
      *
-     * NOTE: ONLY "REGISTERED CLIENT" ACCOUNTS HAVE A USER.
+     * NOTE: ONLY "CLIENT" ACCOUNTS HAVE A USER.
      *
      * @return User
      */
@@ -92,9 +91,9 @@ class Account extends Base {
      *
      * @return bool
      */
-    public function isRegisteredClient()
+    public function isClient()
     {
-        return ((int) $this->type_id === AccountType::REGISTERED_CLIENT);
+        return ((int) $this->type_id === AccountType::CLIENT);
     }
 
     /**
@@ -127,7 +126,7 @@ class Account extends Base {
 
         $searchTerm = '%' . $searchTerm . '%';
 
-        $query->whereRaw('(
+        $query->whereRaw('
             id LIKE ?
             OR name LIKE ?
             OR firstname LIKE ?
@@ -135,7 +134,7 @@ class Account extends Base {
             OR email LIKE ?
             OR phone LIKE ?
             OR fax LIKE ?
-            OR mobile_phone LIKE ?)', [
+            OR mobile_phone LIKE ?', [
             $searchTerm,
             $searchTerm,
             $searchTerm,

@@ -12,11 +12,10 @@ class Carrier extends BasePresenter {
     /**
      * Presents the carrier name.
      *
-     * @param  bool  $showId  Whether to show the id along with the name.
      * @return string
      */
-    public function name($showId = FALSE)
+    public function name()
     {
-        return ($showId) ? "{$this->model->name} ({$this->model->id})" : $this->model->name;
+        return $this->model->name;
     }
 }

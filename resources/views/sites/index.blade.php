@@ -10,7 +10,7 @@
 
 @section('thead')
     <th>ID</th>
-    <th>Master</th>
+    <th>Company</th>
     <th>Name</th>
     <th>Action</th>
 @stop
@@ -19,7 +19,7 @@
      @foreach ($sites as $site)
         <tr>
             <td>{{ $site->id }}</td>
-            <td>{{ ($site->company) ? $site->company->name : '' }}</td>
+            <td>{{ $site->company->name }}</td>
             <td>{{ $site->name }}</td>
             <td>
                 <div class="btn-group">

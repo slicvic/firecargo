@@ -34,11 +34,11 @@
                                 <label class="control-label col-sm-2">Account Type *</label>
                                 <div class="col-sm-3">
                                     <select required class="form-control" name="account[type_id]">
-                                        @if ($account->isRegisteredClient())
+                                        @if ($account->isClient())
                                             <option value="{{ $account->type_id }}">{{ $account->type->name }}</option>
                                         @else
                                             <option value="">- Choose -</option>
-                                            @foreach (\App\Models\AccountType::allExceptRegisteredClient() as $type)
+                                            @foreach (\App\Models\AccountType::allExceptClient() as $type)
                                                 <option{{ ($type->id == Input::old('account.type_id', $account->type_id)) ? ' selected' : '' }} value="{{ $type->id }}">{{ $type->name }}</option>
                                             @endforeach
                                         @endif
@@ -49,7 +49,7 @@
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Name *</label>
                                 <div class="col-sm-3">
-                                    <input required type="text" name="account[name]" class="form-control" placeholder="e.g., Amazon,  eBay, Jane Doe" value="{{ Input::old('account.name', $account->name) }}">
+                                    <input required type="text" name="account[name]" class="form-control" placeholder="Amazon, eBay, Leo Messi" value="{{ Input::old('account.name', $account->name) }}">
                                 </div>
                             </div>
                             <div class="clear hr-line-dashed"></div>

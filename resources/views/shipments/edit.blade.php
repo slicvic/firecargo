@@ -54,7 +54,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Carrier</label>
                         <div class="col-sm-4">
-                            <input required type="text" id="carrier" name="shipment[carrier_name]" placeholder="" class="form-control" value="{{ $shipment->present()->carrier(TRUE) }}">
+                            <input required type="text" id="carrier" name="shipment[carrier]" placeholder="" class="form-control" value="{{ $shipment->present()->carrier() }}">
                             <input type="hidden" id="carrierId" name="shipment[carrier_id]" value="{{ $shipment->carrier_id }}">
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($nestablePackages as $warehouseId => $packages)
+                            @foreach ($groupedPackages as $warehouseId => $packages)
                                 <tr class="warning">
                                     <td colspan="9">
                                         <i>Warehouse</i> {!! $packages[0]->present()->warehouseLink() !!}
@@ -102,7 +102,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    @if ( ! count($nestablePackages))
+                    @if ( ! count($groupedPackages))
                         <div class="alert alert-danger">
                             <h4><i class="fa fa-exclamation-triangle"></i>
                             No packages available for shipment.</h4>

@@ -21,7 +21,7 @@
 <form action="/sites/{{ ($site->exists) ? 'update/' . $site->id : 'store' }}" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="form-group">
-        <label class="control-label col-sm-2">Master</label>
+        <label class="control-label col-sm-2">Company</label>
         <div class="col-sm-5">
             <select required class="form-control" name="company_id">
                 <option value="">- Choose -</option>

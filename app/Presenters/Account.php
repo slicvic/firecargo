@@ -2,7 +2,7 @@
 
 use App\Presenters\Presenter as BasePresenter;
 use App\Models\AccountType;
-use App\Helpers\Html;
+use Html;
 
 /**
  * Account
@@ -12,18 +12,17 @@ use App\Helpers\Html;
 class Account extends BasePresenter {
 
     /**
-     * Presents the name.
+     * Presents the account name.
      *
-     * @param  bool  $showId  Whether to show the id along with the name.
      * @return string
      */
-    public function name($showId = FALSE)
+    public function name()
     {
-        return ($showId) ? "{$this->model->name} ({$this->model->id})" : $this->model->name;
+        return $this->model->name;
     }
 
     /**
-     * Presents the address.
+     * Presents the account address.
      *
      * @return string
      */
@@ -33,7 +32,7 @@ class Account extends BasePresenter {
     }
 
     /**
-     * Presents the role.
+     * Presents the account type.
      *
      * @return HTML string
      */
@@ -41,11 +40,8 @@ class Account extends BasePresenter {
     {
         switch ($this->model->type_id)
         {
-            case AccountType::REGISTERED_CLIENT:
-                $cssClass = 'primary';
-                break;
             case AccountType::CLIENT:
-                $cssClass = 'success';
+                $cssClass = 'primary';
                 break;
             default:
                 $cssClass = 'default';

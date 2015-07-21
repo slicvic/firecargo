@@ -50,7 +50,16 @@ class Carrier extends Base {
     {
         $searchTerm = '%' . $searchTerm . '%';
 
-        return Carrier::whereRaw('id LIKE ? OR name LIKE ?', [$searchTerm, $searchTerm])
+        return Carrier::whereRaw('
+                id LIKE ?
+                OR name LIKE ?
+                OR code LIKE ?
+                OR prefix LIKE ?', [
+                $searchTerm,
+                $searchTerm,
+                $searchTerm,
+                $searchTerm
+            ])
             ->limit(25)
             ->get();
     }

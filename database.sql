@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:8889
--- Generation Time: Jul 21, 2015 at 06:03 AM
+-- Generation Time: Jul 21, 2015 at 08:25 PM
 -- Server version: 5.5.34
 -- PHP Version: 5.5.10
 
@@ -45,12 +45,7 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `company_id`, `type_id`, `user_id`, `name`, `firstname`, `lastname`, `email`, `phone`, `mobile_phone`, `fax`, `autoship`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1142, 'Pablo Pueblo', 'Pablo', 'Pueblo', 'client@gmail.com', '233', '4454', '', 1, '0000-00-00 00:00:00', '2015-07-21 01:42:45'),
-(2, 1, 2, NULL, ' ddd', 'First', 'Last', 'em@gmail.com', '123', '789', '456', 1, '2015-07-21 01:31:52', '2015-07-21 01:47:36'),
-(3, 1, 2, NULL, ' ', '', '', '', '', '', '', 1, '2015-07-21 01:32:08', '2015-07-21 01:32:08'),
-(4, 1, 2, NULL, ' ', '', '', '', '', '', '', 1, '2015-07-21 01:32:26', '2015-07-21 01:32:26'),
-(5, 1, 2, NULL, 'papa', '', '', '', '', '', '', 1, '2015-07-21 01:43:27', '2015-07-21 01:43:27'),
-(6, 1, 2, NULL, 'MAMA PAPA', '', '', '', '', '', '', 1, '2015-07-21 01:44:33', '2015-07-21 01:44:33'),
+(1, 1, 1, 1142, 'Pablo Pueblo', 'Pablox', 'Pueblo', 'client@gmail.com', '233', '4454', '', 1, '0000-00-00 00:00:00', '2015-07-21 14:01:09'),
 (7, 1, 1, NULL, 'Lucky Luchy', 'Lucky', 'Luchy', 'luckyluchy@gmail.com', '', '', '', 1, '2015-07-21 03:09:30', '2015-07-21 03:09:30'),
 (8, 1, 1, NULL, 'Lucky Luchy', 'Lucky', 'Luchy', 'luckyluchy2@gmail.com', '', '', '', 1, '2015-07-21 03:16:28', '2015-07-21 03:16:28'),
 (9, 1, 1, NULL, 'Lucky Luchy', 'Lucky', 'Luchy', 'luckyluchy42@gmail.com', '', '', '', 1, '2015-07-21 03:17:24', '2015-07-21 03:17:24'),
@@ -68,6 +63,8 @@ INSERT INTO `accounts` (`id`, `company_id`, `type_id`, `user_id`, `name`, `first
 CREATE TABLE `account_types` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
@@ -75,11 +72,10 @@ CREATE TABLE `account_types` (
 -- Dumping data for table `account_types`
 --
 
-INSERT INTO `account_types` (`id`, `name`) VALUES
-(1, 'Registered Client'),
-(2, 'Client'),
-(3, 'Consignee'),
-(4, 'Shipper');
+INSERT INTO `account_types` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Client', NULL, NULL),
+(3, 'Consignee', NULL, NULL),
+(4, 'Shipper', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -134,7 +130,7 @@ CREATE TABLE `carriers` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=770 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=771 ;
 
 --
 -- Dumping data for table `carriers`
@@ -368,7 +364,8 @@ INSERT INTO `carriers` (`id`, `name`, `code`, `prefix`, `created_at`, `updated_a
 (755, 'USPS', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (756, 'LASERSHIP', '', '', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (768, 'UPSSS', '', '', '2015-07-16 15:43:37', '2015-07-16 15:43:37'),
-(769, 'ASDASDSDASDASDASD', '', '', '2015-07-16 15:43:58', '2015-07-16 15:43:58');
+(769, 'ASDASDSDASDASDASD', '', '', '2015-07-16 15:43:58', '2015-07-16 15:43:58'),
+(770, 'ASDASDASD', '', '', '2015-07-21 17:46:35', '2015-07-21 17:46:35');
 
 -- --------------------------------------------------------
 
@@ -439,83 +436,69 @@ CREATE TABLE `log_user_actions` (
 --
 
 INSERT INTO `log_user_actions` (`id`, `user_id`, `action`, `table_name`, `record_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 'create', 'users', 0, '2015-07-16 15:28:47', '2015-07-16 15:28:47'),
-(2, 1, 'create', 'users', 1, '2015-07-16 15:30:02', '2015-07-16 15:30:02'),
-(3, 1, 'update', 'users', 1, '2015-07-16 15:31:10', '2015-07-16 15:31:10'),
-(4, 1, 'update', 'addresses', 84, '2015-07-16 15:31:10', '2015-07-16 15:31:10'),
-(5, 1, 'update', 'users', 1, '2015-07-16 15:31:24', '2015-07-16 15:31:24'),
-(6, 1, 'update', 'addresses', 84, '2015-07-16 15:31:24', '2015-07-16 15:31:24'),
-(7, 1, 'update', 'users', 1, '2015-07-16 15:31:36', '2015-07-16 15:31:36'),
-(8, 1, 'update', 'addresses', 84, '2015-07-16 15:31:36', '2015-07-16 15:31:36'),
-(9, 1, 'update', 'users', 1, '2015-07-16 15:39:46', '2015-07-16 15:39:46'),
-(10, 1, 'update', 'addresses', 84, '2015-07-16 15:39:46', '2015-07-16 15:39:46'),
-(11, 1, 'update', 'warehouses', 100, '2015-07-16 15:40:11', '2015-07-16 15:40:11'),
-(12, 1, 'update', 'packages', 167, '2015-07-16 15:40:11', '2015-07-16 15:40:11'),
-(13, 1, 'update', 'packages', 168, '2015-07-16 15:40:11', '2015-07-16 15:40:11'),
-(14, 1, 'create', 'users', 1124, '2015-07-16 15:41:26', '2015-07-16 15:41:26'),
-(15, 1, 'create', 'users', 1125, '2015-07-16 15:41:26', '2015-07-16 15:41:26'),
-(16, 1, 'create', 'warehouses', 101, '2015-07-16 15:41:26', '2015-07-16 15:41:26'),
-(17, 1, 'create', 'packages', 169, '2015-07-16 15:41:26', '2015-07-16 15:41:26'),
-(18, 1, 'create', 'packages', 170, '2015-07-16 15:41:26', '2015-07-16 15:41:26'),
-(19, 1, 'update', 'warehouses', 101, '2015-07-16 15:42:06', '2015-07-16 15:42:06'),
-(20, 1, 'update', 'packages', 169, '2015-07-16 15:42:06', '2015-07-16 15:42:06'),
-(21, 1, 'update', 'packages', 170, '2015-07-16 15:42:06', '2015-07-16 15:42:06'),
-(22, 1, 'create', 'carriers', 768, '2015-07-16 15:43:37', '2015-07-16 15:43:37'),
-(23, 1, 'create', 'shipments', 28, '2015-07-16 15:43:37', '2015-07-16 15:43:37'),
-(24, 1, 'create', 'carriers', 769, '2015-07-16 15:43:58', '2015-07-16 15:43:58'),
-(25, 1, 'create', 'users', 1126, '2015-07-16 15:43:58', '2015-07-16 15:43:58'),
-(26, 1, 'create', 'users', 1127, '2015-07-16 15:43:58', '2015-07-16 15:43:58'),
-(27, 1, 'create', 'warehouses', 102, '2015-07-16 15:43:58', '2015-07-16 15:43:58'),
-(28, 1, 'update', 'users', 1, '2015-07-17 19:16:37', '2015-07-17 19:16:37'),
-(29, 1, 'update', 'roles', 3, '2015-07-17 19:23:12', '2015-07-17 19:23:12'),
-(30, 1, 'update', 'roles', 8, '2015-07-17 19:27:00', '2015-07-17 19:27:00'),
-(31, 1, 'update', 'roles', 9, '2015-07-17 19:27:19', '2015-07-17 19:27:19'),
-(32, 1, 'update', 'roles', 4, '2015-07-17 19:27:28', '2015-07-17 19:27:28'),
-(33, 1, 'update', 'roles', 5, '2015-07-17 19:27:41', '2015-07-17 19:27:41'),
-(34, 1, 'create', 'users', 1128, '2015-07-17 20:00:27', '2015-07-17 20:00:27'),
-(35, 1, 'create', 'addresses', 92, '2015-07-17 20:00:27', '2015-07-17 20:00:27'),
-(36, 1, 'update', 'users', 1128, '2015-07-17 20:01:14', '2015-07-17 20:01:14'),
-(37, 1, 'update', 'addresses', 92, '2015-07-17 20:01:14', '2015-07-17 20:01:14'),
-(38, 1, 'update', 'users', 1128, '2015-07-17 20:01:23', '2015-07-17 20:01:23'),
-(39, 1, 'update', 'addresses', 92, '2015-07-17 20:01:23', '2015-07-17 20:01:23'),
-(40, 1, 'update', 'users', 1128, '2015-07-17 20:01:33', '2015-07-17 20:01:33'),
-(41, 1, 'update', 'addresses', 92, '2015-07-17 20:01:33', '2015-07-17 20:01:33'),
-(42, 1, 'update', 'users', 1128, '2015-07-17 20:01:36', '2015-07-17 20:01:36'),
-(43, 1, 'update', 'addresses', 92, '2015-07-17 20:01:36', '2015-07-17 20:01:36'),
-(44, 1, 'update', 'users', 1128, '2015-07-17 20:01:39', '2015-07-17 20:01:39'),
-(45, 1, 'update', 'addresses', 92, '2015-07-17 20:01:39', '2015-07-17 20:01:39'),
-(46, 1, 'update', 'users', 1128, '2015-07-17 20:01:43', '2015-07-17 20:01:43'),
-(47, 1, 'update', 'addresses', 92, '2015-07-17 20:01:43', '2015-07-17 20:01:43'),
-(48, 1, 'update', 'users', 1128, '2015-07-17 20:01:50', '2015-07-17 20:01:50'),
-(49, 1, 'update', 'addresses', 92, '2015-07-17 20:01:50', '2015-07-17 20:01:50'),
-(50, 1, 'update', 'users', 1128, '2015-07-17 20:01:54', '2015-07-17 20:01:54'),
-(51, 1, 'update', 'addresses', 92, '2015-07-17 20:01:54', '2015-07-17 20:01:54'),
-(52, 1, 'update', 'users', 1128, '2015-07-17 20:01:59', '2015-07-17 20:01:59'),
-(53, 1, 'update', 'addresses', 92, '2015-07-17 20:01:59', '2015-07-17 20:01:59'),
-(54, 1, 'update', 'users', 1128, '2015-07-17 20:20:27', '2015-07-17 20:20:27'),
-(55, 1, 'update', 'addresses', 92, '2015-07-17 20:20:27', '2015-07-17 20:20:27'),
-(56, 1, 'update', 'users', 1128, '2015-07-17 20:21:09', '2015-07-17 20:21:09'),
-(57, 1, 'update', 'addresses', 92, '2015-07-17 20:21:09', '2015-07-17 20:21:09'),
-(58, 1, 'update', 'users', 1128, '2015-07-17 20:21:28', '2015-07-17 20:21:28'),
-(59, 1, 'update', 'addresses', 92, '2015-07-17 20:21:28', '2015-07-17 20:21:28'),
-(60, 1, 'update', 'users', 1128, '2015-07-17 20:25:07', '2015-07-17 20:25:07'),
-(61, 1, 'update', 'addresses', 92, '2015-07-17 20:25:07', '2015-07-17 20:25:07'),
-(62, 1, 'update', 'users', 1128, '2015-07-17 20:32:27', '2015-07-17 20:32:27'),
-(63, 1, 'update', 'addresses', 92, '2015-07-17 20:32:27', '2015-07-17 20:32:27');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `log_user_visits`
---
-
-CREATE TABLE `log_user_visits` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` bigint(20) unsigned NOT NULL,
-  `login_at` datetime NOT NULL,
-  `logout_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+(1, 1, 'update', 'users', 1, '2015-07-21 13:32:23', '2015-07-21 13:32:23'),
+(2, 1, 'update', 'package_statuses', 1, '2015-07-21 13:32:43', '2015-07-21 13:32:43'),
+(3, 1, 'update', 'users', 1, '2015-07-21 13:41:48', '2015-07-21 13:41:48'),
+(4, 1, 'update', 'package_statuses', 1, '2015-07-21 13:48:24', '2015-07-21 13:48:24'),
+(5, 1, 'update', 'package_statuses', 1, '2015-07-21 13:48:32', '2015-07-21 13:48:32'),
+(6, 1, 'update', 'package_statuses', 5, '2015-07-21 13:48:44', '2015-07-21 13:48:44'),
+(7, 1, 'update', 'package_statuses', 5, '2015-07-21 13:48:50', '2015-07-21 13:48:50'),
+(8, 1, 'update', 'package_statuses', 1, '2015-07-21 13:48:58', '2015-07-21 13:48:58'),
+(9, 1, 'update', 'package_statuses', 1, '2015-07-21 13:49:02', '2015-07-21 13:49:02'),
+(10, 1, 'update', 'accounts', 1, '2015-07-21 13:58:34', '2015-07-21 13:58:34'),
+(11, 1, 'update', 'addresses', 84, '2015-07-21 13:58:34', '2015-07-21 13:58:34'),
+(12, 1, 'update', 'addresses', 84, '2015-07-21 13:58:46', '2015-07-21 13:58:46'),
+(13, 1, 'update', 'accounts', 1, '2015-07-21 14:00:12', '2015-07-21 14:00:12'),
+(14, 1, 'update', 'addresses', 84, '2015-07-21 14:00:12', '2015-07-21 14:00:12'),
+(15, 1, 'update', 'accounts', 1, '2015-07-21 14:01:02', '2015-07-21 14:01:02'),
+(16, 1, 'update', 'addresses', 84, '2015-07-21 14:01:03', '2015-07-21 14:01:03'),
+(17, 1, 'update', 'accounts', 1, '2015-07-21 14:01:09', '2015-07-21 14:01:09'),
+(18, 1, 'update', 'addresses', 84, '2015-07-21 14:01:09', '2015-07-21 14:01:09'),
+(19, 1, 'update', 'accounts', 1, '2015-07-21 14:01:15', '2015-07-21 14:01:15'),
+(20, 1, 'update', 'addresses', 84, '2015-07-21 14:01:15', '2015-07-21 14:01:15'),
+(21, 1, 'update', 'accounts', 1, '2015-07-21 14:01:20', '2015-07-21 14:01:20'),
+(22, 1, 'update', 'addresses', 84, '2015-07-21 14:01:20', '2015-07-21 14:01:20'),
+(23, 1, 'update', 'accounts', 1, '2015-07-21 14:04:32', '2015-07-21 14:04:32'),
+(24, 1, 'update', 'addresses', 84, '2015-07-21 14:04:32', '2015-07-21 14:04:32'),
+(25, 1, 'update', 'accounts', 1, '2015-07-21 14:04:42', '2015-07-21 14:04:42'),
+(26, 1, 'update', 'addresses', 84, '2015-07-21 14:04:42', '2015-07-21 14:04:42'),
+(27, 1, 'update', 'accounts', 1, '2015-07-21 14:04:47', '2015-07-21 14:04:47'),
+(28, 1, 'update', 'addresses', 84, '2015-07-21 14:04:47', '2015-07-21 14:04:47'),
+(29, 1, 'update', 'accounts', 1, '2015-07-21 14:04:58', '2015-07-21 14:04:58'),
+(30, 1, 'update', 'addresses', 84, '2015-07-21 14:04:58', '2015-07-21 14:04:58'),
+(31, 1, 'update', 'accounts', 1, '2015-07-21 14:05:20', '2015-07-21 14:05:20'),
+(32, 1, 'update', 'addresses', 84, '2015-07-21 14:05:20', '2015-07-21 14:05:20'),
+(33, 1, 'update', 'accounts', 1, '2015-07-21 14:06:23', '2015-07-21 14:06:23'),
+(34, 1, 'update', 'addresses', 84, '2015-07-21 14:06:23', '2015-07-21 14:06:23'),
+(35, 1, 'create', 'warehouses', 106, '2015-07-21 15:49:45', '2015-07-21 15:49:45'),
+(36, 1, 'create', 'packages', 174, '2015-07-21 15:49:45', '2015-07-21 15:49:45'),
+(37, 1, 'create', 'packages', 175, '2015-07-21 15:49:45', '2015-07-21 15:49:45'),
+(38, 1, 'update', 'package_statuses', 3, '2015-07-21 15:52:49', '2015-07-21 15:52:49'),
+(39, 1, 'update', 'package_statuses', 4, '2015-07-21 15:53:03', '2015-07-21 15:53:03'),
+(40, 1, 'update', 'users', 1, '2015-07-21 16:26:19', '2015-07-21 16:26:19'),
+(41, 1, 'create', 'warehouses', 107, '2015-07-21 16:54:00', '2015-07-21 16:54:00'),
+(42, 1, 'create', 'packages', 176, '2015-07-21 16:54:00', '2015-07-21 16:54:00'),
+(43, 1, 'create', 'packages', 177, '2015-07-21 16:54:00', '2015-07-21 16:54:00'),
+(44, 1, 'create', 'packages', 178, '2015-07-21 16:54:00', '2015-07-21 16:54:00'),
+(45, 1, 'update', 'warehouses', 106, '2015-07-21 16:54:21', '2015-07-21 16:54:21'),
+(46, 1, 'update', 'packages', 174, '2015-07-21 16:54:21', '2015-07-21 16:54:21'),
+(47, 1, 'update', 'packages', 175, '2015-07-21 16:54:21', '2015-07-21 16:54:21'),
+(48, 1, 'create', 'shipments', 29, '2015-07-21 17:31:50', '2015-07-21 17:31:50'),
+(49, 1, 'update', 'shipments', 29, '2015-07-21 17:43:19', '2015-07-21 17:43:19'),
+(50, 1, 'create', 'carriers', 770, '2015-07-21 17:46:35', '2015-07-21 17:46:35'),
+(51, 1, 'create', 'shipments', 30, '2015-07-21 17:46:35', '2015-07-21 17:46:35'),
+(52, 1, 'update', 'shipments', 30, '2015-07-21 17:51:12', '2015-07-21 17:51:12'),
+(53, 1, 'update', 'shipments', 30, '2015-07-21 17:55:04', '2015-07-21 17:55:04'),
+(54, 1, 'update', 'warehouses', 107, '2015-07-21 18:09:52', '2015-07-21 18:09:52'),
+(55, 1, 'update', 'packages', 176, '2015-07-21 18:09:52', '2015-07-21 18:09:52'),
+(56, 1, 'update', 'packages', 177, '2015-07-21 18:09:52', '2015-07-21 18:09:52'),
+(57, 1, 'update', 'packages', 178, '2015-07-21 18:09:52', '2015-07-21 18:09:52'),
+(58, 1, 'update', 'warehouses', 107, '2015-07-21 18:10:44', '2015-07-21 18:10:44'),
+(59, 1, 'update', 'packages', 176, '2015-07-21 18:10:44', '2015-07-21 18:10:44'),
+(60, 1, 'update', 'packages', 177, '2015-07-21 18:10:44', '2015-07-21 18:10:44'),
+(61, 1, 'update', 'packages', 178, '2015-07-21 18:10:44', '2015-07-21 18:10:44'),
+(62, 1, 'create', 'warehouses', 108, '2015-07-21 18:12:16', '2015-07-21 18:12:16'),
+(63, 1, 'create', 'packages', 179, '2015-07-21 18:12:16', '2015-07-21 18:12:16');
 
 -- --------------------------------------------------------
 
@@ -548,7 +531,19 @@ CREATE TABLE `packages` (
   KEY `status_id` (`status_id`),
   KEY `company_id` (`company_id`),
   KEY `shipment_id` (`shipment_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=171 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=180 ;
+
+--
+-- Dumping data for table `packages`
+--
+
+INSERT INTO `packages` (`id`, `company_id`, `warehouse_id`, `type_id`, `status_id`, `shipment_id`, `length`, `width`, `height`, `weight`, `description`, `invoice_number`, `invoice_amount`, `tracking_number`, `ship`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(174, 1, 106, 1, 1, NULL, 12, 12, 12, 12, '', '', 0.0000, '', 1, '2015-07-21 15:49:45', '2015-07-21 16:54:21', '0000-00-00 00:00:00'),
+(175, 1, 106, 6, 1, 30, 12, 12, 12, 12, '', '', 0.0000, '', 1, '2015-07-21 15:49:45', '2015-07-21 17:55:04', '0000-00-00 00:00:00'),
+(176, 1, 107, 1, 4, 29, 12, 11, 23, 34, '', '', 0.0000, '', 1, '2015-07-21 16:54:00', '2015-07-21 18:10:44', '0000-00-00 00:00:00'),
+(177, 1, 107, 1, 4, 29, 12, 11, 23, 34, '', '', 0.0000, '', 1, '2015-07-21 16:54:00', '2015-07-21 18:10:44', '0000-00-00 00:00:00'),
+(178, 1, 107, 1, 4, 30, 12, 11, 23, 34, '', '', 0.0000, '', 1, '2015-07-21 16:54:00', '2015-07-21 18:10:44', '0000-00-00 00:00:00'),
+(179, 1, 108, 1, 4, NULL, 33, 33, 33, 33, '', '', 0.0000, '', 1, '2015-07-21 18:12:16', '2015-07-21 18:12:16', '0000-00-00 00:00:00');
 
 --
 -- Triggers `packages`
@@ -603,17 +598,18 @@ CREATE TABLE `package_statuses` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `company_id` (`company_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `package_statuses`
 --
 
 INSERT INTO `package_statuses` (`id`, `company_id`, `default`, `name`, `created_at`, `updated_at`) VALUES
-(1, 2, 1, 'Recibido USA', '0000-00-00 00:00:00', '2015-07-16 03:30:48'),
+(1, 1, 0, 'Recibido USA', '0000-00-00 00:00:00', '2015-07-21 15:53:03'),
 (2, 2, 0, 'En proceso de despacho USA', '0000-00-00 00:00:00', '2015-07-16 03:30:48'),
-(3, 2, 0, 'Despachado desde USA', '0000-00-00 00:00:00', '2015-07-16 03:30:48'),
-(4, 2, 0, 'Recibido Colombia', '0000-00-00 00:00:00', '2015-07-16 03:30:48');
+(3, 1, 0, 'Despachado desde USA', '0000-00-00 00:00:00', '2015-07-21 15:53:03'),
+(4, 1, 1, 'Recibido Colombia', '0000-00-00 00:00:00', '2015-07-21 15:53:03'),
+(5, 1, 0, 'test2', '2015-07-21 13:24:13', '2015-07-21 15:53:03');
 
 -- --------------------------------------------------------
 
@@ -657,7 +653,6 @@ CREATE TABLE `roles` (
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
-  `weight` tinyint(3) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
@@ -666,10 +661,10 @@ CREATE TABLE `roles` (
 -- Dumping data for table `roles`
 --
 
-INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`, `weight`) VALUES
-(1, 'Super Admin', 'Administrative user, has access to everything.', '0000-00-00 00:00:00', '2015-07-16 03:57:48', 255),
-(3, 'Super Agent', 'Owner of a registered company', '0000-00-00 00:00:00', '2015-07-17 19:23:12', 100),
-(9, 'Client', 'Customer of a company', '0000-00-00 00:00:00', '2015-07-17 19:27:19', 1);
+INSERT INTO `roles` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
+(1, 'Super Admin', 'Administrative user, has access to everything.', '0000-00-00 00:00:00', '2015-07-16 03:57:48'),
+(3, 'Super Agent', 'Owner of a registered company', '0000-00-00 00:00:00', '2015-07-17 19:23:12'),
+(9, 'Client', 'Customer of a company', '0000-00-00 00:00:00', '2015-07-17 19:27:19');
 
 -- --------------------------------------------------------
 
@@ -688,7 +683,15 @@ CREATE TABLE `shipments` (
   PRIMARY KEY (`id`),
   KEY `company_id` (`company_id`),
   KEY `carrier_id` (`carrier_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
+
+--
+-- Dumping data for table `shipments`
+--
+
+INSERT INTO `shipments` (`id`, `company_id`, `carrier_id`, `reference_number`, `departed_at`, `created_at`, `updated_at`) VALUES
+(29, 1, 648, '23123123123', '2015-07-21 00:00:00', '2015-07-21 17:31:50', '2015-07-21 17:31:50'),
+(30, 1, 586, 'ADASDASDASD', '2015-07-21 00:00:00', '2015-07-21 17:46:35', '2015-07-21 17:55:04');
 
 -- --------------------------------------------------------
 
@@ -743,7 +746,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `company_id`, `role_id`, `firstname`, `lastname`, `email`, `password`, `active`, `remember_token`, `logins`, `last_login`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 'Slic', 'Vic', 'vmlantigua@gmail.com', '$2y$10$F6qNSi3uFaE47opz3UItTuIbuGK53xO2kI7uLLnALfyFlnTE89j.u', 1, 'hQOyuIrJISmE5NYscNpOkNfsqpQc58sGC7pbnkJ65T4w9rUPu2dUQEL3VdAj', 155, '2015-07-21 02:11:35', '2015-01-29 04:41:09', '2015-07-21 02:11:35'),
+(1, 1, 1, 'Slicx', 'Vicx', 'vmlantigua@gmail.com', '$2y$10$F6qNSi3uFaE47opz3UItTuIbuGK53xO2kI7uLLnALfyFlnTE89j.u', 1, 'hQOyuIrJISmE5NYscNpOkNfsqpQc58sGC7pbnkJ65T4w9rUPu2dUQEL3VdAj', 157, '2015-07-21 16:26:19', '2015-01-29 04:41:09', '2015-07-21 16:26:19'),
 (1142, 1, 9, 'Pablo', 'Pueblo', 'client@gmail.com', '$2y$10$YVETz6HFt5ytFpB.ddVWu.ckE5l0VbOW450Hqcvb3QZQttaAYaTya', 1, '1GZhzpgG7SQrm9YDKVU545RX0N0YytYBXHDdezxGfl4Q4NI9F6kRR9YQUaZE', 4, '2015-07-21 02:11:09', '0000-00-00 00:00:00', '2015-07-21 02:11:30'),
 (1143, 1, 9, 'Admin', 'Man', 'vmlantiguadd@gmail.com', '$2y$10$Dk/dBUQlzG1nk/uB0B7kGeEp/n1yzlc5UTyTJGyzmrUx8Wm4upFrO', 1, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:01:57', '2015-07-21 03:05:28'),
 (1144, 1, 9, 'Lucky', 'Luchy', 'luckyluchy@gmail.com', '$2y$10$YEab0YSkv.ErBAeXv7ELSud4c6K.TbmVKYc4GKKXWYyV7LHA6FWSa', 0, '', 0, '0000-00-00 00:00:00', '2015-07-21 03:09:30', '2015-07-21 03:09:30'),
@@ -769,6 +772,8 @@ CREATE TABLE `warehouses` (
   `consignee_account_id` bigint(20) unsigned NOT NULL,
   `carrier_id` bigint(20) unsigned DEFAULT NULL,
   `notes` varchar(1000) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `creator_user_id` int(10) unsigned NOT NULL,
+  `updater_user_id` int(11) NOT NULL,
   `arrived_at` datetime NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
@@ -778,7 +783,16 @@ CREATE TABLE `warehouses` (
   KEY `shipper_user_id` (`shipper_account_id`),
   KEY `consignee_user_id` (`consignee_account_id`),
   KEY `status_id` (`status_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=103 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=109 ;
+
+--
+-- Dumping data for table `warehouses`
+--
+
+INSERT INTO `warehouses` (`id`, `company_id`, `status_id`, `shipper_account_id`, `consignee_account_id`, `carrier_id`, `notes`, `creator_user_id`, `updater_user_id`, `arrived_at`, `created_at`, `updated_at`) VALUES
+(106, 1, 2, 1, 9, 597, 'pass', 1, 1, '2015-07-23 15:49:00', '2015-07-21 15:49:45', '2015-07-21 16:54:20'),
+(107, 2, 3, 1, 1, 575, '', 1, 1, '2015-07-21 16:53:00', '2015-07-21 16:53:59', '2015-07-21 18:09:52'),
+(108, 1, 1, 1, 7, 768, 'asdsd', 1, 0, '2015-07-21 18:11:00', '2015-07-21 18:12:16', '2015-07-21 18:12:16');
 
 -- --------------------------------------------------------
 

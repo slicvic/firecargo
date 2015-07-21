@@ -5,7 +5,7 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="ibox">
         <div class="ibox-content">
-            <h2>General Infomation</h2>
+            <h2>General Info</h2>
             <div class="form-group">
                 <label class="control-label col-sm-2">Company Name</label>
                 <div class="col-sm-4">
@@ -16,7 +16,7 @@
     </div>
     <div class="ibox">
         <div class="ibox-content">
-            <h2>Contact Infomation</h2>
+            <h2>Contact Info</h2>
             <div class="form-group">
                 <label class="control-label col-sm-2">Tel</label>
                 <div class="col-sm-4">

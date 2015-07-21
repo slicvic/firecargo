@@ -17,7 +17,7 @@ abstract class Base extends Model {
      * @param  array  $options
      * @return bool
      */
-    public function sasdasdave(array $options = array())
+    public function save(array $options = array())
     {
         $queryType = $this->exists ? LogUserAction::UPDATE : LogUserAction::CREATE;
 
@@ -25,7 +25,7 @@ abstract class Base extends Model {
 
         if ($result && Auth::check() && ! ($this instanceof LogUserAction))
         {
-            $this->writeLog($queryType);
+            $this->logQuery($queryType);
         }
 
         return $result;
@@ -43,7 +43,7 @@ abstract class Base extends Model {
 
         if ($result)
         {
-            $this->writeLog(LogUserAction::DELETE);
+            $this->logQuery(LogUserAction::DELETE);
         }
 
         return $result;
@@ -56,7 +56,7 @@ abstract class Base extends Model {
      * @param  string  $action  create|read|update|delete
      * @return void
      */
-    private function writeLog($action)
+    private function logQuery($action)
     {
         $log = new LogUserAction;
         $log->user_id = Auth::user()->id;

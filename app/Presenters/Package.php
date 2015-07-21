@@ -2,7 +2,7 @@
 
 use App\Presenters\Presenter as BasePresenter;
 use App\Helpers\Currency;
-use App\Helpers\Html;
+use Html;
 
 /**
  * Package
@@ -12,17 +12,17 @@ use App\Helpers\Html;
 class Package extends BasePresenter {
 
     /**
-     * Presents the status name.
+     * Presents the package status.
      *
      * @return string
      */
     public function status()
     {
-        return ($this->model->exists) ? $this->model->status->name : '';
+        return ($this->model->exists && $this->model->status) ? $this->model->status->name : '';
     }
 
     /**
-     * Presents the type name.
+     * Presents the package type.
      *
      * @return string
      */
@@ -32,7 +32,7 @@ class Package extends BasePresenter {
     }
 
     /**
-     * Presents the dimensions.
+     * Presents the package dimensions.
      *
      * @return string
      */
@@ -42,7 +42,7 @@ class Package extends BasePresenter {
     }
 
     /**
-     * Presents the dimensions.
+     * Presents the package weight.
      *
      * @return string
      */
@@ -52,17 +52,17 @@ class Package extends BasePresenter {
     }
 
     /**
-     * Presents the warehouse link.
+     * Presents the package warehouse link.
      *
      * @return string
      */
     public function warehouseLink()
     {
-        return Html::link('/warehouses/show/' . $this->model->warehouse_id, $this->model->warehouse_id, ['target' => ''], TRUE);
+        return Html::link("/warehouses/show/{$this->model->warehouse_id}", $this->model->warehouse_id, [], TRUE);
     }
 
     /**
-     * Presents the shipment link.
+     * Presents the package shipment link.
      *
      * @return string
      */
@@ -71,9 +71,9 @@ class Package extends BasePresenter {
         if ($this->model->shipment_id)
         {
             return Html::link(
-                '/shipments/show/' . $this->model->shipment_id,
-                $this->model->shipment->carrier->name . ' (' . $this->model->shipment->reference_number . ')',
-                ['target' => ''],
+                "/shipments/show/{$this->model->shipment_id}",
+                "{$this->model->shipment->carrier->name} ({$this->model->shipment->reference_number})",
+                [],
                 TRUE
             );
 
@@ -83,7 +83,7 @@ class Package extends BasePresenter {
     }
 
     /**
-     * Presents the color status.
+     * Presents the package color status.
      *
      * @return string
      */
@@ -93,9 +93,9 @@ class Package extends BasePresenter {
     }
 
     /**
-     * Presents the invoice amount.
+     * Presents the package invoice amount.
      *
-     * @param bool $showSign
+     * @param  bool  $showSign
      * @return string
      */
     public function invoiceAmount($showSign = TRUE)

@@ -10,7 +10,7 @@ use App\Presenters\Presenter as BasePresenter;
 class Company extends BasePresenter {
 
     /**
-     * Presents the address.
+     * Presents the company address.
      *
      * @return string
      */

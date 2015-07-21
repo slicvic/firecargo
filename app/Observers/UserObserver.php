@@ -22,7 +22,8 @@ class UserObserver {
     {
         if ( ! Auth::user()->isAdmin() && $user->isAdmin())
         {
-            $user->role_id = NULL;
+            // ONLY ADMINS CAN ASSIGN "ADMIN" ROLE
+            return FALSE;
         }
     }
 
@@ -41,8 +42,8 @@ class UserObserver {
             $account->firstname = $user->firstname;
             $account->lastname = $user->lastname;
             $account->email = $user->email;
-            $account->type_id = AccountType::REGISTERED_CLIENT;
-            $account->name = $account->firstname . ' ' . $account->lastname;
+            $account->type_id = AccountType::CLIENT;
+            $account->name = "{$account->firstname} {$account->lastname}";
             $account->user()->associate($user);
             $account->save();
         }

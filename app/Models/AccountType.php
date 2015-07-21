@@ -10,10 +10,9 @@ class AccountType extends Base {
     /**
      * @var int
      */
-    const REGISTERED_CLIENT = 1;
-    const CLIENT            = 2;
-    const CONSIGNEE         = 3;
-    const SHIPPER           = 4;
+    const CLIENT    = 1;
+    const CONSIGNEE = 3;
+    const SHIPPER   = 4;
 
     /**
      * @var string
@@ -21,12 +20,12 @@ class AccountType extends Base {
     protected $table = 'account_types';
 
     /**
-     * Retrieves all account types with the exception of "Registered Client".
+     * Retrieves all account types with the exception of "Client".
      *
      * @return AccountType[]
      */
-    public static function allExceptRegisteredClient()
+    public static function allExceptClient()
     {
-        return self::where('id', '<>', self::REGISTERED_CLIENT)->get();
+        return self::where('id', '<>', self::CLIENT)->get();
     }
 }

@@ -3,8 +3,6 @@
 use Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-use App\Models\Warehouse;
-use App\Models\CompanyTrait;
 use App\Helpers\Math;
 use App\Presenters\PresentableTrait;
 
@@ -123,7 +121,7 @@ class Package extends Base {
     }
 
     /**
-     * Retrieves all packages that have not yet been assigned to a shipment.
+     * Retrieves all packages eligible for shipment that are still pending shipment.
      *
      * @param  int  $companyId
      * @return array
@@ -131,13 +129,11 @@ class Package extends Base {
     public static function allPendingShipmentByCompanyId($companyId)
     {
         $packages = Package::where([
-            'packages.shipment_id' => NULL,
-            'packages.ship' => TRUE,
-            'warehouses.company_id' => $companyId
+            'shipment_id' => NULL,
+            'ship' => TRUE,
+            'company_id' => $companyId
         ])
-        ->join('warehouses', 'packages.warehouse_id', '=', 'warehouses.id')
-        ->select('packages.*')
-        ->orderBy('warehouses.id', 'asc')
+        ->orderBy('id', 'asc')
         ->get();
 
         return $packages;

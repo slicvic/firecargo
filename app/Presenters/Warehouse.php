@@ -3,7 +3,7 @@
 use App\Presenters\Presenter as BasePresenter;
 use App\Models\WarehouseStatus;
 use App\Helpers\Currency;
-use App\Helpers\Html;
+use Html;
 
 /**
  * Warehouse
@@ -13,7 +13,7 @@ use App\Helpers\Html;
 class Warehouse extends BasePresenter {
 
     /**
-     * Presents the human readable arrival date and time.
+     * Presents the warehouse date.
      *
      * @param  $withTime
      * @return string
@@ -31,60 +31,67 @@ class Warehouse extends BasePresenter {
     }
 
     /**
-     * Presents the carrier name.
+     * Presents the warehouse carrier name.
      *
-     * @param  bool  $showId
      * @return string
      */
-    public function carrier($showId = FALSE)
+    public function carrier()
     {
-        return ($this->model->exists) ? $this->model->carrier->present()->name($showId) : '';
+        return ($this->model->exists) ? $this->model->carrier->present()->name() : '';
     }
 
     /**
-     * Presents the consignee name.
+     * Presents the warehouse consignee name.
      *
-     * @param  bool  $showId
      * @return string
      */
-    public function consignee($showId = FALSE)
+    public function consignee()
     {
-        return ($this->model->exists) ? $this->model->consignee->present()->name($showId) : '';
+        return ($this->model->exists) ? $this->model->consignee->present()->name() : '';
     }
 
     /**
-     * Presents the shipper name.
+     * Presents the warehouse shipper name.
      *
-     * @param  bool  $showId
      * @return string
      */
-    public function shipper($showId = FALSE)
+    public function shipper()
     {
-        return ($this->model->exists) ? $this->model->shipper->present()->name($showId) : '';
+        return ($this->model->exists) ? $this->model->shipper->present()->name() : '';
     }
 
     /**
-     * Presents the shipper name as a link.
+     * Presents the warehouse shipper name as a link.
      *
      * @return string
      */
     public function shipperLink()
     {
-        return Html::link('/accounts/edit/' . $this->model->shipper_account_id, $this->model->shipper->present()->name(), ['target' => ''], TRUE);
+        return Html::link(
+            "/accounts/edit/{$this->model->shipper_account_id}",
+            $this->model->shipper->present()->name(),
+            [],
+            TRUE
+        );
     }
 
     /**
-     * Presents the shipper name as a link.
+     * Presents the warehouse consignee name as a link.
      *
      * @return string
      */
     public function consigneeLink()
     {
-        return Html::link('/accounts/edit/' . $this->model->consignee_account_id, $this->model->consignee->present()->name(), ['target' => ''], TRUE);
+        return Html::link(
+            "/accounts/edit/{$this->model->consignee_account_id}",
+            $this->model->consignee->present()->name(),
+            [],
+            TRUE
+        );
     }
 
     /**
-     * Presents the color status.
+     * Presents the warehouse color status.
      *
      * @return string
      */
@@ -103,7 +110,7 @@ class Warehouse extends BasePresenter {
     }
 
     /**
-     * Presents the volume weight.
+     * Presents the warehouse volume weight.
      *
      * @return string
      */
@@ -113,7 +120,7 @@ class Warehouse extends BasePresenter {
     }
 
     /**
-     * Presents the gross weight.
+     * Presents the warehouse gross weight.
      *
      * @return string
      */
@@ -123,7 +130,7 @@ class Warehouse extends BasePresenter {
     }
 
     /**
-     * Presents the charge weight.
+     * Presents the warehouse charge weight.
      *
      * @return string
      */
@@ -133,7 +140,7 @@ class Warehouse extends BasePresenter {
     }
 
     /**
-     * Presents the total value.
+     * Presents the warehouse total value.
      *
      * @return string
      */

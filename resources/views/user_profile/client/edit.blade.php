@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h2>Personal Information</h2>
+                    <h2>Basic Info</h2>
                     <div class="form-group">
                         <label class="control-label col-sm-2">First Name</label>
                         <div class="col-sm-5">

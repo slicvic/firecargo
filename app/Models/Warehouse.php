@@ -1,10 +1,10 @@
 <?php namespace App\Models;
 
 use DB;
+
 use App\Helpers\Math;
-use App\Models\CompanyTrait;
-use App\Models\WarehouseStatus;
 use App\Presenters\PresentableTrait;
+use App\Observers\WarehouseObserver;
 
 /**
  * Warehouse
@@ -38,23 +38,35 @@ class Warehouse extends Base {
     ];
 
     /**
+     * Registers model events.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        Warehouse::observe(new WarehouseObserver);
+    }
+
+    /**
      * Gets the warehouse shipper.
      *
-     * @return User
+     * @return Account
      */
     public function shipper()
     {
-        return $this->belongsTo('App\Models\User', 'shipper_account_id');
+        return $this->belongsTo('App\Models\Account', 'shipper_account_id');
     }
 
     /**
      * Gets the warehouse consignee.
      *
-     * @return User
+     * @return Account
      */
     public function consignee()
     {
-        return $this->belongsTo('App\Models\User', 'consignee_account_id');
+        return $this->belongsTo('App\Models\Account', 'consignee_account_id');
     }
 
     /**
@@ -90,7 +102,7 @@ class Warehouse extends Base {
             $package = Package::firstOrNew(['id' => $id]);
             $package->fill($data);
             $package->warehouse_id = $this->id;
-            $package->ship = ($package->shipment_id) ? $package->ship : $this->consignee->autoship_setting;
+            $package->ship = ($package->shipment_id) ? $package->ship : $this->consignee->autoship;
             $package->save();
         }
     }
@@ -140,7 +152,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Calculates the warehouse cubic feet.
+     * Calculates the cubic feet of the warehouse.
      *
      * @return float
      */
@@ -164,7 +176,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Calculates the warehouse cubic meter.
+     * Calculates the cubic meter of the warehouse.
      *
      * @return float
      */
@@ -213,67 +225,71 @@ class Warehouse extends Base {
      * Finds all warehouses with the given criteria.
      *
      * @param  array|null  $criteria
-     * @param  string      $orderBy
+     * @param  string      $sort
      * @param  string      $order
      * @param  int         $perPage
      * @return array
      */
-    public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'DESC', $perPage = 15)
+    public static function search(array $criteria = NULL, $sort = 'id', $order = 'desc', $perPage = 15)
     {
-        // Sort columns
         $sortColumns = [
-            'id'      => 'id',
-            'arrived' => 'arrived_at',
-            'created' => 'created_at',
-            'updated' => 'updated_at',
+            'id',
+            'arrived_at',
+            'created_at',
+            'updated_at'
         ];
 
-        // Status filters
         $statuses = [
+            'new'      => WarehouseStatus::STATUS_NEW,
             'pending'  => WarehouseStatus::STATUS_PENDING,
-            'complete' => WarehouseStatus::STATUS_COMPLETE,
-            'new'      => WarehouseStatus::STATUS_NEW
+            'complete' => WarehouseStatus::STATUS_COMPLETE
         ];
 
         // Build query
-        $orderBy = $sortColumns[array_key_exists($orderBy, $sortColumns) ? $orderBy : 'id'];
-        $order = (strtoupper(trim($order)) === 'ASC') ? 'ASC' : 'DESC';
-
-        $query = Warehouse::query()
-            ->orderBy("warehouses.{$orderBy}", $order);
+        $sort = in_array($sort, $sortColumns) ? $sort : 'id';
+        $order = ($order === 'asc') ? 'asc' : 'desc';
+        $query = Warehouse::query()->orderBy('warehouses.' . $sort, $order);
 
         if (isset($criteria['status']) && array_key_exists($criteria['status'], $statuses))
         {
-            // Filter by status
-
             $query = $query->where('warehouses.status_id', '=', $statuses[$criteria['status']]);
         }
 
         if (isset($criteria['company_id']))
         {
-            // Filter by company
-
             $query = $query->where('warehouses.company_id', '=', $criteria['company_id']);
         }
 
-        if ( ! empty($criteria['q']))
+        if (isset($criteria['search']) && strlen($criteria['search']) > 2)
         {
-            // Full text search
-
-            $q = '%' . $criteria['q'] . '%';
+            $search = '%' . $criteria['search'] . '%';
 
             $query = $query
                 ->select('warehouses.*')
-                ->leftJoin('users AS consignee', 'warehouses.consignee_account_id', '=', 'consignee.id')
-                ->leftJoin('users AS shipper', 'warehouses.shipper_account_id', '=', 'shipper.id')
+                ->leftJoin('accounts AS consignees', 'warehouses.consignee_account_id', '=', 'consignees.id')
+                ->leftJoin('accounts AS shippers', 'warehouses.shipper_account_id', '=', 'shippers.id')
+                ->groupBy('warehouses.id')
                 ->whereRaw('(
                     warehouses.id LIKE ?
-                    OR consignee.id LIKE ?
-                    OR consignee.full_name LIKE ?
-                    OR shipper.id LIKE ?
-                    OR shipper.company_name LIKE ?
-                    )', [$q, $q, $q, $q, $q]
-                );
+                    OR consignees.id LIKE ?
+                    OR consignees.name LIKE ?
+                    OR consignees.firstname LIKE ?
+                    OR consignees.lastname LIKE ?
+                    OR shippers.id LIKE ?
+                    OR shippers.name LIKE ?
+                    OR shippers.firstname LIKE ?
+                    OR shippers.lastname LIKE ?
+                    )', [
+                    $search,
+                    $search,
+                    $search,
+                    $search,
+                    $search,
+                    $search,
+                    $search,
+                    $search,
+                    $search
+                ]);
         }
 
         $warehouses = $query->paginate($perPage);

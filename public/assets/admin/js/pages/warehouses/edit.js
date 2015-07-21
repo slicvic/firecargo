@@ -11,7 +11,11 @@ $(function() {
         select: function(event, ui) {
             $('#carrierId').val(ui.item.id);
         }
-    });
+    }).autocomplete('instance')._renderItem = function(ul, item) {
+        return $('<li>')
+            .append('<a>' + (item.prefix.trim().length ? item.prefix : item.id) + ' - ' + item.label + '</a>')
+            .appendTo(ul);
+    };
 
     // Bind shipper autocomplete
     $('#shipper').keyup(function() {

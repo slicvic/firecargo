@@ -11,7 +11,7 @@ use App\Helpers\Currency;
 class Shipment extends BasePresenter {
 
     /**
-     * Presents the carrier name.
+     * Presents the shipment carrier name.
      *
      * @return string
      */
@@ -21,7 +21,7 @@ class Shipment extends BasePresenter {
     }
 
     /**
-     * Presents the departed date.
+     * Presents the shipment departed date.
      *
      * @return string
      */
@@ -33,7 +33,7 @@ class Shipment extends BasePresenter {
     }
 
     /**
-     * Presents the total value.
+     * Presents the shipment total value.
      *
      * @return string
      */

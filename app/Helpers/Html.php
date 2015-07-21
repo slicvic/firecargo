@@ -10,17 +10,17 @@ class Html {
     /**
      * Generates an HTML link.
      *
-     * @param  string $url
-     * @param  string $title
-     * @param  array  $attributes
-     * @param  bool   $showIcon
+     * @param  string  $url
+     * @param  string  $title
+     * @param  array   $attributes
+     * @param  bool    $icon
      * @return string
      */
-    public static function link($url, $title, array $attributes = array(), $showIcon = FALSE)
+    public function link($url, $title, array $attributes = array(), $icon = FALSE)
     {
-        $html = sprintf('<a%s href="%s">%s</a>', self::attributes($attributes), $url, $title);
+        $html = sprintf('<a href="%s"%s>%s</a>', $url, $this->attributes($attributes), $title);
 
-        if ($showIcon)
+        if ($icon)
         {
             $html .= ' <i class="fa fa-link"></i>';
         }
@@ -29,13 +29,42 @@ class Html {
     }
 
     /**
+     * Generates a link for sorting a table column.
+     *
+     * @param  string  $url
+     * @param  string  $title
+     * @param  string  $column
+     * @param  string  $sort
+     * @param  string  $order
+     * @return string
+     */
+    public function linkToSorting($url, $title, $column, $sortColumn, $order)
+    {
+        $queryString = http_build_query([
+            'sort'  => $column,
+            'order' => ($order === 'asc') ? 'desc' : 'asc'
+        ]);
+
+        $indicator = ($column === $sortColumn)
+            ? ' <i class="fa fa-angle-' . ($order === 'asc' ? 'up' : 'down') . '"></i>'
+            : '';
+
+        return "<a href=\"{$url}?{$queryString}\">{$title}{$indicator}</a>";
+    }
+
+    /**
      * Builds an HTML attribute string from an array.
      *
      * @param  array  $attributes
      * @return string
      */
-    private static function attributes(array $attributes)
+    private function attributes(array $attributes)
     {
+        if (empty($attributes))
+        {
+            return '';
+        }
+
         $html = [];
 
         foreach ((array) $attributes as $name => $value)

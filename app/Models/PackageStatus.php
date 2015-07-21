@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-use App\Models\CompanyTrait;
+use App\Observers\PackageStatusObserver;
 
 /**
  * PackageStatus
@@ -34,22 +34,14 @@ class PackageStatus extends Base {
     ];
 
     /**
-     * Overrides parent method to set default status.
+     * Registers model events.
      *
-     * @see parent::save()
+     * @return void
      */
-    public function save(array $options = array())
+    public static function boot()
     {
-        $result = parent::save($options);
+        parent::boot();
 
-        if ($result && $this->default)
-        {
-            // Unset the previous default status
-            PackageStatus::where('company_id', $this->company_id)
-                ->where('id', '<>', $this->id)
-                ->update(['default' => FALSE]);
-        }
-
-        return $result;
+        PackageStatus::observe(new PackageStatusObserver);
     }
 }

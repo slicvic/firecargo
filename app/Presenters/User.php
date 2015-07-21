@@ -2,7 +2,7 @@
 
 use App\Presenters\Presenter as BasePresenter;
 use App\Models\Role;
-use App\Helpers\Html;
+use Html;
 
 /**
  * User
@@ -12,7 +12,7 @@ use App\Helpers\Html;
 class User extends BasePresenter {
 
     /**
-     * Presents the fullname.
+     * Presents the user fullname.
      *
      * @return string
      */
@@ -22,27 +22,22 @@ class User extends BasePresenter {
     }
 
     /**
-     * Presents the role.
+     * Presents the user role.
      *
      * @return HTML string
      */
     public function role()
     {
-        if ( ! $this->model->role_id)
-        {
-            return '';
-        }
-
         switch ($this->model->role_id)
         {
             case Role::SUPER_ADMIN:
-                $cssClass = 'primary';
+                $cssClass = 'danger';
                 break;
             case Role::SUPER_AGENT:
-                $cssClass = 'success';
+                $cssClass = 'warning';
                 break;
-            case Role::CLIENT:
-                $cssClass = 'danger';
+            default:
+                $cssClass = 'primary';
                 break;
         }
 

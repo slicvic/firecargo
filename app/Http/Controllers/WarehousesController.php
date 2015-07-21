@@ -14,8 +14,7 @@ use App\Models\Package;
 use App\Models\PackageStatus;
 use App\Models\PackageType;
 use App\Models\Account;
-
-use App\Models\Role;
+use App\Models\AccountType;
 use App\Models\Carrier;
 use App\Pdf\Warehouse as WarehousePdf;
 use App\Exceptions\ValidationException;
@@ -42,32 +41,27 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Displays a list of warehouses.
+     * Shows a list of warehouses.
      *
      * @param  Request  $request
      * @return Response
      */
     public function getIndex(Request $request)
     {
-        // Extract input
-        $input['limit'] = $request->input('limit', 10);
-        $input['sort'] = $request->input('sort', 'id');
-        $input['order'] = $request->input('order', 'DESC');
-        $input['q'] = $request->input('q');
-        $input['status'] = $request->input('status');
+        $params['limit'] = $request->input('limit', 10);
+        $params['sort'] = $request->input('sort', 'id');
+        $params['order'] = $request->input('order', 'desc');
+        $params['search'] = $request->input('search');
+        $params['status'] = $request->input('status');
 
-        // Prepare search criteria
-        $criteria['status'] = $input['status'];
-        $criteria['q'] = $input['q'];
+        $criteria['status'] = $params['status'];
+        $criteria['search'] = $params['search'];
         $criteria['company_id'] = $this->authUser->isAdmin() ? NULL : $this->authUser->company_id;
-
-        // Run query
-        $warehouses = Warehouse::search($criteria, $input['sort'], $input['order'], $input['limit']);
+        $warehouses = Warehouse::search($criteria, $params['sort'], $params['order'], $params['limit']);
 
         return view('warehouses.index', [
             'warehouses' => $warehouses,
-            'input' => $input,
-            'oppositeOrder' => ($input['order'] === 'asc') ? 'desc' : 'asc',
+            'params' => $params
         ]);
     }
 
@@ -108,37 +102,24 @@ class WarehousesController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        // Prepare and validate input
         try
         {
-            $input = $this->prepareAndValidate($request);
+            $warehouse = new Warehouse;
+
+            // Validate input and save warehouse
+            if ( ! $this->validateAndSave($request, $warehouse))
+            {
+                return response()->json(['error' => Flash::view('Warehouse creation failed, please try again.')], 500);
+            }
+
+            Flash::success('Warehouse created.');
+
+            return response()->json(['redirect_url' => '/warehouses/show/' . $warehouse->id]);
         }
         catch (ValidationException $e)
         {
             return response()->json(['error' => Flash::view($e)], 400);
         }
-
-        // Create warehouse
-        $warehouse = new Warehouse;
-        $warehouse->arrived_at = date('Y-m-d H:i:s', strtotime($input['warehouse']['date'] . ' ' . $input['warehouse']['time']));
-        $warehouse->shipper_account_id = $input['warehouse']['shipper_account_id'];
-        $warehouse->consignee_account_id = $input['warehouse']['consignee_account_id'];
-        $warehouse->carrier_id = $input['warehouse']['carrier_id'];
-
-        if ( ! $warehouse->save())
-        {
-            return response()->json(['error' => Flash::view('Warehouse creation failed, please try again.')], 500);
-        }
-
-        // Create packages
-        if ($input['packages'])
-        {
-            $warehouse->createOrUpdatePackages($input['packages']);
-        }
-
-        Flash::success('Warehouse created.');
-
-        return response()->json(['redirect_url' => '/warehouses/show/' . $warehouse->id]);
     }
 
     /**
@@ -168,44 +149,34 @@ class WarehousesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        // Find warehouse
-        $warehouse = Warehouse::find($id);
-
-        if ( ! $warehouse)
-        {
-            return response()->json(['error' => Flash::view('Warehouse not found.')], 404);
-        }
-
-        // Prepare and validate input
         try
         {
-            $input = $this->prepareAndValidate($request);
+            // Lookup warehouse
+            $warehouse = Warehouse::find($id);
+
+            if ( ! $warehouse)
+            {
+                return response()->json(['error' => Flash::view('Warehouse not found.')], 404);
+            }
+
+            // Validate input and save warehouse
+            if ( ! $this->validateAndSave($request, $warehouse))
+            {
+                return response()->json(['error' => Flash::view('Warehouse update failed, please try again.')], 500);
+            }
+
+            Flash::success('Warehouse updated.');
+
+            return response()->json(['redirect_url' => '/warehouses/edit/' . $warehouse->id]);
         }
         catch (ValidationException $e)
         {
             return response()->json(['error' => Flash::view($e)], 400);
         }
-
-        // Update warehouse
-        $warehouse->arrived_at = date('Y-m-d H:i:s', strtotime($input['warehouse']['date'] . ' ' . $input['warehouse']['time']));
-        $warehouse->shipper_account_id = $input['warehouse']['shipper_account_id'];
-        $warehouse->consignee_account_id = $input['warehouse']['consignee_account_id'];
-        $warehouse->carrier_id = $input['warehouse']['carrier_id'];
-        $warehouse->save();
-
-        // Update packages
-        if ($input['packages'])
-        {
-            $warehouse->createOrUpdatePackages($input['packages']);
-        }
-
-        Flash::success('Warehouse updated.');
-
-        return response()->json(['redirect_url' => '/warehouses/edit/' . $warehouse->id]);
     }
 
     /**
-     * Displays the warehouse receipt PDF.
+     * Shows the warehouse receipt PDF.
      *
      * @param  Request  $request
      * @param  int      $warehouseId
@@ -218,7 +189,7 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Displays the warehouse shipping label PDF.
+     * Shows the warehouse shipping label PDF.
      *
      * @param  Request  $request
      * @param  int      $warehouseId
@@ -231,7 +202,7 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Retrieves a list of shippers & consignees for a jquery autocomplete field.
+     * Retrieves a list of shippers amd consignees for a jquery autocomplete field.
      *
      * @param  Request  $request
      * @return JsonResponse
@@ -263,7 +234,7 @@ class WarehousesController extends BaseAuthController {
     /**
      * Creates the form for creating and editing a warehouse.
      *
-     * @param  Warehouse $warehouse
+     * @param  Warehouse  $warehouse
      * @return View
      */
     private function getEditForm(Warehouse $warehouse)
@@ -276,28 +247,27 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Validates and prepares the given request input for creating and updating
-     * a warehouse.
+     * Validates the given input and applies it to the warehouse.
      *
-     * @param  Request $request
+     * @param  Request    $request
+     * @param  Warehouse  $warehouse
      * @return array
      * @throws ValidationException
      */
-    private function prepareAndValidate(Request $request)
+    private function validateAndSave(Request $request, Warehouse $warehouse)
     {
         $input = $request->only('warehouse', 'packages');
 
-        // Prepare rules
-        $warehouseRules = [
-            'shipper_name' => 'required|min:3',
-            'consignee_name' => 'required|min:5',
-            'carrier_name' => 'required|min:3',
+        // Validate input
+        $rules = [
+            'shipper' => 'required|min:3',
+            'consignee' => 'required|min:5',
+            'carrier' => 'required|min:3',
             'date' => 'required',
             'time' => 'required',
         ];
 
-        // Validate input
-        $validator = Validator::make($input['warehouse'], $warehouseRules);
+        $validator = Validator::make($input['warehouse'], $rules);
 
         if ($validator->fails())
         {
@@ -307,7 +277,7 @@ class WarehousesController extends BaseAuthController {
         // Create a new carrier if necessary
         if (empty($input['warehouse']['carrier_id']))
         {
-            $carrier = Carrier::firstOrCreate(['name' => $input['warehouse']['carrier_name']]);
+            $carrier = Carrier::firstOrCreate(['name' => $input['warehouse']['carrier']]);
 
             $input['warehouse']['carrier_id'] = $carrier->id;
         }
@@ -315,10 +285,10 @@ class WarehousesController extends BaseAuthController {
         // Create a new shipper account if necessary
         if (empty($input['warehouse']['shipper_account_id']))
         {
-            $shipper = User::firstOrCreate([
-                'company_name' => trim($input['warehouse']['shipper_name']),
+            $shipper = Account::firstOrCreate([
+                'name' => trim($input['warehouse']['shipper']),
                 'company_id' => $this->authUser->company_id,
-                'role_id' => Role::SHIPPER
+                'type_id' => AccountType::SHIPPER
             ]);
 
             $input['warehouse']['shipper_account_id'] = $shipper->id;
@@ -327,15 +297,33 @@ class WarehousesController extends BaseAuthController {
         // Create a new consignee account if necessary
         if (empty($input['warehouse']['consignee_account_id']))
         {
-            $consignee = User::firstOrCreate([
-                'full_name' => trim($input['warehouse']['consignee_name']),
+            $consignee = Account::firstOrCreate([
+                'name' => trim($input['warehouse']['consignee']),
                 'company_id' => $this->authUser->company_id,
-                'role_id' => Role::CLIENT
+                'type_id' => AccountType::CONSIGNEE
             ]);
 
             $input['warehouse']['consignee_account_id'] = $consignee->id;
         }
 
-        return $input;
+        // Save warehouse
+        $warehouse->arrived_at = date('Y-m-d H:i:s', strtotime($input['warehouse']['date'] . $input['warehouse']['time']));
+        $warehouse->shipper_account_id = $input['warehouse']['shipper_account_id'];
+        $warehouse->consignee_account_id = $input['warehouse']['consignee_account_id'];
+        $warehouse->carrier_id = $input['warehouse']['carrier_id'];
+        $warehouse->notes = $input['warehouse']['notes'];
+
+        if ( ! $warehouse->save())
+        {
+            return FALSE;
+        }
+
+        // Save packages
+        if ($input['packages'])
+        {
+            $warehouse->createOrUpdatePackages($input['packages']);
+        }
+
+        return TRUE;
     }
 }

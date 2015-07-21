@@ -2,7 +2,6 @@
 
 use DB;
 
-use App\Models\CompanyTrait;
 use App\Presenters\PresentableTrait;
 
 /**
@@ -92,7 +91,7 @@ class Shipment extends Base {
                 ->update(['shipment_id' => NULL]);
         }
 
-        // Next, we will attach the given packages
+        // Next, we'll attach the given packages
         if (count($packageIds))
         {
             Package::whereIn('id', $packageIds)->update(['shipment_id' => $this->id]);
@@ -100,7 +99,7 @@ class Shipment extends Base {
     }
 
     /**
-     * Calculates the total cost of the warehouse.
+     * Calculates the total cost of the shipment.
      *
      * @return float
      */
@@ -114,51 +113,53 @@ class Shipment extends Base {
      * Finds all shipments with the given criteria.
      *
      * @param  array|null  $criteria
-     * @param  string      $orderBy
+     * @param  string      $sort
      * @param  string      $order
      * @param  int         $perPage
      * @return array
      */
-    public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
+    public static function search(array $criteria = NULL, $sort = 'id', $order = 'desc', $perPage = 15)
     {
-        // Sort columns
         $sortColumns = [
-            'id' => 'id',
-            'departed' => 'departed_at',
-            'created' => 'created_at',
-            'updated' => 'updated_at'
+            'id',
+            'departed_at',
+            'created_at',
+            'updated_at'
         ];
 
-        // Determine sort order
-        $orderBy = array_key_exists($orderBy, $sortColumns) ? $sortColumns[$orderBy] : $sortColumns['id'];
-        $order = ($order === 'ASC') ? 'ASC' : 'DESC';
+        // Build query
+        $sort = in_array($sort, $sortColumns) ? $sort : 'id';
+        $order = ($order === 'asc') ? 'asc' : 'desc';
 
-        $shipments = Shipment::whereRaw('1')
-            ->orderBy('shipments.' . $orderBy, $order);
+        $shipments = Shipment::query()->orderBy('shipments.' . $sort, $order);
 
-        // Filter by company id
-        if ( ! empty($criteria['company_id']))
+        if (isset($criteria['company_id']))
         {
             $shipments = $shipments->where('shipments.company_id', '=', $criteria['company_id']);
         }
 
-        // Full text search
-        if ( ! empty($criteria['q']))
+        if (isset($criteria['search']) && strlen($criteria['search']) > 2)
         {
-            $q = '%' . $criteria['q'] . '%';
+            $search = '%' . $criteria['search'] . '%';
 
             $shipments = $shipments
                 ->select('shipments.*')
                 ->leftJoin('packages', 'shipments.id', '=', 'packages.shipment_id')
                 ->leftJoin('carriers', 'shipments.carrier_id', '=', 'carriers.id')
+                ->groupBy('shipments.id')
                 ->whereRaw('(
                     packages.id LIKE ?
                     OR packages.tracking_number LIKE ?
                     OR carriers.name LIKE ?
                     OR shipments.id LIKE ?
                     OR shipments.reference_number LIKE ?
-                    )', [$q, $q, $q, $q, $q]
-                );
+                    )', [
+                    $search,
+                    $search,
+                    $search,
+                    $search,
+                    $search
+                ]);
         }
 
         $shipments = $shipments->paginate($perPage);

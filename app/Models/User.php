@@ -7,7 +7,6 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
 use App\Presenters\PresentableTrait;
-use App\Models\CompanyTrait;
 use App\Observers\UserObserver;
 
 /**

@@ -40,26 +40,18 @@ class ShipmentsController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
-        $input['limit'] = $request->input('limit', 10);
-        $input['sort'] = $request->input('sort', 'id');
-        $input['order'] = $request->input('order', 'desc');
-        $input['q'] = $request->input('q');
+        $params['limit'] = $request->input('limit', 10);
+        $params['sort'] = $request->input('sort', 'id');
+        $params['order'] = $request->input('order', 'desc');
+        $params['search'] = $request->input('search');
 
-        // Perform search criteria
-        $criteria['q'] = $input['q'];
-
-        if ( ! $this->authUser->isAdmin())
-        {
-            $criteria['company_id'] = $this->authUser->company_id;
-        }
-
-        // Run query
-        $shipments = Shipment::search($criteria, $input['sort'], $input['order'], $input['limit']);
+        $criteria['search'] = $params['search'];
+        $criteria['company_id'] = $this->authUser->isAdmin() ? NULL : $this->authUser->company_id;
+        $shipments = Shipment::search($criteria, $params['sort'], $params['order'], $params['limit']);
 
         return view('shipments.index', [
             'shipments' => $shipments,
-            'input' => $input,
-            'oppositeOrder' => ($input['order'] === 'asc' ? 'desc' : 'asc'),
+            'params' => $params
         ]);
     }
 
@@ -72,7 +64,12 @@ class ShipmentsController extends BaseAuthController {
      */
     public function getShow(Request $request, $id)
     {
-        $shipment = Shipment::findOrFailByIdAndCurrentUserCompanyId($id);
+        $shipment = Shipment::find($id);
+
+        if ( ! $shipment)
+        {
+            return $this->redirectBackWithError('Shipment not found.');
+        }
 
         return view('shipments.show', ['shipment' => $shipment]);
     }
@@ -84,19 +81,20 @@ class ShipmentsController extends BaseAuthController {
      */
     public function getCreate()
     {
-        $nestablePackages = [];
-
-        // Get all packages not assigned to a shipment
+        // Retrive all packages pending shipment
         $packages = Package::allPendingShipmentByCompanyId($this->authUser->company_id);
+
+        // Group them by warehouse
+        $groupedPackages = [];
 
         foreach ($packages as $package)
         {
-            $nestablePackages[$package->warehouse_id][] = $package;
+            $groupedPackages[$package->warehouse_id][] = $package;
         }
 
         return view('shipments.edit', [
             'shipment' => new Shipment,
-            'nestablePackages' => $nestablePackages
+            'groupedPackages' => $groupedPackages
         ]);
     }
 
@@ -108,37 +106,24 @@ class ShipmentsController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        // Prepare and validate input
         try
         {
-            $input = $this->prepareAndValidateInput($request);
+            $shipment = new Shipment;
+
+            // Validate input and save shipment
+            if ( ! $this->validateAndSave($request, $shipment))
+            {
+                return response()->json(['error' => Flash::view('Shipment creation failed, please try again.')], 500);
+            }
+
+            Flash::success('Shipment created.');
+
+            return response()->json(['redirect_url' => '/shipments/show/' . $shipment->id]);
         }
         catch (ValidationException $e)
         {
             return response()->json(['error' => Flash::view($e)], 400);
         }
-
-        // Create shipment
-        $shipment = new Shipment;
-        $shipment->reference_number = $input['shipment']['reference_number'];
-        $shipment->departed_at = date('Y-m-d H:i:s', strtotime($input['shipment']['departure_date']));
-        $shipment->carrier_id = $input['shipment']['carrier_id'];
-        $shipment->company_id = $this->authUser->company_id;
-
-        if ( ! $shipment->save())
-        {
-            return response()->json(['error' => Flash::view('Shipment creation failed, please try again.')], 500);
-        }
-
-        // Update packages
-        if ($input['packages'])
-        {
-            $shipment->syncPackages(array_keys($input['packages']), FALSE);
-        }
-
-        Flash::success('Shipment created.');
-
-        return response()->json(['redirect_url' => '/shipments/show/' . $shipment->id]);
     }
 
     /**
@@ -149,26 +134,34 @@ class ShipmentsController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $shipment = Shipment::findOrFailByIdAndCurrentUserCompanyId($id);
-        $nestablePackages = [];
+        // Lookup shipment
+        $shipment = Shipment::find($id);
 
-        // Get the current packages in the shipment
-        foreach ($shipment->packages as $package)
+        if ( ! $shipment)
         {
-            $nestablePackages[$package->warehouse_id][] = $package;
+            return $this->redirectBackWithError('Shipment not found.');
         }
 
-        // Get all other packages not assigned to a shipment
-        $packages = Package::allPendingShipmentByCurrentUserCompany();
+        // Group packages by warehouse
+        $groupedPackages = [];
+
+        // Retrieve the current packages in the shipment
+        foreach ($shipment->packages as $package)
+        {
+            $groupedPackages[$package->warehouse_id][] = $package;
+        }
+
+        // Retrieve all other packages pending shipment
+        $packages = Package::allPendingShipmentByCompanyId($this->authUser->company_id);
 
         foreach ($packages as $package)
         {
-            $nestablePackages[$package->warehouse_id][] = $package;
+            $groupedPackages[$package->warehouse_id][] = $package;
         }
 
         return view('shipments.edit', [
             'shipment' =>  $shipment,
-            'nestablePackages' => $nestablePackages
+            'groupedPackages' => $groupedPackages
         ]);
     }
 
@@ -181,58 +174,51 @@ class ShipmentsController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        // Make sure shipment exists before proceeding
-        $shipment = Shipment::findByIdAndCurrentUserCompanyId($id);
-
-        if ( ! $shipment)
-        {
-            return response()->json(['error' => Flash::view('Shipment not found.')], 404);
-        }
-
-        // Prepare and validate input
         try
         {
-            $input = $this->prepareAndValidateInput($request);
+            // Lookup shipment
+            $shipment = Shipment::find($id);
+
+            if ( ! $shipment)
+            {
+                return response()->json(['error' => Flash::view('Shipment not found.')], 404);
+            }
+
+            // Validate input and save shipment
+            if ( ! $this->validateAndSave($request, $shipment))
+            {
+                return response()->json(['error' => Flash::view('Shipment update failed, please try again.')], 500);
+            }
+
+            Flash::success('Shipment updated.');
+
+            return response()->json(['redirect_url' => '/shipments/edit/' . $shipment->id]);
         }
         catch (ValidationException $e)
         {
             return response()->json(['error' => Flash::view($e)], 400);
         }
-
-        // Update shipment
-        $shipment->reference_number = $input['shipment']['reference_number'];
-        $shipment->departed_at = date('Y-m-d H:i:s', strtotime($input['shipment']['departure_date']));
-        $shipment->carrier_id = $input['shipment']['carrier_id'];
-        $shipment->company_id = $this->authUser->company_id;
-        $shipment->save();
-
-        // Update packages
-        $shipment->syncPackages($input['packages'] ? array_keys($input['packages']) : []);
-
-        Flash::success('Shipment updated.');
-
-        return response()->json(['redirect_url' => '/shipments/edit/' . $shipment->id]);
     }
 
     /**
      * Prepares and validates the input for creating and updating a shipment.
      *
      * @param  Request  $request
+     * @param  Shipment $shipment
      * @return array
      * @throws ValidationException
      */
-    private function prepareAndValidateInput(Request $request)
+    private function validateAndSave(Request $request, Shipment $shipment)
     {
         $input = $request->only('shipment', 'packages');
 
-        // Prepare rules
+        // Validate input
         $rules = [
             'departure_date' => 'required',
             'reference_number' => 'required',
-            'carrier_name' => 'required|min:3',
+            'carrier' => 'required|min:3',
         ];
 
-        // Validate input
         $validator = Validator::make($input['shipment'], $rules);
 
         if ($validator->fails())
@@ -243,11 +229,24 @@ class ShipmentsController extends BaseAuthController {
         // Create new carrier if necessary
         if (empty($input['shipment']['carrier_id']))
         {
-            $carrier = Carrier::firstOrCreate(['name' => $input['shipment']['carrier_name']]);
+            $carrier = Carrier::firstOrCreate(['name' => $input['shipment']['carrier']]);
 
             $input['shipment']['carrier_id'] = $carrier->id;
         }
 
-        return $input;
+        // Save shipment
+        $shipment->reference_number = $input['shipment']['reference_number'];
+        $shipment->departed_at = date('Y-m-d H:i:s', strtotime($input['shipment']['departure_date']));
+        $shipment->carrier_id = $input['shipment']['carrier_id'];
+
+        if ( ! $shipment->save())
+        {
+            return FALSE;
+        }
+
+        // Save packages
+        $shipment->syncPackages($input['packages'] ? array_keys($input['packages']) : []);
+
+        return TRUE;
     }
 }

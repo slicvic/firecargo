@@ -144,7 +144,8 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
-		'App\Providers\FlashServiceProvider'
+		'App\Providers\FlashServiceProvider',
+		'App\Providers\HtmlServiceProvider'
 	],
 
 	/*
@@ -193,6 +194,8 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 
-		'Flash'     => 'App\Facades\Flash'
+		'Flash'     => 'App\Facades\Flash',
+		'Html'     => 'App\Facades\Html'
+
 	]
 ];
