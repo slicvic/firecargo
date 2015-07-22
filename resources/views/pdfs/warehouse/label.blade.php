@@ -5,7 +5,7 @@
 
 <table border="0" cellpadding="2">
     <tr>
-        {!! $company->hasLogo('sm') ? '<td width="23%"><img src="' . $company->getLogoURL('sm') . '"></td>' : '' !!}
+        {!! $company->has_logo ? '<td width="23%"><img src="' . $company->getLogoURL('sm') . '"></td>' : '' !!}
         <td width="45%">
 <b>{{ strtoupper($company->name) }}</b><br>
 {!! strtoupper($company->present()->address()) !!}<br>

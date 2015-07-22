@@ -7,11 +7,10 @@ use Hash;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
-use Intervention\Image\ImageManagerStatic as Image;
-
 use App\Models\User;
 use App\Models\Address;
 use App\Exceptions\ValidationException;
+use App\Helpers\Upload;
 use Flash;
 
 /**
@@ -109,6 +108,7 @@ class UserProfileController extends BaseAuthController {
         $input = $request->all();
 
         // Validate input
+
         $rules = [
             'current_password' => 'required',
             'new_password' => 'required|min:8',
@@ -118,6 +118,7 @@ class UserProfileController extends BaseAuthController {
         $this->validate($input, $rules);
 
         // Change password
+
         if ( ! Hash::check($input['current_password'], $this->authUser->password))
         {
             return $this->redirectBackWithError('The password you entered does not match your current one.');
@@ -138,11 +139,11 @@ class UserProfileController extends BaseAuthController {
     public function postAjaxUploadPhoto(Request $request)
     {
         $input = $request->only('file');
-        $maxKb = 10000;
 
         // Validate input
+
         $validator = Validator::make($input, [
-            'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . $maxKb
+            'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . Upload::MAX_FILE_SIZE
         ]);
 
         if ($validator->fails())
@@ -150,32 +151,19 @@ class UserProfileController extends BaseAuthController {
            return response()->json(Flash::view($validator), 500);
         }
 
-        // Create destination directory
-        $destination = public_path() . '/uploads/users/' . $this->authUser->id . '/images/profile/';
+        // Save photo
 
-        if ( ! file_exists($destination))
+        try
         {
-            mkdir($destination, 0775, TRUE);
+            Upload::saveUserProfilePhoto($input['file'], $this->authUser->id);
+            $this->authUser->update(['has_photo' => TRUE]);
+            return response()->json([]);
         }
-
-        // Make thumbnails
-        $dimensions = [
-            'sm' => 48,
-            'md' => 200
-        ];
-
-        foreach ($dimensions as $filename => $dimension)
+        catch(\Exception $e)
         {
-            Image::make($input['file']->getPathName())
-                ->orientate()
-                ->resize($dimension, $dimension)
-                ->save($destination . $filename . '.png');
+            $this->authUser->update(['has_photo' => FALSE]);
+            return response()->json(Flash::view('Upload failed, please try again.'), 500);
         }
-
-        // Remove temp file
-        unlink($input['file']->getPathName());
-
-        return response()->json([]);
     }
 
     /**
@@ -212,6 +200,7 @@ class UserProfileController extends BaseAuthController {
         $input = $request->only('account', 'address');
 
         // Validate input
+
         $rules = [
             'email' => 'required|email|unique:users,email,' . $this->authUser->id,
             'firstname' => 'required',
@@ -221,12 +210,14 @@ class UserProfileController extends BaseAuthController {
         $this->validate($input['account'], $rules);
 
         // Update user
+
         $this->authUser->firstname = $input['account']['firstname'];
         $this->authUser->lastname = $input['account']['lastname'];
         $this->authUser->email = $input['account']['email'];
         $this->authUser->save();
 
         // Update user's account
+
         $account = $this->authUser->account;
         $account->firstname = $input['account']['firstname'];
         $account->lastname = $input['account']['lastname'];

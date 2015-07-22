@@ -11,6 +11,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 use App\Models\Company;
 use App\Models\Address;
 use App\Models\Country;
+use App\Helpers\Upload;
 use Flash;
 
 /**
@@ -100,8 +101,9 @@ class CompanyProfileController extends BaseAuthController {
         $maxKb = 1000;
 
         // Validate input
+
         $validator = Validator::make($input, [
-            'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . $maxKb
+            'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . Upload::MAX_FILE_SIZE
         ]);
 
         if ($validator->fails())
@@ -109,35 +111,18 @@ class CompanyProfileController extends BaseAuthController {
            return response()->json(Flash::view($validator), 500);
         }
 
-        // Create destination directory
-        $destination = public_path() . '/uploads/companies/' . $this->authUser->company->id . '/images/logo/';
+        // Save photo
 
-        if ( ! file_exists($destination))
+        try
         {
-            mkdir($destination, 0775, TRUE);
+            Upload::saveCompanyLogo($input['file'], $this->authUser->company->id);
+            $this->authUser->company->update(['has_logo' => TRUE]);
+            return response()->json([]);
         }
-
-        // Generate thumbnails
-        $dimensions = [
-            'sm' => 100,
-            'md' => 200,
-            'lg' => 300
-        ];
-
-        foreach ($dimensions as $filename => $dimension)
+        catch(\Exception $e)
         {
-            Image::make($input['file']->getPathName())
-                ->orientate()
-                ->resize($dimension, NULL, function($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->save($destination . $filename . '.png');
+            $this->authUser->company->update(['has_logo' => FALSE]);
+            return response()->json(Flash::view('Upload failed, please try again.'), 500);
         }
-
-        // Remove temp file
-        unlink($input['file']->getPathName());
-
-        return response()->json([]);
     }
 }

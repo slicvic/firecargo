@@ -1,7 +1,9 @@
 <?php namespace App\Models;
 
 use DB;
+
 use App\Presenters\PresentableTrait;
+use App\Helpers\Upload;
 
 /**
  * Company
@@ -31,6 +33,7 @@ class Company extends Base {
         'email',
         'phone',
         'fax',
+        'has_logo'
     ];
 
     /**
@@ -44,19 +47,6 @@ class Company extends Base {
     }
 
     /**
-     * Checks if the company has a logo.
-     *
-     * @param  string  $size  sm|md|lg
-     * @return bool
-     */
-    public function hasLogo($size)
-    {
-        $path = 'uploads/companies/' . $this->id . '/images/logo/' . $size . '.png';
-
-        return file_exists(public_path() . '/' . $path);
-    }
-
-    /**
      * Gets the company logo URL.
      *
      * @param  string  $size  sm|md|lg
@@ -64,13 +54,6 @@ class Company extends Base {
      */
     public function getLogoURL($size = 'sm')
     {
-        $path = 'uploads/companies/' . $this->id . '/images/logo/' . $size . '.png';
-
-        if (file_exists(public_path() . '/' . $path))
-        {
-            return asset($path) . '?cb=' . time();
-        }
-
-        return asset('assets/admin/img/avatar.png');
+        return Upload::getCompanyLogoURL($this, $size);
     }
 }

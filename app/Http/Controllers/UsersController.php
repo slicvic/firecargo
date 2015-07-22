@@ -64,6 +64,7 @@ class UsersController extends BaseAuthController {
         $input = $this->beforeValidate($request);
 
         // Validate input
+
         $rules = [
             'company_id' => 'required',
             'role_id' => 'required',
@@ -76,6 +77,7 @@ class UsersController extends BaseAuthController {
         $this->validate($input['user'], $rules);
 
         // Create user
+
         $user = new User($input['user']);
 
         if ( ! $user->save())
@@ -117,6 +119,7 @@ class UsersController extends BaseAuthController {
         $input = $this->beforeValidate($request);
 
         // Validate input
+
         $rules = [
             'company_id' => 'required',
             'role_id' => 'required',
@@ -129,6 +132,7 @@ class UsersController extends BaseAuthController {
         $this->validate($input['user'], $rules);
 
         // Update user
+
         $user = User::find($id);
 
         if ( ! $user)

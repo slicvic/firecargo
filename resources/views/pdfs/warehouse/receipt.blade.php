@@ -14,7 +14,7 @@
 <table border="0">
     <tr>
         <td width="60%">
-{!! $company->hasLogo('sm') ? '<img src="' . $company->getLogoURL('sm') . '"><br>' : '' !!}
+{!! $company->has_logo ? '<img src="' . $company->getLogoURL('sm') . '"><br>' : '' !!}
 {{ strtoupper($company->name) }}<br>
 {!! strtoupper($company->present()->address()) !!}<br>
 TEL: {{ $company->phone }}<br>

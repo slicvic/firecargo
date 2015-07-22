@@ -20,7 +20,7 @@
         <div class="title-action">
             <form class="form-inline" method="get" action="/shipments">
                 <div class="form-group">
-                    <label>Search</label>
+                    <label>Search: </label>
                     <input type="text" class="form-control" name="search" value="{{ $params['search'] }}">
                 </div>
                 @if ($params['search'])

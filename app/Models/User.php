@@ -8,6 +8,7 @@ use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
 use App\Presenters\PresentableTrait;
 use App\Observers\UserObserver;
+use App\Helpers\Upload;
 
 /**
  * User
@@ -38,7 +39,8 @@ class User extends Base implements AuthenticatableInterface {
         'email',
         'password',
         'firstname',
-        'lastname'
+        'lastname',
+        'has_photo'
     ];
 
     /**
@@ -159,19 +161,6 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Checks if a profile photo has been uploaded.
-     *
-     * @param  string  $size  sm|md
-     * @return bool
-     */
-    public function hasProfilePhoto($size)
-    {
-        $path = 'uploads/users/' . $this->id . '/images/profile/' . $size . '.png';
-
-        return file_exists(public_path() . '/' . $path);
-    }
-
-    /**
      * Gets the profile photo URL.
      *
      * @param  string  $size  sm|md
@@ -179,14 +168,7 @@ class User extends Base implements AuthenticatableInterface {
      */
     public function getProfilePhotoURL($size = 'sm')
     {
-        $path = 'uploads/users/' . $this->id . '/images/profile/' . $size . '.png';
-
-        if (file_exists(public_path() . '/' . $path))
-        {
-            return asset($path) . '?cb=' . time();
-        }
-
-        return asset('assets/admin/img/avatar.png');
+        return Upload::getUserProfilePhotoURL($this, $size);
     }
 
     /**
