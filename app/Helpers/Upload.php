@@ -10,9 +10,9 @@ use Intervention\Image\ImageManagerStatic as Image;
 class Upload {
 
     /**
-     * @var string  The base upload directory path.
+     * @var string  The root upload directory path.
      */
-    const BASE_PATH = '/uploads/';
+    const ROOT_PATH = '/uploads/';
 
     /**
      * @var array  Resource paths.
@@ -121,7 +121,7 @@ class Upload {
      */
     private static function resourcePath($key, $id)
     {
-        $path = public_path() . self::BASE_PATH;
+        $path = public_path() . self::ROOT_PATH;
         $path .= str_replace('%ID%', $id, self::$resources[$key]);
 
         return $path;
@@ -138,7 +138,7 @@ class Upload {
      */
     public static function resourceUrl($key, $id, $filename)
     {
-        $path = self::BASE_PATH;
+        $path = self::ROOT_PATH;
         $path .= str_replace('%ID%', $id, self::$resources[$key]);
         $path .= '/' . $filename;
 
