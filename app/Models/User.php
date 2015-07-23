@@ -170,7 +170,7 @@ class User extends Base implements AuthenticatableInterface {
     {
         if ($this->has_photo)
         {
-            return Upload::resourceUrl('profile_photo', $this->id, "{$size}.png?cb=" . time());
+            return Upload::resourceUrl('profile_photo', $this->id, "{$size}.png");
         }
 
         return asset('assets/admin/img/avatar.png');

@@ -140,7 +140,7 @@ class Upload {
     {
         $path = self::ROOT_PATH;
         $path .= str_replace('%ID%', $id, self::$resources[$key]);
-        $path .= '/' . $filename;
+        $path .= $filename . '?cb=' . time();
 
         return url($path);
     }

@@ -56,7 +56,7 @@ class Company extends Base {
     {
         if ($this->has_logo)
         {
-            return Upload::resourceUrl('company_logo', $this->id, "{$size}.png?cb=" . time());
+            return Upload::resourceUrl('company_logo', $this->id, "{$size}.png");
         }
 
         return asset('assets/admin/img/avatar.png');
