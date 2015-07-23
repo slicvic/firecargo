@@ -10,9 +10,17 @@ use Intervention\Image\ImageManagerStatic as Image;
 class Upload {
 
     /**
-     * Upload root path.
+     * @var string  The base upload directory path.
      */
-    const ROOT_PATH = '/uploads/';
+    const BASE_PATH = '/uploads/';
+
+    /**
+     * @var array  Resource paths.
+     */
+    private static $resources = [
+        'profile_photo' => 'users/%ID%/images/profile/',
+        'company_logo'  => 'companies/%ID%/images/logo/'
+    ];
 
     /**
      * Max upload file size in KB.
@@ -33,7 +41,7 @@ class Upload {
     {
         // Create destination directory
 
-        $destination = self::getUserProfilePhotoBasePath($userId);
+        $destination = self::resourcePath('profile_photo', $userId);
 
         if ( ! file_exists($destination))
         {
@@ -49,12 +57,10 @@ class Upload {
 
         foreach ($dimensions as $filename => $dimension)
         {
-            $filename .= '.png';
-
             Image::make($file->getPathName())
                 ->orientate()
                 ->resize($dimension, $dimension)
-                ->save($destination . $filename);
+                ->save($destination . "{$filename}.png");
         }
 
         // Remove temp file
@@ -74,7 +80,7 @@ class Upload {
     {
          // Create destination directory
 
-        $destination = self::getCompanyLogoBasePath($companyId);
+        $destination = self::resourcePath('company_logo', $companyId);
 
         if ( ! file_exists($destination))
         {
@@ -91,15 +97,13 @@ class Upload {
 
         foreach ($dimensions as $filename => $dimension)
         {
-            $filename .= '.png';
-
             Image::make($file->getPathName())
                 ->orientate()
                 ->resize($dimension, NULL, function($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })
-                ->save($destination . $filename);
+                ->save($destination . "{$filename}.png");
         }
 
         // Remove temp file
@@ -108,85 +112,36 @@ class Upload {
     }
 
     /**
-     * Gets the base path of a user's profile photo.
+     * Gets the path to a resource folder.
      *
-     * @param  int  $userId
+     * @param  string  $key  The resource name
+     * @param  int     $id   The owner id
      * @return string
+     * @see    Upload::$resources
      */
-    public static function getUserProfilePhotoBasePath($userId)
+    private static function resourcePath($key, $id)
     {
-        return public_path() . self::getUserProfilePhotoRootPath($userId);
+        $path = public_path() . self::BASE_PATH;
+        $path .= str_replace('%ID%', $id, self::$resources[$key]);
+
+        return $path;
     }
 
     /**
-     * Gets the root path of a user's profile photo.
+     * Gets the url to a resource.
      *
-     * @param  int  $userId
+     * @param  string  $key       The resource name
+     * @param  int     $id        The owner id
+     * @param  string  $filename  The resource filename
      * @return string
+     * @see    Upload::$resources
      */
-    public static function getUserProfilePhotoRootPath($userId)
+    public static function resourceUrl($key, $id, $filename)
     {
-        return self::ROOT_PATH . 'users/' . $userId . '/images/profile/';
+        $path = self::BASE_PATH;
+        $path .= str_replace('%ID%', $id, self::$resources[$key]);
+        $path .= '/' . $filename;
+
+        return url($path);
     }
-
-    /**
-     * Gets the URL of a user's profile photo.
-     *
-     * @param  User    $user
-     * @param  string  $size  sm|md
-     * @return string
-     */
-    public static function getUserProfilePhotoURL($user, $size)
-    {
-        if ( ! $user->has_photo)
-        {
-            return asset('assets/admin/img/avatar.png');
-        }
-
-        $filename = $size . '.png';
-
-        return asset(self::getUserProfilePhotoRootPath($user->id) . $filename) . '?cb=' . time();
-    }
-
-    /**
-     * Gets the base path of a company's logo.
-     *
-     * @param  int  $companyId
-     * @return string
-     */
-    public static function getCompanyLogoBasePath($companyId)
-    {
-        return public_path() . self::getCompanyLogoRootPath($companyId);
-    }
-
-    /**
-     * Gets the root path of a company's logo.
-     *
-     * @param  int  $companyId
-     * @return string
-     */
-    public static function getCompanyLogoRootPath($companyId)
-    {
-        return self::ROOT_PATH . 'companies/' . $companyId . '/images/logo/';
-    }
-
-    /**
-     * Gets the URL of a company's logo.
-     *
-     * @param  Company  $company
-     * @param  string   $size  sm|md|lg
-     * @return string
-     */
-    public static function getCompanyLogoURL($company, $size)
-    {
-        if ( ! $company->has_logo)
-        {
-            return asset('assets/admin/img/avatar.png');
-        }
-
-        $filename = $size . '.png';
-
-        return asset(self::getCompanyLogoRootPath($company->id) . $filename) . '?cb=' . time();
-    }
-
 }

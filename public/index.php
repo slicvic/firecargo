@@ -34,11 +34,6 @@ require __DIR__.'/../bootstrap/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-// Set the uploads path
-$app->bind('path.upload', function() {
-    return public_path() . '/uploads';
-});
-
 /*
 |--------------------------------------------------------------------------
 | Run The Application

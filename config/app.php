@@ -196,6 +196,17 @@ return [
 
 		'Flash'     => 'App\Facades\Flash',
 		'Html'     => 'App\Facades\Html'
+	],
 
-	]
+	/*
+	|--------------------------------------------------------------------------
+	| Application Upload Path
+	|--------------------------------------------------------------------------
+	|
+	| This is the path used for storing user uploaded files.
+	|
+	*/
+
+	'upload_root_path' => '/uploads',
+	'upload_path' => public_path('uploads')
 ];

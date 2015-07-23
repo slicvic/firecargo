@@ -2,7 +2,7 @@
     <div class="ibox-content text-center">
         <h1>{{ Auth::user()->present()->fullname() }}</h1>
         <div id="photoContainer" class="m-b-sm">
-            <img class="img-circle" src="{{ Auth::user()->getProfilePhotoURL('md') }}" style="width:200px;height:200px">
+            <img class="img-circle" src="{{ Auth::user()->profilePhotoUrl('md') }}" style="width:200px;height:200px">
         </div>
         <button style="margin-top:4px;" type="button" id="btnEditPhoto" class="btn btn-block btn-link"><i class="fa fa-pencil"></i> Edit Photo</button>
         <div id="dzErrorMessage" class="text-danger"></div>

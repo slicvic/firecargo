@@ -52,8 +52,13 @@ class Company extends Base {
      * @param  string  $size  sm|md|lg
      * @return string
      */
-    public function getLogoURL($size = 'sm')
+    public function logoUrl($size = 'sm')
     {
-        return Upload::getCompanyLogoURL($this, $size);
+        if ($this->has_logo)
+        {
+            return Upload::resourceUrl('company_logo', $this->id, "{$size}.png?cb=" . time());
+        }
+
+        return asset('assets/admin/img/avatar.png');
     }
 }

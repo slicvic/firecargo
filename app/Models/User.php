@@ -166,9 +166,14 @@ class User extends Base implements AuthenticatableInterface {
      * @param  string  $size  sm|md
      * @return string
      */
-    public function getProfilePhotoURL($size = 'sm')
+    public function profilePhotoUrl($size = 'sm')
     {
-        return Upload::getUserProfilePhotoURL($this, $size);
+        if ($this->has_photo)
+        {
+            return Upload::resourceUrl('profile_photo', $this->id, "{$size}.png?cb=" . time());
+        }
+
+        return asset('assets/admin/img/avatar.png');
     }
 
     /**

@@ -98,7 +98,6 @@ class CompanyProfileController extends BaseAuthController {
     public function postAjaxUploadLogo(Request $request)
     {
         $input = $request->only('file');
-        $maxKb = 1000;
 
         // Validate input
 

@@ -40,16 +40,13 @@ class Html {
      */
     public function linkToSorting($url, $title, $column, $sortColumn, $order)
     {
-        $queryString = http_build_query([
-            'sort'  => $column,
-            'order' => ($order === 'asc') ? 'desc' : 'asc'
-        ]);
+        $query = sprintf("?sort=%s&order=%s", $column, ($order === 'asc' ? 'desc' : 'asc'));
 
         $indicator = ($column === $sortColumn)
             ? ' <i class="fa fa-angle-' . ($order === 'asc' ? 'up' : 'down') . '"></i>'
             : '';
 
-        return "<a href=\"{$url}?{$queryString}\">{$title}{$indicator}</a>";
+        return "<a href=\"{$url}{$query}\">{$title}{$indicator}</a>";
     }
 
     /**

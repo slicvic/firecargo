@@ -81,7 +81,7 @@ class UserProfileController extends BaseAuthController {
         }
         else
         {
-            $this->updateAdminAndAgentProfile($request);
+            $this->updateAdminAgentProfile($request);
         }
 
         return $this->redirectBackWithSuccess('Your profile was updated.');
@@ -172,7 +172,7 @@ class UserProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return void
      */
-    private function updateAdminAndAgentProfile(Request $request)
+    private function updateAdminAgentProfile(Request $request)
     {
         $input = $request->only('user');
 
