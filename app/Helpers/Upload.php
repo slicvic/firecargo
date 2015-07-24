@@ -10,24 +10,32 @@ use Intervention\Image\ImageManagerStatic as Image;
 class Upload {
 
     /**
-     * @var string  The root upload directory path.
+     * The upload directory root path.
+     *
+     * @var string
      */
     const ROOT_PATH = '/uploads/';
 
     /**
-     * @var array  Resource paths.
-     */
-    private static $resources = [
-        'profile_photo' => 'users/%ID%/images/profile/',
-        'company_logo'  => 'companies/%ID%/images/logo/'
-    ];
-
-    /**
-     * Max upload file size in KB.
+     * Maximum upload file size in KB.
      *
      * @var int
      */
     const MAX_FILE_SIZE = 10000;
+
+    /**
+     * Resource paths.
+     *
+     * @var array
+     */
+    private static $resources = [
+        'user' => [
+            'profile_photo' => 'users/{{OWNER_ID}}/images/profile/'
+        ],
+        'company' => [
+            'logo'  => 'companies/{{OWNER_ID}}/images/logo/'
+        ]
+    ];
 
     /**
      * Saves a user profile photo.
@@ -41,7 +49,7 @@ class Upload {
     {
         // Create destination directory
 
-        $destination = self::resourcePath('profile_photo', $userId);
+        $destination = self::resourcePath('user.profile_photo', $userId);
 
         if ( ! file_exists($destination))
         {
@@ -60,7 +68,7 @@ class Upload {
             Image::make($file->getPathName())
                 ->orientate()
                 ->resize($dimension, $dimension)
-                ->save($destination . "{$filename}.png");
+                ->save("{$destination}{$filename}.png");
         }
 
         // Remove temp file
@@ -80,7 +88,7 @@ class Upload {
     {
          // Create destination directory
 
-        $destination = self::resourcePath('company_logo', $companyId);
+        $destination = self::resourcePath('company.logo', $companyId);
 
         if ( ! file_exists($destination))
         {
@@ -103,7 +111,7 @@ class Upload {
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })
-                ->save($destination . "{$filename}.png");
+                ->save("{$destination}{$filename}.png");
         }
 
         // Remove temp file
@@ -114,15 +122,18 @@ class Upload {
     /**
      * Gets the path to a resource folder.
      *
-     * @param  string  $key  The resource name
-     * @param  int     $id   The owner id
-     * @return string
      * @see    Upload::$resources
+     *
+     * @param  string  $key
+     * @param  int     $ownerId
+     * @return string
      */
-    private static function resourcePath($key, $id)
+    private static function resourcePath($key, $ownerId)
     {
+        $keyParts = explode('.', $key);
+
         $path = public_path() . self::ROOT_PATH;
-        $path .= str_replace('%ID%', $id, self::$resources[$key]);
+        $path .= str_replace('{{OWNER_ID}}', $ownerId, self::$resources[$keyParts[0]][$keyParts[1]]);
 
         return $path;
     }
@@ -130,16 +141,19 @@ class Upload {
     /**
      * Gets the url to a resource.
      *
-     * @param  string  $key       The resource name
-     * @param  int     $id        The owner id
-     * @param  string  $filename  The resource filename
-     * @return string
      * @see    Upload::$resources
+     *
+     * @param  string  $key
+     * @param  string  $filename
+     * @param  int     $ownerId
+     * @return string
      */
-    public static function resourceUrl($key, $id, $filename)
+    public static function resourceUrl($key, $filename, $ownerId)
     {
+        $keyParts = explode('.', $key);
+
         $path = self::ROOT_PATH;
-        $path .= str_replace('%ID%', $id, self::$resources[$key]);
+        $path .= str_replace('{{OWNER_ID}}', $ownerId, self::$resources[$keyParts[0]][$keyParts[1]]);
         $path .= $filename . '?cb=' . time();
 
         return url($path);

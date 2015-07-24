@@ -44,7 +44,7 @@ class UserObserver {
             $account->email = $user->email;
             $account->type_id = AccountType::CLIENT;
             $account->name = "{$account->firstname} {$account->lastname}";
-            $account->user()->associate($user);
+            $account->ownerUser()->associate($user);
             $account->save();
         }
     }

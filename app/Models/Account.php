@@ -16,16 +16,22 @@ class Account extends Base {
     use CompanyTrait, PresentableTrait;
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'accounts';
 
     /**
+     * The presenter instance.
+     *
      * @var Presenter
      */
     protected $presenter = 'App\Presenters\Account';
 
     /**
+     * A list of fillable fields.
+     *
      * @var array
      */
     protected $fillable = [
@@ -55,6 +61,24 @@ class Account extends Base {
     }
 
     /**
+     * Overrides parent method to sanitize attributes.
+     *
+     * @see parent::setAttribute()
+     */
+    public function setAttribute($key, $value)
+    {
+        switch ($key)
+        {
+            case 'firstname':
+            case 'lastname':
+                $value = ucwords(strtolower(trim($value)));
+                break;
+        }
+
+        return parent::setAttribute($key, $value);
+    }
+
+    /**
      * Gets the account type.
      *
      * @return Role
@@ -75,19 +99,19 @@ class Account extends Base {
     }
 
     /**
-     * Gets the account parent user.
+     * Gets the account owner.
      *
-     * NOTE: ONLY "CLIENT" ACCOUNTS HAVE A USER.
+     * NOTICE: ONLY "CLIENT" ACCOUNTS SHOULD HAVE A USER ASSIGNED.
      *
      * @return User
      */
-    public function user()
+    public function ownerUser()
     {
         return $this->belongsTo('App\Models\User');
     }
 
     /**
-     * Checks if the account is a registered client.
+     * Checks if the account is of a "client" type.
      *
      * @return bool
      */
@@ -97,27 +121,9 @@ class Account extends Base {
     }
 
     /**
-     * Overrides parent method to sanitize certain attributes.
-     *
-     * @see parent::setAttribute()
-     */
-    public function setAttribute($key, $value)
-    {
-        switch ($key)
-        {
-            case 'firstname':
-            case 'lastname':
-                $value = ucwords(strtolower(trim($value)));
-                break;
-        }
-
-        return parent::setAttribute($key, $value);
-    }
-
-    /**
      * Finds accounts matching the given search term.
      *
-     * @param  string   $criteria  List of criterias
+     * @param  string   $searchTerm
      * @return Builder
      */
     public static function autocompleteSearch($searchTerm)

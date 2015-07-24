@@ -8,6 +8,8 @@
 class PackageType extends Base {
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'package_types';
@@ -22,6 +24,8 @@ class PackageType extends Base {
     ];
 
     /**
+     * A list of fillable fields.
+     *
      * @var array
      */
     protected $fillable = [

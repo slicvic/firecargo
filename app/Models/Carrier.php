@@ -13,11 +13,15 @@ class Carrier extends Base {
     use PresentableTrait;
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'carriers';
 
     /**
+     * The presenter instance.
+     *
      * @var Presenter
      */
     protected $presenter = 'App\Presenters\Carrier';
@@ -32,6 +36,8 @@ class Carrier extends Base {
     ];
 
     /**
+     * A list of fillable fields.
+     *
      * @var array
      */
     protected $fillable = [
@@ -39,6 +45,28 @@ class Carrier extends Base {
         'code',
         'prefix',
     ];
+
+    /**
+     * Overrides parent method to sanitize attributes.
+     *
+     * @see parent::setAttribute()
+     */
+    public function setAttribute($key, $value)
+    {
+        switch ($key)
+        {
+            case 'name':
+                // Strip all non-alpha-numeric characters except spaces, (), /
+                $value = preg_replace('/[^a-z0-9()\/ ]/i', '', $value);
+                // Strip consecutive spaces
+                $value = preg_replace('/\s+/S', ' ', $value);
+                // Trim and uppercase
+                $value = strtoupper(trim($value));
+                break;
+        }
+
+        return parent::setAttribute($key, $value);
+    }
 
     /**
      * Finds carriers matching the given search term.
@@ -62,40 +90,5 @@ class Carrier extends Base {
             ])
             ->limit(25)
             ->get();
-    }
-
-    /**
-     * Overrides parent method to sanitize certain attributes.
-     *
-     * @see parent::setAttribute()
-     */
-    public function setAttribute($key, $value)
-    {
-        switch ($key)
-        {
-            case 'name':
-                $value = self::sanitizeName($value);
-                break;
-        }
-
-        return parent::setAttribute($key, $value);
-    }
-
-    /**
-     * Sanitizes a carrier name.
-     *
-     * @param  string  $name
-     * @return string
-     */
-    public static function sanitizeName($name)
-    {
-        // Strip all non-alpha-numeric characters except spaces, (), /
-        $name = preg_replace('/[^a-z0-9()\/ ]/i', '', $name);
-        // Strip consecutive spaces
-        $name = preg_replace('/\s+/S', ' ', $name);
-        // Trim and uppercase
-        $name = strtoupper(trim($name));
-
-        return $name;
     }
 }

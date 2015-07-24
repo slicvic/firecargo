@@ -8,6 +8,8 @@
 class WarehouseStatus extends Base {
 
     /**
+     * The statuses enums.
+     *
      * @var int
      */
     const STATUS_NEW      = 1;
@@ -15,6 +17,8 @@ class WarehouseStatus extends Base {
     const STATUS_COMPLETE = 3;
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'warehouse_statuses';

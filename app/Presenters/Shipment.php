@@ -11,7 +11,7 @@ use App\Helpers\Currency;
 class Shipment extends BasePresenter {
 
     /**
-     * Presents the shipment carrier's name.
+     * Presents the carrier name.
      *
      * @return string
      */
@@ -30,12 +30,7 @@ class Shipment extends BasePresenter {
         $creator = ($this->model->creator_user_id) ? $this->model->creator->present()->fullname() : NULL;
         $date = date('m/d/y g:i A', strtotime($this->model->created_at));
 
-        if ( ! $creator)
-        {
-            return $date;
-        }
-
-        return $date . ' by ' . $creator;
+        return $date . ($creator ? ' by ' . $creator : '');
     }
 
     /**
@@ -48,17 +43,12 @@ class Shipment extends BasePresenter {
         $updater = ($this->model->updater_user_id) ? $this->model->updater->present()->fullname() : NULL;
         $date = date('m/d/y g:i A', strtotime($this->model->created_at));
 
-        if ( ! $updater)
-        {
-            return $date;
-        }
-
-        return $date . ' by ' . $updater;
+        return $date . ($updater ? ' by ' . $updater : '');
     }
 
 
     /**
-     * Presents the shipment departed date.
+     * Presents the departed date.
      *
      * @return string
      */
@@ -70,7 +60,7 @@ class Shipment extends BasePresenter {
     }
 
     /**
-     * Presents the shipment total value.
+     * Presents the total value of the shipment.
      *
      * @return string
      */

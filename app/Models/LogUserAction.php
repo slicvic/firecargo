@@ -8,6 +8,8 @@
 class LogUserAction extends Base {
 
     /**
+     * The actions enums.
+     *
      * @var string
      */
     const CREATE = 'create';
@@ -16,6 +18,8 @@ class LogUserAction extends Base {
     const DELETE = 'delete';
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'log_user_actions';

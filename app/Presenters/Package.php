@@ -12,7 +12,7 @@ use Html;
 class Package extends BasePresenter {
 
     /**
-     * Presents the package status.
+     * Presents the status.
      *
      * @return string
      */
@@ -32,7 +32,7 @@ class Package extends BasePresenter {
     }
 
     /**
-     * Presents the package dimensions.
+     * Presents the dimensions.
      *
      * @return string
      */
@@ -42,7 +42,7 @@ class Package extends BasePresenter {
     }
 
     /**
-     * Presents the package weight.
+     * Presents the weight.
      *
      * @return string
      */
@@ -52,17 +52,17 @@ class Package extends BasePresenter {
     }
 
     /**
-     * Presents the package warehouse link.
+     * Presents the link to the warehouse.
      *
      * @return string
      */
     public function warehouseLink()
     {
-        return Html::link("/warehouses/show/{$this->model->warehouse_id}", $this->model->warehouse_id, [], TRUE);
+        return Html::linkWithIcon("/warehouses/show/{$this->model->warehouse_id}", $this->model->warehouse_id);
     }
 
     /**
-     * Presents the package shipment link.
+     * Presents the link to the shipment.
      *
      * @return string
      */
@@ -70,20 +70,17 @@ class Package extends BasePresenter {
     {
         if ($this->model->shipment_id)
         {
-            return Html::link(
+            return Html::linkWithIcon(
                 "/shipments/show/{$this->model->shipment_id}",
-                "{$this->model->shipment->carrier->name} ({$this->model->shipment->reference_number})",
-                [],
-                TRUE
+                "{$this->model->shipment->carrier->name} ({$this->model->shipment->reference_number})"
             );
-
         }
 
         return 'N/A';
     }
 
     /**
-     * Presents the package color status.
+     * Presents the shipment status as a color.
      *
      * @return string
      */
@@ -93,7 +90,7 @@ class Package extends BasePresenter {
     }
 
     /**
-     * Presents the package invoice amount.
+     * Presents the invoice amount.
      *
      * @param  bool  $showSign
      * @return string

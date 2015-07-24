@@ -3,7 +3,6 @@
 use DB;
 
 use App\Presenters\PresentableTrait;
-use App\Helpers\Upload;
 
 /**
  * Company
@@ -15,16 +14,22 @@ class Company extends Base {
     use PresentableTrait;
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'companies';
 
     /**
+     * The presenter instance.
+     *
      * @var Presenter
      */
     protected $presenter = 'App\Presenters\Company';
 
     /**
+     * A list of fillable fields.
+     *
      * @var array
      */
     protected $fillable = [
@@ -44,21 +49,5 @@ class Company extends Base {
     public function address()
     {
         return $this->hasOne('App\Models\Address');
-    }
-
-    /**
-     * Gets the company logo URL.
-     *
-     * @param  string  $size  sm|md|lg
-     * @return string
-     */
-    public function logoUrl($size = 'sm')
-    {
-        if ($this->has_logo)
-        {
-            return Upload::resourceUrl('company_logo', $this->id, "{$size}.png");
-        }
-
-        return asset('assets/admin/img/avatar.png');
     }
 }

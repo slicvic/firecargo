@@ -2,6 +2,7 @@
 
 use App\Presenters\BasePresenter;
 use App\Models\Role;
+use App\Helpers\Upload;
 use Html;
 
 /**
@@ -12,7 +13,7 @@ use Html;
 class User extends BasePresenter {
 
     /**
-     * Presents the user fullname.
+     * Presents the full name.
      *
      * @return string
      */
@@ -22,7 +23,23 @@ class User extends BasePresenter {
     }
 
     /**
-     * Presents the user role.
+     * Presents the profile photo URL.
+     *
+     * @param  string  $size  sm|md
+     * @return string
+     */
+    public function profilePhotoUrl($size = 'sm')
+    {
+        if ($this->model->has_photo)
+        {
+            return Upload::resourceUrl('user.profile_photo', "{$size}.png", $this->model->id);
+        }
+
+        return asset('assets/admin/img/avatar.png');
+    }
+
+    /**
+     * Presents the role.
      *
      * @return HTML string
      */

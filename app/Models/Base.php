@@ -52,7 +52,6 @@ abstract class Base extends Model {
     /**
      * Logs the database operation.
      *
-     *
      * @param  string  $action  create|read|update|delete
      * @return void
      */

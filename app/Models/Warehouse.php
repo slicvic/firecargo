@@ -16,16 +16,22 @@ class Warehouse extends Base {
     use CompanyTrait, PresentableTrait;
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'warehouses';
 
     /**
+     * The presenter instance.
+     *
      * @var Presenter
      */
     protected $presenter = 'App\Presenters\Warehouse';
 
     /**
+     * A list of fillable fields.
+     *
      * @var array
      */
     protected $fillable = [
@@ -252,27 +258,32 @@ class Warehouse extends Base {
      */
     public static function search(array $criteria = NULL, $sort = 'id', $order = 'desc', $perPage = 15)
     {
-        $sortColumns = [
+        $validStatusFilters = [
+            'new'      => WarehouseStatus::STATUS_NEW,
+            'pending'  => WarehouseStatus::STATUS_PENDING,
+            'complete' => WarehouseStatus::STATUS_COMPLETE
+        ];
+
+        // Verify sort and order
+
+        $validSortColumns = [
             'id',
             'arrived_at',
             'created_at',
             'updated_at'
         ];
 
-        $statuses = [
-            'new'      => WarehouseStatus::STATUS_NEW,
-            'pending'  => WarehouseStatus::STATUS_PENDING,
-            'complete' => WarehouseStatus::STATUS_COMPLETE
-        ];
+        $sort = in_array($sort, $validSortColumns) ? $sort : 'id';
+
+        $order = ($order === 'asc') ? 'asc' : 'desc';
 
         // Build query
-        $sort = in_array($sort, $sortColumns) ? $sort : 'id';
-        $order = ($order === 'asc') ? 'asc' : 'desc';
+
         $query = Warehouse::query()->orderBy('warehouses.' . $sort, $order);
 
-        if (isset($criteria['status']) && array_key_exists($criteria['status'], $statuses))
+        if (isset($criteria['status']) && array_key_exists($criteria['status'], $validStatusFilters))
         {
-            $query = $query->where('warehouses.status_id', '=', $statuses[$criteria['status']]);
+            $query = $query->where('warehouses.status_id', '=', $validStatusFilters[$criteria['status']]);
         }
 
         if (isset($criteria['company_id']))

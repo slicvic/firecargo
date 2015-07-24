@@ -10,6 +10,8 @@ class Site extends Base {
     use CompanyTrait;
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'sites';
@@ -24,6 +26,8 @@ class Site extends Base {
     ];
 
     /**
+     * A list of fillable fields.
+     *
      * @var array
      */
     protected $fillable = [

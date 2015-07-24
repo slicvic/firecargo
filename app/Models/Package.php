@@ -16,11 +16,15 @@ class Package extends Base {
     use PresentableTrait, SoftDeletes, CompanyTrait;
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'packages';
 
     /**
+     * The presenter instance.
+     *
      * @var array
      */
     protected $presenter = 'App\Presenters\Package';
@@ -33,6 +37,8 @@ class Package extends Base {
     protected $dates = ['deleted_at'];
 
     /**
+     * A list of fillable fields.
+     *
      * @var array
      */
     protected $fillable = [
@@ -122,8 +128,7 @@ class Package extends Base {
     }
 
     /**
-     * Retrieves all packages eligible for shipment that are still pending shipment.
-     * by the given company id.
+     * Retrieves all packages eligible for shipment by the given company id.
      *
      * @param  int  $companyId
      * @return array

@@ -12,6 +12,8 @@ class PackageStatus extends Base {
     use CompanyTrait;
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'package_statuses';
@@ -26,6 +28,8 @@ class PackageStatus extends Base {
     ];
 
     /**
+     * A list of fillable fields.
+     *
      * @var array
      */
     protected $fillable = [

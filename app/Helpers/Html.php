@@ -13,19 +13,11 @@ class Html {
      * @param  string  $url
      * @param  string  $title
      * @param  array   $attributes
-     * @param  bool    $icon
      * @return string
      */
-    public function link($url, $title, array $attributes = array(), $icon = FALSE)
+    public function linkWithIcon($url, $title, array $attributes = [])
     {
-        $html = sprintf('<a href="%s"%s>%s</a>', $url, $this->attributes($attributes), $title);
-
-        if ($icon)
-        {
-            $html .= ' <i class="fa fa-link"></i>';
-        }
-
-        return $html;
+        return sprintf('<a href="%s"%s>%s</a> <i class="fa fa-link"></i>', $url, $this->attributes($attributes), $title);
     }
 
     /**
@@ -40,11 +32,8 @@ class Html {
      */
     public function linkToSorting($url, $title, $column, $sortColumn, $order)
     {
-        $query = sprintf("?sort=%s&order=%s", $column, ($order === 'asc' ? 'desc' : 'asc'));
-
-        $indicator = ($column === $sortColumn)
-            ? ' <i class="fa fa-angle-' . ($order === 'asc' ? 'up' : 'down') . '"></i>'
-            : '';
+        $query = sprintf('?sort=%s&order=%s', $column, ($order === 'asc' ? 'desc' : 'asc'));
+        $indicator = ($column === $sortColumn) ? ' <i class="fa fa-angle-' . ($order === 'asc' ? 'up' : 'down') . '"></i>' : '';
 
         return "<a href=\"{$url}{$query}\">{$title}{$indicator}</a>";
     }
@@ -57,14 +46,14 @@ class Html {
      */
     private function attributes(array $attributes)
     {
-        if (empty($attributes))
+        if ( ! count($attributes))
         {
             return '';
         }
 
         $html = [];
 
-        foreach ((array) $attributes as $name => $value)
+        foreach ($attributes as $name => $value)
         {
             $html[] = sprintf('%s="%s"', $name, $value);
         }

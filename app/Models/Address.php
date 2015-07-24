@@ -10,11 +10,15 @@ use DB;
 class Address extends Base {
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'addresses';
 
     /**
+     * A list of fillable fields.
+     *
      * @var array
      */
     protected $fillable = [
@@ -25,16 +29,6 @@ class Address extends Base {
         'postal_code',
         'country_id'
     ];
-
-    /**
-     * Gets the country.
-     *
-     * @return Country
-     */
-    public function country()
-    {
-        return $this->belongsTo('App\Models\Country');
-    }
 
     /**
      * Overrides parent method to sanitize attributes.
@@ -54,6 +48,16 @@ class Address extends Base {
         }
 
         return parent::setAttribute($key, $value);
+    }
+
+    /**
+     * Gets the country.
+     *
+     * @return Country
+     */
+    public function country()
+    {
+        return $this->belongsTo('App\Models\Country');
     }
 
     /**

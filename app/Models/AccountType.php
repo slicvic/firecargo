@@ -8,6 +8,8 @@
 class AccountType extends Base {
 
     /**
+     * The account types enums.
+     *
      * @var int
      */
     const CLIENT    = 1;
@@ -15,12 +17,14 @@ class AccountType extends Base {
     const SHIPPER   = 4;
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'account_types';
 
     /**
-     * Retrieves all account types with the exception of "Client".
+     * Retrieves all account types with the exception of "client" type.
      *
      * @return AccountType[]
      */

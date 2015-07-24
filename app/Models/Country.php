@@ -8,6 +8,8 @@
 class Country extends Base {
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'countries';

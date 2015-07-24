@@ -22,7 +22,7 @@ class Account extends BasePresenter {
     }
 
     /**
-     * Presents the account address.
+     * Presents the address as a string.
      *
      * @return string
      */
@@ -32,9 +32,9 @@ class Account extends BasePresenter {
     }
 
     /**
-     * Presents the account type.
+     * Presents the account type as a badge.
      *
-     * @return HTML string
+     * @return html
      */
     public function type()
     {

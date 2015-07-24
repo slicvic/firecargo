@@ -10,6 +10,8 @@ use Auth;
 class Role extends Base {
 
     /**
+     * The roles enums.
+     *
      * @var int
      */
     const SUPER_ADMIN = 1;
@@ -17,6 +19,8 @@ class Role extends Base {
     const CLIENT      = 9;
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'roles';
@@ -31,6 +35,8 @@ class Role extends Base {
     ];
 
     /**
+     * A list of fillable fields.
+     *
      * @var array
      */
     protected $fillable = [

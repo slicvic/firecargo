@@ -15,16 +15,22 @@ class Shipment extends Base {
     use CompanyTrait, PresentableTrait;
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'shipments';
 
     /**
+     * The presenter instance.
+     *
      * @var Presenter
      */
     protected $presenter = 'App\Presenters\Shipment';
 
     /**
+     * A list of fillable fields.
+     *
      * @var array
      */
     protected $fillable = [
@@ -43,6 +49,25 @@ class Shipment extends Base {
         parent::boot();
 
         Shipment::observe(new ShipmentObserver);
+    }
+
+    /**
+     * Overrides parent method to sanitize attributes.
+     *
+     * @see parent::setAttribute()
+     */
+    public function setAttribute($key, $value)
+    {
+        switch ($key) {
+            case 'departed_at':
+                $value = date('Y-m-d H:i:s', strtotime($value));
+                break;
+            case 'reference_number':
+                $value = strtoupper($value);
+                break;
+        }
+
+        return parent::setAttribute($key, $value);
     }
 
     /**
@@ -86,43 +111,20 @@ class Shipment extends Base {
     }
 
     /**
-     * Overrides parent method to sanitize attributes.
-     *
-     * @see parent::setAttribute()
-     */
-    public function setAttribute($key, $value)
-    {
-        switch ($key) {
-            case 'departed_at':
-                $value = date('Y-m-d H:i:s', strtotime($value));
-                break;
-            case 'reference_number':
-                $value = strtoupper($value);
-                break;
-        }
-
-        return parent::setAttribute($key, $value);
-    }
-
-    /**
      * Attaches the given packages to the shipment.
      *
-     * WARNING: After this operation is complete only the packages in the array
-     * will remain in the shipment.
+     * NOTICE: AFTER THIS OPERATION IS COMPLETE ONLY THE GIVEN PACKAGE IDs
+     * WILL REAMIN IN THE SHIPMENT.
      *
      * @param  array  $packageIds
-     * @param  bool   $detaching
      * @return void
-     * */
-    public function syncPackages(array $packageIds, $detaching = TRUE)
+     */
+    public function syncPackages(array $packageIds)
     {
         // First lets detach the packages not in $packageIds
-        if ($detaching)
-        {
-            Package::whereNotIn('id', $packageIds)
-                ->where('shipment_id', '=', $this->id)
-                ->update(['shipment_id' => NULL]);
-        }
+        Package::whereNotIn('id', $packageIds)
+            ->where('shipment_id', '=', $this->id)
+            ->update(['shipment_id' => NULL]);
 
         // Next, we'll attach the given packages
         if (count($packageIds))
@@ -153,16 +155,20 @@ class Shipment extends Base {
      */
     public static function search(array $criteria = NULL, $sort = 'id', $order = 'desc', $perPage = 15)
     {
-        $sortColumns = [
+        // Verify sort and order
+
+        $validSortColumns = [
             'id',
             'departed_at',
             'created_at',
             'updated_at'
         ];
 
-        // Build query
-        $sort = in_array($sort, $sortColumns) ? $sort : 'id';
+        $sort = in_array($sort, $validSortColumns) ? $sort : 'id';
+
         $order = ($order === 'asc') ? 'asc' : 'desc';
+
+        // Build query
 
         $shipments = Shipment::query()->orderBy('shipments.' . $sort, $order);
 

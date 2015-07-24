@@ -8,7 +8,6 @@ use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
 use App\Presenters\PresentableTrait;
 use App\Observers\UserObserver;
-use App\Helpers\Upload;
 
 /**
  * User
@@ -20,16 +19,22 @@ class User extends Base implements AuthenticatableInterface {
     use AuthenticableTrait, CompanyTrait, PresentableTrait;
 
     /**
+     * The database table name.
+     *
      * @var string
      */
     protected $table = 'users';
 
     /**
+     * The presenter instance.
+     *
      * @var Presenter
      */
     protected $presenter = 'App\Presenters\User';
 
     /**
+     * A list of fillable fields.
+     *
      * @var array
      */
     protected $fillable = [
@@ -56,6 +61,28 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
+     * Overrides parent method to sanitize attributes.
+     *
+     * @see parent::setAttribute()
+     */
+    public function setAttribute($key, $value)
+    {
+        switch ($key)
+        {
+            case 'firstname':
+            case 'lastname':
+                $value = ucwords(strtolower(trim($value)));
+                break;
+
+            case 'password':
+                $value = empty($value) ? $this->password : Hash::make($value);
+                break;
+        }
+
+        return parent::setAttribute($key, $value);
+    }
+
+    /**
      * Gets the role of the user.
      *
      * @return Role
@@ -68,7 +95,7 @@ class User extends Base implements AuthenticatableInterface {
     /**
      * Gets the account associated with the user.
      *
-     * NOTE: ONLY "CLIENT" USERS HAVE AN ACCOUNT.
+     * NOTICE: ONLY "CLIENT" USERS HAVE AN ACCOUNT ASSIGNED.
      *
      * @return Account
      */
@@ -139,45 +166,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Overrides parent method to sanitize attributes.
-     *
-     * @see parent::setAttribute()
-     */
-    public function setAttribute($key, $value)
-    {
-        switch ($key)
-        {
-            case 'firstname':
-            case 'lastname':
-                $value = ucwords(strtolower(trim($value)));
-                break;
-
-            case 'password':
-                $value = empty($value) ? $this->password : Hash::make($value);
-                break;
-        }
-
-        return parent::setAttribute($key, $value);
-    }
-
-    /**
-     * Gets the profile photo URL.
-     *
-     * @param  string  $size  sm|md
-     * @return string
-     */
-    public function profilePhotoUrl($size = 'sm')
-    {
-        if ($this->has_photo)
-        {
-            return Upload::resourceUrl('profile_photo', $this->id, "{$size}.png");
-        }
-
-        return asset('assets/admin/img/avatar.png');
-    }
-
-    /**
-     * Validates the given credentials.
+     * Validates the given login credentials.
      *
      * @param  string  $email
      * @param  string  $password

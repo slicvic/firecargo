@@ -2,6 +2,11 @@
 
 use Auth;
 
+/**
+ * CompanyTrait
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 trait CompanyTrait {
 
     /**
@@ -29,7 +34,7 @@ trait CompanyTrait {
     }
 
     /**
-     * Finds a model by its id and company id.
+     * Finds a model by its id and the current user's company id.
      *
      * @param  int  $id
      * @return Model|null
