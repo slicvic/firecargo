@@ -69,12 +69,7 @@ class RolesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $role = Role::find($id);
-
-        if ( ! $role)
-        {
-            return $this->redirectBackWithError('Role not found.');
-        }
+        $role = Role::findOrFail($id);
 
         return view('roles.edit', ['role' => $role]);
     }
@@ -94,14 +89,7 @@ class RolesController extends BaseAuthController {
         $this->validate($input, Role::$rules);
 
         // Update role
-        $role = Role::find($id);
-
-        if ( ! $role)
-        {
-            return $this->redirectBackWithError('Role not found.');
-        }
-
-        $role->update($input);
+        Role::findOrFail($id)->update($input);
 
         return $this->redirectBackWithSuccess('Role updated.');
     }

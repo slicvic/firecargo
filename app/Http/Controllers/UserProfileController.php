@@ -81,7 +81,7 @@ class UserProfileController extends BaseAuthController {
         }
         else
         {
-            $this->updateAdminAgentProfile($request);
+            $this->updateAgentAdminProfile($request);
         }
 
         return $this->redirectBackWithSuccess('Your profile was updated.');
@@ -108,7 +108,6 @@ class UserProfileController extends BaseAuthController {
         $input = $request->all();
 
         // Validate input
-
         $rules = [
             'current_password' => 'required',
             'new_password' => 'required|min:8',
@@ -118,7 +117,6 @@ class UserProfileController extends BaseAuthController {
         $this->validate($input, $rules);
 
         // Change password
-
         if ( ! Hash::check($input['current_password'], $this->authUser->password))
         {
             return $this->redirectBackWithError('The password you entered does not match your current one.');
@@ -141,7 +139,6 @@ class UserProfileController extends BaseAuthController {
         $input = $request->only('file');
 
         // Validate input
-
         $validator = Validator::make($input, [
             'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . Upload::MAX_FILE_SIZE
         ]);
@@ -152,7 +149,6 @@ class UserProfileController extends BaseAuthController {
         }
 
         // Save photo
-
         try
         {
             Upload::saveUserProfilePhoto($input['file'], $this->authUser->id);
@@ -172,7 +168,7 @@ class UserProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return void
      */
-    private function updateAdminAgentProfile(Request $request)
+    private function updateAgentAdminProfile(Request $request)
     {
         $input = $request->only('user');
 
@@ -200,7 +196,6 @@ class UserProfileController extends BaseAuthController {
         $input = $request->only('account', 'address');
 
         // Validate input
-
         $rules = [
             'email' => 'required|email|unique:users,email,' . $this->authUser->id,
             'firstname' => 'required',
@@ -210,14 +205,12 @@ class UserProfileController extends BaseAuthController {
         $this->validate($input['account'], $rules);
 
         // Update user
-
         $this->authUser->firstname = $input['account']['firstname'];
         $this->authUser->lastname = $input['account']['lastname'];
         $this->authUser->email = $input['account']['email'];
         $this->authUser->save();
 
         // Update user's account
-
         $account = $this->authUser->account;
         $account->firstname = $input['account']['firstname'];
         $account->lastname = $input['account']['lastname'];

@@ -44,7 +44,7 @@ class UsersController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for creating a user.
+     * Shows the form for creating a new user.
      *
      * @return Response
      */
@@ -64,7 +64,6 @@ class UsersController extends BaseAuthController {
         $input = $this->beforeValidate($request);
 
         // Validate input
-
         $rules = [
             'company_id' => 'required',
             'role_id' => 'required',
@@ -77,13 +76,7 @@ class UsersController extends BaseAuthController {
         $this->validate($input['user'], $rules);
 
         // Create user
-
-        $user = new User($input['user']);
-
-        if ( ! $user->save())
-        {
-            return $this->redirectBackWithError('User creation failed, please try again.');
-        }
+        User::create($input['user']);
 
         return $this->redirectWithSuccess('users', 'User created.');
     }
@@ -97,12 +90,7 @@ class UsersController extends BaseAuthController {
      */
     public function getEdit(Request $request, $id)
     {
-        $user = User::find($id);
-
-        if ( ! $user)
-        {
-            return $this->redirectBackWithError('User not found.');
-        }
+        $user = User::findOrFail($id);
 
         return view('users.edit', ['user' => $user]);
     }
@@ -119,7 +107,6 @@ class UsersController extends BaseAuthController {
         $input = $this->beforeValidate($request);
 
         // Validate input
-
         $rules = [
             'company_id' => 'required',
             'role_id' => 'required',
@@ -132,15 +119,7 @@ class UsersController extends BaseAuthController {
         $this->validate($input['user'], $rules);
 
         // Update user
-
-        $user = User::find($id);
-
-        if ( ! $user)
-        {
-            return $this->redirectBackWithError('User not found.');
-        }
-
-        $user->update($input['user']);
+        User::findOrFail($id)->update($input['user']);
 
         return $this->redirectBackWithSuccess('User updated.');
     }

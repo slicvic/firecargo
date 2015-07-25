@@ -3,6 +3,7 @@
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exception\HttpResponseException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use App\Exceptions\ValidationException;
 use Flash;
@@ -44,6 +45,10 @@ class Handler extends ExceptionHandler {
 		if ($e instanceof ValidationException) {
 			Flash::error($e->errors());
 			return redirect()->back()->withInput();
+		}
+		elseif ($e instanceof ModelNotFoundException) {
+			Flash::error('The record you are looking for was not found.');
+			return redirect()->back();
 		}
 
 		return parent::render($request, $e);

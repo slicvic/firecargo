@@ -8,7 +8,7 @@
 class WarehouseStatus extends Base {
 
     /**
-     * The statuses enums.
+     * The types of statuses.
      *
      * @var int
      */

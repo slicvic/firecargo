@@ -86,7 +86,7 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for creating a warehouse.
+     * Shows the form for creating a new warehouse.
      *
      * @return Response
      */
@@ -108,7 +108,6 @@ class WarehousesController extends BaseAuthController {
             $warehouse = new Warehouse;
 
             // Validate input and save warehouse
-
             if ( ! $this->validateAndSave($request, $warehouse))
             {
                 return response()->json(['error' => Flash::view('Warehouse creation failed, please try again.')], 500);
@@ -154,7 +153,6 @@ class WarehousesController extends BaseAuthController {
         try
         {
             // Lookup warehouse
-
             $warehouse = Warehouse::findMine($id);
 
             if ( ! $warehouse)
@@ -163,7 +161,6 @@ class WarehousesController extends BaseAuthController {
             }
 
             // Validate input and save warehouse
-
             if ( ! $this->validateAndSave($request, $warehouse))
             {
                 return response()->json(['error' => Flash::view('Warehouse update failed, please try again.')], 500);
@@ -275,7 +272,6 @@ class WarehousesController extends BaseAuthController {
         $input = $request->only('warehouse', 'packages');
 
         // Validate input
-
         $rules = [
             'shipper' => 'required|min:3',
             'consignee' => 'required|min:5',
@@ -292,7 +288,6 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Create a new carrier if necessary
-
         if (empty($input['warehouse']['carrier_id']))
         {
             $carrier = Carrier::firstOrCreate(['name' => $input['warehouse']['carrier']]);
@@ -301,7 +296,6 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Create a new shipper account if necessary
-
         if (empty($input['warehouse']['shipper_account_id']))
         {
             $shipper = Account::firstOrCreate([
@@ -314,7 +308,6 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Create a new consignee account if necessary
-
         if (empty($input['warehouse']['consignee_account_id']))
         {
             $consignee = Account::firstOrCreate([
@@ -327,7 +320,6 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Save warehouse
-
         $warehouse->arrived_at = date('Y-m-d H:i:s', strtotime($input['warehouse']['date'] . $input['warehouse']['time']));
         $warehouse->shipper_account_id = $input['warehouse']['shipper_account_id'];
         $warehouse->consignee_account_id = $input['warehouse']['consignee_account_id'];
@@ -340,7 +332,6 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Save packages
-
         if ($input['packages'])
         {
             $warehouse->createOrUpdatePackages($input['packages']);

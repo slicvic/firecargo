@@ -8,7 +8,7 @@
 class AccountType extends Base {
 
     /**
-     * The account types enums.
+     * The account types.
      *
      * @var int
      */

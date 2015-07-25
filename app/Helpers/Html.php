@@ -46,18 +46,18 @@ class Html {
      */
     private function attributes(array $attributes)
     {
-        if ( ! count($attributes))
+        if (empty($attributes))
         {
             return '';
         }
 
-        $html = [];
+        $html = ' ';
 
         foreach ($attributes as $name => $value)
         {
-            $html[] = sprintf('%s="%s"', $name, $value);
+            $html .= sprintf('%s="%s"', $name, $value);
         }
 
-        return ' ' . implode(' ', $html);
+        return $html;
     }
 }

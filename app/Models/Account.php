@@ -16,6 +16,17 @@ class Account extends Base {
     use CompanyTrait, PresentableTrait;
 
     /**
+     * Rules for validation.
+     *
+     * @var array
+     */
+    public static $rules = [
+        'type_id' => 'required',
+        'email' => 'email',
+        'name' => 'required'
+    ];
+    
+    /**
      * The database table name.
      *
      * @var string
@@ -101,11 +112,11 @@ class Account extends Base {
     /**
      * Gets the account owner.
      *
-     * NOTICE: ONLY "CLIENT" ACCOUNTS SHOULD HAVE A USER ASSIGNED.
+     * NOTICE: ONLY "CLIENT" ACCOUNTS HAVE A USER ASSIGNED.
      *
      * @return User
      */
-    public function ownerUser()
+    public function user()
     {
         return $this->belongsTo('App\Models\User');
     }

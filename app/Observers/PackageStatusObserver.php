@@ -22,7 +22,6 @@ class PackageStatusObserver {
         if ( ! $packageStatus->getOriginal('default') && $packageStatus->default)
         {
             // Unset the previous default status
-
             PackageStatus::where('company_id', $packageStatus->company_id)
                 ->where('id', '<>', $packageStatus->id)
                 ->update(['default' => FALSE]);

@@ -77,12 +77,7 @@ class SitesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $site = Site::find($id);
-
-        if ( ! $site)
-        {
-            return $this->redirectBackWithError('Site not found.');
-        }
+        $site = Site::findOrFail($id);
 
         return view('sites.edit', ['site' => $site]);
     }
@@ -102,14 +97,7 @@ class SitesController extends BaseAuthController {
         $this->validate($input, Site::$rules);
 
         // Update site
-        $site = Site::find($id);
-
-        if ( ! $site)
-        {
-            return $this->redirectBackWithError('Site not found.');
-        }
-
-        $site->update($input);
+        Site::findOrFail($id)->update($input);
 
         return $this->redirectBackWithSuccess('Site updated.');
     }

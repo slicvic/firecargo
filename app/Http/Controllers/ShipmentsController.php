@@ -76,7 +76,7 @@ class ShipmentsController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for creating a shipment.
+     * Shows the form for creating a new shipment.
      *
      * @return Response
      */
@@ -112,7 +112,6 @@ class ShipmentsController extends BaseAuthController {
             $shipment = new Shipment;
 
             // Validate input and save shipment
-
             if ( ! $this->validateAndSave($request, $shipment))
             {
                 return response()->json(['error' => Flash::view('Shipment creation failed, please try again.')], 500);
@@ -153,7 +152,7 @@ class ShipmentsController extends BaseAuthController {
             $groupedPackages[$package->warehouse_id][] = $package;
         }
 
-        // Retrieve all other packages pending shipment
+        // Retrieve all other packages eligible for shipment
         $packages = Package::allPendingShipmentByCompanyId($this->authUser->company_id);
 
         foreach ($packages as $package)
@@ -179,7 +178,6 @@ class ShipmentsController extends BaseAuthController {
         try
         {
             // Lookup shipment
-
             $shipment = Shipment::findMine($id);
 
             if ( ! $shipment)
@@ -188,7 +186,6 @@ class ShipmentsController extends BaseAuthController {
             }
 
             // Validate input and save shipment
-
             if ( ! $this->validateAndSave($request, $shipment))
             {
                 return response()->json(['error' => Flash::view('Shipment update failed, please try again.')], 500);
@@ -217,7 +214,6 @@ class ShipmentsController extends BaseAuthController {
         $input = $request->only('shipment', 'packages');
 
         // Validate input
-
         $rules = [
             'departure_date' => 'required',
             'reference_number' => 'required',
@@ -232,7 +228,6 @@ class ShipmentsController extends BaseAuthController {
         }
 
         // Create new carrier if necessary
-
         if (empty($input['shipment']['carrier_id']))
         {
             $carrier = Carrier::firstOrCreate(['name' => $input['shipment']['carrier']]);
@@ -241,7 +236,6 @@ class ShipmentsController extends BaseAuthController {
         }
 
         // Save shipment
-
         $shipment->reference_number = $input['shipment']['reference_number'];
         $shipment->departed_at = date('Y-m-d H:i:s', strtotime($input['shipment']['departure_date']));
         $shipment->carrier_id = $input['shipment']['carrier_id'];

@@ -102,7 +102,7 @@ class Package extends Base {
      */
     public function wasShipped()
     {
-        return (bool) ($this->shipment_id);
+        return (bool) $this->shipment_id;
     }
 
     /**

@@ -21,7 +21,7 @@ class Company extends BasePresenter {
     }
 
     /**
-     * Gets the logo URL.
+     * Presents the logo URL.
      *
      * @param  string  $size  sm|md|lg
      * @return string

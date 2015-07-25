@@ -113,8 +113,8 @@ class Shipment extends Base {
     /**
      * Attaches the given packages to the shipment.
      *
-     * NOTICE: AFTER THIS OPERATION IS COMPLETE ONLY THE GIVEN PACKAGE IDs
-     * WILL REAMIN IN THE SHIPMENT.
+     * NOTICE: AFTER THIS OPERATION IS COMPLETE ONLY THE GIVEN PACKAGES
+     * WILL REMAIN IN THE SHIPMENT.
      *
      * @param  array  $packageIds
      * @return void
@@ -156,7 +156,6 @@ class Shipment extends Base {
     public static function search(array $criteria = NULL, $sort = 'id', $order = 'desc', $perPage = 15)
     {
         // Verify sort and order
-
         $validSortColumns = [
             'id',
             'departed_at',
@@ -169,7 +168,6 @@ class Shipment extends Base {
         $order = ($order === 'asc') ? 'asc' : 'desc';
 
         // Build query
-
         $shipments = Shipment::query()->orderBy('shipments.' . $sort, $order);
 
         if (isset($criteria['company_id']))

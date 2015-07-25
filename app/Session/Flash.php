@@ -142,7 +142,7 @@ class Flash {
 
                 if (is_string($message) || is_array($message))
                 {
-                    // Do Nothing
+                    // Do nothing
                 }
                 elseif ($message instanceof \Illuminate\Validation\Validator)
                 {

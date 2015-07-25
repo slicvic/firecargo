@@ -8,13 +8,6 @@
 class PackageType extends Base {
 
     /**
-     * The database table name.
-     *
-     * @var string
-     */
-    protected $table = 'package_types';
-
-    /**
      * Rules for validation.
      *
      * @var array
@@ -22,6 +15,13 @@ class PackageType extends Base {
     public static $rules = [
         'name' => 'required'
     ];
+
+    /**
+     * The database table name.
+     *
+     * @var string
+     */
+    protected $table = 'package_types';
 
     /**
      * A list of fillable fields.

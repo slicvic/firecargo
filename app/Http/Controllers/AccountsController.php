@@ -46,7 +46,7 @@ class AccountsController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for creating an account.
+     * Shows the form for creating a new account.
      *
      * @return Response
      */
@@ -69,13 +69,7 @@ class AccountsController extends BaseAuthController {
         $input = $request->only('account', 'address');
 
         // Validate input
-        $rules = [
-            'type_id' => 'required',
-            'email' => 'email',
-            'name' => 'required'
-        ];
-
-        $this->validate($input['account'], $rules);
+        $this->validate($input['account'], Account::$rules);
 
         // Create account
         $account = new Account($input['account']);
@@ -99,12 +93,7 @@ class AccountsController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $account = Account::findMine($id);
-
-        if ( ! $account)
-        {
-            return $this->redirectBackWithError('Account not found.');
-        }
+        $account = Account::findMineOrFail($id);
 
         return view('accounts.edit', [
             'account' => $account,
@@ -124,22 +113,10 @@ class AccountsController extends BaseAuthController {
         $input = $request->only('account', 'address');
 
         // Validate input
-        $rules = [
-            'type_id' => 'required',
-            'email' => 'email',
-            'name' => 'required'
-        ];
-
-        $this->validate($input['account'], $rules);
+        $this->validate($input['account'], Account::$rules);
 
         // Update account
-        $account = Account::findMine($id);
-
-        if ( ! $account)
-        {
-            return $this->redirectBackWithError('Account not found.');
-        }
-
+        $account = Account::findMineOrFail($id);
         $account->update($input['account']);
 
         // Update address

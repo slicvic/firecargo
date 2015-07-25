@@ -5,7 +5,7 @@ use TCPDFBarcode;
 use App\Models\Warehouse as WarehouseModel;
 
 /**
- * WarehousesController
+ * Warehouse
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
@@ -19,14 +19,17 @@ class Warehouse {
      */
     public static function getReceipt(WarehouseModel $warehouse)
     {
+        // Create barcode
         $barcode = new TCPDFBarcode($warehouse->id, 'C128');
         $barcodeBase64 = base64_encode($barcode->getBarcodePngData(2, 30));
 
+        // Create PDF
         $pdf = new TCPDF('P', 'mm', 'A4', TRUE, 'UTF-8', FALSE);
-        // White out the header border
-        $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
         $pdf->SetFont('helvetica', '', 10);
         $pdf->SetAutoPageBreak(FALSE);
+        // White out the header border
+        $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
+        
         $pdf->AddPage();
 
         $html = view('pdfs/warehouse/receipt', [
@@ -47,17 +50,20 @@ class Warehouse {
      */
     public static function getLabel(WarehouseModel $warehouse)
     {
+        // Retrieve packages
         $packages = $warehouse->packages;
         $totalPackages = count($packages);
+
+        // Create barcode
         $barcode = new TCPDFBarcode($warehouse->id, 'C128');
         $barcodeBase64 = base64_encode($barcode->getBarcodePngData(2, 30));
 
         $pdf = new TCPDF('P', 'mm', 'A6', TRUE, 'UTF-8', FALSE);
-        // White out the header border
-        $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
         $pdf->SetFont('helvetica', '', 7);
         $pdf->SetAutoPageBreak(FALSE);
-
+        // White out the header border
+        $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
+        
         $html = view('pdfs/warehouse/label', [
             'warehouse' => $warehouse,
             'packages' => $packages,

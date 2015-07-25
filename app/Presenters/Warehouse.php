@@ -113,7 +113,7 @@ class Warehouse extends BasePresenter {
                 return 'warning';
             case WarehouseStatus::STATUS_COMPLETE:
                 return 'success';
-            default: // New
+            default:
                 return 'danger';
         }
     }

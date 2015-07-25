@@ -41,7 +41,7 @@ trait CompanyTrait {
      */
     public static function findMine($id)
     {
-        $query = static::query(['id' => $id]);
+        $query = static::query()->where('id', $id);
 
         if ( ! Auth::user()->isAdmin())
         {
@@ -49,6 +49,26 @@ trait CompanyTrait {
         }
 
         return $query->first();
+    }
+
+    /**
+     * Finds a model by its id and the current user's company id and throws
+     * exception if not found.
+     *
+     * @param  int  $id
+     * @return Model|null
+     * @throws ModelNotFoundException
+     */
+    public static function findMineOrFail($id)
+    {
+        $query = static::query()->where('id', $id);
+
+        if ( ! Auth::user()->isAdmin())
+        {
+            $query = $query->where('company_id', '=', Auth::user()->company_id);
+        }
+
+        return $query->firstOrFail();
     }
 
     /**

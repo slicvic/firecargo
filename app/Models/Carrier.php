@@ -13,6 +13,15 @@ class Carrier extends Base {
     use PresentableTrait;
 
     /**
+     * Rules for validation.
+     *
+     * @var array
+     */
+    public static $rules = [
+        'name' => 'required'
+    ];
+    
+    /**
      * The database table name.
      *
      * @var string
@@ -25,15 +34,6 @@ class Carrier extends Base {
      * @var Presenter
      */
     protected $presenter = 'App\Presenters\Carrier';
-
-    /**
-     * Rules for validation.
-     *
-     * @var array
-     */
-    public static $rules = [
-        'name' => 'required'
-    ];
 
     /**
      * A list of fillable fields.
@@ -56,7 +56,7 @@ class Carrier extends Base {
         switch ($key)
         {
             case 'name':
-                // Strip all non-alpha-numeric characters except spaces, (), /
+                // Strip all non alpha-numeric characters except spaces, (), /
                 $value = preg_replace('/[^a-z0-9()\/ ]/i', '', $value);
                 // Strip consecutive spaces
                 $value = preg_replace('/\s+/S', ' ', $value);

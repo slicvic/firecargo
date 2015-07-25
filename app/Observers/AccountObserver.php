@@ -8,6 +8,7 @@ use App\Models\AccountType;
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
 class AccountObserver {
+
     /**
      * Before save event.
      *
@@ -18,7 +19,7 @@ class AccountObserver {
     {
         if ($account->getOriginal('type_id') == AccountType::CLIENT && $account->getAttribute('type_id') != AccountType::CLIENT)
         {
-            // CANNOT CHANGE "CLIENT" ACCOUNT TYPE ONCE ITS BEEN SET
+            // Cannot change "client" account type once its been set.
             $account->type_id = AccountType::CLIENT;
         }
     }

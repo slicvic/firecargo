@@ -10,20 +10,13 @@ use Auth;
 class Role extends Base {
 
     /**
-     * The roles enums.
+     * The types of roles.
      *
      * @var int
      */
     const SUPER_ADMIN = 1;
     const SUPER_AGENT = 3;
     const CLIENT      = 9;
-
-    /**
-     * The database table name.
-     *
-     * @var string
-     */
-    protected $table = 'roles';
 
     /**
      * Rules for validation.
@@ -33,6 +26,13 @@ class Role extends Base {
     public static $rules = [
         'name' => 'required',
     ];
+    
+    /**
+     * The database table name.
+     *
+     * @var string
+     */
+    protected $table = 'roles';
 
     /**
      * A list of fillable fields.

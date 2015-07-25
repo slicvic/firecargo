@@ -78,12 +78,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $status = PackageStatus::findMine($id);
-
-        if ( ! $status)
-        {
-            return $this->redirectBackWithError('Package status not found.');
-        }
+        $status = PackageStatus::findMineOrFail($id);
 
         return view('package_statuses.edit', ['status' => $status]);
     }
@@ -103,14 +98,7 @@ class PackageStatusesController extends BaseAuthController {
         $this->validate($input, PackageStatus::$rules);
 
         // Update status
-        $status = PackageStatus::findMine($id);
-
-        if ( ! $status)
-        {
-            return $this->redirectBackWithError('Package status not found.');
-        }
-
-        $status->update($input);
+        PackageStatus::findMineOrFail($id)->update($input);
 
         return $this->redirectBackWithSuccess('Package status updated.');
     }
@@ -124,14 +112,7 @@ class PackageStatusesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        $status = PackageStatus::findMine($id);
-
-        if ( ! $status)
-        {
-            return $this->redirectBackWithError('Package status not found.');
-        }
-
-        if ( ! $status->delete())
+        if ( ! PackageStatus::findMineOrFail($id)->delete())
         {
             return $this->redirectBackWithError('Package status delete failed.');
         }

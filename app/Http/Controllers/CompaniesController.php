@@ -87,12 +87,7 @@ class CompaniesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $company = Company::find($id);
-
-        if ( ! $company)
-        {
-            return $this->redirectBackWithError('Company not found.');
-        }
+        $company = Company::findOrFail($id);
 
         return view('companies.edit', ['company' => $company]);
     }
@@ -117,14 +112,7 @@ class CompaniesController extends BaseAuthController {
         $this->validate($input, $rules);
 
         // Update company
-        $company = Company::find($id);
-
-        if ( ! $company)
-        {
-            return $this->redirectBackWithError('Company not found.');
-        }
-
-        $company->update($input);
+        Company::findOrFail($id)->update($input);
 
         return $this->redirectBackWithSuccess('Company updated.');
     }

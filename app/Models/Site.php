@@ -10,13 +10,6 @@ class Site extends Base {
     use CompanyTrait;
 
     /**
-     * The database table name.
-     *
-     * @var string
-     */
-    protected $table = 'sites';
-
-    /**
      * Rules for validation.
      *
      * @var array
@@ -24,6 +17,13 @@ class Site extends Base {
     public static $rules = [
         'name' => 'required',
     ];
+
+    /**
+     * The database table name.
+     *
+     * @var string
+     */
+    protected $table = 'sites';
 
     /**
      * A list of fillable fields.

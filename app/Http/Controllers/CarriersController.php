@@ -77,12 +77,7 @@ class CarriersController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $carrier = Carrier::find($id);
-
-        if ( ! $carrier)
-        {
-            return $this->redirectBackWithError('Carrier not found.');
-        }
+        $carrier = Carrier::findOrFail($id);
 
         return view('carriers.edit', ['carrier' => $carrier]);
     }
@@ -102,14 +97,7 @@ class CarriersController extends BaseAuthController {
         $this->validate($input, Carrier::$rules);
 
         // Update carrier
-        $carrier = Carrier::find($id);
-
-        if ( ! $carrier)
-        {
-            return $this->redirectBackWithError('Carrier not found.');
-        }
-
-        $carrier->update($input);
+        Carrier::findOrFail($id)->update($input);
 
         return $this->redirectBackWithSuccess('Carrier updated.');
     }
@@ -123,14 +111,7 @@ class CarriersController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        $carrier = Carrier::find($id);
-
-        if ( ! $carrier)
-        {
-            return $this->redirectBackWithError('Carrier not found.');
-        }
-
-        if ( ! $carrier->delete())
+        if ( ! Carrier::findOrFail($id)->delete())
         {
             return $this->redirectBackWithError('Carrier delete failed.');
         }
