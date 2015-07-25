@@ -8,7 +8,7 @@
 class Html {
 
     /**
-     * Generates an HTML link.
+     * Generates an HTML link with an icon.
      *
      * @param  string  $url
      * @param  string  $title

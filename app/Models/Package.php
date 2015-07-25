@@ -23,7 +23,7 @@ class Package extends Base {
     protected $table = 'packages';
 
     /**
-     * The presenter instance.
+     * The presenter path.
      *
      * @var array
      */
@@ -94,6 +94,15 @@ class Package extends Base {
     public function shipment()
     {
         return $this->belongsTo('App\Models\Shipment');
+    }
+
+    /**
+     * Checks if the package has been assigned to a shipment or not.
+     * @return bool
+     */
+    public function wasShipped()
+    {
+        return (bool) ($this->shipment_id);
     }
 
     /**

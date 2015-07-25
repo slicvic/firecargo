@@ -21,7 +21,7 @@ TEL: {{ $company->phone }}<br>
 EMAIL: {{ $company->email }}<br><br>
 
 RECEIVED FOR:<br><br>
-{{ strtoupper($consignee->present()->name()) }}<br>
+{{ strtoupper($consignee->name) }}<br>
 {!! strtoupper($consignee->present()->address()) !!}<br>
         </td>
         <td width="40%">

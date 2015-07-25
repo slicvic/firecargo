@@ -6,7 +6,7 @@
         <h2>Basic Info</h2>
         <div class="row">
             <div class="col-xs-2"><strong>Name</strong></div>
-            <div class="col-xs-10"><p>{{ $user->account->present()->name() }}</p></div>
+            <div class="col-xs-10"><p>{{ $user->account->name }}</p></div>
         </div>
         <div class="row">
             <div class="col-xs-2"><strong>Email</strong></div>

@@ -23,7 +23,7 @@ class Account extends Base {
     protected $table = 'accounts';
 
     /**
-     * The presenter instance.
+     * The presenter path.
      *
      * @var Presenter
      */

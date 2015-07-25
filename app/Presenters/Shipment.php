@@ -11,41 +11,38 @@ use App\Helpers\Currency;
 class Shipment extends BasePresenter {
 
     /**
-     * Presents the carrier name.
+     * Gets the carrier's name.
      *
      * @return string
      */
     public function carrier()
     {
-        return ($this->model->carrier_id) ? $this->model->carrier->present()->name() : NULL;
+        return ($this->model->exists) ? $this->model->carrier->name : '';
     }
 
     /**
-     * Presents the created timestamp and creator name.
+     * Presents the creator's name and timestamp.
      *
      * @return string
      */
     public function createdAt()
     {
-        $creator = ($this->model->creator_user_id) ? $this->model->creator->present()->fullname() : NULL;
-        $date = date('m/d/y g:i A', strtotime($this->model->created_at));
+        $dt = date('m/d/y g:i A', strtotime($this->model->created_at));
 
-        return $date . ($creator ? ' by ' . $creator : '');
+        return $dt . ' by ' . $this->model->creator->present()->fullname();
     }
 
     /**
-     * Presents the updated timestamp and updater name.
+     * Presents the updater's name and timestamp.
      *
      * @return string
      */
     public function updatedAt()
     {
-        $updater = ($this->model->updater_user_id) ? $this->model->updater->present()->fullname() : NULL;
-        $date = date('m/d/y g:i A', strtotime($this->model->created_at));
+        $dt = date('m/d/y g:i A', strtotime($this->model->updated_at));
 
-        return $date . ($updater ? ' by ' . $updater : '');
+        return $dt . ' by ' . $this->model->updater->present()->fullname();
     }
-
 
     /**
      * Presents the departed date.
@@ -60,12 +57,12 @@ class Shipment extends BasePresenter {
     }
 
     /**
-     * Presents the total value of the shipment.
+     * Presents the total monetary value in dollar format.
      *
      * @return string
      */
     public function totalValue()
     {
-        return ($this->model->exists) ? Currency::formatDollar($this->model->calculateTotalValue()) : NULL;
+        return ($this->model->exists) ? (new Currency($this->model->calculateTotalValue()))->asDollar() : '';
     }
 }

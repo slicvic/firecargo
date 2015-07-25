@@ -240,7 +240,7 @@ class WarehousesController extends BaseAuthController {
         {
             $response[] = [
                 'id'    => $account->id,
-                'label' => $account->present()->name()
+                'label' => $account->name
             ];
         }
 

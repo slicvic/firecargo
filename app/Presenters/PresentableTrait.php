@@ -9,8 +9,18 @@ use App\Presenters\PresenterException;
  */
 trait PresentableTrait {
 
+    /**
+     * The presenter instance.
+     *
+     * @var BasePresenter
+     */
     protected $presenterInstance;
 
+    /**
+     * Presents the object.
+     *
+     * @return BasePresenter
+     */
     public function present()
     {
         if ( ! $this->presenter || ! class_exists($this->presenter))

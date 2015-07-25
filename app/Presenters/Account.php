@@ -12,27 +12,17 @@ use Html;
 class Account extends BasePresenter {
 
     /**
-     * Presents the account name.
-     *
-     * @return string
-     */
-    public function name()
-    {
-        return $this->model->name;
-    }
-
-    /**
      * Presents the address as a string.
      *
      * @return string
      */
     public function address()
     {
-        return ($address = $this->model->address) ? $address->toString() : NULL;
+        return ($this->model->address) ? $this->model->address->toString() : '';
     }
 
     /**
-     * Presents the account type as a badge.
+     * Presents the account type as a bootstrap badge.
      *
      * @return html
      */

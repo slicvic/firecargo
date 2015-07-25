@@ -12,13 +12,13 @@ use Html;
 class Package extends BasePresenter {
 
     /**
-     * Presents the status.
+     * Presents the status of the package.
      *
      * @return string
      */
     public function status()
     {
-        return ($this->model->status_id) ? $this->model->status->name : NULL;
+        return ($this->model->exists) ? $this->model->status->name : '';
     }
 
     /**
@@ -28,7 +28,7 @@ class Package extends BasePresenter {
      */
     public function type()
     {
-        return ($this->model->type_id) ? $this->model->type->name : NULL;
+        return ($this->model->exists) ? $this->model->type->name : '';
     }
 
     /**
@@ -42,7 +42,7 @@ class Package extends BasePresenter {
     }
 
     /**
-     * Presents the weight.
+     * Presents the total weight.
      *
      * @return string
      */
@@ -52,51 +52,41 @@ class Package extends BasePresenter {
     }
 
     /**
-     * Presents the link to the warehouse.
+     * Presents a link to the warehouse page.
      *
-     * @return string
+     * @return html
      */
     public function warehouseLink()
     {
-        return Html::linkWithIcon("/warehouses/show/{$this->model->warehouse_id}", $this->model->warehouse_id);
+        return Html::linkWithIcon(
+            "/warehouses/show/{$this->model->warehouse_id}", 
+            $this->model->warehouse_id);
     }
 
     /**
-     * Presents the link to the shipment.
+     * Presents a link to the shipment page.
      *
-     * @return string
+     * @return html
      */
     public function shipmentLink()
     {
-        if ($this->model->shipment_id)
+        if ($this->model->wasShipped())
         {
-            return Html::linkWithIcon(
+           return Html::linkWithIcon(
                 "/shipments/show/{$this->model->shipment_id}",
-                "{$this->model->shipment->carrier->name} ({$this->model->shipment->reference_number})"
-            );
+                "{$this->model->shipment->carrier->name} ({$this->model->shipment->reference_number})");
         }
 
         return 'N/A';
     }
 
     /**
-     * Presents the shipment status as a color.
+     * Presents the total invoice amount.
      *
      * @return string
      */
-    public function colorStatus()
+    public function invoiceAmount()
     {
-        return ($this->model->shipment_id) ? 'success' : 'danger';
-    }
-
-    /**
-     * Presents the invoice amount.
-     *
-     * @param  bool  $showSign
-     * @return string
-     */
-    public function invoiceAmount($showSign = TRUE)
-    {
-        return ($this->model->exists) ? Currency::formatDollar($this->model->invoice_amount, $showSign) : NULL;
+        return ($this->model->exists) ? (new Currency($this->model->invoice_amount))->asDollar() : '';
     }
 }

@@ -14,7 +14,7 @@
     </thead>
     <tbody>
         @foreach ($packages as $package)
-            <tr class="{{ $package->present()->colorStatus() }}">
+            <tr class="{{ $package->wasShipped ? 'success' : 'danger' }}">
                 <td>{{ $package->id }}</td>
                 <td>{{ $package->present()->type() }}</td>
                 <td>{{ $package->present()->status() }}</td>

@@ -15,103 +15,97 @@ class Warehouse extends BasePresenter {
     /**
      * Presents the arrival date.
      *
-     * @param  $withTime
      * @return string
      */
-    public function arrivedAt($withTime = TRUE)
+    public function arrivedAt($showTime = TRUE)
     {
-        $dateFormat = 'n/j/Y';
-
-        if ($withTime)
-        {
-            return date("$dateFormat g:i A", strtotime($this->model->arrived_at));
-        }
-
-        return date($dateFormat, strtotime($this->model->arrived_at));
+        return date('n/j/Y g:i A', strtotime($this->model->arrived_at));
     }
 
     /**
-     * Presents the created timestamp and creator name.
+     * Presents the creator's name and timestamp.
      *
      * @return string
      */
     public function createdAt()
     {
-        $creator = ($this->model->creator_user_id) ? $this->model->creator->present()->fullname() : NULL;
-        $date = date('m/d/y g:i A', strtotime($this->model->created_at));
+        $dt = date('m/d/y g:i A', strtotime($this->model->created_at));
 
-        return $date . ($creator ? ' by ' . $creator : '');
+        return $dt . ' by ' . $this->model->creator->present()->fullname();
     }
 
     /**
-     * Presents the updated timestamp and updater name.
+     * Presents the updater's name and timestamp.
      *
      * @return string
      */
     public function updatedAt()
     {
-        $updater = ($this->model->updater_user_id) ? $this->model->updater->present()->fullname() : NULL;
-        $date = date('m/d/y g:i A', strtotime($this->model->created_at));
+        $dt = date('m/d/y g:i A', strtotime($this->model->updated_at));
 
-        return $date . ($updater ? ' by ' . $updater : '');
+        return $dt . ' by ' . $this->model->updater->present()->fullname();
     }
 
     /**
-     * Presents the carrier name.
+     * Presents the carrier's name.
      *
      * @return string
      */
     public function carrier()
     {
-        return ($this->model->carrier_id) ? $this->model->carrier->present()->name() : NULL;
+        return ($this->model->exists) ? $this->model->carrier->name : '';
     }
 
     /**
-     * Presents the consignee name.
+     * Presents the consignee's name.
      *
      * @return string
      */
     public function consignee()
     {
-        return ($this->model->consignee_user_id) ? $this->model->consignee->present()->name() : NULL;
+        return ($this->model->exists) ? $this->model->consignee->name : '';
     }
 
     /**
-     * Presents the shipper name.
+     * Presents the shipper's name.
      *
      * @return string
      */
     public function shipper()
     {
-        return ($this->model->shipper_user_id) ? $this->model->shipper->present()->name() : NULL;
+        return ($this->model->exists) ? $this->model->shipper->name : '';
     }
 
     /**
-     * Presents the shipper name as a link.
+     * Presents a link to the shipper's account page.
      *
-     * @return string
+     * @return html
      */
     public function shipperLink()
     {
-        return Html::linkWithIcon("/accounts/edit/{$this->model->shipper_account_id}", $this->model->shipper->present()->name());
+        return Html::linkWithIcon(
+            "/accounts/edit/{$this->model->shipper_account_id}", 
+            $this->model->shipper->name);
     }
 
     /**
-     * Presents the consignee name as a link.
+     * Presents a link to the consignee's account page.
      *
-     * @return string
+     * @return html
      */
     public function consigneeLink()
     {
-        return Html::linkWithIcon("/accounts/edit/{$this->model->consignee_account_id}", $this->model->consignee->present()->name());
+        return Html::linkWithIcon(
+            "/accounts/edit/{$this->model->consignee_account_id}", 
+            $this->model->consignee->name);
     }
 
     /**
-     * Presents the status as a color.
+     * Presents the status as a CSS class.
      *
      * @return string
      */
-    public function colorStatus()
+    public function statusCssClass()
     {
         switch ($this->model->status_id)
         {
@@ -119,14 +113,13 @@ class Warehouse extends BasePresenter {
                 return 'warning';
             case WarehouseStatus::STATUS_COMPLETE:
                 return 'success';
-            case WarehouseStatus::STATUS_NEW:
-            default:
+            default: // New
                 return 'danger';
         }
     }
 
     /**
-     * Presents the volume weight.
+     * Presents the total volume weight.
      *
      * @return string
      */
@@ -136,7 +129,7 @@ class Warehouse extends BasePresenter {
     }
 
     /**
-     * Presents the gross weight.
+     * Presents the total gross weight.
      *
      * @return string
      */
@@ -146,7 +139,7 @@ class Warehouse extends BasePresenter {
     }
 
     /**
-     * Presents the charge weight.
+     * Presents the total charge weight.
      *
      * @return string
      */
@@ -156,12 +149,12 @@ class Warehouse extends BasePresenter {
     }
 
     /**
-     * Presents the total value.
+     * Presents the total monetary value in dollar format.
      *
      * @return string
      */
     public function totalValue()
     {
-        return ($this->model->exists) ? Currency::formatDollar($this->model->calculateTotalValue()) : NULL;
+        return ($this->model->exists) ? (new Currency($this->model->calculateTotalValue()))->asDollar() : '';
     }
 }

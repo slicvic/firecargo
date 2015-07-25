@@ -36,7 +36,7 @@ EMAIL: {{ $company->email }}
     <tr>
         <td width="20%">TO:</td>
         <td>
-<b>{{ strtoupper($consignee->present()->name()) }}</b><br>
+<b>{{ strtoupper($consignee->name) }}</b><br>
 {!! strtoupper($consignee->present()->address()) !!}<br>
         </td>
     </tr>

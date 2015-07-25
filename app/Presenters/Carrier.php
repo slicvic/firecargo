@@ -9,13 +9,4 @@ use App\Presenters\BasePresenter;
  */
 class Carrier extends BasePresenter {
 
-    /**
-     * Presents the carrier name.
-     *
-     * @return string
-     */
-    public function name()
-    {
-        return $this->model->name;
-    }
 }

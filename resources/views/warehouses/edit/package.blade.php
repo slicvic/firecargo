@@ -55,7 +55,7 @@
                 <div class="form-group">
                     <label class="control-label col-sm-2">Invoice $</label>
                     <div class="col-sm-2">
-                        <input type="text" name="packages[{{ $package->id }}][invoice_amount]" data-name="invoice_amount" class="form-control" value="{{ $package->present()->invoiceAmount(FALSE) }}">
+                        <input type="text" name="packages[{{ $package->id }}][invoice_amount]" data-name="invoice_amount" class="form-control" value="{{ str_replace('$', '', $package->present()->invoiceAmount()) }}">
                     </div>
                 </div>
                 <div class="form-group">

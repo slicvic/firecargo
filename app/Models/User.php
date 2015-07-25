@@ -26,7 +26,7 @@ class User extends Base implements AuthenticatableInterface {
     protected $table = 'users';
 
     /**
-     * The presenter instance.
+     * The presenter path.
      *
      * @var Presenter
      */

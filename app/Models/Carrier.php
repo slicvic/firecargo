@@ -20,7 +20,7 @@ class Carrier extends Base {
     protected $table = 'carriers';
 
     /**
-     * The presenter instance.
+     * The presenter path.
      *
      * @var Presenter
      */

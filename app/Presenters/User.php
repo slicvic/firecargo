@@ -39,9 +39,9 @@ class User extends BasePresenter {
     }
 
     /**
-     * Presents the role.
+     * Presents the role as a bootstrap badge.
      *
-     * @return HTML string
+     * @return html
      */
     public function role()
     {

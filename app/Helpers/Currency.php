@@ -8,16 +8,30 @@
 class Currency {
 
     /**
+     * A currency amount.
+     *
+     * @var float|int
+     */
+    private $amount;
+
+    /**
+     * Constructor.
+     *
+     * @param int|float  $amount
+     */
+    public function __construct($amount)
+    {
+        $this->amount = $amount;
+    }
+
+    /**
      * Converts a number to a decimal dollar amount.
      *
-     * @param  float $number
-     * @param  bool  $showSign
+     * @param  bool   $showSign
      * @return string
      */
-    public static function formatDollar($number, $showSign = TRUE)
+    public function asDollar()
     {
-        $dollar = number_format($number, 2, '.', ',');
-
-        return ($showSign) ? '$' . $dollar : $dollar;
+        return '$' . number_format($this->amount, 2, '.', ',');
     }
 }

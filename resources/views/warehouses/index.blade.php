@@ -68,7 +68,7 @@
                         </thead>
                         <tbody>
                             @foreach ($warehouses as $warehouse)
-                            <tr class="{{ $warehouse->present()->colorStatus() }}">
+                            <tr class="{{ $warehouse->present()->statusCssClass() }}">
                                 <td><button class="btn-toggle-packages btn btn-link btn-sm" data-warehouse-id="{{ $warehouse->id }}"><i class="fa fa-plus"></i></button></td>
                                 @if (Auth::user()->isAdmin()) {!! '<td>' . $warehouse->company->name . '</td>' !!} @endif
                                 <td>{{ $warehouse->id }}</td>
@@ -78,7 +78,7 @@
                                 <td>{{ $warehouse->present()->carrier() }}</td>
                                 <td>{!! $warehouse->present()->shipperLink() !!}</td>
                                 <td>{!! $warehouse->present()->consigneeLink() !!}</td>
-                                <td>{{ $warehouse->present()->arrivedAt(FALSE) }}</td>
+                                <td>{{ $warehouse->present()->arrivedAt() }}</td>
                                 <td>{{ $warehouse->present()->createdAt() }}</td>
                                 <td>{{ $warehouse->present()->updatedAt() }}</td>
                                 <td>

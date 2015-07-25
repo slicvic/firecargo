@@ -21,7 +21,7 @@ class Company extends Base {
     protected $table = 'companies';
 
     /**
-     * The presenter instance.
+     * The presenter path.
      *
      * @var Presenter
      */

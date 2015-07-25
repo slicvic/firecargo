@@ -159,7 +159,7 @@ class CarriersController extends BaseAuthController {
         {
             $response[] = [
                 'id'    => $carrier->id,
-                'label' => $carrier->present()->name(),
+                'label' => $carrier->name,
                 'prefix' => $carrier->prefix
             ];
         }

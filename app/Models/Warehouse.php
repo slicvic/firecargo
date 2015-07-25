@@ -23,7 +23,7 @@ class Warehouse extends Base {
     protected $table = 'warehouses';
 
     /**
-     * The presenter instance.
+     * The presenter path.
      *
      * @var Presenter
      */

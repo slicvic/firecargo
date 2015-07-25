@@ -17,11 +17,11 @@ class Company extends BasePresenter {
      */
     public function address()
     {
-        return ($address = $this->model->address) ? $address->toString() : NULL;
+        return ($this->model->address) ? $this->model->address->toString() : '';
     }
 
     /**
-     * Presents the logo URL.
+     * Gets the logo URL.
      *
      * @param  string  $size  sm|md|lg
      * @return string

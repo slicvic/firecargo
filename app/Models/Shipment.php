@@ -22,7 +22,7 @@ class Shipment extends Base {
     protected $table = 'shipments';
 
     /**
-     * The presenter instance.
+     * The presenter path.
      *
      * @var Presenter
      */

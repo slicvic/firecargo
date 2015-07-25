@@ -22,7 +22,7 @@
     @foreach ($accounts as $account)
         <tr>
             <td>{{ $account->id }}</td>
-            <td>{{ $account->present()->name() }}</td>
+            <td>{{ $account->name }}</td>
             <td>{{ $account->email }}</td>
             <td>{{ $account->phone }}</td>
             <td>{{ $account->mobile_phone }}</td>
