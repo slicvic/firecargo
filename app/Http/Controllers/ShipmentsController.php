@@ -107,24 +107,17 @@ class ShipmentsController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        try
+        $shipment = new Shipment;
+
+        // Validate input and save shipment
+        if ( ! $this->validateAndSave($request, $shipment))
         {
-            $shipment = new Shipment;
-
-            // Validate input and save shipment
-            if ( ! $this->validateAndSave($request, $shipment))
-            {
-                return response()->json(['error' => Flash::view('Shipment creation failed, please try again.')], 500);
-            }
-
-            Flash::success('Shipment created.');
-
-            return response()->json(['redirect_url' => '/shipments/show/' . $shipment->id]);
+            return response()->json(['error' => Flash::view('Shipment creation failed, please try again.')], 500);
         }
-        catch (ValidationException $e)
-        {
-            return response()->json(['error' => Flash::view($e)], 400);
-        }
+
+        Flash::success('Shipment created.');
+
+        return response()->json(['redirect_url' => '/shipments/show/' . $shipment->id]);
     }
 
     /**
@@ -175,30 +168,23 @@ class ShipmentsController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        try
+        // Lookup shipment
+        $shipment = Shipment::findMine($id);
+
+        if ( ! $shipment)
         {
-            // Lookup shipment
-            $shipment = Shipment::findMine($id);
-
-            if ( ! $shipment)
-            {
-                return response()->json(['error' => Flash::view('Shipment not found.')], 404);
-            }
-
-            // Validate input and save shipment
-            if ( ! $this->validateAndSave($request, $shipment))
-            {
-                return response()->json(['error' => Flash::view('Shipment update failed, please try again.')], 500);
-            }
-
-            Flash::success('Shipment updated.');
-
-            return response()->json(['redirect_url' => '/shipments/edit/' . $shipment->id]);
+            return response()->json(['error' => Flash::view('Shipment not found.')], 404);
         }
-        catch (ValidationException $e)
+
+        // Validate input and save shipment
+        if ( ! $this->validateAndSave($request, $shipment))
         {
-            return response()->json(['error' => Flash::view($e)], 400);
+            return response()->json(['error' => Flash::view('Shipment update failed, please try again.')], 500);
         }
+
+        Flash::success('Shipment updated.');
+
+        return response()->json(['redirect_url' => '/shipments/edit/' . $shipment->id]);
     }
 
     /**

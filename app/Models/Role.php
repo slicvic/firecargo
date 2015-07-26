@@ -15,8 +15,8 @@ class Role extends Base {
      * @var int
      */
     const SUPER_ADMIN = 1;
-    const SUPER_AGENT = 3;
-    const CLIENT      = 9;
+    const SUPER_AGENT = 2;
+    const CLIENT      = 3;
 
     /**
      * Rules for validation.
@@ -26,7 +26,7 @@ class Role extends Base {
     public static $rules = [
         'name' => 'required',
     ];
-    
+
     /**
      * The database table name.
      *

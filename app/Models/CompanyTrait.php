@@ -79,20 +79,23 @@ trait CompanyTrait {
      */
     public function save(array $options = array())
     {
-        if (Auth::user()->isAdmin())
+        if (Auth::check())
         {
-            if ($this->company_id)
+            if (Auth::user()->isAdmin())
             {
-                // Do nothing
+                if ($this->company_id)
+                {
+                    // Do nothing
+                }
+                else
+                {
+                    $this->company_id = Auth::user()->company_id;
+                }
             }
             else
             {
                 $this->company_id = Auth::user()->company_id;
             }
-        }
-        else
-        {
-            $this->company_id = Auth::user()->company_id;
         }
 
         return parent::save($options);

@@ -154,7 +154,7 @@ class Flash {
                 }
                 elseif ($message instanceof \App\Exceptions\ValidationException)
                 {
-                    $message = $message->errors()->all(':message');
+                    $message = $message->getMessage();
                 }
                 else
                 {

@@ -84,6 +84,9 @@ class Account extends Base {
             case 'lastname':
                 $value = ucwords(strtolower(trim($value)));
                 break;
+            case 'name':
+                $value = ucwords($value);
+                break;
         }
 
         return parent::setAttribute($key, $value);

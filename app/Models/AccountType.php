@@ -13,8 +13,8 @@ class AccountType extends Base {
      * @var int
      */
     const CLIENT    = 1;
-    const CONSIGNEE = 3;
-    const SHIPPER   = 4;
+    const CONSIGNEE = 2;
+    const SHIPPER   = 3;
 
     /**
      * The database table name.

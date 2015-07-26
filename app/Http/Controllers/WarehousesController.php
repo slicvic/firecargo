@@ -103,24 +103,17 @@ class WarehousesController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        try
+        $warehouse = new Warehouse;
+
+        // Validate input and save warehouse
+        if ( ! $this->validateAndSave($request, $warehouse))
         {
-            $warehouse = new Warehouse;
-
-            // Validate input and save warehouse
-            if ( ! $this->validateAndSave($request, $warehouse))
-            {
-                return response()->json(['error' => Flash::view('Warehouse creation failed, please try again.')], 500);
-            }
-
-            Flash::success('Warehouse created.');
-
-            return response()->json(['redirect_url' => '/warehouses/show/' . $warehouse->id]);
+            return response()->json(['error' => Flash::view('Warehouse creation failed, please try again.')], 500);
         }
-        catch (ValidationException $e)
-        {
-            return response()->json(['error' => Flash::view($e)], 400);
-        }
+
+        Flash::success('Warehouse created.');
+
+        return response()->json(['redirect_url' => '/warehouses/show/' . $warehouse->id]);
     }
 
     /**
@@ -150,30 +143,23 @@ class WarehousesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        try
+        // Lookup warehouse
+        $warehouse = Warehouse::findMine($id);
+
+        if ( ! $warehouse)
         {
-            // Lookup warehouse
-            $warehouse = Warehouse::findMine($id);
-
-            if ( ! $warehouse)
-            {
-                return response()->json(['error' => Flash::view('Warehouse not found.')], 404);
-            }
-
-            // Validate input and save warehouse
-            if ( ! $this->validateAndSave($request, $warehouse))
-            {
-                return response()->json(['error' => Flash::view('Warehouse update failed, please try again.')], 500);
-            }
-
-            Flash::success('Warehouse updated.');
-
-            return response()->json(['redirect_url' => '/warehouses/edit/' . $warehouse->id]);
+            return response()->json(['error' => Flash::view('Warehouse not found.')], 404);
         }
-        catch (ValidationException $e)
+
+        // Validate input and save warehouse
+        if ( ! $this->validateAndSave($request, $warehouse))
         {
-            return response()->json(['error' => Flash::view($e)], 400);
+            return response()->json(['error' => Flash::view('Warehouse update failed, please try again.')], 500);
         }
+
+        Flash::success('Warehouse updated.');
+
+        return response()->json(['redirect_url' => '/warehouses/edit/' . $warehouse->id]);
     }
 
     /**
