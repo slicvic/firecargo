@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class WarehouseStatusSeeder extends Seeder {
+class WarehouseStatusesTableSeeder extends Seeder {
 
     /**
      * Run the database seeds.
@@ -12,12 +12,12 @@ class WarehouseStatusSeeder extends Seeder {
      */
     public function run()
     {
-        DB::table('warehouse_statuses')->truncate();
+        DB::table('warehouse_statuses')->delete();
 
         DB::table('warehouse_statuses')->insert([
-            ['name' => 'new'],
-            ['name' => 'pending'],
-            ['name' => 'complete'],
+            ['name' => 'New'],
+            ['name' => 'Pending'],
+            ['name' => 'Complete'],
         ]);
     }
 }

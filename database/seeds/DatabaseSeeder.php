@@ -14,26 +14,28 @@ class DatabaseSeeder extends Seeder {
 	{
 		Model::unguard();
 
-		$this->call('PackageTypeTableSeeder');
-		$this->command->info('Package type table seeded!');
+		$this->call('PackageTypesTableSeeder');
+		$this->command->info('Package types table seeded!');
 
-		$this->call('RoleTableSeeder');
+		$this->call('RolesTableSeeder');
 		$this->command->info('Role table seeded!');
 
-		$this->call('WarehouseStatusTableSeeder');
+		$this->call('WarehouseStatusesTableSeeder');
 		$this->command->info('Warehouse status table seeded!');
 
-		$this->call('AccountTypeTableSeeder');
+		$this->call('AccountTypesTableSeeder');
 		$this->command->info('Account type table seeded!');
 
-		$this->call('CountryTableSeeder');
+		$this->call('CountriesTableSeeder');
 		$this->command->info('Country table seeded!');
 
-		$this->call('CarrierTableSeeder');
+		$this->call('CarriersTableSeeder');
 		$this->command->info('Carrier table seeded!');
 
-		$this->call('CompanyTableSeeder');
+		$this->call('CompaniesTableSeeder');
 		$this->command->info('Company table seeded!');
-	}
 
+		$this->call('UsersTableSeeder');
+		$this->command->info('Users table seeded!');
+	}
 }

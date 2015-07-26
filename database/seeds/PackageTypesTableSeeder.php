@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
 
-class PackageTypeTableSeeder extends Seeder {
+class PackageTypesTableSeeder extends Seeder {
 
     /**
      * Run the database seeds.
@@ -12,7 +11,7 @@ class PackageTypeTableSeeder extends Seeder {
      */
     public function run()
     {
-        DB::table('package_types')->truncate();
+        DB::table('package_types')->delete();
 
         DB::table('package_types')->insert([
             ['name' => 'Box'],

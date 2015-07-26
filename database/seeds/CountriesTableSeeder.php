@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class CountryTableSeeder extends Seeder {
+class CountriesTableSeeder extends Seeder {
 
     /**
      * Run the database seeds.
@@ -12,7 +12,7 @@ class CountryTableSeeder extends Seeder {
      */
     public function run()
     {
-        DB::table('countries')->truncate();
+        DB::table('countries')->delete();
 
         DB::table('countries')->insert([
             ['name' => 'United States'],

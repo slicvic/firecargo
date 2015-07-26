@@ -107,7 +107,8 @@ class CreateAllTables extends Migration {
 		{
 		    $table->increments('id')->unsigned();
 		    $table->string('name', 100);
-
+		    $table->dateTime('created_at');
+		    $table->dateTime('updated_at');
 		});
 
 		// Create addresses
@@ -177,6 +178,8 @@ class CreateAllTables extends Migration {
 		{
 		    $table->increments('id')->unsigned();
 		    $table->string('name', 30);
+		    $table->dateTime('created_at');
+		    $table->dateTime('updated_at');
 		});
 
 		// Create warehouses
@@ -184,7 +187,7 @@ class CreateAllTables extends Migration {
 		{
 		    $table->increments('id')->unsigned();
 		    $table->integer('company_id')->unsigned();
-		    $table->integer('status_id')->unsigned();
+		    $table->integer('status_id')->unsigned()->nullable();
 		    $table->integer('shipper_account_id')->unsigned();
 		    $table->integer('consignee_account_id')->unsigned();
 		    $table->integer('carrier_id')->unsigned();
@@ -238,6 +241,7 @@ class CreateAllTables extends Migration {
 		    $table->float('length')->unsigned();
 		    $table->float('width')->unsigned();
 		    $table->float('height')->unsigned();
+		    $table->float('weight')->unsigned();
 		    $table->string('description', 255);
 		    $table->string('invoice_number', 255);
 		    $table->decimal('invoice_amount', 12, 4)->unsigned();

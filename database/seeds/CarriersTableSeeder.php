@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class CarrierTableSeeder extends Seeder {
+class CarriersTableSeeder extends Seeder {
 
     /**
      * Run the database seeds.
@@ -12,7 +12,7 @@ class CarrierTableSeeder extends Seeder {
      */
     public function run()
     {
-        DB::table('carriers')->truncate();
+        DB::table('carriers')->delete();
 
         DB::insert(
             DB::raw("

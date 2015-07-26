@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class CompanyTableSeeder extends Seeder {
+class CompaniesTableSeeder extends Seeder {
 
     /**
      * Run the database seeds.
@@ -12,7 +12,7 @@ class CompanyTableSeeder extends Seeder {
      */
     public function run()
     {
-        DB::table('companies')->truncate();
+        DB::table('companies')->delete();
 
         DB::table('companies')->insert([
             ['name' => 'Lantigua Group', 'shortname' => 'LG'],
