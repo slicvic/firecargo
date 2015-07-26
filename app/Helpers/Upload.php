@@ -52,7 +52,7 @@ class Upload {
 
         if ( ! file_exists($destination))
         {
-            mkdir($destination, 0775, TRUE);
+            mkdir($destination, 0777, TRUE);
         }
 
         // Generate thumbnails
@@ -88,7 +88,7 @@ class Upload {
 
         if ( ! file_exists($destination))
         {
-            mkdir($destination, 0775, TRUE);
+            mkdir($destination, 0777, TRUE);
         }
 
         // Generate thumbnails
