@@ -32,6 +32,8 @@ class DatabaseSeeder extends Seeder {
 		$this->call('CarrierTableSeeder');
 		$this->command->info('Carrier table seeded!');
 
+		$this->call('CompanyTableSeeder');
+		$this->command->info('Company table seeded!');
 	}
 
 }

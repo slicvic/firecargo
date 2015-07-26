@@ -379,7 +379,7 @@ INSERT INTO `carriers` (`id`, `name`, `code`, `prefix`, `created_at`, `updated_a
 CREATE TABLE `companies` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `corp_code` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `shortname` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `phone` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `fax` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -393,7 +393,7 @@ CREATE TABLE `companies` (
 -- Dumping data for table `companies`
 --
 
-INSERT INTO `companies` (`id`, `name`, `corp_code`, `phone`, `fax`, `email`, `created_at`, `updated_at`, `has_logo`) VALUES
+INSERT INTO `companies` (`id`, `name`, `shortname`, `phone`, `fax`, `email`, `created_at`, `updated_at`, `has_logo`) VALUES
 (1, 'Lantigua Group', 'LG', '123', '456', '789@gmail.com', '2015-03-23 22:58:37', '2015-07-23 15:16:18', 1),
 (2, 'Sion Services Group', 'SSG', '', '', '', '2015-03-23 22:59:07', '2015-07-09 14:39:34', NULL),
 (3, 'TESTxad22', 'test2xx22', '', '', '', '2015-07-16 03:42:10', '2015-07-21 02:07:46', NULL);

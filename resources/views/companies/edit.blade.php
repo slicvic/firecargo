@@ -29,7 +29,7 @@
     <div class="form-group">
         <label class="control-label col-sm-2">Corp Code</label>
         <div class="col-sm-4">
-            <input required type="text" name="corp_code" placeholder="Corp Code" class="form-control" value="{{ Input::old('corp_code', $company->corp_code) }}">
+            <input required type="text" name="shortname" placeholder="Corp Code" class="form-control" value="{{ Input::old('shortname', $company->shortname) }}">
         </div>
     </div>
     <div class="form-group">

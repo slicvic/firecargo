@@ -62,7 +62,7 @@ class CompaniesController extends BaseAuthController {
         // Validate input
         $rules = [
             'name' => 'required',
-            'corp_code' => 'required'
+            'shortname' => 'required'
         ];
 
         $this->validate($input, $rules);
@@ -101,12 +101,12 @@ class CompaniesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $request->only('name', 'corp_code');
+        $input = $request->only('name', 'shortname');
 
         // Validate input
         $rules = [
             'name' => 'required',
-            'corp_code' => 'required'
+            'shortname' => 'required'
         ];
 
         $this->validate($input, $rules);

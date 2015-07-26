@@ -17,11 +17,11 @@ class CreateAllTables extends Migration {
 		{
 		    $table->increments('id')->unsigned();
 		    $table->string('name', 50);
-		    $table->string('corp_code', 10);
+		    $table->string('shortname', 10);
 		    $table->string('phone', 30);
 		    $table->string('fax', 30);
 		    $table->string('email', 255);
-		    $table->tinyInteger('has_logo')->unsigned();
+		    $table->tinyInteger('has_logo')->unsigned()->default(0);
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
 		});
@@ -58,8 +58,8 @@ class CreateAllTables extends Migration {
 		    $table->string('lastname', 50);
 		    $table->string('email', 255)->unique('email');
 		    $table->string('password', 255);
-		    $table->tinyInteger('has_photo')->unsigned();
-		    $table->tinyInteger('active')->unsigned();
+		    $table->tinyInteger('has_photo')->unsigned()->default(0);
+		    $table->tinyInteger('active')->unsigned()->default(0);
 		    $table->string('remember_token', 255);
 		    $table->integer('logins')->unsigned();
 		    $table->dateTime('last_login');
@@ -93,7 +93,7 @@ class CreateAllTables extends Migration {
 		    $table->string('phone', 30);
 		    $table->string('mobile_phone', 30);
 		    $table->string('fax', 30);
-		    $table->tinyInteger('autoship')->unsigned();
+		    $table->tinyInteger('autoship')->unsigned()->default(1);
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
 
@@ -126,7 +126,7 @@ class CreateAllTables extends Migration {
 		    $table->dateTime('updated_at');
 
 		    $table->foreign('company_id')->references('id')->on('companies');
-		    $table->foreign('account_i')->references('id')->on('accounts');
+		    $table->foreign('account_id')->references('id')->on('accounts');
 		    $table->foreign('country_id')->references('id')->on('countries');
 		});
 
@@ -218,7 +218,7 @@ class CreateAllTables extends Migration {
 		{
 		    $table->increments('id')->unsigned();
 		    $table->integer('company_id')->unsigned();
-		    $table->tinyInteger('default')->unsigned();
+		    $table->tinyInteger('default')->unsigned()->default(0);
 		    $table->string('name', 100);
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
@@ -242,7 +242,7 @@ class CreateAllTables extends Migration {
 		    $table->string('invoice_number', 255);
 		    $table->decimal('invoice_amount', 12, 4)->unsigned();
 		    $table->string('tracking_number', 255);
-		    $table->tinyInteger('ship')->unsigned();
+		    $table->tinyInteger('ship')->unsigned()->default(1);
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
 		    $table->dateTime('deleted_at');
