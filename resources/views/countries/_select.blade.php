@@ -1,5 +1,5 @@
 <select name="{{ $name }}" class="form-control">
     @foreach (\App\Models\Country::all() as $country)
-        <option{{ ($country->id == $selected) ? ' selected' : '' }} value="{{ $country->id }}">{{ $country->name }}</option>
+        <option{{ ($country->id == $selectedOption) ? ' selected' : '' }} value="{{ $country->id }}">{{ $country->name }}</option>
     @endforeach
 </select>

@@ -1,7 +1,7 @@
 <table id="packages" class="table table-bordered table-striped-tbody table-condensed">
     <thead>
         <tr>
-            <th><button type="button" class="btn-toggle-detail-all btn btn-sm btn-link"><i class="fa fa-plus"></i></button></th>
+            <th><button type="button" class="btn-toggle-detail-all btn btn-sm btn-link"><i class="fa fa-angle-right"></i></button></th>
             <th>#</th>
             <th>Status</th>
             <th>Type</th>

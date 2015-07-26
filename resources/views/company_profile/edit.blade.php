@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Company Name</label>
                 <div class="col-sm-4">
-                    <input required type="text" name="company[name]" placeholder="Name" class="form-control" value="{{ Input::old('company.name', $company->name) }}">
+                    <input required type="text" name="company[name]" placeholder="e.g. Coca Cola" class="form-control" value="{{ Input::old('company.name', $company->name) }}">
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Country</label>
                 <div class="col-sm-3">
-                    @include('countries._select', ['name' => 'address[country_id]', 'selected' => Input::old('address.country_id', $address->country_id)])
+                    @include('countries._select', ['name' => 'address[country_id]', 'selectedOption' => Input::old('address.country_id', $address->country_id)])
                 </div>
             </div>
         </div>

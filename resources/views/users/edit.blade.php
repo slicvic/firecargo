@@ -26,13 +26,8 @@
                 <div class="ibox-content">
                     <div class="form-group">
                         <label class="control-label col-sm-2">Company *</label>
-                        <div class="col-sm-3">
-                            <select required class="form-control" name="user[company_id]">
-                                <option value="">- Choose -</option>
-                                @foreach (\App\Models\Company::all() as $company)
-                                    <option{{ ($company->id == Input::old('user.company_id', $user->company_id)) ? ' selected' : '' }} value="{{ $company->id }}">{{ $company->name }}</option>
-                                @endforeach
-                            </select>
+                        <div class="col-sm-4">
+                            @include('companies._select', ['name' => 'user[company_id]', 'selectedOption' => Input::old('user.company_id', $user->company_id)])
                         </div>
                     </div>
                     <div class="clear hr-line-dashed"></div>

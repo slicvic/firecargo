@@ -22,13 +22,8 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="form-group">
         <label class="control-label col-sm-2">Company</label>
-        <div class="col-sm-5">
-            <select required class="form-control" name="company_id">
-                <option value="">- Choose -</option>
-                @foreach (\App\Models\Company::all() as $company)
-                    <option{{ ($company->id == Input::old('company_id', $site->company_id)) ? ' selected' : '' }} value="{{ $company->id }}">{{ $company->name }}</option>
-                @endforeach
-            </select>
+        <div class="col-sm-4">
+            @include('companies._select', ['name' => 'company_id', 'selectedOption' => Input::old('company_id', $site->company_id)])
         </div>
     </div>
     <div class="form-group">

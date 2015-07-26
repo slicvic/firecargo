@@ -1,6 +1,6 @@
 <tbody class="{!! $package->exists ? 'package' : 'hidden package-template' !!}">
     <tr>
-        <td><button type="button" class="btn-toggle-detail btn btn-link btn-sm"><i class="fa fa-plus"></i></button></td>
+        <td><button type="button" class="btn-toggle-detail btn btn-link btn-sm"><i class="fa fa-angle-right"></i></button></td>
         <td><span class="label label-{{ $package->exists ? 'success' : 'danger' }}">{{ $package->exists ? $package->id : 'NEW' }}</span></td>
         <td>
             <select name="packages[{{ $package->id }}][status_id]" data-name="status_id" class="form-control">

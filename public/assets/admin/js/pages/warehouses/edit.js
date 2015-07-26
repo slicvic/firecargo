@@ -102,28 +102,28 @@ $(function() {
             $('#packages').on('keyup', '.metric', me.updateTotals);
 
             $('#packages').on('click', '.btn-toggle-detail', function() {
-                var btn = $(this);
-                btn.toggleClass('collapsed');
-                btn.closest('tr').next('tr').toggleClass('hidden');
-                if (btn.hasClass('collapsed')) {
-                    btn.html('<i class="fa fa-minus"></i>');
+                var toggleBtn = $(this);
+                toggleBtn.toggleClass('collapsed');
+                toggleBtn.closest('tr').next('tr').toggleClass('hidden');
+                if (toggleBtn.hasClass('collapsed')) {
+                    toggleBtn.html('<i class="fa fa-angle-down"></i>');
                 }
                 else{
-                    btn.html('<i class="fa fa-plus"></i>');
+                    toggleBtn.html('<i class="fa fa-angle-right"></i>');
                 }
             });
 
             $('.btn-toggle-detail-all').click(function() {
-                var btn = $(this);
-                btn.toggleClass('collapsed');
-                if (btn.hasClass('collapsed')) {
-                    btn.html('<i class="fa fa-minus"></i>');
-                    $('#packages .btn-toggle-detail').html('<i class="fa fa-minus"></i>').addClass('collapsed');
+                var toggleBtn = $(this);
+                toggleBtn.toggleClass('collapsed');
+                if (toggleBtn.hasClass('collapsed')) {
+                    toggleBtn.html('<i class="fa fa-angle-down"></i>');
+                    $('#packages .btn-toggle-detail').html('<i class="fa fa-angle-down"></i>').addClass('collapsed');
                     $('#packages .package-detail').removeClass('hidden');
                 }
                 else{
-                    btn.html('<i class="fa fa-plus"></i>');
-                    $('#packages .btn-toggle-detail').html('<i class="fa fa-plus"></i>').removeClass('collapsed');
+                    toggleBtn.html('<i class="fa fa-angle-right"></i>');
+                    $('#packages .btn-toggle-detail').html('<i class="fa fa-angle-right"></i>').removeClass('collapsed');
                     $('#packages .package-detail').addClass('hidden');
                 }
             });

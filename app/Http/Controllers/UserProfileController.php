@@ -158,7 +158,7 @@ class UserProfileController extends BaseAuthController {
         catch(\Exception $e)
         {
             $this->authUser->update(['has_photo' => FALSE]);
-            return response()->json(Flash::view('Upload failed, please try again.'), 500);
+            return response()->json(Flash::view('Upload failed, please try again.'.$e->getMessage()), 500);
         }
     }
 
