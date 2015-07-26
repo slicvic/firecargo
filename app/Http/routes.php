@@ -26,7 +26,7 @@ Route::controller('warehouses', 'WarehousesController');
 Route::controller('shipments', 'ShipmentsController');
 Route::controller('company', 'CompanyProfileController');
 
-Route::controller('account', 'UserProfileController');
+Route::controller('user', 'UserProfileController');
 Route::get('logout', 'UserProfileController@getLogout');
 
 // Auth

@@ -89,7 +89,7 @@ class CompanyProfileController extends BaseAuthController {
             $this->authUser->company->address()->save(new Address($input['address']));
         }
 
-        return $this->redirectBackWithSuccess('Company updated.');
+        return $this->redirectWithSuccess('company/profile', 'Company profile updated.');
     }
 
     /**

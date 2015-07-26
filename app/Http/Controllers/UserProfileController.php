@@ -84,7 +84,7 @@ class UserProfileController extends BaseAuthController {
             $this->updateAgentAdminProfile($request);
         }
 
-        return $this->redirectBackWithSuccess('Your profile was updated.');
+        return $this->redirectWithSuccess('user/profile', 'Your profile was updated.');
     }
 
     /**

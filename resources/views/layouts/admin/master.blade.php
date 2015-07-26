@@ -77,7 +77,7 @@
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                <li><a href="/account/profile">My Profile</a></li>
+                                <li><a href="/user/profile">My Profile</a></li>
                                 @if ( ! Auth::user()->isClient())
                                     <li><a href="/company/profile">Company Profile</a></li>
                                 @endif
