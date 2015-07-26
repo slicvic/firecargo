@@ -4,7 +4,7 @@
 <div class="ibox">
     <div class="ibox-content">
         <h2>Change Password</h2>
-        <form action="/account/password" method="post" class="form-horizontal">
+        <form action="/user/password" method="post" class="form-horizontal">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="form-group">
                 <label class="col-md-3 control-label">Current Password</label>
@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-8">
+                <div class="col-md-offset-3 col-md-8">
                     <button type="submit" class="btn btn-primary">Change Password</button>
                 </div>
             </div>

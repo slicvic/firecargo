@@ -1,6 +1,6 @@
 $(function() {
     $('#btnEditPhoto').dropzone({
-        url: '/account/ajax-upload-photo',
+        url: '/user/ajax-upload-photo',
         maxFileSize: 10,
         acceptedFiles: 'image/*',
         parallelUploads: 1,

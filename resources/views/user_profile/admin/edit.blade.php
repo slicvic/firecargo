@@ -1,7 +1,7 @@
 @extends('user_profile.layout')
 
 @section('user_profile_content')
-<form action="/account/profile" method="post" class="form-horizontal">
+<form action="/user/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="row">
         <div class="col-md-12">
@@ -32,7 +32,7 @@
     </div>
     <div class="form-group">
         <div class="col-sm-12">
-            <a class="btn btn-white" href="/account/profile">Cancel</a>
+            <a class="btn btn-white" href="/user/profile">Cancel</a>
             <button class="btn btn-primary" type="submit">Save changes</button>
         </div>
     </div>
