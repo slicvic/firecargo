@@ -1,20 +1,20 @@
 $(function() {
     $('table').on('click', '.btn-toggle-packages', function() {
-        var btn = $(this);
-        var parentTr = btn.closest('tr');
-        btn.toggleClass('collapsed');
+        var toggleBtn = $(this);
+        var toggleBtnParentTr = toggleBtn.closest('tr');
+        toggleBtn.toggleClass('collapsed');
 
-        if (btn.hasClass('collapsed')) {
-            var $packagesTr = $('<tr><td colspan="10"><h5 class="alert alert-warning text-center">Loading packages...</h5></td></tr>')
-            parentTr.after($packagesTr);
-            btn.html('<i class="fa fa-minus"></i>');
-            $.get('/packages/ajax-shipment-packages/' + btn.attr('data-warehouse-id')).done(function(data) {
-                $packagesTr.find('td').html(data);
+        if (toggleBtn.hasClass('collapsed')) {
+            var $packagesTr = $('<tr><td colspan="' + toggleBtnParentTr.children('td').length + '"><h5 class="alert alert-warning text-center">Loading packages...</h5></td></tr>')
+            toggleBtnParentTr.after($packagesTr);
+            toggleBtn.html('<i class="fa fa-minus"></i>');
+            $.get('/packages/ajax-shipment-packages/' + toggleBtn.attr('data-warehouse-id')).done(function(data) {
+                $packagesTr.children('td').html(data);
             });
         }
         else {
-            parentTr.next().remove();
-            btn.html('<i class="fa fa-plus"></i>');
+            toggleBtnParentTr.next().remove();
+            toggleBtn.html('<i class="fa fa-plus"></i>');
         }
     });
 });

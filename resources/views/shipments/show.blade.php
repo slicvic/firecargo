@@ -50,6 +50,14 @@
                         <th>Total Value</th>
                         <td><span class="label label-primary">{{ $shipment->present()->totalValue() }}</span></td>
                     </tr>
+                    <tr>
+                        <th>Created</th>
+                        <td>{{ $shipment->present()->createdAt() }}</td>
+                    </tr>
+                    <tr>
+                        <th>Updated</th>
+                        <td>{{ $shipment->present()->updatedAt() }}</td>
+                    </tr>
                 </table>
             </div>
         </div>

@@ -32,7 +32,7 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h3>Shipment Details</h3>
+                    <h3>Shipment Info</h3>
                     <div class="clear hr-line-dashed"></div>
 
                     <div class="form-group">

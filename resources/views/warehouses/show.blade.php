@@ -77,6 +77,14 @@
                             <th>Notes</th>
                             <td>{{ $warehouse->notes }}</td>
                         </tr>
+                        <tr>
+                            <th>Created</th>
+                            <td>{{ $warehouse->present()->createdAt() }}</td>
+                        </tr>
+                        <tr>
+                            <th>Updated</th>
+                            <td>{{ $warehouse->present()->updatedAt() }}</td>
+                        </tr>
                     </table>
                 </div>
             </div>
