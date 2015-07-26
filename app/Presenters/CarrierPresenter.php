@@ -3,10 +3,10 @@
 use App\Presenters\BasePresenter;
 
 /**
- * Carrier
+ * CarrierPresenter
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Carrier extends BasePresenter {
+class CarrierPresenter extends BasePresenter {
 
 }

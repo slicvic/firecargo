@@ -28,9 +28,9 @@ class User extends Base implements AuthenticatableInterface {
     /**
      * The presenter path.
      *
-     * @var Presenter
+     * @var string
      */
-    protected $presenter = 'App\Presenters\User';
+    protected $presenter = 'App\Presenters\UserPresenter';
 
     /**
      * A list of fillable fields.

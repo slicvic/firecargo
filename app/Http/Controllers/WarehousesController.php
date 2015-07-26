@@ -16,7 +16,7 @@ use App\Models\PackageType;
 use App\Models\Account;
 use App\Models\AccountType;
 use App\Models\Carrier;
-use App\Pdf\Warehouse as WarehousePdf;
+use App\Pdf\WarehousePdf;
 use App\Exceptions\ValidationException;
 use Flash;
 

@@ -4,11 +4,11 @@ use App\Presenters\BasePresenter;
 use App\Helpers\Upload;
 
 /**
- * Company
+ * CompanyPresenter
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Company extends BasePresenter {
+class CompanyPresenter extends BasePresenter {
 
     /**
      * Presents the address as a string.

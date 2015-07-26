@@ -2,22 +2,22 @@
 
 use TCPDF;
 use TCPDFBarcode;
-use App\Models\Warehouse as WarehouseModel;
+use App\Models\Warehouse;
 
 /**
  * Warehouse
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Warehouse {
+class WarehousePdf {
 
     /**
      * Generates a warehouse receipt.
      *
-     * @param  WarehouseModel  $warehouse
+     * @param  Warehouse  $warehouse
      * @return PDF
      */
-    public static function getReceipt(WarehouseModel $warehouse)
+    public static function getReceipt(Warehouse $warehouse)
     {
         // Create barcode
         $barcode = new TCPDFBarcode($warehouse->id, 'C128');
@@ -29,7 +29,7 @@ class Warehouse {
         $pdf->SetAutoPageBreak(FALSE);
         // White out the header border
         $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
-        
+
         $pdf->AddPage();
 
         $html = view('pdfs/warehouse/receipt', [
@@ -45,10 +45,10 @@ class Warehouse {
     /**
      * Generates a warehouse shipping label.
      *
-     * @param  WarehouseModel  $warehouse
+     * @param  Warehouse  $warehouse
      * @return PDF
      */
-    public static function getLabel(WarehouseModel $warehouse)
+    public static function getLabel(Warehouse $warehouse)
     {
         // Retrieve packages
         $packages = $warehouse->packages;
@@ -63,7 +63,7 @@ class Warehouse {
         $pdf->SetAutoPageBreak(FALSE);
         // White out the header border
         $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
-        
+
         $html = view('pdfs/warehouse/label', [
             'warehouse' => $warehouse,
             'packages' => $packages,

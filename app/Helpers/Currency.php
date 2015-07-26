@@ -8,7 +8,7 @@
 class Currency {
 
     /**
-     * A currency amount.
+     * The currency amount.
      *
      * @var float|int
      */
@@ -25,9 +25,8 @@ class Currency {
     }
 
     /**
-     * Converts a number to a decimal dollar amount.
+     * Formats amount as a dollar amount.
      *
-     * @param  bool   $showSign
      * @return string
      */
     public function asDollar()

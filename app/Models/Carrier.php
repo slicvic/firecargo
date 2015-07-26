@@ -20,7 +20,7 @@ class Carrier extends Base {
     public static $rules = [
         'name' => 'required'
     ];
-    
+
     /**
      * The database table name.
      *
@@ -31,9 +31,9 @@ class Carrier extends Base {
     /**
      * The presenter path.
      *
-     * @var Presenter
+     * @var string
      */
-    protected $presenter = 'App\Presenters\Carrier';
+    protected $presenter = 'App\Presenters\CarrierPresenter';
 
     /**
      * A list of fillable fields.

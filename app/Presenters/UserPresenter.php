@@ -6,11 +6,11 @@ use App\Helpers\Upload;
 use Html;
 
 /**
- * User
+ * UserPresenter
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class User extends BasePresenter {
+class UserPresenter extends BasePresenter {
 
     /**
      * Presents the full name.

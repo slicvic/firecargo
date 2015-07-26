@@ -27,22 +27,30 @@ abstract class BasePresenter {
     }
 
     /**
-     * Presents the created at datetime.
+     * Presents the created datetime along with the creator's name.
      *
      * @return string
      */
     public function createdAt()
     {
-        return date('m/d/y g:i A', strtotime($this->model->created_at));
+        $createdAt = date('m/d/y g:i A', strtotime($this->model->created_at));
+
+        $createdBy = ($this->model->creator_user_id) ? ' by ' . $this->model->creator->present()->fullname() : '';
+
+        return $createdAt . $createdBy;
     }
 
     /**
-     * Presents the updated at datetime.
+     * Presents the updated datetime along with the updater's name.
      *
      * @return string
      */
     public function updatedAt()
     {
-        return date('m/d/y g:i A', strtotime($this->model->updated_at));
+        $updatedAt = date('m/d/y g:i A', strtotime($this->model->updated_at));
+
+        $updatedBy = ($this->model->updater_user_id) ? ' by ' . $this->model->updater->present()->fullname() : '';
+
+        return $updatedAt . $updatedBy;
     }
 }

@@ -5,11 +5,11 @@ use App\Helpers\Currency;
 use Html;
 
 /**
- * Package
+ * PackagePresenter
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Package extends BasePresenter {
+class PackagePresenter extends BasePresenter {
 
     /**
      * Presents the status of the package.
@@ -59,7 +59,7 @@ class Package extends BasePresenter {
     public function warehouseLink()
     {
         return Html::linkWithIcon(
-            "/warehouses/show/{$this->model->warehouse_id}", 
+            "/warehouses/show/{$this->model->warehouse_id}",
             $this->model->warehouse_id);
     }
 

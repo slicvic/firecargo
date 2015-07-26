@@ -10,18 +10,18 @@ use Intervention\Image\ImageManagerStatic as Image;
 class Upload {
 
     /**
-     * The upload directory root path.
-     *
-     * @var string
-     */
-    const ROOT_PATH = '/uploads/';
-
-    /**
      * Maximum upload file size in KB.
      *
      * @var int
      */
     const MAX_FILE_SIZE = 10000;
+
+    /**
+     * The upload directory root path.
+     *
+     * @var string
+     */
+    const ROOT_PATH = '/uploads/';
 
     /**
      * Resource paths.
@@ -48,7 +48,6 @@ class Upload {
     public static function saveUserProfilePhoto($file, $userId)
     {
         // Create destination directory
-
         $destination = self::resourcePath('user.profile_photo', $userId);
 
         if ( ! file_exists($destination))
@@ -57,7 +56,6 @@ class Upload {
         }
 
         // Generate thumbnails
-
         $dimensions = [
             'sm' => 48,
             'md' => 200
@@ -72,7 +70,6 @@ class Upload {
         }
 
         // Remove temp file
-
         unlink($file->getPathName());
     }
 
@@ -86,8 +83,7 @@ class Upload {
      */
     public static function saveCompanyLogo($file, $companyId)
     {
-         // Create destination directory
-
+        // Create destination directory
         $destination = self::resourcePath('company.logo', $companyId);
 
         if ( ! file_exists($destination))
@@ -96,7 +92,6 @@ class Upload {
         }
 
         // Generate thumbnails
-
         $dimensions = [
             'sm' => 100,
             'md' => 200,
@@ -115,7 +110,6 @@ class Upload {
         }
 
         // Remove temp file
-
         unlink($file->getPathName());
     }
 

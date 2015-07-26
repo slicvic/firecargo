@@ -25,7 +25,7 @@ class Account extends Base {
         'email' => 'email',
         'name' => 'required'
     ];
-    
+
     /**
      * The database table name.
      *
@@ -36,9 +36,9 @@ class Account extends Base {
     /**
      * The presenter path.
      *
-     * @var Presenter
+     * @var string
      */
-    protected $presenter = 'App\Presenters\Account';
+    protected $presenter = 'App\Presenters\AccountPresenter';
 
     /**
      * A list of fillable fields.

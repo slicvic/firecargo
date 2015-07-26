@@ -25,9 +25,9 @@ class Package extends Base {
     /**
      * The presenter path.
      *
-     * @var array
+     * @var string
      */
-    protected $presenter = 'App\Presenters\Package';
+    protected $presenter = 'App\Presenters\PackagePresenter';
 
     /**
      * Soft delete timestamp.

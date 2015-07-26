@@ -24,9 +24,9 @@ class Shipment extends Base {
     /**
      * The presenter path.
      *
-     * @var Presenter
+     * @var string
      */
-    protected $presenter = 'App\Presenters\Shipment';
+    protected $presenter = 'App\Presenters\ShipmentPresenter';
 
     /**
      * A list of fillable fields.

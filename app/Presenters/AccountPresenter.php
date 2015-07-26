@@ -5,11 +5,11 @@ use App\Models\AccountType;
 use Html;
 
 /**
- * Account
+ * AccountPresenter
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Account extends BasePresenter {
+class AccountPresenter extends BasePresenter {
 
     /**
      * Presents the address as a string.

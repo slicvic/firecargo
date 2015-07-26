@@ -23,9 +23,9 @@ class Company extends Base {
     /**
      * The presenter path.
      *
-     * @var Presenter
+     * @var string
      */
-    protected $presenter = 'App\Presenters\Company';
+    protected $presenter = 'App\Presenters\CompanyPresenter';
 
     /**
      * A list of fillable fields.

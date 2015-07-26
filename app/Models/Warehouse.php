@@ -25,9 +25,9 @@ class Warehouse extends Base {
     /**
      * The presenter path.
      *
-     * @var Presenter
+     * @var string
      */
-    protected $presenter = 'App\Presenters\Warehouse';
+    protected $presenter = 'App\Presenters\WarehousePresenter';
 
     /**
      * A list of fillable fields.

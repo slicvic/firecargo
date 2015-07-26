@@ -6,11 +6,11 @@ use App\Helpers\Currency;
 use Html;
 
 /**
- * Warehouse
+ * WarehousePresenter
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Warehouse extends BasePresenter {
+class WarehousePresenter extends BasePresenter {
 
     /**
      * Presents the arrival date.
@@ -20,30 +20,6 @@ class Warehouse extends BasePresenter {
     public function arrivedAt($showTime = TRUE)
     {
         return date('n/j/Y g:i A', strtotime($this->model->arrived_at));
-    }
-
-    /**
-     * Presents the creator's name and timestamp.
-     *
-     * @return string
-     */
-    public function createdAt()
-    {
-        $dt = date('m/d/y g:i A', strtotime($this->model->created_at));
-
-        return $dt . ' by ' . $this->model->creator->present()->fullname();
-    }
-
-    /**
-     * Presents the updater's name and timestamp.
-     *
-     * @return string
-     */
-    public function updatedAt()
-    {
-        $dt = date('m/d/y g:i A', strtotime($this->model->updated_at));
-
-        return $dt . ' by ' . $this->model->updater->present()->fullname();
     }
 
     /**
@@ -84,7 +60,7 @@ class Warehouse extends BasePresenter {
     public function shipperLink()
     {
         return Html::linkWithIcon(
-            "/accounts/edit/{$this->model->shipper_account_id}", 
+            "/accounts/edit/{$this->model->shipper_account_id}",
             $this->model->shipper->name);
     }
 
@@ -96,7 +72,7 @@ class Warehouse extends BasePresenter {
     public function consigneeLink()
     {
         return Html::linkWithIcon(
-            "/accounts/edit/{$this->model->consignee_account_id}", 
+            "/accounts/edit/{$this->model->consignee_account_id}",
             $this->model->consignee->name);
     }
 

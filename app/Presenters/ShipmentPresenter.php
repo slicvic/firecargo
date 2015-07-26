@@ -4,11 +4,11 @@ use App\Presenters\BasePresenter;
 use App\Helpers\Currency;
 
 /**
- * Shipment
+ * ShipmentPresenter
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Shipment extends BasePresenter {
+class ShipmentPresenter extends BasePresenter {
 
     /**
      * Gets the carrier's name.
@@ -18,30 +18,6 @@ class Shipment extends BasePresenter {
     public function carrier()
     {
         return ($this->model->exists) ? $this->model->carrier->name : '';
-    }
-
-    /**
-     * Presents the creator's name and timestamp.
-     *
-     * @return string
-     */
-    public function createdAt()
-    {
-        $dt = date('m/d/y g:i A', strtotime($this->model->created_at));
-
-        return $dt . ' by ' . $this->model->creator->present()->fullname();
-    }
-
-    /**
-     * Presents the updater's name and timestamp.
-     *
-     * @return string
-     */
-    public function updatedAt()
-    {
-        $dt = date('m/d/y g:i A', strtotime($this->model->updated_at));
-
-        return $dt . ' by ' . $this->model->updater->present()->fullname();
     }
 
     /**
