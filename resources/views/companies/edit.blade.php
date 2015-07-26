@@ -23,13 +23,13 @@
     <div class="form-group">
         <label class="control-label col-sm-2">Name</label>
         <div class="col-sm-4">
-            <input required type="text" name="name" placeholder="Name" class="form-control" value="{{ Input::old('name', $company->name) }}">
+            <input required type="text" name="name" placeholder="e.g. Coca Cola" class="form-control" value="{{ Input::old('name', $company->name) }}">
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2">Corp Code</label>
+        <label class="control-label col-sm-2">Short Name</label>
         <div class="col-sm-4">
-            <input required type="text" name="shortname" placeholder="Corp Code" class="form-control" value="{{ Input::old('shortname', $company->shortname) }}">
+            <input required type="text" name="shortname" placeholder="e.g. CC" class="form-control" value="{{ Input::old('shortname', $company->shortname) }}">
         </div>
     </div>
     <div class="form-group">

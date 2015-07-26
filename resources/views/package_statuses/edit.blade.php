@@ -23,7 +23,7 @@
     <div class="form-group">
         <label class="control-label col-sm-2">Name</label>
         <div class="col-sm-4">
-            <input required type="text" name="name" placeholder="e.g. Processing" class="form-control" value="{{ Input::old('name', $status->name) }}">
+            <input required type="text" name="name" placeholder="e.g. Received" class="form-control" value="{{ Input::old('name', $status->name) }}">
         </div>
     </div>
     <div class="form-group">

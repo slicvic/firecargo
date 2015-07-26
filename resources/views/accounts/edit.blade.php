@@ -72,19 +72,19 @@
                             <div class="clear hr-line-dashed"></div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Phone</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" name="account[phone]" placeholder="Phone" class="form-control" value="{{ Input::old('account.phone', $account->phone) }}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Fax</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" name="account[fax]" placeholder="Fax" class="form-control" value="{{ Input::old('account.fax', $account->fax) }}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-sm-2">Mobile</label>
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <input type="text" name="account[mobile_phone]" placeholder="Mobile" class="form-control" value="{{ Input::old('account.mobile_phone', $account->mobile_phone) }}">
                                 </div>
                             </div>
