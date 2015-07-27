@@ -5,7 +5,7 @@ $(function() {
         toggleBtn.toggleClass('collapsed');
 
         if (toggleBtn.hasClass('collapsed')) {
-            var packagesTr = $('<tr><td colspan="' + toggleBtnParentTr.children('td').length + '"><h5 class="alert alert-warning text-center">Loading packages...</h5></td></tr>')
+            var packagesTr = $('<tr><td colspan="' + toggleBtnParentTr.children('td').length + '">' + app.getSpinnerHtml() + '</td></tr>')
             toggleBtnParentTr.after(packagesTr);
             toggleBtn.html('<i class="fa fa-angle-down"></i>');
             $.get('/packages/ajax-warehouse-packages/' + toggleBtn.attr('data-warehouse-id')).done(function(data) {

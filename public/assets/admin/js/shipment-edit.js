@@ -17,23 +17,22 @@ $(function() {
         event.preventDefault();
 
         var form = $(this),
-            flash = $('#flashMessage'),
-            submit = $(this).find('button');
+            flashMessage = $('#flashMessage'),
+            submitBtn = $(this).find('button[type=submit]');
 
         if (!form.valid()) return false;
 
-        submit.attr('disabled', true);
-        flash.html('');
+        submitBtn.button('loading');
+        flashMessage.html('');
 
         $.post(form.attr('action'), form.serialize(), 'json')
             .done(function(data) {
                 window.location = data.redirect_url;
             })
             .fail(function(xhr) {
-                var data = JSON.parse(xhr.responseText);
-                flash.html(data.error);
+                flashMessage.html(xhr.responseJSON.error);
                 $('html, body').scrollTop(0);
-                submit.attr('disabled', false);
+                submitBtn.button('reset');
             });
     });
  });
