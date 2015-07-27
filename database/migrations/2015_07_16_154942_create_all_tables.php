@@ -236,7 +236,7 @@ class CreateAllTables extends Migration {
 		    $table->integer('company_id')->unsigned();
 		    $table->integer('warehouse_id')->unsigned();
 		    $table->integer('shipment_id')->unsigned()->nullable();
-		    $table->integer('status_id')->unsigned();
+		    $table->integer('status_id')->unsigned()->nullable();
 		    $table->integer('type_id')->unsigned();
 		    $table->float('length')->unsigned();
 		    $table->float('width')->unsigned();
