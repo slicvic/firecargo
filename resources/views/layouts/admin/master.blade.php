@@ -54,8 +54,8 @@
     <script src="/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
 
     <!-- Main -->
-    <link rel="stylesheet" type="text/css" href="/assets/admin/css/main.css">
-    <script src="/assets/admin/js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/admin/css/style.css">
+    <script src="/assets/admin/js/app.js"></script>
 
     <script>var csrfToken = '{{ csrf_token() }}';</script>
 </head>
@@ -162,6 +162,11 @@
                     <strong>Copyright</strong> {{ env('APP_NAME') }} &copy; 2014-{{ date('Y') }}
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="modal inmodal" id="modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight"></div>
         </div>
     </div>
 </body>

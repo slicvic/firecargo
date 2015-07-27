@@ -28,5 +28,5 @@
 </div>
 
 <script src="/assets/plugins/dropzone/dropzone.min.js"></script>
-<script src="/assets/admin/js/pages/user-profile.js"></script>
+<script src="/assets/admin/js/user-profile.js"></script>
 @stop

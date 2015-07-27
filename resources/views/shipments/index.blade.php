@@ -81,5 +81,5 @@
     </div>
 </div>
 
-<script src="/assets/admin/js/pages/shipments/index.js"></script>
+<script src="/assets/admin/js/shipment-index.js"></script>
 @stop

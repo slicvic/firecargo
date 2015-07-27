@@ -38,7 +38,7 @@ class PackagePresenter extends BasePresenter {
      */
     public function dimensions()
     {
-        return $this->model->length . 'x' . $this->model->width . 'x' . $this->model->height;
+        return round($this->model->length) . 'x' . round($this->model->width) . 'x' . round($this->model->height);
     }
 
     /**

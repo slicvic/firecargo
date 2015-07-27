@@ -118,10 +118,10 @@
     <div class="form-group">
         <div class="col-sm-4">
             <a class="btn btn-white" href="/warehouses{{ $warehouse->exists ? '/show/' . $warehouse->id : '' }}">Cancel</a>
-            <button class="btn btn-primary" type="submit">Save changes</button>
+            <button class="btn btn-primary" data-loading-text="Saving..." type="submit">Save changes</button>
         </div>
     </div>
 </form>
 
-<script src="/assets/admin/js/pages/warehouses/edit.js"></script>
+<script src="/assets/admin/js/warehouse-edit.js"></script>
 @stop

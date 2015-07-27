@@ -58,4 +58,18 @@ class PackagesController extends BaseAuthController {
 
         return view('packages._list_shipment', ['packages' => $packages]);
     }
+
+    /**
+     * Shows a specific package.
+     *
+     * @param  Request  $request
+     * @param  int      $id
+     * @return Response
+     */
+    public function getAjaxShowModal(Request $request, $id)
+    {
+        $package = Package::findMineOrFail($id);
+
+        return view('packages.show_modal', ['package' => $package]);
+    }
 }

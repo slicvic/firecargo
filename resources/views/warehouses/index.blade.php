@@ -100,5 +100,5 @@
     </div>
 </div>
 
-<script src="/assets/admin/js/pages/warehouses/index.js"></script>
+<script src="/assets/admin/js/warehouse-index.js"></script>
 @stop
