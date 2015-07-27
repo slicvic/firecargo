@@ -14,11 +14,11 @@ var app = {
             btn.attr('data-loading-text', self.getSpinnerHtml());
             btn.button('loading');
 
-            $.get('/packages/ajax-show-modal/' + btn.attr('data-package-id'), function(response) {
+            $.get('/packages/ajax-show/' + btn.attr('data-package-id'), function(response) {
                 modalContent.html(response);
             })
             .fail(function(xhr) {
-                modalContent.html(xhr.responseJSON.error);
+                modalContent.html('<div class="modal-content">' + xhr.responseJSON.error + '</div>');
             })
             .always(function() {
                 modal.modal({});
