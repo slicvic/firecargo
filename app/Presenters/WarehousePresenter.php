@@ -85,9 +85,9 @@ class WarehousePresenter extends BasePresenter {
     {
         switch ($this->model->status_id)
         {
-            case WarehouseStatus::STATUS_PENDING:
+            case WarehouseStatus::PENDING:
                 return 'warning';
-            case WarehouseStatus::STATUS_COMPLETE:
+            case WarehouseStatus::COMPLETE:
                 return 'success';
             default:
                 return 'danger';

@@ -154,4 +154,27 @@ class Package extends Base {
 
         return $packages;
     }
+
+    public static function findOrFailByIdAndConsigneeAccountId($id, $consigneeAccountId)
+    {
+        return Package::query()
+                ->join('warehouses', 'packages.warehouse_id', '=', 'warehouses.id')
+                ->where(['packages.id' => $id, 'warehouses.consignee_account_id' => $consigneeAccountId])
+                ->firstOrFail();
+    }
+
+    public static function search(array $criteria = NULL)
+    {
+        $query = Package::query()
+            ->select('packages.*')
+            ->join('warehouses', 'packages.warehouse_id', '=', 'warehouses.id')
+            ->with('type', 'status', 'warehouse');
+
+        if ( ! empty($criteria['consignee_account_id']))
+        {
+            $query = $query->where('warehouses.consignee_account_id', '=', $criteria['consignee_account_id']);
+        }
+
+        return $query->get();
+    }
 }

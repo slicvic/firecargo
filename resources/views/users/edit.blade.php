@@ -37,7 +37,7 @@
                             <select required class="form-control" name="user[role_id]">
                             <option value="">- Choose -</option>
                             @foreach (\App\Models\Role::all() as $role)
-                                <option{{ ($role->id == Input::old('user.role_id', $user->role_id)) ? ' selected' : '' }} value="{{ $role->id }}">{{ $role->name }}</option>
+                                <option value="{{ $role->id }}"{{ ($role->id == Input::old('user.role_id', $user->role_id)) ? ' selected' : '' }}>{{ $role->name }}</option>
                             @endforeach
                             </select>
                         </div>

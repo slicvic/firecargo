@@ -92,6 +92,10 @@ class Handler extends ExceptionHandler {
         {
             return response()->json(['error' => Flash::view($e->errors())], 400);
         }
+        elseif ($e instanceof ModelNotFoundException)
+        {
+            return response()->json(['error' => Flash::view(trans('messages.error_model_not_found'))], 404);
+        }
         else
         {
             $message = env('APP_DEBUG') ? $e->getMessage() : trans('messages.error_500');

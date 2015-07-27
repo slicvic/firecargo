@@ -32,10 +32,6 @@
 
         <div class="clear hr-line-dashed"></div>
 
-        <div class="pull-right">
-            {!! $pagination = $shipments->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
-        </div>
-
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -75,8 +71,10 @@
                 </tbody>
             </table>
         </div>
-        <div class="pull-right">
-            {!! $pagination !!}
+        <div class="row">
+            <div class="pull-right">
+                {!! $shipments->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
+            </div>
         </div>
     </div>
 </div>

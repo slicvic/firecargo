@@ -95,7 +95,6 @@
                     </li>
 
                     @if ($user->isAdmin() || $user->isAgent())
-
                         <li{{ preg_match('/shipments/', $uri) ? ' class=active' : '' }}>
                             <a href="#"><i class="fa fa-plane"></i> <span class="nav-label">Shipments</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">

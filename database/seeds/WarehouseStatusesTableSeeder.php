@@ -15,7 +15,7 @@ class WarehouseStatusesTableSeeder extends Seeder {
         DB::table('warehouse_statuses')->delete();
 
         DB::table('warehouse_statuses')->insert([
-            ['name' => 'New'],
+            ['name' => 'Unprocessed'],
             ['name' => 'Pending'],
             ['name' => 'Complete'],
         ]);

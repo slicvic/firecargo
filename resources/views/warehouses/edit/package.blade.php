@@ -5,14 +5,14 @@
         <td>
             <select name="packages[{{ $package->id }}][status_id]" data-name="status_id" class="form-control">
                 @foreach($packageStatuses as $status)
-                    <option{{ ($status->id == $package->status_id) ? ' selected' : '' }} value="{{ $status->id }}">{{ $status->name }}</option>
+                    <option value="{{ $status->id }}"{{ ($status->id == $package->status_id) ? ' selected' : '' }}>{{ $status->name }}</option>
                 @endforeach
             </select>
         </td>
         <td>
             <select name="packages[{{ $package->id }}][type_id]" data-name="type_id" class="form-control">
                 @foreach($packageTypes as $type)
-                    <option{{ ($type->id == $package->type_id) ? ' selected' : '' }} value="{{ $type->id }}">{{ $type->name }}</option>
+                    <option value="{{ $type->id }}"{{ ($type->id == $package->type_id) ? ' selected' : '' }}>{{ $type->name }}</option>
                 @endforeach
             </select>
         </td>

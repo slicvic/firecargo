@@ -22,7 +22,7 @@ class PackagesController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('agent');
+        $this->middleware('agent', ['except' => ['getAjaxShow']]);
     }
 
     /**
@@ -66,10 +66,19 @@ class PackagesController extends BaseAuthController {
      * @param  int      $id
      * @return Response
      */
-    public function getAjaxShowModal(Request $request, $id)
+    public function getAjaxShow(Request $request, $id)
     {
-        $package = Package::findMineOrFail($id);
+        if ($this->authUser->isClient())
+        {
+            $package = Package::findOrFailByIdAndConsigneeAccountId($id, $this->authUser->account->id);
 
-        return view('packages.show_modal', ['package' => $package]);
+            return view('packages._show_client', ['package' => $package]);
+        }
+        else
+        {
+            $package = Package::findMineOrFail($id);
+
+            return view('packages._show', ['package' => $package]);
+        }
     }
 }

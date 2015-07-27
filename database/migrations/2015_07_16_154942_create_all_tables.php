@@ -187,7 +187,7 @@ class CreateAllTables extends Migration {
 		{
 		    $table->increments('id')->unsigned();
 		    $table->integer('company_id')->unsigned();
-		    $table->integer('status_id')->unsigned()->nullable();
+		    $table->integer('status_id')->unsigned()->default(1);
 		    $table->integer('shipper_account_id')->unsigned();
 		    $table->integer('consignee_account_id')->unsigned();
 		    $table->integer('carrier_id')->unsigned();

@@ -168,18 +168,20 @@ class Shipment extends Base {
         $order = ($order === 'asc') ? 'asc' : 'desc';
 
         // Build query
-        $shipments = Shipment::query()->orderBy('shipments.' . $sort, $order);
+        $query = Shipment::query()
+            ->with('carrier', 'creator', 'updater', 'company')
+            ->orderBy('shipments.' . $sort, $order);
 
-        if (isset($criteria['company_id']))
+        if ( ! empty ($criteria['company_id']))
         {
-            $shipments = $shipments->where('shipments.company_id', '=', $criteria['company_id']);
+            $query = $query->where('shipments.company_id', '=', $criteria['company_id']);
         }
 
         if (isset($criteria['search']) && strlen($criteria['search']) > 2)
         {
             $search = '%' . $criteria['search'] . '%';
 
-            $shipments = $shipments
+            $query = $shipments
                 ->select('shipments.*')
                 ->leftJoin('packages', 'shipments.id', '=', 'packages.shipment_id')
                 ->leftJoin('carriers', 'shipments.carrier_id', '=', 'carriers.id')
@@ -199,10 +201,6 @@ class Shipment extends Base {
                 ]);
         }
 
-        $shipments = $shipments
-            ->with('carrier', 'creator', 'updater', 'company')
-            ->paginate($perPage);
-
-        return $shipments;
+        return $query->paginate($perPage);
     }
 }

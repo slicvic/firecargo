@@ -58,7 +58,7 @@ class AuthController extends BaseController {
         }
 
         Event::fire(new UserLoggedIn($user));
-        return redirect('/warehouses');
+        return redirect('/dashboard');
     }
 
     /**

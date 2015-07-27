@@ -12,9 +12,9 @@ class WarehouseStatus extends Base {
      *
      * @var int
      */
-    const STATUS_NEW      = 1;
-    const STATUS_PENDING  = 2;
-    const STATUS_COMPLETE = 3;
+    const UNPROCESSED = 1;
+    const PENDING     = 2;
+    const COMPLETE    = 3;
 
     /**
      * The database table name.

@@ -52,9 +52,9 @@ class WarehousesController extends BaseAuthController {
         $params['sort'] = $request->input('sort', 'id');
         $params['order'] = $request->input('order', 'desc');
         $params['search'] = $request->input('search');
-        $params['status'] = $request->input('status');
+        $params['status_id'] = $request->input('status_id');
 
-        $criteria['status'] = $params['status'];
+        $criteria['status_id'] = $params['status_id'];
         $criteria['search'] = $params['search'];
         $criteria['company_id'] = $this->authUser->isAdmin() ? NULL : $this->authUser->company_id;
 

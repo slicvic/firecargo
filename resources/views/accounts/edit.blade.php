@@ -39,7 +39,7 @@
                                         @else
                                             <option value="">- Choose -</option>
                                             @foreach (\App\Models\AccountType::allExceptClient() as $type)
-                                                <option{{ ($type->id == Input::old('account.type_id', $account->type_id)) ? ' selected' : '' }} value="{{ $type->id }}">{{ $type->name }}</option>
+                                                <option value="{{ $type->id }}"{{ ($type->id == Input::old('account.type_id', $account->type_id)) ? ' selected' : '' }}>{{ $type->name }}</option>
                                             @endforeach
                                         @endif
                                     </select>

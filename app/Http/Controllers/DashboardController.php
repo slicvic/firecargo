@@ -3,7 +3,10 @@
 use Auth;
 
 use App\Models\User;
-use App\Pdf\Warehouse as WarehousePdf;
+use App\Pdf\WarehousePdf;
+use App\Models\Warehouse;
+use App\Models\WarehouseStatus;
+use App\Models\Package;
 
 /**
  * DashboardController
@@ -19,19 +22,22 @@ class DashboardController extends BaseAuthController {
      */
     public function getIndex()
     {
-        if ($this->authUser->isAdmin())
+        if ($this->authUser->isClient())
         {
-            // TODO
-            return view('dashboard.admins.index');
-        }
-        elseif ($this->authUser->isAgent())
-        {
-            // TODO
-            return view('dashboard.agents.index');
+            $criteria['consignee_account_id'] = $this->authUser->account->id;
+            $packages = Package::search($criteria);
+
+            return view('dashboard.clients.index', ['packages' => $packages]);
         }
         else
         {
-            return view('dashboard.clients.index');
+            $totals = [
+                'unprocessed' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::UNPROCESSED, $this->authUser->company_id),
+                'pending' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::PENDING, $this->authUser->company_id),
+                'complete' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::COMPLETE, $this->authUser->company_id)
+            ];
+
+            return view('dashboard.admins.index', ['totals' => $totals]);
         }
     }
 }

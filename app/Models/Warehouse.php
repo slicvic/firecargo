@@ -248,6 +248,18 @@ class Warehouse extends Base {
     }
 
     /**
+     * Counts the total number of warehouses by status and company id.
+     *
+     * @param  int  $statusId
+     * @param  int  $companyId
+     * @return int
+     */
+    public static function countByStatusIdAndCompanyId($statusId, $companyId)
+    {
+        return Warehouse::where(['status_id' => $statusId, 'company_id' => $companyId])->count();
+    }
+
+    /**
      * Finds all warehouses with the given criteria.
      *
      * @param  array|null  $criteria
@@ -258,14 +270,7 @@ class Warehouse extends Base {
      */
     public static function search(array $criteria = NULL, $sort = 'id', $order = 'desc', $perPage = 15)
     {
-        $validStatusFilters = [
-            'new'      => WarehouseStatus::STATUS_NEW,
-            'pending'  => WarehouseStatus::STATUS_PENDING,
-            'complete' => WarehouseStatus::STATUS_COMPLETE
-        ];
-
         // Verify sort and order
-
         $validSortColumns = [
             'id',
             'arrived_at',
@@ -278,15 +283,16 @@ class Warehouse extends Base {
         $order = ($order === 'asc') ? 'asc' : 'desc';
 
         // Build query
+        $query = Warehouse::query()
+            ->with('creator', 'updater', 'shipper', 'consignee', 'carrier', 'company')
+            ->orderBy('warehouses.' . $sort, $order);
 
-        $query = Warehouse::query()->orderBy('warehouses.' . $sort, $order);
-
-        if (isset($criteria['status']) && array_key_exists($criteria['status'], $validStatusFilters))
+        if ( ! empty($criteria['status_id']))
         {
-            $query = $query->where('warehouses.status_id', '=', $validStatusFilters[$criteria['status']]);
+            $query = $query->where('warehouses.status_id', '=', $criteria['status_id']);
         }
 
-        if (isset($criteria['company_id']))
+        if ( ! empty($criteria['company_id']))
         {
             $query = $query->where('warehouses.company_id', '=', $criteria['company_id']);
         }
@@ -326,10 +332,6 @@ class Warehouse extends Base {
                 ]);
         }
 
-        $warehouses = $query
-            ->with('creator', 'updater', 'shipper', 'consignee', 'carrier', 'company')
-            ->paginate($perPage);
-
-        return $warehouses;
+        return $query->paginate($perPage);
     }
 }
