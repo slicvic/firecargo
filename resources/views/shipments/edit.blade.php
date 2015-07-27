@@ -104,8 +104,8 @@
                     </table>
                     @if ( ! count($groupedPackages))
                         <div class="alert alert-danger">
-                            <h4><i class="fa fa-exclamation-triangle"></i>
-                            No packages available for shipment.</h4>
+                            <i class="fa fa-exclamation-triangle"></i>
+                            No packages available for shipment.
                         </div>
                     @endif
                 </div>

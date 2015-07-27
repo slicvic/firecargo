@@ -108,7 +108,7 @@
                             <a href="#"><i class="fa fa-cube"></i> <span class="nav-label">Warehouses</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses">Warehouses</a></li>
-                                <li{{ (Request::is('warehouses/create')) ? ' class=active' : '' }}><a href="/warehouses/create">Add Warehouse</a></li>
+                                <li{{ (Request::is('warehouses/create')) ? ' class=active' : '' }}><a href="/warehouses/create">Create Warehouse</a></li>
                             </ul>
                         </li>
 
