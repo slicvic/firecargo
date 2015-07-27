@@ -18,7 +18,7 @@ class PackagePresenter extends BasePresenter {
      */
     public function status()
     {
-        return ($this->model->exists && $this->model->status) ? $this->model->status->name : '';
+        return ($this->model->exists && $this->model->status) ? $this->model->status->name : 'N/A';
     }
 
     /**
