@@ -40,7 +40,7 @@ class ClientsController extends BaseAuthController {
     {
         $accounts = Account::mine()->clients()->get();
 
-        return view('accounts.clients.index', ['accounts' => $accounts]);
+        return view('accounts.client.index', ['accounts' => $accounts]);
     }
 
     /**
@@ -50,7 +50,7 @@ class ClientsController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('accounts.clients.edit', [
+        return view('accounts.client.edit', [
             'account' => new Account,
             'address' => new Address
         ]);
@@ -99,7 +99,7 @@ class ClientsController extends BaseAuthController {
     {
         $account = Account::findMineOrFail($id);
 
-        return view('accounts.clients.edit', [
+        return view('accounts.client.edit', [
             'account' => $account,
             'address' => $account->address ?: new Address
         ]);

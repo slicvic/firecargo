@@ -89,7 +89,7 @@ $(function() {
     });
 
     /**
-     * Package manager
+     * Package event handlers
      */
     var PackageMgr = {
         pkgTemplate: null,
@@ -118,17 +118,17 @@ $(function() {
             var cloneBtn = $(this);
             var totalPkgs = PackageMgr.countPackages();
             var sourcePkg = cloneBtn.closest('.panel');
-            var clonedPkg = PackageMgr.pkgTemplate.clone();
+            var clonePkg = PackageMgr.pkgTemplate.clone();
 
             sourcePkg.find('input, select, textarea').each(function() {
                 var sourceField = $(this);
-                var clonedField = clonedPkg.find('[data-name="' + sourceField.attr('data-name') + '"]');
-                clonedField
+                var cloneField = clonePkg.find('[data-name="' + sourceField.attr('data-name') + '"]');
+                cloneField
                     .attr('name', 'packages[new_' + totalPkgs + '][' + sourceField.attr('data-name') + ']')
                     .val(sourceField.hasClass('unique') ? '' : sourceField.val());
             });
 
-            $('#packages-container').append(clonedPkg);
+            $('#packages-container').append(clonePkg);
             $('#total-packages').html(1 + totalPkgs);
 
             PackageMgr.updateTotals();

@@ -1,29 +1,32 @@
 $(function() {
-    // Bind carrier autocomplete
+    /**
+     * Carrier autocomplete handler
+     */
     $('#carrier').keyup(function() {
-        $('#carrierId').val('');
+        $('#carrier-id').val('');
     });
 
     $('#carrier').autocomplete({
         source: '/carriers/ajax-autocomplete',
         minLength: 2,
         select: function(event, ui) {
-            $('#carrierId').val(ui.item.id);
+            $('#carrier-id').val(ui.item.id);
         }
     });
 
-    // Bind form submit
-    $('form').on('submit', function() {
+    /**
+     * Form submit handler
+     */
+    $('#shipment-edit-form').on('submit', function() {
         event.preventDefault();
 
         var form = $(this),
-            flashMessage = $('#flashMessage'),
-            submitBtn = $(this).find('button[type=submit]');
+            flashMessage = $('#flash-message'),
+            saveBtn = $(this).find('button[type=submit]');
 
         if (!form.valid()) return false;
 
-        submitBtn.button('loading');
-        flashMessage.html('');
+        saveBtn.button('loading');
 
         $.post(form.attr('action'), form.serialize(), 'json')
             .done(function(data) {
@@ -32,7 +35,7 @@ $(function() {
             .fail(function(xhr) {
                 flashMessage.html(xhr.responseJSON.error);
                 $('html, body').scrollTop(0);
-                submitBtn.button('reset');
+                saveBtn.button('reset');
             });
     });
  });

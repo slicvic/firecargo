@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="input-group">
-                    <input type="text" id="add-package-tracking" class="form-control" placeholder="Tracking #">
+                    <input type="text" id="add-package-tracking" class="form-control" placeholder="Tracking # (optional)">
                     <span class="input-group-btn">
                         <button type="button" id="add-package-btn" class="btn btn-success"><i class="fa fa-plus"></i> Add New</button>
                     </span>

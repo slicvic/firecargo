@@ -123,7 +123,7 @@ class Shipment extends Base {
     {
         // First lets detach the packages not in $packageIds
         Package::whereNotIn('id', $packageIds)
-            ->where('shipment_id', '=', $this->id)
+            ->where('shipment_id', $this->id)
             ->update(['shipment_id' => NULL]);
 
         // Next, we'll attach the given packages
@@ -140,7 +140,7 @@ class Shipment extends Base {
      */
     public function calculateTotalValue()
     {
-        return DB::table('packages')->where('shipment_id', '=', $this->id)
+        return DB::table('packages')->where('shipment_id', $this->id)
             ->sum('invoice_amount');
     }
 
@@ -174,7 +174,7 @@ class Shipment extends Base {
 
         if ( ! empty ($criteria['company_id']))
         {
-            $query = $query->where('shipments.company_id', '=', $criteria['company_id']);
+            $query->where('shipments.company_id', $criteria['company_id']);
         }
 
         if (isset($criteria['search']) && strlen($criteria['search']) > 2)

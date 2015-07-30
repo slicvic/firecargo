@@ -27,7 +27,7 @@ class DashboardController extends BaseAuthController {
             $criteria['client_account_id'] = $this->authUser->client->id;
             $packages = Package::search($criteria);
 
-            return view('dashboard.clients.index', ['packages' => $packages]);
+            return view('dashboard.client.index', ['packages' => $packages]);
         }
         else
         {

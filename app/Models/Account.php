@@ -109,7 +109,7 @@ class Account extends Base {
      */
     public function scopeClients($query)
     {
-        return $query->where('type_id', '=', AccountType::CLIENT);
+        return $query->where('type_id', AccountType::CLIENT);
     }
 
     /**
@@ -120,7 +120,7 @@ class Account extends Base {
      */
     public function scopeShippers($query)
     {
-        return $query->where('type_id', '=', AccountType::SHIPPER);
+        return $query->where('type_id', AccountType::SHIPPER);
     }
 
     /**

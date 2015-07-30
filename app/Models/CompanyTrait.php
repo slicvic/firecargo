@@ -28,9 +28,7 @@ trait CompanyTrait {
      */
     public function scopeMine($query)
     {
-        $companyId = Auth::user()->company_id;
-
-        return $query->where('company_id', '=', $companyId);
+        return $query->where('company_id', Auth::user()->company_id);
     }
 
     /**
@@ -45,7 +43,7 @@ trait CompanyTrait {
 
         if ( ! Auth::user()->isAdmin())
         {
-            $query = $query->where('company_id', '=', Auth::user()->company_id);
+            $query->where('company_id', Auth::user()->company_id);
         }
 
         return $query->first();
@@ -65,7 +63,7 @@ trait CompanyTrait {
 
         if ( ! Auth::user()->isAdmin())
         {
-            $query = $query->where('company_id', '=', Auth::user()->company_id);
+            $query->where('company_id', Auth::user()->company_id);
         }
 
         return $query->firstOrFail();

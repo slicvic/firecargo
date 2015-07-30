@@ -22,7 +22,7 @@
                 <td>{{ str_limit($package->description, 50, '...') }}</td>
                 <td>
                     <div class="btn-group">
-                        <button type="button" data-package-id="{{ $package->id }}" class="btn-show-package btn-white btn btn-sm">Detail</button>
+                        <button type="button" data-package-id="{{ $package->id }}" class="show-package-modal-btn btn-white btn btn-sm">Detail</button>
                     </div>
                 </td>
             </tr>

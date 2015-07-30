@@ -44,6 +44,7 @@ class Package extends Base {
     protected $fillable = [
         'type_id',
         'shipment_id',
+        'warehouse_id',
         'length',
         'width',
         'height',
@@ -161,7 +162,7 @@ class Package extends Base {
 
         if ( ! empty($criteria['client_account_id']))
         {
-            $query = $query->where('warehouses.client_account_id', '=', $criteria['client_account_id']);
+            $query->where('warehouses.client_account_id', $criteria['client_account_id']);
         }
 
         return $query->get();

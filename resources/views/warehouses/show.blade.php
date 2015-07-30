@@ -16,7 +16,7 @@
 @stop
 
 @section('actions')
-    <a href="/warehouses/edit/{{ $warehouse->id }}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+    <a href="/warehouses/edit/{{ $warehouse->id }}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit Warehouse</a>
     <a target="_blank" href="/warehouses/print-receipt/{{ $warehouse->id }}" class="btn btn-success"><i class="fa fa-print"></i> Print Receipt</a>
     <a target="_blank" href="/warehouses/print-label/{{ $warehouse->id }}" class="btn btn-success"><i class="fa fa-print"></i> Print Label</a>
 @stop
@@ -55,7 +55,7 @@
                         </tr>
                         <tr>
                             <th>Pieces</th>
-                            <td><span class="label label-danger">{{ $warehouse->packages->count() }}</span></td>
+                            <td><span class="label label-warning">{{ $warehouse->packages->count() }}</span></td>
                         </tr>
                         <tr>
                             <th>Total Value</th>

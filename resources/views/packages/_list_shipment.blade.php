@@ -25,7 +25,7 @@
                 <td>{{ $package->present()->invoiceAmount() }}</td>
                 <td>
                     <div class="btn-group">
-                        <button type="button" data-package-id="{{ $package->id }}" class="show-package-btn btn-white btn btn-sm">View</button>
+                        <button type="button" data-package-id="{{ $package->id }}" class="show-package-modal-btn btn-white btn btn-sm">View</button>
                     </div>
                 </td>
             </tr>

@@ -59,7 +59,7 @@ var app = {
         /**
          * Bind button to open package details modal
          */
-        $('body').on('click', '.show-package-btn', function() {
+        $('body').on('click', '.show-package-modal-btn', function() {
             var btn = $(this);
             var modal = $('#modal');
             var modalContent = modal.find('.modal-content');
@@ -67,7 +67,7 @@ var app = {
             btn.attr('data-loading-text', self.getSpinnerHtml());
             btn.button('loading');
 
-            $.get('/packages/ajax-show/' + btn.attr('data-package-id'), function(response) {
+            $.get('/packages/ajax-detail/' + btn.attr('data-package-id'), function(response) {
                 modalContent.html(response);
             })
             .fail(function(xhr) {

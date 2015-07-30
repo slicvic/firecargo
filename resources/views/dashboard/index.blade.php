@@ -1,5 +1,6 @@
 @extends('layouts.admin.page')
 
+@section('icon', 'fa fa-th-large')
 @section('title', 'Dashboard')
 
 @section('page_content')

@@ -66,19 +66,17 @@ class PackagesController extends BaseAuthController {
      * @param  int      $id
      * @return Response
      */
-    public function getAjaxShow(Request $request, $id)
+    public function getAjaxDetail(Request $request, $id)
     {
         if ($this->authUser->isClient())
         {
             $package = Package::findOrFailByIdAndClientId($id, $this->authUser->client->id);
 
-            return view('packages._show', ['package' => $package]);
+            return view('packages.client._detail_modal', ['package' => $package]);
         }
-        else
-        {
-            $package = Package::findMineOrFail($id);
 
-            return view('packages._show', ['package' => $package]);
-        }
+        $package = Package::findMineOrFail($id);
+
+        return view('packages._detail_modal', ['package' => $package]);
     }
 }

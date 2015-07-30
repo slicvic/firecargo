@@ -194,12 +194,12 @@ class User extends Base implements AuthenticatableInterface {
 
         if (isset($criteria['company_id']))
         {
-            $query = $query->where('company_id', '=', $criteria['company_id']);
+            $query->where('company_id', $criteria['company_id']);
         }
 
         if (isset($criteria['role_id']))
         {
-            $query = $query->whereIn('role_id', $criteria['role_id']);
+            $query->whereIn('role_id', $criteria['role_id']);
         }
 
         if ( ! empty($criteria['search']))

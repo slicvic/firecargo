@@ -16,7 +16,7 @@
 @stop
 
 @section('actions')
-    <a href="/shipments/edit/{{ $shipment->id }}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+    <a href="/shipments/edit/{{ $shipment->id }}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit Shipment</a>
 @stop
 
 @section('page_content')
@@ -32,11 +32,11 @@
     <div class="col-md-3">
         <div class="ibox">
             <div class="ibox-content">
-                <h2>Summary</h2>
+                <h2>Details</h2>
                 <table class="table table-responsive">
                     <tr>
                         <th>Ref #</th>
-                        <td><span class="label label-danger ">{{ $shipment->reference_number }}</span></td>
+                        <td><span class="label label-warning">{{ $shipment->reference_number }}</span></td>
                     </tr>
                     <tr>
                         <th>Departed</th>

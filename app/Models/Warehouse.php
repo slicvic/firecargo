@@ -267,7 +267,7 @@ class Warehouse extends Base {
      */
     public function calculateTotalValue()
     {
-        return DB::table('packages')->where('warehouse_id', '=', $this->id)
+        return DB::table('packages')->where('warehouse_id', $this->id)
             ->sum('invoice_amount');
     }
 
@@ -313,19 +313,19 @@ class Warehouse extends Base {
 
         if ( ! empty($criteria['status_id']))
         {
-            $query = $query->where('warehouses.status_id', '=', $criteria['status_id']);
+             $query->where('warehouses.status_id', $criteria['status_id']);
         }
 
         if ( ! empty($criteria['company_id']))
         {
-            $query = $query->where('warehouses.company_id', '=', $criteria['company_id']);
+            $query->where('warehouses.company_id', $criteria['company_id']);
         }
 
         if (isset($criteria['search']) && strlen($criteria['search']) > 2)
         {
             $search = '%' . $criteria['search'] . '%';
 
-            $query = $query
+            $query
                 ->select('warehouses.*')
                 ->leftJoin('accounts AS clients', 'warehouses.client_account_id', '=', 'clients.id')
                 ->leftJoin('accounts AS shippers', 'warehouses.shipper_account_id', '=', 'shippers.id')
