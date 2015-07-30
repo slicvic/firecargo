@@ -12,7 +12,7 @@
         <a href="/sites">Sites</a>
     </li>
     <li class="active">
-        <strong>{{ $site->exists ? 'Edit' : 'Add' }}</strong>
+        <strong>{{ $site->exists ? 'Edit' : 'Create' }}</strong>
     </li>
 </ol>
 @stop

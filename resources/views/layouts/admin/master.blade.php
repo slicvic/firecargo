@@ -12,9 +12,6 @@
     <link href="/assets/plugins/inspinia/Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/plugins/inspinia/Static_Seed_Project/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/animate.css" rel="stylesheet">
-    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/style.css" rel="stylesheet">
-
     <!-- Mainly scripts -->
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/jquery-2.1.1.js"></script>
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/bootstrap.min.js"></script>
@@ -33,7 +30,6 @@
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.responsive.js"></script>
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
 
-
     <!-- Form Validation -->
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/validate/jquery.validate.min.js"></script>
     <!--<script src="/assets/plugins/parsleyjs/parsley.min.js"></script>
@@ -50,6 +46,14 @@
     <!-- jQuery UI -->
     <link rel="stylesheet" href="/assets/plugins/jquery-ui/jquery-ui.min.css">
     <script src="/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- Toastr -->
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/toastr/toastr.min.js"></script>
+
+    <!-- Inspinia -->
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/animate.css" rel="stylesheet">
+    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/style.css" rel="stylesheet">
 
     <!-- Main -->
     <link rel="stylesheet" type="text/css" href="/assets/admin/css/style.css">
@@ -138,18 +142,20 @@
 
         <div id="page-wrapper" class="gray-bg">
             <div class="row border-bottom">
-                <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+                <nav class="navbar navbar-static-top{{ Request::is('dashboard') ? ' white-bg' : '' }}" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
                         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message">Howdy {{ $user->present()->fullname() }}! Welcome to {{ env('APP_NAME') }}!</span>
+                        </li>
                         <li>
                             <a href="/logout">
                                 <i class="fa fa-sign-out"></i> Log out
                             </a>
                         </li>
                     </ul>
-
                 </nav>
             </div>
 

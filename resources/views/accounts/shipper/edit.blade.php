@@ -12,7 +12,7 @@
         <a href="/shippers">Shippers</a>
     </li>
     <li class="active">
-        <strong>{{ $account->exists ? 'Edit Shipper' : 'Add New Shipper' }}</strong>
+        <strong>{{ $account->exists ? 'Edit' : 'Create' }}</strong>
     </li>
 </ol>
 @stop

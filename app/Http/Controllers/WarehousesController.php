@@ -55,7 +55,7 @@ class WarehousesController extends BaseAuthController {
 
         $criteria['status_id'] = $params['status_id'];
         $criteria['search'] = $params['search'];
-        $criteria['company_id'] = $this->authUser->isAdmin() ? NULL : $this->authUser->company_id;
+        $criteria['company_id'] = $this->user->isAdmin() ? NULL : $this->user->company_id;
 
         $warehouses = Warehouse::search($criteria, $params['sort'], $params['order'], $params['limit']);
 
@@ -284,7 +284,7 @@ class WarehousesController extends BaseAuthController {
         {
             $shipper = Account::firstOrCreate([
                 'name' => trim($input['warehouse']['shipper']),
-                'company_id' => $this->authUser->company_id,
+                'company_id' => $this->user->company_id,
                 'type_id' => AccountType::SHIPPER
             ]);
 
@@ -296,7 +296,7 @@ class WarehousesController extends BaseAuthController {
         {
             $client = Account::firstOrCreate([
                 'name' => trim($input['warehouse']['client']),
-                'company_id' => $this->authUser->company_id,
+                'company_id' => $this->user->company_id,
                 'type_id' => AccountType::CLIENT
             ]);
 

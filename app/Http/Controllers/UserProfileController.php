@@ -39,12 +39,12 @@ class UserProfileController extends BaseAuthController {
      */
     public function getProfile()
     {
-        if ($this->authUser->isClient())
+        if ($this->user->isClient())
         {
-            return view('user_profile.client.show', ['user' => $this->authUser]);
+            return view('user_profile.client.show', ['user' => $this->user]);
         }
 
-        return view('user_profile.show', ['user' => $this->authUser]);
+        return view('user_profile.show', ['user' => $this->user]);
     }
 
     /**
@@ -54,16 +54,16 @@ class UserProfileController extends BaseAuthController {
      */
     public function getEdit()
     {
-        if ($this->authUser->isClient())
+        if ($this->user->isClient())
         {
             return view('user_profile.client.edit', [
-                'account' => $this->authUser->account,
-                'address' => $this->authUser->account->address ?: new Address
+                'account' => $this->user->account,
+                'address' => $this->user->account->address ?: new Address
             ]);
         }
 
         return view('user_profile.edit', [
-            'user' => $this->authUser
+            'user' => $this->user
         ]);
     }
 
@@ -75,7 +75,7 @@ class UserProfileController extends BaseAuthController {
      */
     public function postProfile(Request $request)
     {
-        if ($this->authUser->isClient())
+        if ($this->user->isClient())
         {
             $this->updateClientProfile($request);
         }
@@ -117,13 +117,13 @@ class UserProfileController extends BaseAuthController {
         $this->validate($input, $rules);
 
         // Change password
-        if ( ! Hash::check($input['current_password'], $this->authUser->password))
+        if ( ! Hash::check($input['current_password'], $this->user->password))
         {
             return $this->redirectBackWithError('The password you entered does not match your current one.');
         }
 
-        $this->authUser->password = $input['new_password'];
-        $this->authUser->save();
+        $this->user->password = $input['new_password'];
+        $this->user->save();
 
         return $this->redirectBackWithSuccess('Your password was changed successfully.');
     }
@@ -151,13 +151,13 @@ class UserProfileController extends BaseAuthController {
         // Save photo
         try
         {
-            Upload::saveUserProfilePhoto($input['file'], $this->authUser->id);
-            $this->authUser->update(['has_photo' => TRUE]);
+            Upload::saveUserProfilePhoto($input['file'], $this->user->id);
+            $this->user->update(['has_photo' => TRUE]);
             return response()->json([]);
         }
         catch(\Exception $e)
         {
-            $this->authUser->update(['has_photo' => FALSE]);
+            $this->user->update(['has_photo' => FALSE]);
             return response()->json(Flash::view('Upload failed, please try again.'), 500);
         }
     }
@@ -174,7 +174,7 @@ class UserProfileController extends BaseAuthController {
 
         // Validate input
         $rules = [
-            'email' => 'required|email|unique:users,email,' . $this->authUser->id,
+            'email' => 'required|email|unique:users,email,' . $this->user->id,
             'firstname' => 'required',
             'lastname' => 'required'
         ];
@@ -182,7 +182,7 @@ class UserProfileController extends BaseAuthController {
         $this->validate($input['user'], $rules);
 
         // Update user
-        $this->authUser->update($input['user']);
+        $this->user->update($input['user']);
     }
 
     /**
@@ -197,7 +197,7 @@ class UserProfileController extends BaseAuthController {
 
         // Validate input
         $rules = [
-            'email' => 'required|email|unique:users,email,' . $this->authUser->id,
+            'email' => 'required|email|unique:users,email,' . $this->user->id,
             'firstname' => 'required',
             'lastname' => 'required'
         ];
@@ -205,13 +205,13 @@ class UserProfileController extends BaseAuthController {
         $this->validate($input['account'], $rules);
 
         // Update user
-        $this->authUser->firstname = $input['account']['firstname'];
-        $this->authUser->lastname = $input['account']['lastname'];
-        $this->authUser->email = $input['account']['email'];
-        $this->authUser->save();
+        $this->user->firstname = $input['account']['firstname'];
+        $this->user->lastname = $input['account']['lastname'];
+        $this->user->email = $input['account']['email'];
+        $this->user->save();
 
         // Update user's account
-        $account = $this->authUser->account;
+        $account = $this->user->account;
         $account->firstname = $input['account']['firstname'];
         $account->lastname = $input['account']['lastname'];
         $account->email = $input['account']['email'];

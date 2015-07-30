@@ -12,7 +12,7 @@
         <a href="/users">Users</a>
     </li>
     <li class="active">
-        <strong>{{ $user->exists ? 'Edit' : 'Add' }}</strong>
+        <strong>{{ $user->exists ? 'Edit' : 'Create' }}</strong>
     </li>
 </ol>
 @stop

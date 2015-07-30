@@ -1,6 +1,5 @@
 @extends('layouts.admin.master')
 
-
 @section('content')
 <div class="wrapper wrapper-content">
     <div class="row">
@@ -22,7 +21,7 @@
                 <div class="col-md-4">
                     <div class="ibox">
                         <div class="ibox-content">
-                            <h3 class="text-center">Packages</h3>
+                            <h3 class="text-center">Pieces</h3>
                             <div style="height:200px" id="packages-morris-donut-chart"></div>
                             <ul class="category-list">
                                 <li><a href="/packages?status=shipped"> <i class="fa fa-circle text-danger"></i> Pending ({{ $totals['packages']['pending'] }})</a></li>

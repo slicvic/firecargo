@@ -22,7 +22,7 @@ class DashboardController extends BaseAuthController {
      */
     public function getIndex()
     {
-        if ($this->authUser->isClient())
+        if ($this->user->isClient())
         {
             return $this->renderClientDashboard();
         }
@@ -34,7 +34,7 @@ class DashboardController extends BaseAuthController {
 
     private function renderClientDashboard()
     {
-        $criteria['client_account_id'] = $this->authUser->client->id;
+        $criteria['client_account_id'] = $this->user->client->id;
         $packages = Package::search($criteria);
 
         return view('dashboard.client.index', ['packages' => $packages]);
@@ -44,13 +44,13 @@ class DashboardController extends BaseAuthController {
     {
         $totals = [
             'warehouses' => [
-                'unprocessed' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::UNPROCESSED, $this->authUser->company_id),
-                'pending' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::PENDING, $this->authUser->company_id),
-                'complete' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::COMPLETE, $this->authUser->company_id)
+                'unprocessed' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::UNPROCESSED, $this->user->company_id),
+                'pending' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::PENDING, $this->user->company_id),
+                'complete' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::COMPLETE, $this->user->company_id)
             ],
             'packages' => [
-                'shipped' => Package::countShippedByCompanyId($this->authUser->company_id),
-                'pending' => Package::countNotShippedByCompanyId($this->authUser->company_id)
+                'shipped' => Package::countShippedByCompanyId($this->user->company_id),
+                'pending' => Package::countNotShippedByCompanyId($this->user->company_id)
             ]
         ];
 

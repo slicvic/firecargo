@@ -42,7 +42,7 @@ class CompanyProfileController extends BaseAuthController {
     public function getProfile()
     {
         return view('company_profile.show', [
-            'company' => $this->authUser->company,
+            'company' => $this->user->company,
         ]);
     }
 
@@ -54,8 +54,8 @@ class CompanyProfileController extends BaseAuthController {
     public function getEditProfile()
     {
         return view('company_profile.edit', [
-            'company' => $this->authUser->company,
-            'address' => $this->authUser->company->address ?: new Address
+            'company' => $this->user->company,
+            'address' => $this->user->company->address ?: new Address
         ]);
     }
 
@@ -77,16 +77,16 @@ class CompanyProfileController extends BaseAuthController {
         $this->validate($input['company'], $rules);
 
         // Update company
-        $this->authUser->company->update($input['company']);
+        $this->user->company->update($input['company']);
 
         // Update address
-        if ($this->authUser->company->address)
+        if ($this->user->company->address)
         {
-            $this->authUser->company->address->update($input['address']);
+            $this->user->company->address->update($input['address']);
         }
         else
         {
-            $this->authUser->company->address()->save(new Address($input['address']));
+            $this->user->company->address()->save(new Address($input['address']));
         }
 
         return $this->redirectWithSuccess('company/profile', 'Your company profile was updated.');
@@ -115,13 +115,13 @@ class CompanyProfileController extends BaseAuthController {
         // Save photo
         try
         {
-            Upload::saveCompanyLogo($input['file'], $this->authUser->company->id);
-            $this->authUser->company->update(['has_logo' => TRUE]);
+            Upload::saveCompanyLogo($input['file'], $this->user->company->id);
+            $this->user->company->update(['has_logo' => TRUE]);
             return response()->json([]);
         }
         catch(\Exception $e)
         {
-            $this->authUser->company->update(['has_logo' => FALSE]);
+            $this->user->company->update(['has_logo' => FALSE]);
             return response()->json(Flash::view('Upload failed, please try again.'), 500);
         }
     }

@@ -57,7 +57,7 @@ class ShippersController extends BaseAuthController {
     }
 
     /**
-     * Creates a new account.
+     * Creates a new shipper account.
      *
      * @param  Request  $request
      * @return Redirector
@@ -79,7 +79,7 @@ class ShippersController extends BaseAuthController {
 
         if ( ! $account->save())
         {
-            return $this->redirectBackWithError('Account creation failed, please try again.');
+            return $this->redirectBackWithError('Shipper creation failed, please try again.');
         }
 
         // Create address
@@ -105,7 +105,7 @@ class ShippersController extends BaseAuthController {
     }
 
     /**
-     * Updates a specific user.
+     * Updates a specific shipper account.
      *
      * @param  Request  $request
      * @param  int      $id
@@ -117,7 +117,7 @@ class ShippersController extends BaseAuthController {
 
         // Validate input
         $rules = [
-            'name' => 'required,unique'
+            'name' => 'required'
         ];
 
         $this->validate($input['account'], $rules);

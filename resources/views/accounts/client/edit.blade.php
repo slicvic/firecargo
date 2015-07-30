@@ -12,7 +12,7 @@
         <a href="/clients">Clients</a>
     </li>
     <li class="active">
-        <strong>{{ $account->exists ? 'Edit Client' : 'Add New Client' }}</strong>
+        <strong>{{ $account->exists ? 'Edit' : 'Create' }}</strong>
     </li>
 </ol>
 @stop

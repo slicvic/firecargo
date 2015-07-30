@@ -12,7 +12,7 @@
         <a href="/carriers">Carriers</a>
     </li>
     <li class="active">
-        <strong>{{ $carrier->exists ? 'Edit' : 'Add' }}</strong>
+        <strong>{{ $carrier->exists ? 'Edit' : 'Create' }}</strong>
     </li>
 </ol>
 @stop

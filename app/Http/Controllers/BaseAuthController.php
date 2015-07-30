@@ -21,7 +21,7 @@ abstract class BaseAuthController extends BaseController {
      *
      * @var Auth
      */
-    protected $authUser;
+    protected $user;
 
     /**
      * Constructor.
@@ -32,7 +32,7 @@ abstract class BaseAuthController extends BaseController {
     public function __construct(Guard $auth)
     {
         $this->auth = $auth;
-        $this->authUser = $auth->user();
+        $this->user = $auth->user();
 
         $this->middleware('auth');
     }

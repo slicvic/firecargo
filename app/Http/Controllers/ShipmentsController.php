@@ -46,7 +46,7 @@ class ShipmentsController extends BaseAuthController {
         $params['search'] = $request->input('search');
 
         $criteria['search'] = $params['search'];
-        $criteria['company_id'] = $this->authUser->isAdmin() ? NULL : $this->authUser->company_id;
+        $criteria['company_id'] = $this->user->isAdmin() ? NULL : $this->user->company_id;
 
         $shipments = Shipment::search($criteria, $params['sort'], $params['order'], $params['limit']);
 
@@ -83,7 +83,7 @@ class ShipmentsController extends BaseAuthController {
     public function getCreate()
     {
         // Retrive all packages pending shipment
-        $packages = Package::allPendingShipmentByCompanyId($this->authUser->company_id);
+        $packages = Package::allPendingShipmentByCompanyId($this->user->company_id);
 
         // Group them by warehouse
         $groupedPackages = [];
@@ -146,7 +146,7 @@ class ShipmentsController extends BaseAuthController {
         }
 
         // Retrieve all other packages eligible for shipment
-        $packages = Package::allPendingShipmentByCompanyId($this->authUser->company_id);
+        $packages = Package::allPendingShipmentByCompanyId($this->user->company_id);
 
         foreach ($packages as $package)
         {

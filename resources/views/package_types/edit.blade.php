@@ -12,7 +12,7 @@
         <a href="/package-types">Package Types</a>
     </li>
     <li class="active">
-        <strong>{{ $type->exists ? 'Edit' : 'Add' }}</strong>
+        <strong>{{ $type->exists ? 'Edit' : 'Create' }}</strong>
     </li>
 </ol>
 @stop
@@ -29,7 +29,7 @@
     <div class="form-group">
         <div class="col-sm-4 col-sm-offset-2">
             <a class="btn btn-white" href="/package-types">Cancel</a>
-            <button class="btn btn-primary" type="submit">Save Package Type</button>
+            <button class="btn btn-primary" type="submit">Save</button>
         </div>
     </div>
 </form>

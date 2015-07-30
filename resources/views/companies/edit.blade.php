@@ -12,7 +12,7 @@
         <a href="/companies">Companies</a>
     </li>
     <li class="active">
-        <strong>{{ $company->exists ? 'Edit' : 'Add' }}</strong>
+        <strong>{{ $company->exists ? 'Edit' : 'Create' }}</strong>
     </li>
 </ol>
 @stop
