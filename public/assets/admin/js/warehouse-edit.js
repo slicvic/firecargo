@@ -1,8 +1,12 @@
 $(function() {
-    // Close side menu
+    /**
+     * Close side menu
+     */
     $('body').toggleClass("mini-navbar");
 
-    // Bind carrier autocomplete
+    /**
+     * Carrier autocomplete handler
+     */
     $('#carrier').keyup(function() {
         $('#carrier-id').val('');
     });
@@ -19,7 +23,9 @@ $(function() {
             .appendTo(ul);
     };
 
-    // Bind shipper autocomplete
+    /**
+     * Shipper autocomplete handler
+     */
     $('#shipper').keyup(function() {
         $('#shipper-id').val('');
     });
@@ -36,7 +42,9 @@ $(function() {
             .appendTo(ul);
     };
 
-    // Bind client autocomplete
+    /**
+     * Client autocomplete handler
+     */
     $('#client').keyup(function() {
         $('#client-id').val('');
     });
@@ -55,7 +63,9 @@ $(function() {
             .appendTo(ul);
     };
 
-    // Bind form submit
+    /**
+     * Form submit handler
+     */
     $('#warehouse-edit-form').on('submit', function() {
         event.preventDefault();
 
@@ -78,7 +88,9 @@ $(function() {
             });
     });
 
-    // Package Manager
+    /**
+     * Package manager
+     */
     var PackageMgr = {
         pkgTemplate: null,
 
@@ -105,19 +117,18 @@ $(function() {
         clonePackage: function() {
             var cloneBtn = $(this);
             var totalPkgs = PackageMgr.countPackages();
-            var cloneePkg = cloneBtn.closest('.panel');
-            var clonePkg = PackageMgr.pkgTemplate.clone();
+            var sourcePkg = cloneBtn.closest('.panel');
+            var clonedPkg = PackageMgr.pkgTemplate.clone();
 
-            clonePkg.children('.panel-body').replaceWith(cloneePkg.children('.panel-body').clone());
-
-            clonePkg.find('input, select, textarea').each(function() {
-                if ($(this).hasClass('unique')) {
-                    $(this).val('');
-                }
-                $(this).attr('name', 'packages[new_' + totalPkgs + '][' + $(this).attr('data-name') + ']');
+            sourcePkg.find('input, select, textarea').each(function() {
+                var sourceField = $(this);
+                var clonedField = clonedPkg.find('[data-name="' + sourceField.attr('data-name') + '"]');
+                clonedField
+                    .attr('name', 'packages[new_' + totalPkgs + '][' + sourceField.attr('data-name') + ']')
+                    .val(sourceField.hasClass('unique') ? '' : sourceField.val());
             });
 
-            $('#packages-container').append(clonePkg);
+            $('#packages-container').append(clonedPkg);
             $('#total-packages').html(1 + totalPkgs);
 
             PackageMgr.updateTotals();
@@ -146,16 +157,8 @@ $(function() {
         },
 
         removePackage: function() {
-            var panel = $(this).closest('.panel');
 
-            if (panel.hasClass('new')) {
-                panel.remove();
-            }
-            else {
-                if (confirm('Are you sure you want to remove this piece from the warehouse?')) {
-                    panel.remove();
-                }
-            }
+            $(this).closest('.panel').remove();
 
             PackageMgr.updateTotals();
         },

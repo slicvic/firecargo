@@ -12,6 +12,53 @@ var app = {
             }
         });
 
+        /**
+         * Bind jquery validate
+         */
+        if ($('form').length) $('form').validate();
+
+        /**
+         * Bind datatable
+         */
+        $('.datatable').DataTable();
+
+        /**
+         * Bind date picker
+         */
+        $('.date').datepicker({
+            //todayBtn: 'linked',
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+
+        /**
+         * Bind iCheckbox
+         */
+        $('.icheck').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+
+        $('.icheck-red').iCheck({
+            checkboxClass: 'icheckbox_square-red',
+            radioClass: 'iradio_square-red',
+        });
+
+        /**
+         * Bind button to delete table records
+         */
+        $('table').on('click', '.delete-record-btn', function() {
+            if (!confirm('Are you sure you want to delete this item?')) {
+                event.preventDefault();
+                return false;
+            }
+        });
+
+        /**
+         * Bind button to open package details modal
+         */
         $('body').on('click', '.show-package-btn', function() {
             var btn = $(this);
             var modal = $('#modal');
@@ -30,35 +77,6 @@ var app = {
                 modal.modal({});
                 btn.button('reset');
             });
-        });
-
-        // Bind jQuery Validate
-        if ($('form').length) $('form').validate();
-
-        // Bind table delete button
-        $('table').on('click', '.delete-record-btn', function() {
-            if (!confirm('Are you sure you want to delete this item?')) {
-                event.preventDefault();
-                return false;
-            }
-        });
-
-        // Bind datatable
-        $('.datatable').DataTable();
-
-        // Bind date picker
-        $('.date').datepicker({
-            //todayBtn: 'linked',
-            keyboardNavigation: false,
-            forceParse: false,
-            calendarWeeks: true,
-            autoclose: true
-        });
-
-        // Bind icheckbox
-        $('input[type=checkbox], input[type=radio]').iCheck({
-            checkboxClass: 'icheckbox_square-green',
-            radioClass: 'iradio_square-green',
         });
     },
 

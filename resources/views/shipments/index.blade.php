@@ -51,7 +51,7 @@
                 <tbody>
                     @foreach ($shipments as $shipment)
                     <tr>
-                        <td><button class="btn-toggle-packages btn btn-link btn-sm" data-warehouse-id="{{ $shipment->id }}"><i class="fa fa-angle-right"></i></button></td>
+                        <td><button class="toggle-packages-btn btn btn-link btn-sm" data-warehouse-id="{{ $shipment->id }}"><i class="fa fa-angle-right"></i></button></td>
                         @if (Auth::user()->isAdmin()) {!! '<td>' . $shipment->company->name . '</td>' !!} @endif
                         <td>{{ $shipment->id }}</td>
                         <td><span class="label label-danger">{{ $shipment->packages()->count() }}</span></td>

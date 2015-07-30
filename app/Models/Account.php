@@ -127,10 +127,10 @@ class Account extends Base {
      * Finds accounts matching the given search term and type.
      *
      * @param  string  $searchTerm
-     * @param  int     $typeId
+     * @param  int     $accountTypeId
      * @return Builder
      */
-    public static function autocompleteSearch($searchTerm, $typeId)
+    public static function autocompleteSearch($searchTerm, $accountTypeId)
     {
         $query = Account::query();
 
@@ -146,7 +146,7 @@ class Account extends Base {
             OR phone LIKE ?
             OR fax LIKE ?
             OR mobile_phone LIKE ?)', [
-            $typeId,
+            $accountTypeId,
             $searchTerm,
             $searchTerm,
             $searchTerm,

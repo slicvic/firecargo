@@ -34,14 +34,23 @@
         <div class="row">
             <div class="col-md-9">
                 @include('warehouses.edit._section_packages')
-            </div> <!-- /.col-md-9 -->
-
+            </div>
             <div class="col-md-3">
                 @include('warehouses.edit._section_details')
-            </div> <!-- /.col-md-3 -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="ibox">
+                    <div class="ibox-content text-right">
+                        <a class="btn btn-white" href="/warehouses{{ $warehouse->exists ? '/show/' . $warehouse->id : '' }}">Cancel</a>
+                        <button class="btn btn-primary" data-loading-text="Saving..." type="submit">Save Warehouse</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
 </form>
+
 <script src="/assets/admin/js/warehouse-edit.js"></script>
 @stop

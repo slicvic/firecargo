@@ -1,5 +1,5 @@
 $(function() {
-    $('table').on('click', '.btn-toggle-packages', function() {
+    $('table').on('click', '.toggle-packages-btn', function() {
         var toggleBtn = $(this);
         var toggleBtnParentTr = toggleBtn.closest('tr');
         toggleBtn.toggleClass('collapsed');

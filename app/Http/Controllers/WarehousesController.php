@@ -214,8 +214,9 @@ class WarehousesController extends BaseAuthController {
             return response()->json([]);
         }
 
-        $typeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CLIENT;
-        $accounts = Account::autocompleteSearch($input['term'], $typeId)->mine()->limit(25)->get();
+        $accountTypeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CLIENT;
+        $accounts = Account::autocompleteSearch($input['term'], $accountTypeId)->mine()->limit(25)->get();
+
         $response = [];
 
         foreach($accounts as $account)
@@ -317,7 +318,7 @@ class WarehousesController extends BaseAuthController {
         // Save packages
         if ($input['packages'])
         {
-            $warehouse->syncPackages($input['packages']);
+            $warehouse->createOrUpdatePackages($input['packages']);
         }
 
         return TRUE;

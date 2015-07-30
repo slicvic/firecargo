@@ -1,5 +1,5 @@
 $(function() {
-    $('#btnEditLogo').dropzone({
+    $('#edit-logo-btn').dropzone({
         url: '/company/ajax-upload-logo',
         maxFileSize: 10,
         acceptedFiles: 'image/*',
@@ -8,14 +8,14 @@ $(function() {
         addedfile: function(file) {
             file.previewElement = Dropzone.createElement(this.options.previewTemplate);
             file.previewTemplate = file.previewElement;
-            $('#dzErrorMessage').hide();
-            $('#logoContainer').html(file.previewElement);
+            $('#flash-message').hide();
+            $('#logo-container').html(file.previewElement);
         },
         sending: function(file, xhr, formData) {
             formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
         },
         error: function(file, errorMessage) {
-            $('#dzErrorMessage').html(errorMessage).show();
+            $('#flash-message').html(errorMessage).show();
         }
     });
 });

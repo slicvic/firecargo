@@ -123,42 +123,37 @@ class Warehouse extends Base {
      */
     public function createOrUpdatePackages(array $packages)
     {
+        // First lets delete the packages marked for deleltion
+        $deleteIds = [];
+
         foreach ($packages as $id => $data)
         {
-            $package = Package::firstOrNew(['id' => $id]);
-            $package->fill($data);
-            $package->warehouse_id = $this->id;
-            $package->ship = ($package->shipment_id) ? $package->ship : $this->client->autoship;
-            $package->save();
-        }
-    }
-
-    /**
-     * Attaches the given packages to the warehouse.
-     *
-     * WARNING: AFTER THIS OPERATION IS COMPLETE ONLY THE GIVEN PACKAGES
-     * WILL REMAIN IN THE SHIPMENT.
-     *
-     * @param  array  $packageIds
-     * @return void
-     */
-    public function syncPackages(array $packages)
-    {
-        // First lets detach the packages not in $packageIds
-        Package::whereNotIn('id', array_keys($packages))
-            ->delete();
-
-        // Next, we'll attach the given packages
-        if (count($packages))
-        {
-            foreach ($packages as $id => $data)
+            if (isset($data['delete']))
             {
-                $package = Package::firstOrNew(['id' => $id]);
-                $package->fill($data);
-                $package->warehouse_id = $this->id;
-                $package->ship = ($package->shipment_id) ? $package->ship : $this->client->autoship;
-                $package->save();
+                $deleteIds[] = $id;
+                unset($packages[$id]);
             }
+        }
+
+        if (count($deleteIds))
+        {
+            Package::whereIn('id', $deleteIds)
+                ->where('warehouse_id', $this->id)
+                ->delete();
+        }
+
+        // Next, we'll update or create the remaining packages
+        foreach ($packages as $id => $data)
+        {
+            unset($data['delete']);
+
+            $package = Package::firstOrNew(['id' => $id]);
+
+            $data['warehouse_id'] = $this->id;
+            $data['ship'] = ($package->shipment_id) ? $package->ship : $this->client->autoship;
+
+            $package->fill($data);
+            $package->save();
         }
     }
 

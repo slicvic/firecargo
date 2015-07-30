@@ -74,7 +74,7 @@
                 <tbody>
                     @foreach ($warehouses as $warehouse)
                     <tr class="{{ $warehouse->present()->statusCssClass() }}">
-                        <td><button class="btn-toggle-packages btn btn-link btn-sm" data-warehouse-id="{{ $warehouse->id }}"><i class="fa fa-angle-right"></i></button></td>
+                        <td><button class="toggle-packages-btn btn btn-link btn-sm" data-warehouse-id="{{ $warehouse->id }}"><i class="fa fa-angle-right"></i></button></td>
                         @if (Auth::user()->isAdmin()) {!! '<td>' . $warehouse->company->name . '</td>' !!} @endif
                         <td>{{ $warehouse->id }}</td>
                         <td><span class="label label-danger">{{ $warehouse->packages->count() }}</span></td>

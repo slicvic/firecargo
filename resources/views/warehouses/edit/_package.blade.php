@@ -3,10 +3,18 @@
         <h3 class="pull-left panel-title">{{ $package->exists ? 'ID: ' . $package->id : 'New Piece' }}</h3>
         <div class="pull-right">
             <button type="button" class="clone-package-btn btn btn-sm btn-white"><i class="fa fa-copy"></i> Duplicate</button>
-            <button type="button" class="remove-package-btn btn btn-sm btn-danger"><i class="fa fa-times"></i> Remove</button>
+            @if ($package->exists)
+                <label class="checkbox-inline">
+                    <input type="checkbox" value="1" class="icheck-red" name="packages[{{ $package->id }}][delete]">
+                    Delete
+                </label>
+            @else
+                <button type="button" class="remove-package-btn btn btn-sm btn-danger"><i class="fa fa-times"></i> Remove</button>
+            @endif
         </div>
     </div>
     <div class="panel-body">
+
         <div class="row">
             <div class="col-md-4">
                 <label>US Tracking #</label>
@@ -44,7 +52,7 @@
         <div class="row">
             <div class="col-sm-4">
                 <label class="control-label">National Tracking #</label>
-                <input type="text" name="packages[{{ $package->id }}][invoice_number]" data-name="invoice_number" class="form-control" value="{{ $package->invoice_number }}">
+                <input type="text" name="packages[{{ $package->id }}][invoice_number]" data-name="invoice_number" class="unique form-control" value="{{ $package->invoice_number }}">
             </div>
             <div class="col-sm-2">
                 <label class="control-label">Invoice #</label>

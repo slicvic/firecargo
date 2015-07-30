@@ -1,5 +1,5 @@
 $(function() {
-    $('#btnEditPhoto').dropzone({
+    $('#edit-photo-btn').dropzone({
         url: '/user/ajax-upload-photo',
         maxFileSize: 10,
         acceptedFiles: 'image/*',
@@ -8,14 +8,14 @@ $(function() {
         addedfile: function(file) {
             file.previewElement = Dropzone.createElement(this.options.previewTemplate);
             file.previewTemplate = file.previewElement;
-            $('#dzErrorMessage').hide();
-            $('#photoContainer').html(file.previewElement);
+            $('#flash-message').hide();
+            $('#photo-container').html(file.previewElement);
         },
         sending: function(file, xhr, formData) {
             formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
         },
         error: function(file, errorMessage, xhr) {
-            $('#dzErrorMessage').html(errorMessage).show();
+            $('#flash-message').html(errorMessage).show();
         }
     });
 });
