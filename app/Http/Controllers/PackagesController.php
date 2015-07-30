@@ -70,7 +70,7 @@ class PackagesController extends BaseAuthController {
     {
         if ($this->authUser->isClient())
         {
-            $package = Package::findOrFailByIdAndClientId($id, $this->authUser->client->id);
+            $package = Package::findOrFailByIdAndClientAccountId($id, $this->authUser->client->id);
 
             return view('packages.client._detail_modal', ['package' => $package]);
         }

@@ -1,6 +1,6 @@
 <div class="panel package{{ $package->exists ? ' panel-info panel-info-light' : ' new hidden package-template panel-warning panel-warning-light' }}">
     <div class="panel-heading clear">
-        <h3 class="pull-left panel-title"><i class="fa fa-th-large"></i> {{ $package->exists ? $package->id : 'New Piece' }}</h3>
+        <h3 class="pull-left panel-title"><i class="fa fa-th-large"></i> {{ $package->exists ? 'ID: ' . $package->id : 'New Piece' }}</h3>
         <div class="pull-right">
             <button type="button" class="clone-package-btn btn btn-sm btn-white"><i class="fa fa-copy"></i> Duplicate</button>
             @if ($package->exists)

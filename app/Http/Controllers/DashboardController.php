@@ -24,20 +24,36 @@ class DashboardController extends BaseAuthController {
     {
         if ($this->authUser->isClient())
         {
-            $criteria['client_account_id'] = $this->authUser->client->id;
-            $packages = Package::search($criteria);
-
-            return view('dashboard.client.index', ['packages' => $packages]);
+            return $this->renderClientDashboard();
         }
         else
         {
-            $totals = [
+            return $this->renderAgentAdminDashboard();
+        }
+    }
+
+    private function renderClientDashboard()
+    {
+        $criteria['client_account_id'] = $this->authUser->client->id;
+        $packages = Package::search($criteria);
+
+        return view('dashboard.client.index', ['packages' => $packages]);
+    }
+
+    private function renderAgentAdminDashboard()
+    {
+        $totals = [
+            'warehouses' => [
                 'unprocessed' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::UNPROCESSED, $this->authUser->company_id),
                 'pending' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::PENDING, $this->authUser->company_id),
                 'complete' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::COMPLETE, $this->authUser->company_id)
-            ];
+            ],
+            'packages' => [
+                'shipped' => Package::countShippedByCompanyId($this->authUser->company_id),
+                'pending' => Package::countNotShippedByCompanyId($this->authUser->company_id)
+            ]
+        ];
 
-            return view('dashboard.index', ['totals' => $totals]);
-        }
+        return view('dashboard.index', ['totals' => $totals]);
     }
 }

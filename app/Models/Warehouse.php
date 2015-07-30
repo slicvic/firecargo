@@ -272,7 +272,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Counts the total number of warehouses by status and company.
+     * Counts the total number of warehouses with the given status id and company id.
      *
      * @param  int  $statusId
      * @param  int  $companyId

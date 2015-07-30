@@ -13,7 +13,7 @@
             @if ($params['search'])
                 {{ $warehouses->count() }} results found for: <span class="text-navy">"{{ $params['search'] }}"</span>
             @else
-                Showing {{ $warehouses->firstItem() }} - {{ $warehouses->lastItem() }} of {{ $warehouses->count() }} records
+                Showing {{ $warehouses->lastItem() ? $warehouses->firstItem() : 0 }} - {{ $warehouses->lastItem() }} of {{ $warehouses->count() }} records
             @endif
         </h2>
 

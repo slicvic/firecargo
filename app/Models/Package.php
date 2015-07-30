@@ -127,7 +127,33 @@ class Package extends Base {
     }
 
     /**
-     * Retrieves all packages eligible for shipment by the given company.
+     * Counts the total packages shipped by the given company id.
+     *
+     * @param  int  $companyId
+     * @return int
+     */
+    public static function countShippedByCompanyId($companyId)
+    {
+        return Package::where('company_id', $companyId)
+            ->whereNotNull('shipment_id')
+            ->count();
+    }
+
+    /**
+     * Counts the total packages pending shipment by the given company id.
+     *
+     * @param  int  $companyId
+     * @return int
+     */
+    public static function countNotShippedByCompanyId($companyId)
+    {
+        return Package::where('company_id', $companyId)
+            ->whereNull('shipment_id')
+            ->count();
+    }
+
+    /**
+     * Finds all packages eligible for shipment by the given company id.
      *
      * @param  int  $companyId
      * @return array
@@ -145,12 +171,19 @@ class Package extends Base {
         return $packages;
     }
 
+    /**
+     * Finds a package by its id and client account id.
+     *
+     * @param  int  $id                The package id
+     * @param  int  $clientAccountId   The client's account id
+     * @return Package
+     */
     public static function findOrFailByIdAndClientAccountId($id, $clientAccountId)
     {
         return Package::query()
-                ->join('warehouses', 'packages.warehouse_id', '=', 'warehouses.id')
-                ->where(['packages.id' => $id, 'warehouses.client_account_id' => $clientAccountId])
-                ->firstOrFail();
+            ->join('warehouses', 'packages.warehouse_id', '=', 'warehouses.id')
+            ->where(['packages.id' => $id, 'warehouses.client_account_id' => $clientAccountId])
+            ->firstOrFail();
     }
 
     public static function search(array $criteria = NULL)

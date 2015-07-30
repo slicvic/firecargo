@@ -20,7 +20,7 @@ trait CompanyTrait {
     }
 
     /**
-     * Filters a query by the current user's company.
+     * Filters a query by the current user's company id.
      *
      * @param  Builder  $query
      * @param  int      $companyId
@@ -32,7 +32,7 @@ trait CompanyTrait {
     }
 
     /**
-     * Finds a model by its id and the current user's company.
+     * Finds a model by its id and the current user's company id.
      *
      * @param  int  $id
      * @return Model|null
@@ -50,7 +50,7 @@ trait CompanyTrait {
     }
 
     /**
-     * Finds a model by its id and the current user's company and throws
+     * Finds a model by its id and the current user's company id and throws
      * exception if not found.
      *
      * @param  int  $id
