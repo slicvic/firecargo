@@ -38,7 +38,7 @@
                     <tr>
                         <th></th>
                         @if (Auth::user()->isAdmin()) {!! '<th>Company</th>' !!} @endif
-                        <th>{!! Html::linkToSorting('/shipments', 'Number', 'id', $params['sort'], $params['order']) !!}</th>
+                        <th>{!! Html::linkToSorting('/shipments', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
                         <th>Pieces</th>
                         <th>Reference #</th>
                         <th>Carrier</th>

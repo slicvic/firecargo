@@ -59,7 +59,7 @@ class WarehousePdf {
         $barcodeBase64 = base64_encode($barcode->getBarcodePngData(2, 30));
 
         $pdf = new TCPDF('P', 'mm', 'A6', TRUE, 'UTF-8', FALSE);
-        $pdf->SetFont('helvetica', '', 7);
+        $pdf->SetFont('helvetica', '', 8.5);
         $pdf->SetAutoPageBreak(FALSE);
         // White out the header border
         $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));

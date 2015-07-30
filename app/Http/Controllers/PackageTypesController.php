@@ -7,7 +7,6 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
 use App\Models\PackageType;
-use Flash;
 
 /**
  * PackageTypesController

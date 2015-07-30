@@ -113,7 +113,7 @@ class Shipment extends Base {
     /**
      * Attaches the given packages to the shipment.
      *
-     * NOTICE: AFTER THIS OPERATION IS COMPLETE ONLY THE GIVEN PACKAGES
+     * WARNING: AFTER THIS OPERATION IS COMPLETE ONLY THE GIVEN PACKAGES
      * WILL REMAIN IN THE SHIPMENT.
      *
      * @param  array  $packageIds
@@ -155,7 +155,7 @@ class Shipment extends Base {
      */
     public static function search(array $criteria = NULL, $sort = 'id', $order = 'desc', $perPage = 15)
     {
-        // Verify sort and order
+        // Sanitize sort and order
         $validSortColumns = [
             'id',
             'departed_at',

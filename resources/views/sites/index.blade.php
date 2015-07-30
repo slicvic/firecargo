@@ -5,7 +5,7 @@
 @section('subtitle', 'Manage Sites')
 
 @section('actions')
-    <a href="/sites/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Site</a>
+    <a href="/sites/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Site</a>
 @stop
 
 @section('thead')

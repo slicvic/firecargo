@@ -16,7 +16,6 @@ class AccountTypesTableSeeder extends Seeder {
 
         DB::table('account_types')->insert([
             ['name' => 'Client'],
-            ['name' => 'Consignee'],
             ['name' => 'Shipper'],
         ]);
     }

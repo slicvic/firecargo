@@ -20,23 +20,4 @@ class AccountPresenter extends BasePresenter {
     {
         return ($this->model->address) ? $this->model->address->toString() : '';
     }
-
-    /**
-     * Presents the account type as a bootstrap badge.
-     *
-     * @return html
-     */
-    public function type()
-    {
-        switch ($this->model->type_id)
-        {
-            case AccountType::CLIENT:
-                $cssClass = 'primary';
-                break;
-            default:
-                $cssClass = 'default';
-        }
-
-        return sprintf('<div class="badge badge-%s">%s</div>', $cssClass, $this->model->type->name);
-    }
 }

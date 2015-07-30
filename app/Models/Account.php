@@ -16,17 +16,6 @@ class Account extends Base {
     use CompanyTrait, PresentableTrait;
 
     /**
-     * Rules for validation.
-     *
-     * @var array
-     */
-    public static $rules = [
-        'type_id' => 'required',
-        'email' => 'email',
-        'name' => 'required'
-    ];
-
-    /**
      * The database table name.
      *
      * @var string
@@ -58,18 +47,6 @@ class Account extends Base {
         'fax',
         'autoship'
     ];
-
-    /**
-     * Registers model events.
-     *
-     * @return void
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        Account::observe(new AccountObserver);
-    }
 
     /**
      * Overrides parent method to sanitize attributes.
@@ -113,9 +90,9 @@ class Account extends Base {
     }
 
     /**
-     * Gets the account owner.
+     * Gets the account's user.
      *
-     * NOTICE: ONLY "CLIENT" ACCOUNTS HAVE A USER ASSIGNED.
+     * NOTE: ONLY "CLIENT" ACCOUNTS HAVE USERS.
      *
      * @return User
      */
@@ -125,36 +102,51 @@ class Account extends Base {
     }
 
     /**
-     * Checks if the account is of a "client" type.
+     * Filters a query to get client accounts.
      *
-     * @return bool
+     * @param  Builder  $query
+     * @return Builder
      */
-    public function isClient()
+    public function scopeClients($query)
     {
-        return ((int) $this->type_id === AccountType::CLIENT);
+        return $query->where('type_id', '=', AccountType::CLIENT);
     }
 
     /**
-     * Finds accounts matching the given search term.
+     * Filters a query to get shipper accounts.
      *
-     * @param  string   $searchTerm
+     * @param  Builder  $query
      * @return Builder
      */
-    public static function autocompleteSearch($searchTerm)
+    public function scopeShippers($query)
+    {
+        return $query->where('type_id', '=', AccountType::SHIPPER);
+    }
+
+    /**
+     * Finds accounts matching the given search term and type.
+     *
+     * @param  string  $searchTerm
+     * @param  int     $typeId
+     * @return Builder
+     */
+    public static function autocompleteSearch($searchTerm, $typeId)
     {
         $query = Account::query();
 
         $searchTerm = '%' . $searchTerm . '%';
 
         $query->whereRaw('
-            id LIKE ?
+            type_id = ?
+            AND (id LIKE ?
             OR name LIKE ?
             OR firstname LIKE ?
             OR lastname LIKE ?
             OR email LIKE ?
             OR phone LIKE ?
             OR fax LIKE ?
-            OR mobile_phone LIKE ?', [
+            OR mobile_phone LIKE ?)', [
+            $typeId,
             $searchTerm,
             $searchTerm,
             $searchTerm,

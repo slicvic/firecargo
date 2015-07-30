@@ -35,7 +35,7 @@ class PackagesController extends BaseAuthController {
     public function getAjaxWarehousePackages(Request $request, $warehouseId)
     {
         $packages = Package::mine()
-            ->with('type', 'status', 'shipment')
+            ->with('type', 'shipment')
             ->where(['warehouse_id' => $warehouseId])
             ->get();
 
@@ -70,9 +70,9 @@ class PackagesController extends BaseAuthController {
     {
         if ($this->authUser->isClient())
         {
-            $package = Package::findOrFailByIdAndConsigneeAccountId($id, $this->authUser->account->id);
+            $package = Package::findOrFailByIdAndClientId($id, $this->authUser->client->id);
 
-            return view('packages._show_client', ['package' => $package]);
+            return view('packages._show', ['package' => $package]);
         }
         else
         {

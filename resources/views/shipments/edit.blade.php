@@ -83,7 +83,7 @@
                                 <tr class="warning">
                                     <td colspan="9">
                                         <i>Warehouse</i> {!! $packages[0]->present()->warehouseLink() !!}
-                                        <i>Consignee</i> {!! $packages[0]->warehouse->present()->consigneeLink() !!}
+                                        <i>Client</i> {!! $packages[0]->warehouse->present()->clientLink() !!}
                                     </td>
                                 </tr>
                                 @foreach ($packages as $package)

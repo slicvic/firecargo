@@ -6,7 +6,6 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
 use App\Models\Carrier;
-use Flash;
 
 /**
  * CarriersController

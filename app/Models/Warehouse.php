@@ -37,7 +37,7 @@ class Warehouse extends Base {
     protected $fillable = [
         'shipper_account_id',
         'status_id',
-        'consignee_account_id',
+        'client_account_id',
         'carrier_id',
         'arrived_at',
         'notes'
@@ -66,13 +66,13 @@ class Warehouse extends Base {
     }
 
     /**
-     * Gets the consignee.
+     * Gets the client.
      *
      * @return Account
      */
-    public function consignee()
+    public function client()
     {
-        return $this->belongsTo('App\Models\Account', 'consignee_account_id');
+        return $this->belongsTo('App\Models\Account', 'client_account_id');
     }
 
     /**
@@ -128,8 +128,37 @@ class Warehouse extends Base {
             $package = Package::firstOrNew(['id' => $id]);
             $package->fill($data);
             $package->warehouse_id = $this->id;
-            $package->ship = ($package->shipment_id) ? $package->ship : $this->consignee->autoship;
+            $package->ship = ($package->shipment_id) ? $package->ship : $this->client->autoship;
             $package->save();
+        }
+    }
+
+    /**
+     * Attaches the given packages to the warehouse.
+     *
+     * WARNING: AFTER THIS OPERATION IS COMPLETE ONLY THE GIVEN PACKAGES
+     * WILL REMAIN IN THE SHIPMENT.
+     *
+     * @param  array  $packageIds
+     * @return void
+     */
+    public function syncPackages(array $packages)
+    {
+        // First lets detach the packages not in $packageIds
+        Package::whereNotIn('id', array_keys($packages))
+            ->delete();
+
+        // Next, we'll attach the given packages
+        if (count($packages))
+        {
+            foreach ($packages as $id => $data)
+            {
+                $package = Package::firstOrNew(['id' => $id]);
+                $package->fill($data);
+                $package->warehouse_id = $this->id;
+                $package->ship = ($package->shipment_id) ? $package->ship : $this->client->autoship;
+                $package->save();
+            }
         }
     }
 
@@ -248,7 +277,7 @@ class Warehouse extends Base {
     }
 
     /**
-     * Counts the total number of warehouses by status and company id.
+     * Counts the total number of warehouses by status and company.
      *
      * @param  int  $statusId
      * @param  int  $companyId
@@ -270,7 +299,7 @@ class Warehouse extends Base {
      */
     public static function search(array $criteria = NULL, $sort = 'id', $order = 'desc', $perPage = 15)
     {
-        // Verify sort and order
+        // Sanitize sort and order
         $validSortColumns = [
             'id',
             'arrived_at',
@@ -284,7 +313,7 @@ class Warehouse extends Base {
 
         // Build query
         $query = Warehouse::query()
-            ->with('creator', 'updater', 'shipper', 'consignee', 'carrier', 'company')
+            ->with('creator', 'updater', 'shipper', 'client', 'carrier', 'company')
             ->orderBy('warehouses.' . $sort, $order);
 
         if ( ! empty($criteria['status_id']))
@@ -303,22 +332,25 @@ class Warehouse extends Base {
 
             $query = $query
                 ->select('warehouses.*')
-                ->leftJoin('accounts AS consignees', 'warehouses.consignee_account_id', '=', 'consignees.id')
+                ->leftJoin('accounts AS clients', 'warehouses.client_account_id', '=', 'clients.id')
                 ->leftJoin('accounts AS shippers', 'warehouses.shipper_account_id', '=', 'shippers.id')
                 ->leftJoin('carriers', 'warehouses.carrier_id', '=', 'carriers.id')
+                ->leftJoin('packages', 'warehouses.id', '=', 'packages.warehouse_id')
                 ->groupBy('warehouses.id')
                 ->whereRaw('(
                     warehouses.id LIKE ?
-                    OR consignees.id LIKE ?
-                    OR consignees.name LIKE ?
-                    OR consignees.firstname LIKE ?
-                    OR consignees.lastname LIKE ?
+                    OR clients.id LIKE ?
+                    OR clients.name LIKE ?
+                    OR clients.firstname LIKE ?
+                    OR clients.lastname LIKE ?
                     OR shippers.id LIKE ?
                     OR shippers.name LIKE ?
                     OR shippers.firstname LIKE ?
                     OR shippers.lastname LIKE ?
                     OR carriers.name LIKE ?
+                    OR packages.tracking_number LIKE ?
                     )', [
+                    $search,
                     $search,
                     $search,
                     $search,

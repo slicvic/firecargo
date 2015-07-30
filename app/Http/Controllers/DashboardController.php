@@ -24,7 +24,7 @@ class DashboardController extends BaseAuthController {
     {
         if ($this->authUser->isClient())
         {
-            $criteria['consignee_account_id'] = $this->authUser->account->id;
+            $criteria['client_account_id'] = $this->authUser->client->id;
             $packages = Package::search($criteria);
 
             return view('dashboard.clients.index', ['packages' => $packages]);
@@ -37,7 +37,7 @@ class DashboardController extends BaseAuthController {
                 'complete' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::COMPLETE, $this->authUser->company_id)
             ];
 
-            return view('dashboard.admins.index', ['totals' => $totals]);
+            return view('dashboard.index', ['totals' => $totals]);
         }
     }
 }

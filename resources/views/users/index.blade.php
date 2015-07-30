@@ -5,7 +5,7 @@
 @section('subtitle', 'Manage User Users')
 
 @section('actions')
-    <a href="/users/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Account</a>
+    <a href="/users/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New User</a>
 @stop
 
 @section('thead')
@@ -14,7 +14,7 @@
     <th>Name</th>
     <th>Email</th>
     <th>Role</th>
-    <th>Active</th>
+    <th>Login Allowed?</th>
     <th>Action</th>
 @stop
 

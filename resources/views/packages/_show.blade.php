@@ -8,10 +8,6 @@
         <div class="col-xs-9"><p>{{ $package->present()->type() }}</p></div>
     </div>
     <div class="row">
-        <div class="col-xs-3"><strong>Status</strong></div>
-        <div class="col-xs-9"><p>{{ $package->present()->status() }}</p></div>
-    </div>
-    <div class="row">
         <div class="col-xs-3"><strong>Tracking #</strong></div>
         <div class="col-xs-9"><p>{{ $package->tracking_number }}</p></div>
     </div>

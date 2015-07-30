@@ -1,15 +1,17 @@
 $(function() {
+    // Close side menu
+    $('body').toggleClass("mini-navbar");
 
     // Bind carrier autocomplete
     $('#carrier').keyup(function() {
-        $('#carrierId').val('');
+        $('#carrier-id').val('');
     });
 
     $('#carrier').autocomplete({
         source: '/carriers/ajax-autocomplete',
         minLength: 2,
         select: function(event, ui) {
-            $('#carrierId').val(ui.item.id);
+            $('#carrier-id').val(ui.item.id);
         }
     }).autocomplete('instance')._renderItem = function(ul, item) {
         return $('<li>')
@@ -19,14 +21,14 @@ $(function() {
 
     // Bind shipper autocomplete
     $('#shipper').keyup(function() {
-        $('#shipperId').val('');
+        $('#shipper-id').val('');
     });
 
     $('#shipper').autocomplete({
-        source: '/warehouses/ajax-shipper-consignee-autocomplete',
+        source: '/warehouses/ajax-account-autocomplete?type=shipper',
         minLength: 2,
         select: function(event, ui) {
-            $('#shipperId').val(ui.item.id);
+            $('#shipper-id').val(ui.item.id);
         }
     }).autocomplete('instance')._renderItem = function(ul, item) {
         return $('<li>')
@@ -34,17 +36,17 @@ $(function() {
             .appendTo(ul);
     };
 
-    // Bind consignee autocomplete
-    $('#consignee').keyup(function() {
-        $('#consigneeId').val('');
+    // Bind client autocomplete
+    $('#client').keyup(function() {
+        $('#client-id').val('');
     });
 
-    $('#consignee').autocomplete({
-        source: '/warehouses/ajax-shipper-consignee-autocomplete',
+    $('#client').autocomplete({
+        source: '/warehouses/ajax-account-autocomplete?type=client',
         minLength: 2,
         select: function(event, ui) {
-            $('#consignee').val(ui.item.label);
-            $('#consigneeId').val(ui.item.id);
+            $('#client').val(ui.item.label);
+            $('#client-id').val(ui.item.id);
             return false;
         }
     }).autocomplete('instance')._renderItem = function(ul, item) {
@@ -54,17 +56,16 @@ $(function() {
     };
 
     // Bind form submit
-    $('form').on('submit', function() {
+    $('#warehouse-edit-form').on('submit', function() {
         event.preventDefault();
 
         var form = $(this),
-            flashMessage = $('#flashMessage'),
-            submitBtn = $(this).find('button[type=submit]');
+            flashMessage = $('#flash-message'),
+            saveBtn = $(this).find('button[type=submit]');
 
         if (!form.valid()) return false;
 
-        submitBtn.button('loading');
-        flashMessage.html('');
+        saveBtn.button('loading');
 
         $.post(form.attr('action'), form.serialize(), 'json')
             .done(function(data) {
@@ -73,7 +74,7 @@ $(function() {
             .fail(function(xhr) {
                 flashMessage.html(xhr.responseJSON.error);
                 $('html, body').scrollTop(0);
-                submitBtn.button('reset');
+                saveBtn.button('reset');
             });
     });
 
@@ -87,94 +88,87 @@ $(function() {
         },
 
         initEvents: function() {
-            var me = this;
+            var self = this;
 
             // Prepare package template
-            me.pkgTemplate = $('#packages > tbody.package-template')
-                .clone()
-                .removeClass('package-template, hidden');
-            $('#packages > tbody.package-template').remove();
+            self.pkgTemplate = $('#packages-container > .package-template').clone();
+            self.pkgTemplate.removeClass('package-template');
+            self.pkgTemplate.removeClass('hidden');
+            $('#packages-container > .package-template').remove();
 
-            $('#packages').on('click', '.btn-clone-package', me.clonePackage);
-            $('#packages').on('click', '.btn-remove-package', me.removePackage);
-            $('#btnNewPackage').on('click', me.newPackage);
-            $('#packages').on('keyup', '.metric', me.updateTotals);
-
-            $('#packages').on('click', '.btn-toggle-detail', function() {
-                var toggleBtn = $(this);
-                toggleBtn.toggleClass('collapsed');
-                toggleBtn.closest('tr').next('tr').toggleClass('hidden');
-                if (toggleBtn.hasClass('collapsed')) {
-                    toggleBtn.html('<i class="fa fa-angle-down"></i>');
-                }
-                else{
-                    toggleBtn.html('<i class="fa fa-angle-right"></i>');
-                }
-            });
-
-            $('.btn-toggle-detail-all').click(function() {
-                var toggleBtn = $(this);
-                toggleBtn.toggleClass('collapsed');
-                if (toggleBtn.hasClass('collapsed')) {
-                    toggleBtn.html('<i class="fa fa-angle-down"></i>');
-                    $('#packages .btn-toggle-detail').html('<i class="fa fa-angle-down"></i>').addClass('collapsed');
-                    $('#packages .package-detail').removeClass('hidden');
-                }
-                else{
-                    toggleBtn.html('<i class="fa fa-angle-right"></i>');
-                    $('#packages .btn-toggle-detail').html('<i class="fa fa-angle-right"></i>').removeClass('collapsed');
-                    $('#packages .package-detail').addClass('hidden');
-                }
-            });
+            $('#packages-container').on('click', '.clone-package-btn', self.clonePackage);
+            $('#packages-container').on('click', '.remove-package-btn', self.removePackage);
+            $('#add-package-btn').on('click', self.addPackage);
+            $('#packages-container').on('keyup', '.metric', self.updateTotals);
         },
 
         clonePackage: function() {
+            var cloneBtn = $(this);
             var totalPkgs = PackageMgr.countPackages();
-            var newPkg = PackageMgr.pkgTemplate.clone();
+            var cloneePkg = cloneBtn.closest('.panel');
+            var clonePkg = PackageMgr.pkgTemplate.clone();
 
-            $(this).closest('tbody').find('input, select, textarea').each(function() {
-                var nameAttr = $(this).attr('data-name');
-                newPkg
-                    .find('[data-name="' + nameAttr + '"]')
-                    .attr('name', 'packages[new_' + totalPkgs + '][' + nameAttr + ']')
-                    .val($(this).val());
-            });
+            clonePkg.children('.panel-body').replaceWith(cloneePkg.children('.panel-body').clone());
 
-            $('#packages').append(newPkg);
-            $('#totalPackages').html(1 + totalPkgs);
-
-            PackageMgr.updateTotals();
-        },
-
-        newPackage: function() {
-            var totalPkgs = PackageMgr.countPackages();
-            var newPkg = PackageMgr.pkgTemplate.clone();
-
-            newPkg.find('input, select, textarea').each(function() {
-                $(this).val('');
+            clonePkg.find('input, select, textarea').each(function() {
+                if ($(this).hasClass('unique')) {
+                    $(this).val('');
+                }
                 $(this).attr('name', 'packages[new_' + totalPkgs + '][' + $(this).attr('data-name') + ']');
             });
 
-            $('#packages').append(newPkg);
-            $('#totalPackages').html(1 + totalPkgs);
+            $('#packages-container').append(clonePkg);
+            $('#total-packages').html(1 + totalPkgs);
+
+            PackageMgr.updateTotals();
+
+            window.scrollTo(0, document.body.scrollHeight);
+        },
+
+        addPackage: function() {
+            var totalPkgs = PackageMgr.countPackages();
+            var newPkg = PackageMgr.pkgTemplate.clone();
+            var trackingNumber = $('#add-package-tracking');
+
+            newPkg.find('input, select, textarea').each(function() {
+                var name = $(this).attr('data-name');
+                if (name == 'tracking_number') {
+                    $(this).val(trackingNumber.val());
+                    trackingNumber.val('').focus();
+                }
+                $(this).attr('name', 'packages[new_' + totalPkgs + '][' + name + ']');
+            });
+
+            $('#packages-container').append(newPkg);
+            $('#total-packages').html(1 + totalPkgs);
 
             PackageMgr.updateTotals();
         },
 
         removePackage: function() {
-            $(this).closest('tbody').remove();
+            var panel = $(this).closest('.panel');
+
+            if (panel.hasClass('new')) {
+                panel.remove();
+            }
+            else {
+                if (confirm('Are you sure you want to remove this piece from the warehouse?')) {
+                    panel.remove();
+                }
+            }
+
             PackageMgr.updateTotals();
         },
 
         countPackages: function() {
-            return $('#packages > tbody').length;
+            return $('#packages-container > .package').length;
         },
 
         updateTotals: function() {
             var grossWeight = 0;
             var volumeWeight = 0;
 
-            $('#packages > tbody > tr').each(function() {
+            $('#packages-container > .package').each(function() {
                 var $tr = $(this);
                 var length = parseInt($tr.find('input[data-name="length"]').val()) || 0;
                 var width = parseInt($tr.find('input[data-name="width"]').val()) || 0;
@@ -186,12 +180,63 @@ $(function() {
 
             volumeWeight = Math.round(volumeWeight);
 
-            $('#totalPackages').html(PackageMgr.countPackages());
-            $('#grossWeight').html(grossWeight);
-            $('#volumeWeight').html(volumeWeight);
-            $('#chargeWeight').html((volumeWeight > grossWeight) ? volumeWeight : grossWeight);
+            $('#total-packages').html(PackageMgr.countPackages());
+            $('#gross-weight').html(grossWeight);
+            $('#volume-weight').html(volumeWeight);
+            $('#charge-weight').html((volumeWeight > grossWeight) ? volumeWeight : grossWeight);
         }
     };
 
     PackageMgr.init();
+
+    /*
+    var form = $("#warehouse-edit-form");
+
+    form.children("div").steps({
+        headerTag: "h3",
+        bodyTag: "section",
+        transitionEffect: "slideLeft",
+        enablePagination: true,
+        enableAllSteps: true,
+        enableCancelButton: true,
+        showFinishButtonAlways: true,
+        labels: {
+            finish: 'Save'
+        },
+        onStepChanging: function (event, currentIndex, newIndex)
+        {
+            form.validate().settings.ignore = ":disabled,:hidden";
+            return form.valid();
+        },
+        onFinishing: function (event, currentIndex)
+        {
+            form.validate().settings.ignore = ":disabled";
+            return form.valid();
+        },
+        onFinished: function (event, currentIndex)
+        {
+            var saveBtn = $(event.currentTarget).find(".actions a[href$='#finish']");
+            var flashMessage = $('#flashMessage');
+
+            saveBtn.text('Saving...').attr('disabled', true);
+
+            $.post(form.attr('action'), form.serialize(), 'json')
+                .done(function(data) {
+                    window.location = data.redirect_url;
+                })
+                .fail(function(xhr) {
+                    saveBtn.text('Save').attr('disabled', false);
+                    flashMessage.html(xhr.responseJSON.error);
+                    $('html, body').scrollTop(0);
+                });
+        },
+        onCanceled: function (event) {
+            var id = form.children('input[name="id"]').val();
+            window.location = (id) ? '/warehouses/show/' + id : '/warehouses';
+        },
+        onInit: function() {
+            $('.wizard > .steps > ul > li:not(.current)').addClass('done');
+        }
+    });
+     */
 });

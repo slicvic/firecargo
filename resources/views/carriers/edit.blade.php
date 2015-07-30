@@ -3,7 +3,7 @@
 @section('icon', 'truck')
 
 @section('title')
-    {{ $carrier->exists ? 'Edit' : 'Create' }} Carrier
+    {{ $carrier->exists ? 'Edit' : 'Add New' }} Carrier
 @stop
 
 @section('subtitle')
@@ -12,7 +12,7 @@
         <a href="/carriers">Carriers</a>
     </li>
     <li class="active">
-        <strong>{{ $carrier->exists ? 'Edit' : 'Create' }}</strong>
+        <strong>{{ $carrier->exists ? 'Edit' : 'Add' }}</strong>
     </li>
 </ol>
 @stop
@@ -29,7 +29,7 @@
     <div class="form-group">
         <div class="col-sm-4 col-sm-offset-2">
             <a class="btn btn-white" href="/carriers">Cancel</a>
-            <button class="btn btn-primary" type="submit">Save changes</button>
+            <button class="btn btn-primary" type="submit">Save Carrier</button>
         </div>
     </div>
 </form>

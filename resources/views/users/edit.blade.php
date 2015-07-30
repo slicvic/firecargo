@@ -3,16 +3,16 @@
 @section('icon', 'user')
 
 @section('title')
-    {{ $user->exists ? 'Edit Account # ' . $user->id : 'Create Account' }}
+    {{ $user->exists ? 'Edit User # ' . $user->id : 'Add New User' }}
 @stop
 
 @section('subtitle')
 <ol class="breadcrumb">
     <li>
-        <a href="/users">Accounts</a>
+        <a href="/users">Users</a>
     </li>
     <li class="active">
-        <strong>{{ $user->exists ? 'Edit' : 'Create' }}</strong>
+        <strong>{{ $user->exists ? 'Edit' : 'Add' }}</strong>
     </li>
 </ol>
 @stop
@@ -24,6 +24,8 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
+                    <h3>Account Info</h3>
+                    <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Company *</label>
                         <div class="col-sm-4">
@@ -37,7 +39,7 @@
                             <select required class="form-control" name="user[role_id]">
                             <option value="">- Choose -</option>
                             @foreach (\App\Models\Role::all() as $role)
-                                <option value="{{ $role->id }}"{{ ($role->id == Input::old('user.role_id', $user->role_id)) ? ' selected' : '' }}>{{ $role->name }}</option>
+                                <option value="{{ $role->id }}"{{ ($role->id == Input::old('user.role_id', $user->role_id)) ? ' selected' : '' }}>{{ $role->name }} ({{ $role->description }})</option>
                             @endforeach
                             </select>
                         </div>
@@ -74,15 +76,15 @@
                             <input type="checkbox" class="ichecks" value="1" name="user[active]"{{ Input::old('user.active', $user->active) ? ' checked' : '' }}>
                         </div>
                     </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <a class="btn btn-white" href="/users">Cancel</a>
+                            <button class="btn btn-primary" type="submit">Save User</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <br>
-    <div class="form-group">
-        <div class="col-sm-12">
-            <a class="btn btn-white" href="/users">Cancel</a>
-            <button class="btn btn-primary" type="submit">Save changes</button>
         </div>
     </div>
 </form>

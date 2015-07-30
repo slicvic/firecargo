@@ -2,14 +2,12 @@
 
 use Validator;
 use Auth;
-use Session;
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Role;
-use Flash;
 
 /**
  * UsersController

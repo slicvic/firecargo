@@ -59,14 +59,13 @@
                     <tr>
                         <th></th>
                         @if (Auth::user()->isAdmin()) {!! '<th>Company</th>' !!} @endif
-                        <th>{!! Html::linkToSorting('/warehouses', 'Number', 'id', $params['sort'], $params['order']) !!}</th>
+                        <th>{!! Html::linkToSorting('/warehouses', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
                         <th>Pieces</th>
                         <th>Gross Weight</th>
                         <th>Volume</th>
                         <th>Carrier</th>
                         <th>Shipper</th>
-                        <th>Consignee</th>
-                        <th>{!! Html::linkToSorting('/warehouses', 'Arrived', 'arrived_at', $params['sort'], $params['order']) !!}</th>
+                        <th>Client</th>
                         <th>{!! Html::linkToSorting('/warehouses', 'Created', 'created_at', $params['sort'], $params['order']) !!}</th>
                         <th>{!! Html::linkToSorting('/warehouses', 'Updated', 'updated_at', $params['sort'], $params['order']) !!}</th>
                         <th>Action</th>
@@ -83,8 +82,7 @@
                         <td>{{ $warehouse->present()->volumeWeight() }}</td>
                         <td>{{ $warehouse->present()->carrier() }}</td>
                         <td>{!! $warehouse->present()->shipperLink() !!}</td>
-                        <td>{!! $warehouse->present()->consigneeLink() !!}</td>
-                        <td>{{ $warehouse->present()->arrivedAt() }}</td>
+                        <td>{!! $warehouse->present()->clientLink() !!}</td>
                         <td>{{ $warehouse->present()->createdAt() }}</td>
                         <td>{{ $warehouse->present()->updatedAt() }}</td>
                         <td>

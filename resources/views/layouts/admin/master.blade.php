@@ -5,6 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ env('APP_NAME')}}</title>
 
@@ -32,9 +33,6 @@
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.responsive.js"></script>
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
 
-    <!-- Form Wizard -->
-    <link href="/assets/plugins/inspinia/Static_Seed_Project/css/plugins/steps/jquery.steps.css" rel="stylesheet">
-    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/steps/jquery.steps.min.js"></script>
 
     <!-- Form Validation -->
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/validate/jquery.validate.min.js"></script>
@@ -56,13 +54,11 @@
     <!-- Main -->
     <link rel="stylesheet" type="text/css" href="/assets/admin/css/style.css">
     <script src="/assets/admin/js/app.js"></script>
-
-    <script>var csrfToken = '{{ csrf_token() }}';</script>
 </head>
 
 <body>
 
-    <div id="wrapper">
+    <div id="wrapper" class="{{ str_replace('/', ' ', Request::path()) }}">
 
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
@@ -111,8 +107,12 @@
                             </ul>
                         </li>
 
-                        <li{{ (Request::is('accounts') || Request::is('accounts/*')) ? ' class=active' : '' }}>
-                            <a href="/accounts"><i class="fa fa-users"></i><span>Accounts</span></a>
+                        <li{{ (Request::is('clients') || Request::is('clients/*')) ? ' class=active' : '' }}>
+                            <a href="/clients"><i class="fa fa-users"></i><span>Clients</span></a>
+                        </li>
+
+                        <li{{ (Request::is('shippers') || Request::is('shippers/*')) ? ' class=active' : '' }}>
+                            <a href="/shippers"><i class="fa fa-truck"></i><span>Shippers</span></a>
                         </li>
 
                         <li{{ preg_match('/carriers|sites|company|package-|companies|roles|users/', $uri) ? ' class=active' : '' }}>
@@ -127,7 +127,6 @@
                                     <li{{ (Request::is('sites') || Request::is('sites/*')) ? ' class=active' : '' }}><a href="/sites">Sites</a></li>
                                 @endif
                                 <li{{ (Request::is('company') || Request::is('company/*')) ? ' class=active' : '' }}><a href="/company/profile">Company Profile</a></li>
-                                <li{{ (Request::is('package-statuses') || Request::is('package-statuses/*')) ? ' class=active' : '' }}><a href="/package-statuses">Package Statuses</a></li>
                             </ul>
                         </li>
                     @endif

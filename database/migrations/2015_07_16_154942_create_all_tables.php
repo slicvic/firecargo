@@ -115,8 +115,8 @@ class CreateAllTables extends Migration {
 		Schema::create('addresses', function($table)
 		{
 		    $table->increments('id')->unsigned();
-		    $table->integer('account_id')->unsigned()->nullable();
 		    $table->integer('company_id')->unsigned()->nullable();
+		    $table->integer('account_id')->unsigned()->nullable();
 		    $table->string('address1', 255);
 		    $table->string('address2', 255);
 		    $table->string('city', 30);
@@ -189,7 +189,7 @@ class CreateAllTables extends Migration {
 		    $table->integer('company_id')->unsigned();
 		    $table->integer('status_id')->unsigned()->default(1);
 		    $table->integer('shipper_account_id')->unsigned();
-		    $table->integer('consignee_account_id')->unsigned();
+		    $table->integer('client_account_id')->unsigned();
 		    $table->integer('carrier_id')->unsigned();
 		    $table->string('notes', 1000);
 		    $table->dateTime('arrived_at');
@@ -201,7 +201,7 @@ class CreateAllTables extends Migration {
 		    $table->foreign('company_id')->references('id')->on('companies');
 		    $table->foreign('status_id')->references('id')->on('warehouse_statuses');
 		    $table->foreign('shipper_account_id')->references('id')->on('accounts');
-		    $table->foreign('consignee_account_id')->references('id')->on('accounts');
+		    $table->foreign('client_account_id')->references('id')->on('accounts');
 		    $table->foreign('carrier_id')->references('id')->on('carriers');
 		    $table->foreign('creator_user_id')->references('id')->on('users');
 		    $table->foreign('updater_user_id')->references('id')->on('users');
@@ -216,19 +216,6 @@ class CreateAllTables extends Migration {
 		    $table->dateTime('updated_at');
 		});
 
-		// Create package_statuses
-		Schema::create('package_statuses', function($table)
-		{
-		    $table->increments('id')->unsigned();
-		    $table->integer('company_id')->unsigned();
-		    $table->tinyInteger('default')->unsigned()->default(0);
-		    $table->string('name', 100);
-		    $table->dateTime('created_at');
-		    $table->dateTime('updated_at');
-
-		    $table->foreign('company_id')->references('id')->on('companies');
-		});
-
 		// Create packages
 		Schema::create('packages', function($table)
 		{
@@ -236,7 +223,6 @@ class CreateAllTables extends Migration {
 		    $table->integer('company_id')->unsigned();
 		    $table->integer('warehouse_id')->unsigned();
 		    $table->integer('shipment_id')->unsigned()->nullable();
-		    $table->integer('status_id')->unsigned()->nullable();
 		    $table->integer('type_id')->unsigned();
 		    $table->float('length')->unsigned();
 		    $table->float('width')->unsigned();
@@ -254,7 +240,6 @@ class CreateAllTables extends Migration {
 		    $table->foreign('company_id')->references('id')->on('companies');
 		    $table->foreign('warehouse_id')->references('id')->on('warehouses');
 		    $table->foreign('shipment_id')->references('id')->on('shipments');
-		    $table->foreign('status_id')->references('id')->on('package_statuses');
 		    $table->foreign('type_id')->references('id')->on('package_types');
 		});
 	}
@@ -281,8 +266,8 @@ class CreateAllTables extends Migration {
 		Schema::drop('users');
 		Schema::drop('roles');
 
-		Schema::drop('accounts');
-		Schema::drop('account_types');
+		Schema::drop('clients');
+		Schema::drop('shippers');
 
 		Schema::drop('countries');
 		Schema::drop('addresses');

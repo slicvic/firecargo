@@ -44,7 +44,7 @@ class UserProfileController extends BaseAuthController {
             return view('user_profile.client.show', ['user' => $this->authUser]);
         }
 
-        return view('user_profile.admin.show', ['user' => $this->authUser]);
+        return view('user_profile.show', ['user' => $this->authUser]);
     }
 
     /**
@@ -62,7 +62,7 @@ class UserProfileController extends BaseAuthController {
             ]);
         }
 
-        return view('user_profile.admin.edit', [
+        return view('user_profile.edit', [
             'user' => $this->authUser
         ]);
     }

@@ -11,7 +11,6 @@ use Illuminate\Pagination\Paginator;
 
 use App\Models\Warehouse;
 use App\Models\Package;
-use App\Models\PackageStatus;
 use App\Models\PackageType;
 use App\Models\Account;
 use App\Models\AccountType;
@@ -201,23 +200,23 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Retrieves a list of shippers amd consignees for a jquery autocomplete field.
+     * Retrieves client or shipper accounts for an autocomplete field.
      *
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function getAjaxShipperConsigneeAutocomplete(Request $request)
+    public function getAjaxAccountAutocomplete(Request $request)
     {
-        $input = $request->only('term');
-        $response = [];
+        $input = $request->only('term', 'type');
 
         if (strlen($input['term']) < 2)
         {
-            // Return nothing
-            return response()->json($response);
+            return response()->json([]);
         }
 
-        $accounts = Account::autocompleteSearch($input['term'])->mine()->limit(25)->get();
+        $typeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CLIENT;
+        $accounts = Account::autocompleteSearch($input['term'], $typeId)->mine()->limit(25)->get();
+        $response = [];
 
         foreach($accounts as $account)
         {
@@ -240,7 +239,6 @@ class WarehousesController extends BaseAuthController {
     {
         return view('warehouses.edit', [
             'warehouse'       => $warehouse,
-            'packageStatuses' => PackageStatus::mine()->orderBy('default', 'DESC')->get(),
             'packageTypes'    => PackageType::orderBy('name', 'ASC')->get()
         ]);
     }
@@ -260,10 +258,9 @@ class WarehousesController extends BaseAuthController {
         // Validate input
         $rules = [
             'shipper' => 'required|min:3',
-            'consignee' => 'required|min:5',
+            'client' => 'required|min:5',
             'carrier' => 'required|min:3',
             'date' => 'required',
-            'time' => 'required',
         ];
 
         $validator = Validator::make($input['warehouse'], $rules);
@@ -293,22 +290,22 @@ class WarehousesController extends BaseAuthController {
             $input['warehouse']['shipper_account_id'] = $shipper->id;
         }
 
-        // Create a new consignee account if necessary
-        if (empty($input['warehouse']['consignee_account_id']))
+        // Create a new client account if necessary
+        if (empty($input['warehouse']['client_account_id']))
         {
-            $consignee = Account::firstOrCreate([
-                'name' => trim($input['warehouse']['consignee']),
+            $client = Account::firstOrCreate([
+                'name' => trim($input['warehouse']['client']),
                 'company_id' => $this->authUser->company_id,
-                'type_id' => AccountType::CONSIGNEE
+                'type_id' => AccountType::CLIENT
             ]);
 
-            $input['warehouse']['consignee_account_id'] = $consignee->id;
+            $input['warehouse']['client_account_id'] = $client->id;
         }
 
         // Save warehouse
-        $warehouse->arrived_at = date('Y-m-d H:i:s', strtotime($input['warehouse']['date'] . $input['warehouse']['time']));
+        $warehouse->arrived_at = date('Y-m-d H:i:s', strtotime($input['warehouse']['date']));
         $warehouse->shipper_account_id = $input['warehouse']['shipper_account_id'];
-        $warehouse->consignee_account_id = $input['warehouse']['consignee_account_id'];
+        $warehouse->client_account_id = $input['warehouse']['client_account_id'];
         $warehouse->carrier_id = $input['warehouse']['carrier_id'];
         $warehouse->notes = $input['warehouse']['notes'];
 
@@ -320,7 +317,7 @@ class WarehousesController extends BaseAuthController {
         // Save packages
         if ($input['packages'])
         {
-            $warehouse->createOrUpdatePackages($input['packages']);
+            $warehouse->syncPackages($input['packages']);
         }
 
         return TRUE;

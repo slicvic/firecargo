@@ -6,7 +6,13 @@ var app = {
     initGlobalEvents: function() {
         var self = this;
 
-        $('body').on('click', '.btn-show-package', function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('body').on('click', '.show-package-btn', function() {
             var btn = $(this);
             var modal = $('#modal');
             var modalContent = modal.find('.modal-content');
@@ -30,7 +36,7 @@ var app = {
         if ($('form').length) $('form').validate();
 
         // Bind table delete button
-        $('table').on('click', '.btn-delete', function() {
+        $('table').on('click', '.delete-record-btn', function() {
             if (!confirm('Are you sure you want to delete this item?')) {
                 event.preventDefault();
                 return false;

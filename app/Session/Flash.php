@@ -131,11 +131,7 @@ class Flash {
             case self::INFO:
             case self::WARNING:
 
-                if ( ! is_string($message))
-                {
-                    $message = NULL;
-                }
-
+                $message = is_string($message) ? $message : NULL;
                 break;
 
             case self::ERROR:
@@ -168,7 +164,6 @@ class Flash {
                 return NULL;
         }
 
-        return view('flash_messages.' . $level, ['message' => $message])
-            ->render();
+        return view('flash_messages.' . $level, ['message' => $message])->render();
     }
 }

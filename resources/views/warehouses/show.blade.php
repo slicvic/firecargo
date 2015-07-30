@@ -22,7 +22,7 @@
 @stop
 
 @section('page_content')
-    @include('warehouses._metric_system_notice')
+    @include('warehouses._metric_system_alert')
     <div class="row">
         <div class="col-md-9">
             <div class="ibox">
@@ -35,7 +35,7 @@
         <div class="col-md-3">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h2>Summary</h2>
+                    <h2>Details</h2>
                     <table class="table warehouse-info-table table-responsive">
                         <tr>
                             <th>Arrived</th>
@@ -46,8 +46,8 @@
                             <td>{!! $warehouse->present()->shipperLink() !!}</td>
                         </tr>
                         <tr>
-                            <th>Consignee</th>
-                            <td>{!! $warehouse->present()->consigneeLink() !!}</td>
+                            <th>Client</th>
+                            <td>{!! $warehouse->present()->clientLink() !!}</td>
                         </tr>
                         <tr>
                             <th>Delivered By</th>

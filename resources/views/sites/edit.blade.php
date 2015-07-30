@@ -3,7 +3,7 @@
 @section('icon', 'building-o')
 
 @section('title')
-    {{ $site->exists ? 'Edit' : 'Create' }} Site
+    {{ $site->exists ? 'Edit' : 'Add New' }} Site
 @stop
 
 @section('subtitle')
@@ -12,7 +12,7 @@
         <a href="/sites">Sites</a>
     </li>
     <li class="active">
-        <strong>{{ $site->exists ? 'Edit' : 'Create' }}</strong>
+        <strong>{{ $site->exists ? 'Edit' : 'Add' }}</strong>
     </li>
 </ol>
 @stop
@@ -35,7 +35,7 @@
     <div class="form-group">
         <div class="col-sm-4 col-sm-offset-2">
             <a class="btn btn-white" href="/sites">Cancel</a>
-            <button class="btn btn-primary" type="submit">Save changes</button>
+            <button class="btn btn-primary" type="submit">Save Site</button>
         </div>
     </div>
 </form>

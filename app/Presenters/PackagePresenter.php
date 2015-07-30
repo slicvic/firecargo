@@ -12,16 +12,6 @@ use Html;
 class PackagePresenter extends BasePresenter {
 
     /**
-     * Presents the status of the package.
-     *
-     * @return string
-     */
-    public function status()
-    {
-        return ($this->model->exists && $this->model->status) ? $this->model->status->name : 'N/A';
-    }
-
-    /**
      * Presents the package type.
      *
      * @return string

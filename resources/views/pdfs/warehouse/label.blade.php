@@ -1,4 +1,4 @@
-<?php $consignee = $warehouse->consignee; ?>
+<?php $client = $warehouse->client; ?>
 <?php $company = $warehouse->company; ?>
 <?php $grossWeight = $warehouse->calculateGrossWeight(); ?>
 <?php $shipper = $warehouse->shipper; ?>
@@ -28,16 +28,16 @@ EMAIL: {{ $company->email }}
 <table>
     <tr>
         <td width="20%">FROM:</td>
-        <td>
+        <td width="80%">
 <b>{{ strtoupper($warehouse->present()->shipper()) }}</b><br>
 {!! strtoupper($shipper->present()->address()) !!}<br>
         </td>
     </tr>
     <tr>
         <td width="20%">TO:</td>
-        <td>
-<b>{{ strtoupper($consignee->name) }}</b><br>
-{!! strtoupper($consignee->present()->address()) !!}<br>
+        <td width="80%">
+<b>{{ strtoupper($client->name) }}</b><br>
+{!! strtoupper($client->present()->address()) !!}<br>
         </td>
     </tr>
 </table>

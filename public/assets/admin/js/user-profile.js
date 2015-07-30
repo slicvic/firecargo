@@ -12,7 +12,7 @@ $(function() {
             $('#photoContainer').html(file.previewElement);
         },
         sending: function(file, xhr, formData) {
-            formData.append('_token', csrfToken);
+            formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
         },
         error: function(file, errorMessage, xhr) {
             $('#dzErrorMessage').html(errorMessage).show();

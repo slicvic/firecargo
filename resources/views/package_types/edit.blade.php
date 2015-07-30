@@ -3,7 +3,7 @@
 @section('icon', 'truck')
 
 @section('title')
-    {{ $type->exists ? 'Edit' : 'Create' }} Package Type
+    {{ $type->exists ? 'Edit' : 'Add' }} Package Type
 @stop
 
 @section('subtitle')
@@ -12,7 +12,7 @@
         <a href="/package-types">Package Types</a>
     </li>
     <li class="active">
-        <strong>{{ $type->exists ? 'Edit' : 'Create' }}</strong>
+        <strong>{{ $type->exists ? 'Edit' : 'Add' }}</strong>
     </li>
 </ol>
 @stop
@@ -29,7 +29,7 @@
     <div class="form-group">
         <div class="col-sm-4 col-sm-offset-2">
             <a class="btn btn-white" href="/package-types">Cancel</a>
-            <button class="btn btn-primary" type="submit">Save changes</button>
+            <button class="btn btn-primary" type="submit">Save Package Type</button>
         </div>
     </div>
 </form>

@@ -33,13 +33,13 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the consignee's name.
+     * Presents the client's name.
      *
      * @return string
      */
-    public function consignee()
+    public function client()
     {
-        return ($this->model->exists) ? $this->model->consignee->name : '';
+        return ($this->model->exists) ? $this->model->client->name : '';
     }
 
     /**
@@ -60,20 +60,20 @@ class WarehousePresenter extends BasePresenter {
     public function shipperLink()
     {
         return Html::linkWithIcon(
-            "/accounts/edit/{$this->model->shipper_account_id}",
+            "/shippers/edit/{$this->model->shipper_account_id}",
             $this->model->shipper->name);
     }
 
     /**
-     * Presents a link to the consignee's account page.
+     * Presents a link to the client's account page.
      *
      * @return html
      */
-    public function consigneeLink()
+    public function clientLink()
     {
         return Html::linkWithIcon(
-            "/accounts/edit/{$this->model->consignee_account_id}",
-            $this->model->consignee->name);
+            "/clients/edit/{$this->model->client_account_id}",
+            $this->model->client->name);
     }
 
     /**

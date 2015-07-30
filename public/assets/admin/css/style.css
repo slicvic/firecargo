@@ -93,9 +93,43 @@ legend {
 }
 
 .wizard > .content > .body {
-    position: relative;
+    position: relative!important;
 }
 
 .alert {
+    font-size: 14px;
+}
+
+.panel-info-light {
+    border-color: #bce8f1;
+}
+
+.panel-info-light>.panel-heading {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.panel-warning-light {
+    border-color: #faebcc;
+}
+
+.panel-warning-light>.panel-heading {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.panel-danger-light {
+    border-color: #ebccd1;
+}
+
+.panel-danger-light>.panel-heading {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.warehouses.edit .panel-title {
     font-size: 14px;
 }

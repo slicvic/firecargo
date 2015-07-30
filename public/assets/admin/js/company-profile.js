@@ -12,7 +12,7 @@ $(function() {
             $('#logoContainer').html(file.previewElement);
         },
         sending: function(file, xhr, formData) {
-            formData.append('_token', csrfToken);
+            formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
         },
         error: function(file, errorMessage) {
             $('#dzErrorMessage').html(errorMessage).show();

@@ -5,22 +5,18 @@
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="ibox">
         <div class="ibox-content">
-            <h2>General Info</h2>
+            <h2>Company Info</h2>
+            <div class="clear hr-line-dashed"></div>
             <div class="form-group">
-                <label class="control-label col-sm-2">Company Name</label>
+                <label class="control-label col-sm-2">Name</label>
                 <div class="col-sm-4">
                     <input required type="text" name="company[name]" placeholder="e.g. Coca Cola" class="form-control" value="{{ Input::old('company.name', $company->name) }}">
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="ibox">
-        <div class="ibox-content">
-            <h2>Contact Info</h2>
             <div class="form-group">
                 <label class="control-label col-sm-2">Tel</label>
                 <div class="col-sm-4">
-                    <input type="text" name="company[phone]" placeholder="Phone" class="form-control" value="{{ Input::old('company.phone', $company->phone) }}">
+                    <input type="text" name="company[phone]" placeholder="Tel" class="form-control" value="{{ Input::old('company.phone', $company->phone) }}">
                 </div>
             </div>
             <div class="form-group">
@@ -35,11 +31,8 @@
                     <input type="email" name="company[email]" placeholder="Email" class="form-control" value="{{ Input::old('company.email', $company->email) }}">
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="ibox">
-        <div class="ibox-content">
             <h2>Address</h2>
+            <div class="clear hr-line-dashed"></div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Address 1</label>
                 <div class="col-sm-5">
@@ -76,12 +69,13 @@
                     @include('countries._select', ['name' => 'address[country_id]', 'selectedOption' => Input::old('address.country_id', $address->country_id)])
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-12">
-            <a class="btn btn-white" href="/company/profile">Cancel</a>
-            <button class="btn btn-primary" type="submit">Save changes</button>
+            <div class="clear hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="col-sm-4 col-sm-offset-2">
+                    <a class="btn btn-white" href="/company/profile">Cancel</a>
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+            </div>
         </div>
     </div>
 </form>

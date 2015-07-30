@@ -1,7 +1,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>#</th>
+            <th>ID</th>
             <th>Warehouse</th>
             <th>Type</th>
             <th>L x W x H</th>
@@ -25,7 +25,7 @@
                 <td>{{ $package->present()->invoiceAmount() }}</td>
                 <td>
                     <div class="btn-group">
-                        <button type="button" data-package-id="{{ $package->id }}" class="btn-show-package btn-white btn btn-sm">View</button>
+                        <button type="button" data-package-id="{{ $package->id }}" class="show-package-btn btn-white btn btn-sm">View</button>
                     </div>
                 </td>
             </tr>

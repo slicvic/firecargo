@@ -14,13 +14,13 @@
 // Agent/Admin/Members
 Route::controller('dashboard', 'DashboardController');
 Route::controller('carriers', 'CarriersController');
-Route::controller('package-statuses', 'PackageStatusesController');
 Route::controller('package-types', 'PackageTypesController');
 Route::controller('packages', 'PackagesController');
 Route::controller('sites', 'SitesController');
 Route::controller('companies', 'CompaniesController');
 Route::controller('roles', 'RolesController');
-Route::controller('accounts', 'AccountsController');
+Route::controller('clients', 'ClientsController');
+Route::controller('shippers', 'ShippersController');
 Route::controller('users', 'UsersController');
 Route::controller('warehouses', 'WarehousesController');
 Route::controller('shipments', 'ShipmentsController');

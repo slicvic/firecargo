@@ -1,3 +1,36 @@
+BEGIN
+
+# Total packages in the warehouse
+DECLARE totalPkgs integer;
+
+# Total packages in the warehouse that have been shipped
+DECLARE totalPkgsShipped integer;
+
+# Difference of: totalPkgs - totalPkgsShipped
+DECLARE totalPkgsDiff integer;
+
+# The new warehouse status id
+DECLARE newStatusId integer;
+
+SET totalPkgs := (SELECT COUNT(*) FROM packages WHERE warehouse_id = NEW.warehouse_id);
+SET totalPkgsShipped := (SELECT COUNT(*) FROM packages WHERE warehouse_id = NEW.warehouse_id AND shipment_id IS NOT NULL);
+SET totalPkgsDiff = totalPkgs - totalPkgsShipped;
+
+IF totalPkgsDiff = 0 THEN
+    # Complete (Green)
+    SET newStatusId = 3;
+ELSEIF totalPkgsDiff = totalPkgs THEN
+    # New (Red)
+    SET newStatusId = 1;
+ELSE
+    # Pending (Yellow)
+    SET newStatusId = 2;
+END IF;
+
+UPDATE warehouses SET status_id = newStatusId WHERE id = NEW.warehouse_id;
+
+END
+
 -- phpMyAdmin SQL Dump
 -- version 4.1.12
 -- http://www.phpmyadmin.net

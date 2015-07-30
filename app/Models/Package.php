@@ -43,7 +43,6 @@ class Package extends Base {
      */
     protected $fillable = [
         'type_id',
-        'status_id',
         'shipment_id',
         'length',
         'width',
@@ -74,16 +73,6 @@ class Package extends Base {
     public function type()
     {
         return $this->belongsTo('App\Models\PackageType', 'type_id');
-    }
-
-    /**
-     * Gets the package status.
-     *
-     * @return PackageStatus
-     */
-    public function status()
-    {
-        return $this->belongsTo('App\Models\PackageStatus', 'status_id');
     }
 
     /**
@@ -137,7 +126,7 @@ class Package extends Base {
     }
 
     /**
-     * Retrieves all packages eligible for shipment by the given company id.
+     * Retrieves all packages eligible for shipment by the given company.
      *
      * @param  int  $companyId
      * @return array
@@ -155,11 +144,11 @@ class Package extends Base {
         return $packages;
     }
 
-    public static function findOrFailByIdAndConsigneeAccountId($id, $consigneeAccountId)
+    public static function findOrFailByIdAndClientAccountId($id, $clientAccountId)
     {
         return Package::query()
                 ->join('warehouses', 'packages.warehouse_id', '=', 'warehouses.id')
-                ->where(['packages.id' => $id, 'warehouses.consignee_account_id' => $consigneeAccountId])
+                ->where(['packages.id' => $id, 'warehouses.client_account_id' => $clientAccountId])
                 ->firstOrFail();
     }
 
@@ -168,11 +157,11 @@ class Package extends Base {
         $query = Package::query()
             ->select('packages.*')
             ->join('warehouses', 'packages.warehouse_id', '=', 'warehouses.id')
-            ->with('type', 'status', 'warehouse');
+            ->with('type', 'warehouse');
 
-        if ( ! empty($criteria['consignee_account_id']))
+        if ( ! empty($criteria['client_account_id']))
         {
-            $query = $query->where('warehouses.consignee_account_id', '=', $criteria['consignee_account_id']);
+            $query = $query->where('warehouses.client_account_id', '=', $criteria['client_account_id']);
         }
 
         return $query->get();

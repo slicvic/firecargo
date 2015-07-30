@@ -93,9 +93,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the account associated with the user.
-     *
-     * NOTICE: ONLY "CLIENT" USERS HAVE AN ACCOUNT ASSIGNED.
+     * Gets the user's client account.
      *
      * @return Account
      */

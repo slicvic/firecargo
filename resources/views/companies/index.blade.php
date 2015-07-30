@@ -5,7 +5,7 @@
 @section('subtitle', 'Manage Companies')
 
 @section('actions')
-    <a href="/companies/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Company</a>
+    <a href="/companies/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Company</a>
 @stop
 
 @section('thead')

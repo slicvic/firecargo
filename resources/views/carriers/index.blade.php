@@ -5,7 +5,7 @@
 @section('subtitle', 'Manage Carriers')
 
 @section('actions')
-    <a href="/carriers/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Carrier</a>
+    <a href="/carriers/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Carrier</a>
 @stop
 
 @section('thead')
@@ -26,7 +26,7 @@
             <td>
                 <div class="btn-group">
                     <a href="/carriers/edit/{{ $carrier->id }}" class="btn-white btn btn-sm">Edit</a>
-                    <a href="/carriers/delete/{{ $carrier->id }}" class="btn-delete btn-white btn btn-sm">Delete</a>
+                    <a href="/carriers/delete/{{ $carrier->id }}" class="delete-record-btn btn-white btn btn-sm">Delete</a>
                 </div>
             </td>
        </tr>
