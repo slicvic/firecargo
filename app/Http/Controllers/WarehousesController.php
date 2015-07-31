@@ -132,6 +132,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
+        // Find warehouse
         $warehouse = Warehouse::findMine($id);
 
         if ( ! $warehouse)

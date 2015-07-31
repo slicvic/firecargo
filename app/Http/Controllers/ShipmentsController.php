@@ -138,6 +138,7 @@ class ShipmentsController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
+        // Find shipment
         $shipment = Shipment::findMine($id);
 
         if ( ! $shipment)

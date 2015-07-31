@@ -43,10 +43,10 @@
         </table>
 
         <div id="packages-container">
-            @include('warehouses.edit._package', ['package' => new \App\Models\Package()])
+            @include('warehouses._edit_package', ['package' => new \App\Models\Package()])
 
             @foreach ($warehouse->packages as $package)
-                @include('warehouses.edit._package', ['package' => $package])
+                @include('warehouses._edit_package', ['package' => $package])
             @endforeach
         </div>
 

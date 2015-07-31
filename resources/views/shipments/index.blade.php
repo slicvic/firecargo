@@ -17,11 +17,11 @@
             @endif
         </h2>
 
-        @include('shipments.index._search_form')
+        @include('shipments._index_search_form')
 
         <div class="clear hr-line-dashed"></div>
 
-        @include('shipments.index._results')
+        @include('shipments._index_search_results')
 
         <div class="row">
             <div class="col-md-12">

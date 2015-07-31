@@ -34,10 +34,10 @@
         <div id="flash-message"></div>
         <div class="row">
             <div class="col-md-9">
-                @include('warehouses.edit._packages')
+                @include('warehouses._edit_packages')
             </div>
             <div class="col-md-3">
-                @include('warehouses.edit._details')
+                @include('warehouses._edit_details')
             </div>
         </div>
         <div class="row">

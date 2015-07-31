@@ -26,6 +26,16 @@ class PackagesController extends BaseAuthController {
     }
 
     /**
+     * Shows a list of packages.
+     *
+     * @return Response
+     */
+    public function getIndex()
+    {
+        return view('packages.index');
+    }
+
+    /**
      * Shows the packages for a specific warehouse.
      *
      * @param  Request  $request

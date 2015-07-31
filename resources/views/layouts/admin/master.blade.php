@@ -95,6 +95,15 @@
                     </li>
 
                     @if ($user->isAdmin() || $user->isAgent())
+
+                        <li{{ preg_match('/warehouse/', $uri) ? ' class=active' : '' }}>
+                            <a href="#"><i class="fa fa-cube"></i> <span class="nav-label">Warehouses</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses">Warehouses</a></li>
+                                <li{{ (Request::is('warehouses/create')) ? ' class=active' : '' }}><a href="/warehouses/create">Create Warehouse</a></li>
+                            </ul>
+                        </li>
+
                         <li{{ preg_match('/shipments/', $uri) ? ' class=active' : '' }}>
                             <a href="#"><i class="fa fa-plane"></i> <span class="nav-label">Shipments</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
@@ -103,12 +112,8 @@
                             </ul>
                         </li>
 
-                        <li{{ preg_match('/warehouse/', $uri) ? ' class=active' : '' }}>
-                            <a href="#"><i class="fa fa-cube"></i> <span class="nav-label">Warehouses</span> <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level collapse">
-                                <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses">Warehouses</a></li>
-                                <li{{ (Request::is('warehouses/create')) ? ' class=active' : '' }}><a href="/warehouses/create">Create Warehouse</a></li>
-                            </ul>
+                        <li{{ (Request::is('packages') || Request::is('packages/*')) ? ' class=active' : '' }}>
+                            <a href="/packages"><i class="fa fa-th"></i><span>Pieces</span></a>
                         </li>
 
                         <li{{ (Request::is('clients') || Request::is('clients/*')) ? ' class=active' : '' }}>
