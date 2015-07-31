@@ -230,9 +230,9 @@ class CreateAllTables extends Migration {
 		    $table->float('weight')->unsigned();
 		    $table->string('description', 255);
 		    $table->string('invoice_number', 255);
-		    $table->decimal('invoice_amount', 12, 4)->unsigned();
+		    $table->decimal('invoice_value', 12, 4)->unsigned();
 		    $table->string('tracking_number', 255);
-		    $table->tinyInteger('ship')->unsigned()->default(1);
+		    $table->tinyInteger('hold')->unsigned()->default(0);
 		    $table->integer('creator_user_id')->unsigned();
 		    $table->integer('updater_user_id')->unsigned()->nullable();
 		    $table->dateTime('created_at');

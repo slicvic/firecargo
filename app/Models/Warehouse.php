@@ -11,7 +11,7 @@ use App\Observers\WarehouseObserver;
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Warehouse extends Base {
+class Warehouse extends BaseSearchable implements ISearchable {
 
     use CompanyTrait, PresentableTrait;
 
@@ -40,6 +40,17 @@ class Warehouse extends Base {
         'client_account_id',
         'carrier_id',
         'notes'
+    ];
+
+    /**
+     * A list of sortable fields.
+     *
+     * {@inheritdoc}
+     */
+    protected static $sortable = [
+        'id',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -115,6 +126,39 @@ class Warehouse extends Base {
     }
 
     /**
+     * Finds unprocesed warehouses.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeUnprocessed($query)
+    {
+        return $query->where('status_id', WarehouseStatus::UNPROCESSED);
+    }
+
+    /**
+     * Finds pending warehouses.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopePending($query)
+    {
+        return $query->where('status_id', WarehouseStatus::PENDING);
+    }
+
+    /**
+     * Finds completed warehouses.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeComplete($query)
+    {
+        return $query->where('status_id', WarehouseStatus::COMPLETE);
+    }
+
+    /**
      * Creates or updates the given packages and attaches them to the warehouse.
      *
      * @param  array  $packages
@@ -150,7 +194,7 @@ class Warehouse extends Base {
 
             $data['warehouse_id'] = $this->id;
             $data['client_account_id'] = $this->client_account_id;
-            $data['ship'] = ($package->shipment_id) ? $package->ship : $this->client->autoship;
+            $data['hold'] = ($package->shipment_id) ? $package->hold : ($this->client->autoship ? FALSE : TRUE);
 
             $package->fill($data);
             $package->save();
@@ -268,41 +312,19 @@ class Warehouse extends Base {
     public function calculateTotalValue()
     {
         return DB::table('packages')->where('warehouse_id', $this->id)
-            ->sum('invoice_amount');
-    }
-
-    /**
-     * Counts the total number of warehouses with the given status id and company id.
-     *
-     * @param  int  $statusId
-     * @param  int  $companyId
-     * @return int
-     */
-    public static function countByStatusIdAndCompanyId($statusId, $companyId = NULL)
-    {
-        $query = Warehouse::where('status_id', $statusId);
-
-        if ($companyId)
-        {
-            $query->where('company_id', $companyId);
-        }
-
-        return $query->count();
+            ->sum('invoice_value');
     }
 
     /**
      * Finds all warehouses with the given criteria.
      *
-     * @param  array|null  $criteria
-     * @param  string      $sortBy
-     * @param  string      $order
-     * @param  int         $perPage
-     * @return array
+     * {@inheritdoc}
      */
-    public static function search(array $criteria = NULL, $sortBy = 'id', $order = 'desc', $perPage = 15)
+    public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
         // Build query
         $query = Warehouse::query()
+            ->orderBy('warehouses.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
             ->with('creator', 'updater', 'shipper', 'client', 'carrier', 'company');
 
         if ( ! empty($criteria['status_id']))
@@ -320,9 +342,9 @@ class Warehouse extends Base {
             $searchTerm = '%' . $criteria['search'] . '%';
 
             $query->select('warehouses.*')
-                ->leftJoin('accounts AS clients', 'warehouses.client_account_id', '=', 'clients.id')
-                ->leftJoin('accounts AS shippers', 'warehouses.shipper_account_id', '=', 'shippers.id')
-                ->leftJoin('carriers', 'warehouses.carrier_id', '=', 'carriers.id')
+                ->join('accounts AS clients', 'warehouses.client_account_id', '=', 'clients.id')
+                ->join('accounts AS shippers', 'warehouses.shipper_account_id', '=', 'shippers.id')
+                ->join('carriers', 'warehouses.carrier_id', '=', 'carriers.id')
                 ->leftJoin('packages', 'warehouses.id', '=', 'packages.warehouse_id')
                 ->groupBy('warehouses.id')
                 ->whereRaw('(
@@ -352,19 +374,6 @@ class Warehouse extends Base {
                 ]);
         }
 
-        // Add sorting
-        $validSortColumns = [
-            'id',
-            'created_at',
-            'updated_at'
-        ];
-
-        $sortBy = in_array($sortBy, $validSortColumns) ? $sortBy : 'id';
-        $order = ($order === 'asc') ? 'ASC' : 'DESC';
-
-        $query->orderBy("warehouses.{$sortBy}", $order);
-
-        // Fetch results
         return $query->paginate($perPage);
     }
 }

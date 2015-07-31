@@ -33,6 +33,7 @@ class Html {
     public function linkToSort($url, $title, $column, $currentColumn, $currentOrder)
     {
         $query = sprintf('?sort=%s&order=%s', $column, ($currentOrder === 'asc' ? 'desc' : 'asc'));
+
         $indicator = ($column === $currentColumn)
             ? ' <i class="fa fa-angle-' . ($currentOrder === 'asc' ? 'up' : 'down') . '"></i>'
             : '';

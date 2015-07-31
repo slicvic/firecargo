@@ -12,7 +12,7 @@ use App\Observers\PackageObserver;
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Package extends Base {
+class Package extends BaseSearchable {
 
     use PresentableTrait, SoftDeletes, CompanyTrait;
 
@@ -54,9 +54,26 @@ class Package extends Base {
         'weight',
         'description',
         'invoice_number',
-        'invoice_amount',
+        'invoice_value',
         'tracking_number',
-        'ship'
+        'hold'
+    ];
+
+    /**
+     * A list of sortable fields.
+     *
+     * {@inheritdoc}
+     */
+    protected static $sortable = [
+        'id',
+        'warehouse_id',
+        'type_id',
+        'shipment_id',
+        'client_account_id',
+        'invoice_value',
+        'tracking_number',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -132,13 +149,60 @@ class Package extends Base {
     }
 
     /**
+     * Finds unprocessed packages.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeUnprocessed($query)
+    {
+        return $query
+            ->whereNull('shipment_id')
+            ->where('hold', FALSE);
+    }
+
+    /**
+     * Finds packages on hold.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeOnHold($query)
+    {
+        return $query
+            ->whereNull('shipment_id')
+            ->where('hold', TRUE);
+    }
+
+    /**
+     * Finds shipped packages.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeShipped($query)
+    {
+        return $query->whereNotNull('shipment_id');
+    }
+
+    /**
      * Checks if the package has been assigned to a shipment or not.
      *
      * @return bool
      */
-    public function inShipment()
+    public function isShipped()
     {
         return (bool) $this->shipment_id;
+    }
+
+    /**
+     * Checks if the package is on hold or not.
+     *
+     * @return bool
+     */
+    public function isOnHold()
+    {
+        return (bool) $this->hold;
     }
 
     /**
@@ -173,89 +237,45 @@ class Package extends Base {
     }
 
     /**
-     * Counts the total packages shipped by the given company id.
+     * Finds all packages with the given criteria.
      *
-     * @param  int  $companyId
-     * @return int
+     * {@inheritdoc}
      */
-    public static function countShippedByCompanyId($companyId = NULL)
+    public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
-        $query = Package::whereNotNull('shipment_id');
-
-        if ($companyId)
-        {
-            $query->where('company_id', $companyId);
-        }
-
-        return $query->count();
-    }
-
-    /**
-     * Counts the total packages pending shipment by the given company id.
-     *
-     * @param  int  $companyId
-     * @return int
-     */
-    public static function countPendingShipmentByCompanyId($companyId = NULL)
-    {
-        $query = Package::whereNull('shipment_id');
-
-        if ($companyId)
-        {
-            $query->where('company_id', $companyId);
-        }
-
-        return $query->count();
-    }
-
-    /**
-     * Finds all packages eligible for shipment by the given company id.
-     *
-     * @param  int  $companyId
-     * @return array
-     */
-    public static function allPendingShipmentByCompanyId($companyId)
-    {
-        $packages = Package::where([
-            'shipment_id' => NULL,
-            'ship' => TRUE,
-            'company_id' => $companyId
-        ])
-        ->with('type', 'client')
-        ->orderBy('warehouse_id', 'DESC')
-        ->orderBy('id', 'ASC')
-        ->get();
-
-        return $packages;
-    }
-
-    /**
-     * Finds a package by its id and client account id.
-     *
-     * @param  int  $id                The package id
-     * @param  int  $clientAccountId   The client's account id
-     * @return Package
-     */
-    public static function findOrFailByIdAndClientAccountId($id, $clientAccountId)
-    {
-        return Package::query()
-            ->join('warehouses', 'packages.warehouse_id', '=', 'warehouses.id')
-            ->where(['packages.id' => $id, 'warehouses.client_account_id' => $clientAccountId])
-            ->firstOrFail();
-    }
-
-    public static function search(array $criteria = NULL)
-    {
+        // Build query
         $query = Package::query()
-            ->select('packages.*')
-            ->join('warehouses', 'packages.warehouse_id', '=', 'warehouses.id')
-            ->with('type', 'warehouse');
+            ->orderBy('packages.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
+            ->with('type', 'client', 'shipment');
+
+        if ( ! empty($criteria['company_id']))
+        {
+            $query->where('packages.company_id', $criteria['company_id']);
+        }
 
         if ( ! empty($criteria['client_account_id']))
         {
-            $query->where('warehouses.client_account_id', $criteria['client_account_id']);
+            $query->where('packages.client_account_id', $criteria['client_account_id']);
         }
 
-        return $query->get();
+        if ( ! empty($criteria['status']))
+        {
+            switch ($criteria['status'])
+            {
+                case 'unprocessed':
+                    $query->unprocessed();
+                    break;
+
+                case 'hold':
+                    $query->onHold();
+                    break;
+
+                case 'shipped':
+                    $query->shipped();
+                    break;
+            }
+        }
+
+        return $query->paginate($perPage);
     }
 }

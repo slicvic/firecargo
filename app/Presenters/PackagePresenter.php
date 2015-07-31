@@ -60,7 +60,8 @@ class PackagePresenter extends BasePresenter {
     {
         return Html::linkWithIcon(
             "/clients/edit/{$this->model->client_account_id}",
-            $this->model->client->name);
+            $this->model->client->name
+        );
     }
 
     /**
@@ -72,7 +73,8 @@ class PackagePresenter extends BasePresenter {
     {
         return Html::linkWithIcon(
             "/warehouses/show/{$this->model->warehouse_id}",
-            $this->model->warehouse_id);
+            $this->model->warehouse_id
+        );
     }
 
     /**
@@ -82,14 +84,37 @@ class PackagePresenter extends BasePresenter {
      */
     public function shipmentLink()
     {
-        if ($this->model->inShipment())
+        if ($this->model->isShipped())
         {
-           return Html::linkWithIcon(
-                "/shipments/show/{$this->model->shipment_id}",
-                "{$this->model->shipment->carrier->name} ({$this->model->shipment->reference_number})");
+            $shipment = $this->model->shipment;
+
+            return Html::linkWithIcon(
+                "/shipments/show/{$shipment->id}",
+                sprintf('%s (Ref: %s, Date: %s)', $shipment->carrier->name, $shipment->reference_number, $shipment->present()->departedAt())
+            );
         }
 
         return 'N/A';
+    }
+
+    /**
+     * Presents the status color CSS class.
+     *
+     * @return string
+     */
+    public function statusCssClass()
+    {
+        if ($this->model->isShipped())
+        {
+            return 'success';
+        }
+
+        if ($this->model->isOnHold())
+        {
+            return 'warning';
+        }
+
+        return 'danger';
     }
 
     /**
@@ -97,8 +122,8 @@ class PackagePresenter extends BasePresenter {
      *
      * @return string
      */
-    public function invoiceAmount()
+    public function invoiceValue()
     {
-        return ($this->model->exists) ? (new Currency($this->model->invoice_amount))->asDollar() : '';
+        return ($this->model->exists) ? (new Currency($this->model->invoice_value))->asDollar() : '';
     }
 }

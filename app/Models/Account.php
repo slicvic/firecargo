@@ -49,6 +49,18 @@ class Account extends Base {
     ];
 
     /**
+     * Registers model events.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        Account::observe(new AccountObserver);
+    }
+
+    /**
      * Overrides parent method to sanitize attributes.
      *
      * @see parent::setAttribute()
@@ -102,7 +114,7 @@ class Account extends Base {
     }
 
     /**
-     * Filters a query to get client accounts.
+     * Finds client accounts.
      *
      * @param  Builder  $query
      * @return Builder
@@ -113,7 +125,7 @@ class Account extends Base {
     }
 
     /**
-     * Filters a query to get shipper accounts.
+     * Finds shipper accounts.
      *
      * @param  Builder  $query
      * @return Builder
@@ -124,7 +136,17 @@ class Account extends Base {
     }
 
     /**
-     * Finds accounts matching the given search term and type.
+     * Checks if this is a client account.
+     *
+     * @return bool
+     */
+    public function isClient()
+    {
+        return ((int) $this->type_id === AccountType::CLIENT);
+    }
+
+    /**
+     * Finds accounts matching the provided search term and type.
      *
      * @param  string  $searchTerm
      * @param  int     $accountTypeId

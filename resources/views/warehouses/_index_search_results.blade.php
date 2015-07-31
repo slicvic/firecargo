@@ -22,7 +22,7 @@
                 <td><button class="toggle-packages-btn btn btn-link btn-sm" data-warehouse-id="{{ $warehouse->id }}"><i class="fa fa-angle-right"></i></button></td>
                 @if (Auth::user()->isAdmin()) {!! '<td>' . $warehouse->company->name . '</td>' !!} @endif
                 <td>{{ $warehouse->id }}</td>
-                <td><span class="label label-danger">{{ $warehouse->packages->count() }}</span></td>
+                <td><span class="label label-info">{{ $warehouse->packages->count() }}</span></td>
                 <td>{{ $warehouse->present()->grossWeight() }}</td>
                 <td>{{ $warehouse->present()->volumeWeight() }}</td>
                 <td>{{ $warehouse->present()->carrier() }}</td>

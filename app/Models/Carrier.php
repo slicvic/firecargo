@@ -69,7 +69,7 @@ class Carrier extends Base {
     }
 
     /**
-     * Finds carriers matching the given search term.
+     * Finds carriers matching the provided search term.
      *
      * @param  string  $searchTerm
      * @return User[]

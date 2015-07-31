@@ -77,12 +77,16 @@ class ShipmentsController extends BaseAuthController {
      */
     public function getCreate()
     {
-        // Retrive all packages pending shipment
-        $availablePackages = Package::allPendingShipmentByCompanyId($this->user->company_id);
+        // Retrieve all unprocessed packages
+        $unprocessed = Package::mine()->unprocessed()
+            ->with('type', 'client')
+            ->orderBy('warehouse_id', 'DESC')
+            ->orderBy('id', 'ASC')
+            ->get();
 
         return view('shipments.edit', [
             'shipment' => new Shipment,
-            'packages' => $availablePackages
+            'packages' => $unprocessed
         ]);
     }
 
@@ -118,14 +122,18 @@ class ShipmentsController extends BaseAuthController {
         $shipment = Shipment::findMineOrFail($id);
 
         // Retrieve packages assigned to this shipment
-        $assignedPackages = $shipment->packages()->with('client', 'type')->get();
+        $assigned = $shipment->packages()->with('client', 'type')->get();
 
-        // Retrieve all other packages eligible for shipment
-        $availablePackages = Package::allPendingShipmentByCompanyId($this->user->company_id);
+        // Retrieve all other unprocessed packages
+        $unprocessed = Package::mine()->unprocessed()
+            ->with('type', 'client')
+            ->orderBy('warehouse_id', 'DESC')
+            ->orderBy('id', 'ASC')
+            ->get();
 
         return view('shipments.edit', [
             'shipment' =>  $shipment,
-            'packages' => $assignedPackages->merge($availablePackages)
+            'packages' => $assigned->merge($unprocessed)
         ]);
     }
 

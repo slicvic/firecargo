@@ -48,13 +48,14 @@ class DashboardController extends BaseAuthController {
     {
         $totals = [
             'warehouses' => [
-                'unprocessed' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::UNPROCESSED, $this->user->company_id),
-                'pending' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::PENDING, $this->user->company_id),
-                'complete' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::COMPLETE, $this->user->company_id)
+                'unprocessed' => Warehouse::mine()->unprocessed()->count(),
+                'pending' => Warehouse::mine()->pending()->count(),
+                'complete' => Warehouse::mine()->complete()->count()
             ],
             'packages' => [
-                'shipped' => Package::countShippedByCompanyId($this->user->company_id),
-                'pending' => Package::countPendingShipmentByCompanyId($this->user->company_id)
+                'unprocessed' => Package::mine()->unprocessed()->count(),
+                'hold' => Package::mine()->onHold()->count(),
+                'shipped' => Package::mine()->shipped()->count()
             ]
         ];
 
@@ -65,13 +66,14 @@ class DashboardController extends BaseAuthController {
     {
         $totals = [
             'warehouses' => [
-                'unprocessed' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::UNPROCESSED),
-                'pending' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::PENDING),
-                'complete' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::COMPLETE)
+                'unprocessed' => Warehouse::unprocessed()->count(),
+                'pending' => Warehouse::pending()->count(),
+                'complete' => Warehouse::complete()->count()
             ],
             'packages' => [
-                'shipped' => Package::countShippedByCompanyId(),
-                'pending' => Package::countPendingShipmentByCompanyId()
+                'unprocessed' => Package::unprocessed()->count(),
+                'hold' => Package::onHold()->count(),
+                'shipped' => Package::shipped()->count()
             ]
         ];
 

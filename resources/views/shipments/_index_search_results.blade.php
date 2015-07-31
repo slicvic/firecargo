@@ -20,7 +20,7 @@
                 <td><button class="toggle-packages-btn btn btn-link btn-sm" data-shipment-id="{{ $shipment->id }}"><i class="fa fa-angle-right"></i></button></td>
                 @if (Auth::user()->isAdmin()) {!! '<td>' . $shipment->company->name . '</td>' !!} @endif
                 <td>{{ $shipment->id }}</td>
-                <td><span class="label label-danger">{{ $shipment->packages()->count() }}</span></td>
+                <td><span class="label label-info">{{ $shipment->packages()->count() }}</span></td>
                 <td>{{ $shipment->reference_number }}</td>
                 <td>{{ $shipment->present()->carrier() }}</td>
                 <td>{{ $shipment->present()->departedAt() }}</td>

@@ -21,12 +21,20 @@
 
         <div class="clear hr-line-dashed"></div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    {!! $pagination = $shipments->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
+                </div>
+            </div>
+        </div>
+
         @include('shipments._index_search_results')
 
         <div class="row">
             <div class="col-md-12">
                 <div class="pull-right">
-                    {!! $shipments->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
+                    {!! $pagination !!}
                 </div>
             </div>
         </div>

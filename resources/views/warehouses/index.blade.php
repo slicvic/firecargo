@@ -30,12 +30,20 @@
 
         <div class="hr-line-dashed"></div>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    {!! $pagination = $warehouses->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
+                </div>
+            </div>
+        </div>
+
         @include('warehouses._index_search_results')
 
         <div class="row">
             <div class="col-md-12">
                 <div class="pull-right">
-                    {!! $warehouses->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
+                    {!! $pagination !!}
                 </div>
             </div>
         </div>

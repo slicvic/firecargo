@@ -1,7 +1,7 @@
 @extends('layouts.admin.page')
 
-@section('title', 'Packages')
-@section('subtitle', 'Manage Your Packages')
+@section('title', 'Pieces')
+@section('subtitle', 'Manage Your Warehouse Pieces')
 
 @section('page_content')
 <div class="ibox float-e-margins">
@@ -17,22 +17,30 @@
                 </h2>
                 <div class="pull-right">
                     <i class="fa fa-circle text-danger"></i>&nbsp;&nbsp;Unprocessed &nbsp;&nbsp;
-                    <i class="fa fa-circle text-warning"></i>&nbsp;&nbsp;Pending &nbsp;&nbsp;
-                    <i class="fa fa-circle text-navy"></i>&nbsp;&nbsp;Complete
+                    <i class="fa fa-circle text-warning"></i>&nbsp;&nbsp;On Hold by Client&nbsp;&nbsp;
+                    <i class="fa fa-circle text-navy"></i>&nbsp;&nbsp;Shipped
                 </div>
             </div>
         </div>
 
-        @include('packages.index._search_form')
+        @include('packages._index_search_form')
 
         <div class="hr-line-dashed"></div>
-
-        @include('packages.index._results')
 
         <div class="row">
             <div class="col-md-12">
                 <div class="pull-right">
-                    {!! $packages->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
+                    {!! $pagination = $packages->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
+                </div>
+            </div>
+        </div>
+
+        @include('packages._index_search_results')
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    {!! $pagination !!}
                 </div>
             </div>
         </div>

@@ -51,7 +51,8 @@ class WarehousePresenter extends BasePresenter {
     {
         return Html::linkWithIcon(
             "/shippers/edit/{$this->model->shipper_account_id}",
-            $this->model->shipper->name);
+            $this->model->shipper->name
+        );
     }
 
     /**
@@ -63,7 +64,8 @@ class WarehousePresenter extends BasePresenter {
     {
         return Html::linkWithIcon(
             "/clients/edit/{$this->model->client_account_id}",
-            $this->model->client->name);
+            $this->model->client->name
+        );
     }
 
     /**

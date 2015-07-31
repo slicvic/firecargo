@@ -10,7 +10,7 @@ use App\Observers\ShipmentObserver;
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Shipment extends Base {
+class Shipment extends BaseSearchable implements ISearchable {
 
     use CompanyTrait, PresentableTrait;
 
@@ -37,6 +37,18 @@ class Shipment extends Base {
         'carrier_id',
         'reference_number',
         'departed_at'
+    ];
+
+    /**
+     * A list of sortable fields.
+     *
+     * {@inheritdoc}
+     */
+    protected static $sortable = [
+        'id',
+        'departed_at',
+        'created_at',
+        'updated_at'
     ];
 
     /**
@@ -141,22 +153,19 @@ class Shipment extends Base {
     public function calculateTotalValue()
     {
         return DB::table('packages')->where('shipment_id', $this->id)
-            ->sum('invoice_amount');
+            ->sum('invoice_value');
     }
 
     /**
      * Finds all shipments with the given criteria.
      *
-     * @param  array|null  $criteria
-     * @param  string      $sortBy
-     * @param  string      $order
-     * @param  int         $perPage
-     * @return array
+     * {@inheritdoc}
      */
-    public static function search(array $criteria = NULL, $sortBy = 'id', $order = 'desc', $perPage = 15)
+    public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
         // Build query
         $query = Shipment::query()
+            ->orderBy('shipments.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
             ->with('carrier', 'creator', 'updater', 'company');
 
         if ( ! empty ($criteria['company_id']))
@@ -170,7 +179,7 @@ class Shipment extends Base {
 
             $query->select('shipments.*')
                 ->leftJoin('packages', 'shipments.id', '=', 'packages.shipment_id')
-                ->leftJoin('carriers', 'shipments.carrier_id', '=', 'carriers.id')
+                ->join('carriers', 'shipments.carrier_id', '=', 'carriers.id')
                 ->groupBy('shipments.id')
                 ->whereRaw('(
                     packages.id LIKE ?
@@ -187,20 +196,6 @@ class Shipment extends Base {
                 ]);
         }
 
-        // Add sorting
-        $validSortColumns = [
-            'id',
-            'departed_at',
-            'created_at',
-            'updated_at'
-        ];
-
-        $sortBy = in_array($sortBy, $validSortColumns) ? $sortBy : 'id';
-        $order = ($order === 'asc') ? 'asc' : 'desc';
-
-        $query->orderBy("shipments.{$sortBy}", $order);
-
-        // Fetch results
         return $query->paginate($perPage);
     }
 }

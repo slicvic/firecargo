@@ -28,11 +28,32 @@ class PackagesController extends BaseAuthController {
     /**
      * Shows a list of packages.
      *
+     * @param  Request  $request
      * @return Response
      */
-    public function getIndex()
+    public function getIndex(Request $request)
     {
-        return view('packages.index');
+        $params['limit'] = $request->input('limit', 10);
+        $params['sort'] = $request->input('sort', 'id');
+        $params['order'] = $request->input('order', 'desc');
+        $params['search'] = $request->input('search');
+        $params['status'] = $request->input('status');
+
+        $criteria['status'] = $params['status'];
+        $criteria['search'] = $params['search'];
+        $criteria['company_id'] = $this->user->isAdmin() ? NULL : $this->user->company_id;
+
+        $packages = Package::search($criteria, $params['sort'], $params['order'], $params['limit']);
+
+        return view('packages.index', [
+            'packages' => $packages,
+            'params' => $params,
+            'statuses' => [
+                'unprocessed' => 'Unprocessed',
+                'hold' => 'On Hold',
+                'shipped' => 'Shipped'
+            ]
+        ]);
     }
 
     /**
@@ -81,7 +102,8 @@ class PackagesController extends BaseAuthController {
     {
         if ($this->user->isClient())
         {
-            $package = Package::findOrFailByIdAndClientAccountId($id, $this->user->client->id);
+            $package = Package::where(['id' => $id, 'client_account_id' => $this->user->client->id])
+                ->firstOrFail();
 
             return view('packages.client.detail_modal', ['package' => $package]);
         }

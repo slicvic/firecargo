@@ -32,7 +32,7 @@
     </div>
     <div class="row">
         <div class="col-xs-3"><strong>Invoice $</strong></div>
-        <div class="col-xs-9"><p>{{ $package->present()->invoiceAmount() }}</p></div>
+        <div class="col-xs-9"><p>{{ $package->present()->invoiceValue() }}</p></div>
     </div>
 
     <br>
