@@ -2,11 +2,9 @@ $(function() {
 
     /**
      * ---------------------------------------------
-     * Bind datatable
+     * Add column filter inputs to table
      * ---------------------------------------------
      */
-
-    // Add column filter inputs
     $('#packages-table thead th').each( function () {
         var th = $(this);
         if (th.attr('data-filter')) {
@@ -14,10 +12,15 @@ $(function() {
         }
     });
 
-    // Change row color based on checkbox state
+    /**
+     * ---------------------------------------------
+     * Toggle tr theme based on checkbox state
+     * for packages currently in the shipment.
+     * ---------------------------------------------
+     */
     $('.status-icheck').on('ifChanged', function(event) {
         var self = $(this);
-        if (self.attr('data-original-status') === 'in') {
+        if (self.attr('data-status') === 'in') {
             var parentTr = self.closest('tr');
             if  (self.is(':checked')) {
                 parentTr.attr('class', 'success');
@@ -28,6 +31,11 @@ $(function() {
         }
     });
 
+    /**
+     * ---------------------------------------------
+     * Bind datatable
+     * ---------------------------------------------
+     */
     var dataTable = $('#packages-table').DataTable({
         order: [[0, 'desc']],
         paging: true,
@@ -44,7 +52,8 @@ $(function() {
                 });
             });
 
-            // Create an array with the values of all the checkboxes in a column for sorting
+            // Create an array with the values of all the checkboxes in a column
+            // for sorting purposes.
             $.fn.dataTable.ext.order['dom-checkbox'] = function(settings, col) {
                 return this.api().column(col, {order:'index'}).nodes().map(function(td, i) {
                     return $('input', td).prop('checked') ? '1' : '0';

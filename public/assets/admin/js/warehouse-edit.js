@@ -120,13 +120,14 @@ $(function() {
             that.pkgTemplate.removeClass('hidden');
             $('#packages-container > .package-template').remove();
 
-            // Add click handers
+            // Bind click handers
             $('#packages-container').on('click', '.clone-package-btn', that.clonePackage);
             $('#packages-container').on('click', '.remove-package-btn', that.removePackage);
             $('#add-package-btn').on('click', that.addPackage);
             $('#packages-container').on('keyup', '.metric', that.updateTotals);
 
-            // Change panel color based on checkbox state
+            // Toggle panel theme based on checkbox state for packages
+            // currently in the warehouse.
             $('.delete-package-icheck').on('ifChanged', function(event) {
                 var self = $(this);
                 var parentPanel = self.closest('.panel');

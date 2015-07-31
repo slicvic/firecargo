@@ -20,7 +20,7 @@
                     @foreach ($packages as $package)
                         <?php $inShipment = $package->inShipment(); ?>
                         <tr class="{{ $inShipment ? 'success' : 'default' }}">
-                            <td><input type="checkbox" data-original-status="{{ $inShipment ? 'in' : 'out' }}" class="icheck-green status-icheck" name="pieces[{{ $package->id }}]"{{ $inShipment ? ' checked' : '' }}></td>
+                            <td><input type="checkbox" data-status="{{ $inShipment ? 'in' : 'out' }}" class="icheck-green status-icheck" name="pieces[{{ $package->id }}]"{{ $inShipment ? ' checked' : '' }}></td>
                             <td>{{ $package->id }}</td>
                             <td><i>Warehouse:</i> {!! $package->present()->warehouseLink() !!} <i>Client:</i> {!! $package->present()->clientLink() !!}</td>
                             <td>{{ $package->type->name }}</td>

@@ -25,7 +25,7 @@
         <div class="ibox">
             <div class="ibox-content">
                 <h2>Pieces ({{ $shipment->packages->count() }})</h2>
-                @include('packages._shipment_packages', ['packages' => $shipment->packages])
+                @include('packages.shipment_packages', ['packages' => $shipment->packages])
             </div>
         </div>
     </div>

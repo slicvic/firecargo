@@ -40,7 +40,7 @@ class PackagesController extends BaseAuthController {
             ->orderBy('shipment_id', 'ASC')
             ->get();
 
-        return view('packages._warehouse_packages', ['packages' => $packages]);
+        return view('packages.warehouse_packages', ['packages' => $packages]);
     }
 
     /**
@@ -57,7 +57,7 @@ class PackagesController extends BaseAuthController {
             ->where(['shipment_id' => $shipmentId])
             ->get();
 
-        return view('packages._shipment_packages', ['packages' => $packages]);
+        return view('packages.shipment_packages', ['packages' => $packages]);
     }
 
     /**
@@ -73,11 +73,11 @@ class PackagesController extends BaseAuthController {
         {
             $package = Package::findOrFailByIdAndClientAccountId($id, $this->user->client->id);
 
-            return view('packages.client._detail_modal', ['package' => $package]);
+            return view('packages.client.detail_modal', ['package' => $package]);
         }
 
         $package = Package::findMineOrFail($id);
 
-        return view('packages._detail_modal', ['package' => $package]);
+        return view('packages.detail_modal', ['package' => $package]);
     }
 }
