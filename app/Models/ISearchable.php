@@ -1,5 +1,10 @@
 <?php namespace App\Models;
 
+/**
+ * ISearchable
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 interface ISearchable {
 
     /**
@@ -11,5 +16,5 @@ interface ISearchable {
      * @param  int         $perPage
      * @return Model[]
      */
-    public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15);
+    public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15);
 }

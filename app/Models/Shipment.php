@@ -161,7 +161,7 @@ class Shipment extends BaseSearchable implements ISearchable {
      *
      * {@inheritdoc}
      */
-    public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
+    public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
         // Build query
         $query = Shipment::query()
@@ -177,7 +177,7 @@ class Shipment extends BaseSearchable implements ISearchable {
         {
             $searchTerm = '%' . $criteria['search'] . '%';
 
-            $query->select('shipments.*')
+            $query
                 ->leftJoin('packages', 'shipments.id', '=', 'packages.shipment_id')
                 ->join('carriers', 'shipments.carrier_id', '=', 'carriers.id')
                 ->groupBy('shipments.id')

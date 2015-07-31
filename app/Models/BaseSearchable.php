@@ -1,5 +1,10 @@
 <?php namespace App\Models;
 
+/**
+ * BaseSearchable
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 abstract class BaseSearchable extends Base implements ISearchable {
 
     /**
@@ -10,7 +15,7 @@ abstract class BaseSearchable extends Base implements ISearchable {
     protected static $sortable = [];
 
     /**
-     * Sanitizes the provided sort column name.
+     * Sanitizes the provided sort column.
      *
      * @param  string  $column
      * @param  string  $default

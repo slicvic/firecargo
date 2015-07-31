@@ -320,7 +320,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
      *
      * {@inheritdoc}
      */
-    public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
+    public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
         // Build query
         $query = Warehouse::query()
@@ -341,7 +341,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
         {
             $searchTerm = '%' . $criteria['search'] . '%';
 
-            $query->select('warehouses.*')
+            $query
                 ->join('accounts AS clients', 'warehouses.client_account_id', '=', 'clients.id')
                 ->join('accounts AS shippers', 'warehouses.shipper_account_id', '=', 'shippers.id')
                 ->join('carriers', 'warehouses.carrier_id', '=', 'carriers.id')

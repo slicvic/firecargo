@@ -90,7 +90,12 @@ class PackagePresenter extends BasePresenter {
 
             return Html::linkWithIcon(
                 "/shipments/show/{$shipment->id}",
-                sprintf('%s (Ref: %s, Date: %s)', $shipment->carrier->name, $shipment->reference_number, $shipment->present()->departedAt())
+                sprintf(
+                    '%s (Reference: %s, Date: %s)',
+                    $shipment->carrier->name,
+                    $shipment->reference_number,
+                    $shipment->present()->departedAt()
+                )
             );
         }
 

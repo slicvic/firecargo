@@ -22,7 +22,7 @@ class PackagesController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('agent', ['except' => ['getAjaxShow']]);
+        $this->middleware('agent', ['except' => ['getAjaxDetail']]);
     }
 
     /**

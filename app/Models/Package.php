@@ -241,7 +241,7 @@ class Package extends BaseSearchable {
      *
      * {@inheritdoc}
      */
-    public static function search(array $criteria = NULL, $orderBy = 'id', $order = 'desc', $perPage = 15)
+    public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
         // Build query
         $query = Package::query()
@@ -276,6 +276,38 @@ class Package extends BaseSearchable {
             }
         }
 
+        if (isset($criteria['search']) && strlen($criteria['search']) > 2)
+        {
+            $searchTerm = '%' . $criteria['search'] . '%';
+
+            $query
+                ->join('accounts AS clients', 'packages.client_account_id', '=', 'clients.id')
+                ->leftJoin('shipments', 'packages.shipment_id', '=', 'shipments.id')
+                ->groupBy('packages.id')
+                ->whereRaw('(
+                    packages.warehouse_id LIKE ?
+                    OR packages.client_account_id LIKE ?
+                    OR packages.description LIKE ?
+                    OR packages.tracking_number LIKE ?
+                    OR packages.invoice_number LIKE ?
+                    OR packages.invoice_value LIKE ?
+                    OR clients.name LIKE ?
+                    OR clients.firstname LIKE ?
+                    OR clients.lastname LIKE ?
+                    OR shipments.reference_number LIKE ?
+                    )', [
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                ]);
+        }
         return $query->paginate($perPage);
     }
 }
