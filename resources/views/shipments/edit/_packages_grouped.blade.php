@@ -24,7 +24,7 @@
                     </tr>
                     @foreach ($packages as $package)
                         <tr>
-                            <td><input type="checkbox" class="icheck" name="packages[{{ $package->id }}]"{{ $shipment->exists && $shipment->id == $package->shipment_id ? ' checked' : '' }}></td>
+                            <td><input type="checkbox" class="icheck-green" name="packages[{{ $package->id }}]"{{ $shipment->exists && $shipment->id == $package->shipment_id ? ' checked' : '' }}></td>
                             <td>{{ $package->id }}</td>
                             <td>{{ $package->type->name }}</td>
                             <td>{{ $package->tracking_number }}</td>

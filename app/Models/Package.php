@@ -133,9 +133,10 @@ class Package extends Base {
 
     /**
      * Checks if the package has been assigned to a shipment or not.
+     *
      * @return bool
      */
-    public function wasShipped()
+    public function inShipment()
     {
         return (bool) $this->shipment_id;
     }

@@ -83,7 +83,7 @@
                         <label class="col-md-2 control-label">Auto-ship Packages?</label>
                         <div class="col-md-10">
                             <label class="checkbox-inline">
-                                <input type="checkbox" class="icheck" name="account[autoship]" value="1"{{ Input::old('account.autoship', $account->autoship) ? ' checked' : '' }}> Yes
+                                <input type="checkbox" class="icheck-green" name="account[autoship]" value="1"{{ Input::old('account.autoship', $account->autoship) ? ' checked' : '' }}> Yes
                                 @include('user_profile.client._autoship_alert')
                             </label>
                         </div>

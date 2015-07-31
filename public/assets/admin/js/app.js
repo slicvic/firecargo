@@ -39,7 +39,7 @@ var app = {
          * Bind icheck
          * ---------------------------------------------
          */
-        $('.icheck').iCheck({
+        $('.icheck-green').iCheck({
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
         });
@@ -47,6 +47,11 @@ var app = {
         $('.icheck-red').iCheck({
             checkboxClass: 'icheckbox_square-red',
             radioClass: 'iradio_square-red',
+        });
+
+        $('.icheck-blue').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
         });
 
         /**

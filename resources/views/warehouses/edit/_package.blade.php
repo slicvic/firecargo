@@ -12,7 +12,7 @@
             <button type="button" class="clone-package-btn btn btn-sm btn-white"><i class="fa fa-copy"></i> Duplicate</button>
             @if ($package->exists)
                 <label>
-                    <input type="checkbox" value="1" class="icheck-red" name="packages[{{ $package->id }}][delete]">
+                    <input type="checkbox" value="1" class="icheck-red delete-package-icheck" name="packages[{{ $package->id }}][delete]">
                     Delete
                 </label>
             @else

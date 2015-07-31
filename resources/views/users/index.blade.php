@@ -14,7 +14,7 @@
     <th>Name</th>
     <th>Email</th>
     <th>Role</th>
-    <th>Login Allowed?</th>
+    <th>Active</th>
     <th>Action</th>
 @stop
 

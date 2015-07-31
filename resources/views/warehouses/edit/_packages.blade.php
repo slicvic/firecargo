@@ -1,7 +1,7 @@
 <div class="ibox">
     <div class="ibox-content">
         <h2>Pieces</h2>
-        <h4>Add pieces to this warehouse.</h4>
+        <h4  class="">Add pieces to warehouse.</h4>
         <div class="clear hr-line-dashed"></div>
 
         @include('warehouses._metric_system_alert')

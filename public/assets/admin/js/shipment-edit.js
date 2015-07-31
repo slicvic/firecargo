@@ -14,6 +14,20 @@ $(function() {
         }
     });
 
+    // Change row color based on checkbox state
+    $('.status-icheck').on('ifChanged', function(event) {
+        var self = $(this);
+        if (self.attr('data-original-status') === 'in') {
+            var parentTr = self.closest('tr');
+            if  (self.is(':checked')) {
+                parentTr.attr('class', 'success');
+            }
+            else {
+                parentTr.attr('class', 'danger');
+            }
+        }
+    });
+
     var dataTable = $('#packages-table').DataTable({
         order: [[0, 'desc']],
         paging: true,

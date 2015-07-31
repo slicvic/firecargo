@@ -120,10 +120,27 @@ $(function() {
             that.pkgTemplate.removeClass('hidden');
             $('#packages-container > .package-template').remove();
 
+            // Add click handers
             $('#packages-container').on('click', '.clone-package-btn', that.clonePackage);
             $('#packages-container').on('click', '.remove-package-btn', that.removePackage);
             $('#add-package-btn').on('click', that.addPackage);
             $('#packages-container').on('keyup', '.metric', that.updateTotals);
+
+            // Change panel color based on checkbox state
+            $('.delete-package-icheck').on('ifChanged', function(event) {
+                var self = $(this);
+                var parentPanel = self.closest('.panel');
+                if  (self.is(':checked')) {
+                    parentPanel
+                        .removeClass('panel-info panel-info-light')
+                        .addClass('panel-danger panel-danger-light');
+                }
+                else {
+                    parentPanel
+                        .removeClass('panel-danger panel-danger-light')
+                        .addClass('panel-info panel-info-light');
+                }
+            });
         },
 
         clonePackage: function() {

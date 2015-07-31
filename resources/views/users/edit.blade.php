@@ -71,9 +71,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Login Allowed?</label>
+                        <label class="control-label col-sm-2">Active</label>
                         <div class="col-sm-5">
-                            <input type="checkbox" class="ichecks" value="1" name="user[active]"{{ Input::old('user.active', $user->active) ? ' checked' : '' }}>
+                            <input type="checkbox" class="icheck-green" value="1" name="user[active]"{{ Input::old('user.active', $user->active) ? ' checked' : '' }}>
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>

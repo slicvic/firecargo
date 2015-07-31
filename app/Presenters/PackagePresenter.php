@@ -82,7 +82,7 @@ class PackagePresenter extends BasePresenter {
      */
     public function shipmentLink()
     {
-        if ($this->model->wasShipped())
+        if ($this->model->inShipment())
         {
            return Html::linkWithIcon(
                 "/shipments/show/{$this->model->shipment_id}",

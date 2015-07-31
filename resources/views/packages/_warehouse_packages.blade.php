@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<table class="table table-striped table-bordered datatable">
     <thead>
         <tr>
             <th>ID</th>
@@ -12,7 +12,7 @@
     </thead>
     <tbody>
         @foreach ($packages as $package)
-            <tr class="{{ $package->wasShipped() ? 'success' : 'danger' }}">
+            <tr class="{{ $package->inShipment() ? 'success' : 'danger' }}">
                 <td>{{ $package->id }}</td>
                 <td>{!! $package->present()->shipmentLink() !!}</td>
                 <td>{{ $package->present()->type() }}</td>
