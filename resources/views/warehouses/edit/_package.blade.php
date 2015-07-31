@@ -1,10 +1,17 @@
 <div class="panel package{{ $package->exists ? ' panel-info panel-info-light' : ' new hidden package-template panel-warning panel-warning-light' }}">
     <div class="panel-heading clear">
-        <h3 class="pull-left panel-title"><i class="fa fa-th-large"></i> {{ $package->exists ? 'ID: ' . $package->id : 'New Piece' }}</h3>
+        <h3 class="pull-left panel-title">
+            #
+            @if ($package->exists)
+                {{ $package->id  }}
+            @else
+                New Piece
+            @endif
+        </h3>
         <div class="pull-right">
             <button type="button" class="clone-package-btn btn btn-sm btn-white"><i class="fa fa-copy"></i> Duplicate</button>
             @if ($package->exists)
-                <label class="checkbox-inline">
+                <label>
                     <input type="checkbox" value="1" class="icheck-red" name="packages[{{ $package->id }}][delete]">
                     Delete
                 </label>
@@ -18,7 +25,7 @@
         <div class="row">
             <div class="col-md-4">
                 <label>US Tracking #</label>
-                <input type="text" name="packages[{{ $package->id }}][tracking_number]" data-name="tracking_number" class="form-control unique" value="{{ $package->tracking_number }}">
+                <input type="text" name="packages[{{ $package->id }}][tracking_number]" data-name="tracking_number" data-unique="true" class="form-control" value="{{ $package->tracking_number }}">
             </div>
             <div class="col-md-2">
                 <label>Type</label>
@@ -52,7 +59,7 @@
         <div class="row">
             <div class="col-sm-4">
                 <label class="control-label">National Tracking #</label>
-                <input type="text" name="packages[{{ $package->id }}][invoice_number]" data-name="invoice_number" class="unique form-control" value="{{ $package->invoice_number }}">
+                <input type="text" name="packages[{{ $package->id }}][invoice_number]" data-name="invoice_number" data-unique="true" class="form-control" value="{{ $package->invoice_number }}">
             </div>
             <div class="col-sm-2">
                 <label class="control-label">Invoice #</label>
@@ -64,8 +71,16 @@
             </div>
             <div class="col-sm-4">
                 <label class="control-label">Description</label>
-                <input name="packages[{{ $package->id }}][description]" data-name="description" class="unique form-control" value="{{ $package->description }}">
+                <input name="packages[{{ $package->id }}][description]" data-name="description" data-unique="true" class="form-control" value="{{ $package->description }}">
             </div>
         </div>
     </div>
+    @if ($package->exists)
+        <div class="panel-footer text-right">
+            <small>Created: {{ $package->present()->createdAt() }}</small>
+            @if ($updatedAt = $package->present()->updatedAt(NULL))
+                <small>Updated: {{ $updatedAt }}</small>
+            @endif
+        </div>
+    @endif
 </div>

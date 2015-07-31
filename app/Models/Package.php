@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Helpers\Math;
 use App\Presenters\PresentableTrait;
+use App\Observers\PackageObserver;
 
 /**
  * Package
@@ -42,9 +43,11 @@ class Package extends Base {
      * @var array
      */
     protected $fillable = [
+        'company_id',
         'type_id',
         'shipment_id',
         'warehouse_id',
+        'client_account_id',
         'length',
         'width',
         'height',
@@ -57,6 +60,18 @@ class Package extends Base {
     ];
 
     /**
+     * Registers model events.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        Package::observe(new PackageObserver);
+    }
+
+    /**
      * Gets the warehouse.
      *
      * @return Warehouse
@@ -64,6 +79,16 @@ class Package extends Base {
     public function warehouse()
     {
         return $this->belongsTo('App\Models\Warehouse');
+    }
+
+    /**
+     * Gets the client.
+     *
+     * @return Warehouse
+     */
+    public function client()
+    {
+        return $this->belongsTo('App\Models\Account', 'client_account_id');
     }
 
     /**
@@ -84,6 +109,26 @@ class Package extends Base {
     public function shipment()
     {
         return $this->belongsTo('App\Models\Shipment');
+    }
+
+    /**
+     * Gets the creator.
+     *
+     * @return Carrier
+     */
+    public function creator()
+    {
+        return $this->belongsTo('App\Models\User', 'creator_user_id');
+    }
+
+    /**
+     * Gets the last updater.
+     *
+     * @return Carrier
+     */
+    public function updater()
+    {
+        return $this->belongsTo('App\Models\User', 'updater_user_id');
     }
 
     /**
@@ -132,11 +177,16 @@ class Package extends Base {
      * @param  int  $companyId
      * @return int
      */
-    public static function countShippedByCompanyId($companyId)
+    public static function countShippedByCompanyId($companyId = NULL)
     {
-        return Package::where('company_id', $companyId)
-            ->whereNotNull('shipment_id')
-            ->count();
+        $query = Package::whereNotNull('shipment_id');
+
+        if ($companyId)
+        {
+            $query->where('company_id', $companyId);
+        }
+
+        return $query->count();
     }
 
     /**
@@ -145,11 +195,16 @@ class Package extends Base {
      * @param  int  $companyId
      * @return int
      */
-    public static function countNotShippedByCompanyId($companyId)
+    public static function countPendingShipmentByCompanyId($companyId = NULL)
     {
-        return Package::where('company_id', $companyId)
-            ->whereNull('shipment_id')
-            ->count();
+        $query = Package::whereNull('shipment_id');
+
+        if ($companyId)
+        {
+            $query->where('company_id', $companyId);
+        }
+
+        return $query->count();
     }
 
     /**
@@ -165,7 +220,9 @@ class Package extends Base {
             'ship' => TRUE,
             'company_id' => $companyId
         ])
-        ->orderBy('id', 'asc')
+        ->with('type', 'client')
+        ->orderBy('warehouse_id', 'DESC')
+        ->orderBy('id', 'ASC')
         ->get();
 
         return $packages;

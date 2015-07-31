@@ -13,16 +13,6 @@ use Html;
 class WarehousePresenter extends BasePresenter {
 
     /**
-     * Presents the arrival date.
-     *
-     * @return string
-     */
-    public function arrivedAt($showTime = TRUE)
-    {
-        return date('n/j/Y g:i A', strtotime($this->model->arrived_at));
-    }
-
-    /**
      * Presents the carrier's name.
      *
      * @return string
@@ -53,7 +43,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to the shipper's account page.
+     * Presents a link to it's shipper account page.
      *
      * @return html
      */
@@ -65,7 +55,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to the client's account page.
+     * Presents a link to it's client account page.
      *
      * @return html
      */

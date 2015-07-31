@@ -4,29 +4,30 @@ var app = {
     },
 
     initGlobalEvents: function() {
-        var self = this;
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
+        var that = this;
 
         /**
-         * Bind jquery validate
+         * ---------------------------------------------
+         * Bind form validation
+         * ---------------------------------------------
          */
         if ($('form').length) $('form').validate();
 
         /**
+         * ---------------------------------------------
          * Bind datatable
+         * ---------------------------------------------
          */
-        $('.datatable').DataTable();
+        $('.datatable').DataTable({
+            'order': [[ 0, 'desc' ]]
+        });
 
         /**
-         * Bind date picker
+         * ---------------------------------------------
+         * Bind datepicker
+         * ---------------------------------------------
          */
         $('.date').datepicker({
-            //todayBtn: 'linked',
             keyboardNavigation: false,
             forceParse: false,
             calendarWeeks: true,
@@ -34,7 +35,9 @@ var app = {
         });
 
         /**
-         * Bind iCheckbox
+         * ---------------------------------------------
+         * Bind icheck
+         * ---------------------------------------------
          */
         $('.icheck').iCheck({
             checkboxClass: 'icheckbox_square-green',
@@ -47,27 +50,31 @@ var app = {
         });
 
         /**
-         * Bind button to delete table records
+         * ---------------------------------------------
+         * Bind delete record button
+         * ---------------------------------------------
          */
         $('table').on('click', '.delete-record-btn', function() {
-            if (!confirm('Are you sure you want to delete this item?')) {
+            if (!confirm('Are you sure you want to delete this record?')) {
                 event.preventDefault();
                 return false;
             }
         });
 
         /**
-         * Bind button to open package details modal
+         * ---------------------------------------------
+         * Bind view package button
+         * ---------------------------------------------
          */
-        $('body').on('click', '.show-package-modal-btn', function() {
-            var btn = $(this);
+        $('table').on('click', '.show-package-modal-btn', function() {
+            var viewBtn = $(this);
             var modal = $('#modal');
             var modalContent = modal.find('.modal-content');
 
-            btn.attr('data-loading-text', self.getSpinnerHtml());
-            btn.button('loading');
+            viewBtn.attr('data-loading-text', that.getSpinnerHtml());
+            viewBtn.button('loading');
 
-            $.get('/packages/ajax-detail/' + btn.attr('data-package-id'), function(response) {
+            $.get('/packages/ajax-detail/' + viewBtn.attr('data-package-id'), function(response) {
                 modalContent.html(response);
             })
             .fail(function(xhr) {
@@ -75,7 +82,7 @@ var app = {
             })
             .always(function() {
                 modal.modal({});
-                btn.button('reset');
+                viewBtn.button('reset');
             });
         });
     },

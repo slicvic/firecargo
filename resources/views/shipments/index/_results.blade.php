@@ -1,23 +1,23 @@
-<div class="table-responsive">
+<div id="shipments-table" class="table-responsive">
     <table class="table table-striped">
         <thead>
             <tr>
                 <th></th>
                 @if (Auth::user()->isAdmin()) {!! '<th>Company</th>' !!} @endif
-                <th>{!! Html::linkToSorting('/shipments', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/shipments', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
                 <th>Pieces</th>
                 <th>Reference #</th>
                 <th>Carrier</th>
-                <th>{!! Html::linkToSorting('/shipments', 'Departed', 'departed_at', $params['sort'], $params['order']) !!}</th>
-                <th>{!! Html::linkToSorting('/shipments', 'Created', 'created_at', $params['sort'], $params['order']) !!}</th>
-                <th>{!! Html::linkToSorting('/shipments', 'Updated', 'updated_at', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/shipments', 'Departed', 'departed_at', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/shipments', 'Created', 'created_at', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/shipments', 'Updated', 'updated_at', $params['sort'], $params['order']) !!}</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($shipments as $shipment)
             <tr>
-                <td><button class="toggle-packages-btn btn btn-link btn-sm" data-warehouse-id="{{ $shipment->id }}"><i class="fa fa-angle-right"></i></button></td>
+                <td><button class="toggle-packages-btn btn btn-link btn-sm" data-shipment-id="{{ $shipment->id }}"><i class="fa fa-angle-right"></i></button></td>
                 @if (Auth::user()->isAdmin()) {!! '<td>' . $shipment->company->name . '</td>' !!} @endif
                 <td>{{ $shipment->id }}</td>
                 <td><span class="label label-danger">{{ $shipment->packages()->count() }}</span></td>

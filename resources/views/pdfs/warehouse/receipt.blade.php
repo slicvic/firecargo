@@ -33,7 +33,7 @@ RECEIVED FOR:<br><br>
                     <td><small>NUMBER</small><br><span class="receipt-number">{{ $warehouse->id }}</span></td>
                 </tr>
                 <tr>
-                    <td><small>DATE</small><br>{{ date('n/d/Y', strtotime($warehouse->arrived_at)) }}</td>
+                    <td><small>DATE</small><br>{{ date('n/d/Y', strtotime($warehouse->created_at)) }}</td>
                     <td><small>PIECES</small><br>{{ $totalPackages }}</td>
                 </tr>
                 <tr>

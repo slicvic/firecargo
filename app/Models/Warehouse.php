@@ -39,7 +39,6 @@ class Warehouse extends Base {
         'status_id',
         'client_account_id',
         'carrier_id',
-        'arrived_at',
         'notes'
     ];
 
@@ -123,7 +122,7 @@ class Warehouse extends Base {
      */
     public function createOrUpdatePackages(array $packages)
     {
-        // First lets delete the packages marked for deleltion
+        // First lets delete the packages marked for deletion
         $deleteIds = [];
 
         foreach ($packages as $id => $data)
@@ -150,6 +149,7 @@ class Warehouse extends Base {
             $package = Package::firstOrNew(['id' => $id]);
 
             $data['warehouse_id'] = $this->id;
+            $data['client_account_id'] = $this->client_account_id;
             $data['ship'] = ($package->shipment_id) ? $package->ship : $this->client->autoship;
 
             $package->fill($data);
@@ -278,38 +278,32 @@ class Warehouse extends Base {
      * @param  int  $companyId
      * @return int
      */
-    public static function countByStatusIdAndCompanyId($statusId, $companyId)
+    public static function countByStatusIdAndCompanyId($statusId, $companyId = NULL)
     {
-        return Warehouse::where(['status_id' => $statusId, 'company_id' => $companyId])->count();
+        $query = Warehouse::where('status_id', $statusId);
+
+        if ($companyId)
+        {
+            $query->where('company_id', $companyId);
+        }
+
+        return $query->count();
     }
 
     /**
      * Finds all warehouses with the given criteria.
      *
      * @param  array|null  $criteria
-     * @param  string      $sort
+     * @param  string      $sortBy
      * @param  string      $order
      * @param  int         $perPage
      * @return array
      */
-    public static function search(array $criteria = NULL, $sort = 'id', $order = 'desc', $perPage = 15)
+    public static function search(array $criteria = NULL, $sortBy = 'id', $order = 'desc', $perPage = 15)
     {
-        // Sanitize sort and order
-        $validSortColumns = [
-            'id',
-            'arrived_at',
-            'created_at',
-            'updated_at'
-        ];
-
-        $sort = in_array($sort, $validSortColumns) ? $sort : 'id';
-
-        $order = ($order === 'asc') ? 'asc' : 'desc';
-
         // Build query
         $query = Warehouse::query()
-            ->with('creator', 'updater', 'shipper', 'client', 'carrier', 'company')
-            ->orderBy('warehouses.' . $sort, $order);
+            ->with('creator', 'updater', 'shipper', 'client', 'carrier', 'company');
 
         if ( ! empty($criteria['status_id']))
         {
@@ -323,10 +317,9 @@ class Warehouse extends Base {
 
         if (isset($criteria['search']) && strlen($criteria['search']) > 2)
         {
-            $search = '%' . $criteria['search'] . '%';
+            $searchTerm = '%' . $criteria['search'] . '%';
 
-            $query
-                ->select('warehouses.*')
+            $query->select('warehouses.*')
                 ->leftJoin('accounts AS clients', 'warehouses.client_account_id', '=', 'clients.id')
                 ->leftJoin('accounts AS shippers', 'warehouses.shipper_account_id', '=', 'shippers.id')
                 ->leftJoin('carriers', 'warehouses.carrier_id', '=', 'carriers.id')
@@ -345,20 +338,33 @@ class Warehouse extends Base {
                     OR carriers.name LIKE ?
                     OR packages.tracking_number LIKE ?
                     )', [
-                    $search,
-                    $search,
-                    $search,
-                    $search,
-                    $search,
-                    $search,
-                    $search,
-                    $search,
-                    $search,
-                    $search,
-                    $search
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm
                 ]);
         }
 
+        // Add sorting
+        $validSortColumns = [
+            'id',
+            'created_at',
+            'updated_at'
+        ];
+
+        $sortBy = in_array($sortBy, $validSortColumns) ? $sortBy : 'id';
+        $order = ($order === 'asc') ? 'ASC' : 'DESC';
+
+        $query->orderBy("warehouses.{$sortBy}", $order);
+
+        // Fetch results
         return $query->paginate($perPage);
     }
 }

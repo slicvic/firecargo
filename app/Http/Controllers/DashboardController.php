@@ -26,9 +26,13 @@ class DashboardController extends BaseAuthController {
         {
             return $this->renderClientDashboard();
         }
+        elseif ($this->user->isAgent())
+        {
+            return $this->renderAgentDashboard();
+        }
         else
         {
-            return $this->renderAgentAdminDashboard();
+            return $this->renderAdminDashboard();
         }
     }
 
@@ -40,7 +44,7 @@ class DashboardController extends BaseAuthController {
         return view('dashboard.client.index', ['packages' => $packages]);
     }
 
-    private function renderAgentAdminDashboard()
+    private function renderAgentDashboard()
     {
         $totals = [
             'warehouses' => [
@@ -50,7 +54,24 @@ class DashboardController extends BaseAuthController {
             ],
             'packages' => [
                 'shipped' => Package::countShippedByCompanyId($this->user->company_id),
-                'pending' => Package::countNotShippedByCompanyId($this->user->company_id)
+                'pending' => Package::countPendingShipmentByCompanyId($this->user->company_id)
+            ]
+        ];
+
+        return view('dashboard.index', ['totals' => $totals]);
+    }
+
+    private function renderAdminDashboard()
+    {
+        $totals = [
+            'warehouses' => [
+                'unprocessed' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::UNPROCESSED),
+                'pending' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::PENDING),
+                'complete' => Warehouse::countByStatusIdAndCompanyId(WarehouseStatus::COMPLETE)
+            ],
+            'packages' => [
+                'shipped' => Package::countShippedByCompanyId(),
+                'pending' => Package::countPendingShipmentByCompanyId()
             ]
         ];
 

@@ -35,7 +35,6 @@
         </div>
     </div>
 </div>
-
 <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/morris/raphael-2.1.0.min.js"></script>
 <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/morris/morris.js"></script>
 <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/sparkline/jquery.sparkline.min.js"></script>

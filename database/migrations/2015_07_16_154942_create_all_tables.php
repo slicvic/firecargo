@@ -192,7 +192,6 @@ class CreateAllTables extends Migration {
 		    $table->integer('client_account_id')->unsigned();
 		    $table->integer('carrier_id')->unsigned();
 		    $table->string('notes', 1000);
-		    $table->dateTime('arrived_at');
 		    $table->integer('creator_user_id')->unsigned();
 		    $table->integer('updater_user_id')->unsigned()->nullable();
 		    $table->dateTime('created_at');
@@ -223,6 +222,7 @@ class CreateAllTables extends Migration {
 		    $table->integer('company_id')->unsigned();
 		    $table->integer('warehouse_id')->unsigned();
 		    $table->integer('shipment_id')->unsigned()->nullable();
+		    $table->integer('client_account_id')->unsigned();
 		    $table->integer('type_id')->unsigned();
 		    $table->float('length')->unsigned();
 		    $table->float('width')->unsigned();
@@ -233,6 +233,8 @@ class CreateAllTables extends Migration {
 		    $table->decimal('invoice_amount', 12, 4)->unsigned();
 		    $table->string('tracking_number', 255);
 		    $table->tinyInteger('ship')->unsigned()->default(1);
+		    $table->integer('creator_user_id')->unsigned();
+		    $table->integer('updater_user_id')->unsigned()->nullable();
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
 		    $table->dateTime('deleted_at');
@@ -241,6 +243,9 @@ class CreateAllTables extends Migration {
 		    $table->foreign('warehouse_id')->references('id')->on('warehouses');
 		    $table->foreign('shipment_id')->references('id')->on('shipments');
 		    $table->foreign('type_id')->references('id')->on('package_types');
+		    $table->foreign('client_account_id')->references('id')->on('accounts');
+		    $table->foreign('creator_user_id')->references('id')->on('users');
+		    $table->foreign('updater_user_id')->references('id')->on('users');
 		});
 	}
 

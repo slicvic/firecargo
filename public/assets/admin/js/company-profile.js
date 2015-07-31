@@ -1,4 +1,9 @@
 $(function() {
+    /**
+     * ---------------------------------------------
+     * Bind dropzone
+     * ---------------------------------------------
+     */
     $('#edit-logo-btn').dropzone({
         url: '/company/ajax-upload-logo',
         maxFileSize: 10,

@@ -65,12 +65,7 @@ class ShipmentsController extends BaseAuthController {
      */
     public function getShow(Request $request, $id)
     {
-        $shipment = Shipment::findMine($id);
-
-        if ( ! $shipment)
-        {
-            return $this->redirectBackWithError('Shipment not found.');
-        }
+        $shipment = Shipment::findMineOrFail($id);
 
         return view('shipments.show', ['shipment' => $shipment]);
     }
@@ -83,19 +78,11 @@ class ShipmentsController extends BaseAuthController {
     public function getCreate()
     {
         // Retrive all packages pending shipment
-        $packages = Package::allPendingShipmentByCompanyId($this->user->company_id);
-
-        // Group them by warehouse
-        $groupedPackages = [];
-
-        foreach ($packages as $package)
-        {
-            $groupedPackages[$package->warehouse_id][] = $package;
-        }
+        $availablePackages = Package::allPendingShipmentByCompanyId($this->user->company_id);
 
         return view('shipments.edit', [
             'shipment' => new Shipment,
-            'groupedPackages' => $groupedPackages
+            'packages' => $availablePackages
         ]);
     }
 
@@ -112,7 +99,7 @@ class ShipmentsController extends BaseAuthController {
         // Validate input and save shipment
         if ( ! $this->validateAndSave($request, $shipment))
         {
-            return response()->json(['error' => Flash::view('Shipment creation failed, please try again.')], 500);
+            return response()->json(['error' => Flash::view($request->input())], 500);
         }
 
         Flash::success('Shipment created.');
@@ -128,34 +115,17 @@ class ShipmentsController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        // Lookup shipment
-        $shipment = Shipment::findMine($id);
+        $shipment = Shipment::findMineOrFail($id);
 
-        if ( ! $shipment)
-        {
-            return $this->redirectBackWithError('Shipment not found.');
-        }
-
-        // Group packages by warehouse
-        $groupedPackages = [];
-
-        // Retrieve the current packages in the shipment
-        foreach ($shipment->packages as $package)
-        {
-            $groupedPackages[$package->warehouse_id][] = $package;
-        }
+        // Retrieve packages assigned to this shipment
+        $assignedPackages = $shipment->packages()->with('client', 'type')->get();
 
         // Retrieve all other packages eligible for shipment
-        $packages = Package::allPendingShipmentByCompanyId($this->user->company_id);
-
-        foreach ($packages as $package)
-        {
-            $groupedPackages[$package->warehouse_id][] = $package;
-        }
+        $availablePackages = Package::allPendingShipmentByCompanyId($this->user->company_id);
 
         return view('shipments.edit', [
             'shipment' =>  $shipment,
-            'groupedPackages' => $groupedPackages
+            'packages' => $assignedPackages->merge($availablePackages)
         ]);
     }
 
@@ -168,7 +138,6 @@ class ShipmentsController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        // Lookup shipment
         $shipment = Shipment::findMine($id);
 
         if ( ! $shipment)
@@ -197,13 +166,14 @@ class ShipmentsController extends BaseAuthController {
      */
     private function validateAndSave(Request $request, Shipment $shipment)
     {
-        $input = $request->only('shipment', 'packages');
+        $input = $request->only('shipment', 'pieces');
 
         // Validate input
         $rules = [
             'departure_date' => 'required',
             'reference_number' => 'required',
             'carrier' => 'required|min:3',
+            'pieces' => '',
         ];
 
         $validator = Validator::make($input['shipment'], $rules);
@@ -232,7 +202,7 @@ class ShipmentsController extends BaseAuthController {
         }
 
         // Save packages
-        $shipment->syncPackages($input['packages'] ? array_keys($input['packages']) : []);
+        $shipment->syncPackages($input['pieces'] ? array_keys($input['pieces']) : []);
 
         return TRUE;
     }

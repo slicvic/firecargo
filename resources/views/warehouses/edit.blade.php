@@ -1,7 +1,7 @@
 @extends('layouts.admin.master')
 
 @section('content')
-<form id="warehouse-edit-form" action="/warehouses/{{ $warehouse->exists ? 'update/' . $warehouse->id : 'store' }}" method="post" class="form-horsizontal">
+<form id="warehouse-edit-form" action="/warehouses/{{ $warehouse->exists ? 'update/' . $warehouse->id : 'store' }}" method="post" class="">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
     <div class="row wrapper border-bottom white-bg page-heading">
@@ -34,10 +34,10 @@
         <div id="flash-message"></div>
         <div class="row">
             <div class="col-md-9">
-                @include('warehouses.edit._section_packages')
+                @include('warehouses.edit._packages')
             </div>
             <div class="col-md-3">
-                @include('warehouses.edit._section_details')
+                @include('warehouses.edit._details')
             </div>
         </div>
         <div class="row">

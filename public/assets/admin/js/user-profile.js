@@ -1,4 +1,9 @@
 $(function() {
+    /**
+     * ---------------------------------------------
+     * Bind dropzone
+     * ---------------------------------------------
+     */
     $('#edit-photo-btn').dropzone({
         url: '/user/ajax-upload-photo',
         maxFileSize: 10,

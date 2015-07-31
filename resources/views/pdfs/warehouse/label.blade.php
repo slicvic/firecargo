@@ -49,7 +49,7 @@ EMAIL: {{ $company->email }}
 <br>
 
 <div style="text-align:right">
-    DATE: <b>{{ strtoupper(date('j-M-y', strtotime($warehouse->arrived_at))) }}</b>
+    DATE: <b>{{ strtoupper(date('j-M-y', strtotime($warehouse->created_at))) }}</b>
 </div>
 
 <br>

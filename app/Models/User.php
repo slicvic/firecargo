@@ -109,7 +109,7 @@ class User extends Base implements AuthenticatableInterface {
      */
     public function isAgent()
     {
-        return ((int) $this->role_id === Role::SUPER_AGENT);
+        return (in_array((int) $this->role_id, [Role::AGENT, Role::SUPER_AGENT]));
     }
 
     /**

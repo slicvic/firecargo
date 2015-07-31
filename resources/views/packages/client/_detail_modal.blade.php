@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-    <h4 class="modal-title">Package Detail # {{ $package->id }}</h4>
+    <h4 class="modal-title">Piece Detail # {{ $package->id }}</h4>
 </div>
 <div class="modal-body">
     <div class="row">

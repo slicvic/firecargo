@@ -148,29 +148,16 @@ class Shipment extends Base {
      * Finds all shipments with the given criteria.
      *
      * @param  array|null  $criteria
-     * @param  string      $sort
+     * @param  string      $sortBy
      * @param  string      $order
      * @param  int         $perPage
      * @return array
      */
-    public static function search(array $criteria = NULL, $sort = 'id', $order = 'desc', $perPage = 15)
+    public static function search(array $criteria = NULL, $sortBy = 'id', $order = 'desc', $perPage = 15)
     {
-        // Sanitize sort and order
-        $validSortColumns = [
-            'id',
-            'departed_at',
-            'created_at',
-            'updated_at'
-        ];
-
-        $sort = in_array($sort, $validSortColumns) ? $sort : 'id';
-
-        $order = ($order === 'asc') ? 'asc' : 'desc';
-
         // Build query
         $query = Shipment::query()
-            ->with('carrier', 'creator', 'updater', 'company')
-            ->orderBy('shipments.' . $sort, $order);
+            ->with('carrier', 'creator', 'updater', 'company');
 
         if ( ! empty ($criteria['company_id']))
         {
@@ -179,10 +166,9 @@ class Shipment extends Base {
 
         if (isset($criteria['search']) && strlen($criteria['search']) > 2)
         {
-            $search = '%' . $criteria['search'] . '%';
+            $searchTerm = '%' . $criteria['search'] . '%';
 
-            $query = $shipments
-                ->select('shipments.*')
+            $query->select('shipments.*')
                 ->leftJoin('packages', 'shipments.id', '=', 'packages.shipment_id')
                 ->leftJoin('carriers', 'shipments.carrier_id', '=', 'carriers.id')
                 ->groupBy('shipments.id')
@@ -193,14 +179,28 @@ class Shipment extends Base {
                     OR shipments.id LIKE ?
                     OR shipments.reference_number LIKE ?
                     )', [
-                    $search,
-                    $search,
-                    $search,
-                    $search,
-                    $search
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm,
+                    $searchTerm
                 ]);
         }
 
+        // Add sorting
+        $validSortColumns = [
+            'id',
+            'departed_at',
+            'created_at',
+            'updated_at'
+        ];
+
+        $sortBy = in_array($sortBy, $validSortColumns) ? $sortBy : 'id';
+        $order = ($order === 'asc') ? 'asc' : 'desc';
+
+        $query->orderBy("shipments.{$sortBy}", $order);
+
+        // Fetch results
         return $query->paginate($perPage);
     }
 }

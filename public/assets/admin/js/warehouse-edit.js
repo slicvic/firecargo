@@ -1,11 +1,15 @@
 $(function() {
     /**
-     * Close side menu
+     * ---------------------------------------------
+     * Close left nav
+     * ---------------------------------------------
      */
     $('body').toggleClass("mini-navbar");
 
     /**
+     * ---------------------------------------------
      * Carrier autocomplete handler
+     * ---------------------------------------------
      */
     $('#carrier').keyup(function() {
         $('#carrier-id').val('');
@@ -24,7 +28,9 @@ $(function() {
     };
 
     /**
+     * ---------------------------------------------
      * Shipper autocomplete handler
+     * ---------------------------------------------
      */
     $('#shipper').keyup(function() {
         $('#shipper-id').val('');
@@ -43,7 +49,9 @@ $(function() {
     };
 
     /**
+     * ---------------------------------------------
      * Client autocomplete handler
+     * ---------------------------------------------
      */
     $('#client').keyup(function() {
         $('#client-id').val('');
@@ -64,7 +72,9 @@ $(function() {
     };
 
     /**
+     * ---------------------------------------------
      * Form submit handler
+     * ---------------------------------------------
      */
     $('#warehouse-edit-form').on('submit', function() {
         event.preventDefault();
@@ -89,7 +99,9 @@ $(function() {
     });
 
     /**
-     * Package event handlers
+     * ---------------------------------------------
+     * Add/remove package event handlers
+     * ---------------------------------------------
      */
     var PackageMgr = {
         pkgTemplate: null,
@@ -100,18 +112,18 @@ $(function() {
         },
 
         initEvents: function() {
-            var self = this;
+            var that = this;
 
             // Prepare package template
-            self.pkgTemplate = $('#packages-container > .package-template').clone();
-            self.pkgTemplate.removeClass('package-template');
-            self.pkgTemplate.removeClass('hidden');
+            that.pkgTemplate = $('#packages-container > .package-template').clone();
+            that.pkgTemplate.removeClass('package-template');
+            that.pkgTemplate.removeClass('hidden');
             $('#packages-container > .package-template').remove();
 
-            $('#packages-container').on('click', '.clone-package-btn', self.clonePackage);
-            $('#packages-container').on('click', '.remove-package-btn', self.removePackage);
-            $('#add-package-btn').on('click', self.addPackage);
-            $('#packages-container').on('keyup', '.metric', self.updateTotals);
+            $('#packages-container').on('click', '.clone-package-btn', that.clonePackage);
+            $('#packages-container').on('click', '.remove-package-btn', that.removePackage);
+            $('#add-package-btn').on('click', that.addPackage);
+            $('#packages-container').on('keyup', '.metric', that.updateTotals);
         },
 
         clonePackage: function() {
@@ -125,7 +137,7 @@ $(function() {
                 var cloneField = clonePkg.find('[data-name="' + sourceField.attr('data-name') + '"]');
                 cloneField
                     .attr('name', 'packages[new_' + totalPkgs + '][' + sourceField.attr('data-name') + ']')
-                    .val(sourceField.hasClass('unique') ? '' : sourceField.val());
+                    .val(sourceField.attr('data-unique') ? '' : sourceField.val());
             });
 
             $('#packages-container').append(clonePkg);
@@ -157,7 +169,6 @@ $(function() {
         },
 
         removePackage: function() {
-
             $(this).closest('.panel').remove();
 
             PackageMgr.updateTotals();
@@ -192,6 +203,11 @@ $(function() {
 
     PackageMgr.init();
 
+    /**
+     * ---------------------------------------------
+     * jQuery steps form handler
+     * ---------------------------------------------
+     */
     /*
     var form = $("#warehouse-edit-form");
 

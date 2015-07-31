@@ -1,5 +1,5 @@
 $(function() {
-    $('table').on('click', '.toggle-packages-btn', function() {
+    $('#shipments-table').on('click', '.toggle-packages-btn', function() {
         var toggleBtn = $(this);
         var toggleBtnParentTr = toggleBtn.closest('tr');
         toggleBtn.toggleClass('collapsed');
@@ -8,7 +8,7 @@ $(function() {
             var packagesTr = $('<tr><td colspan="' + toggleBtnParentTr.children('td').length + '">' + app.getSpinnerHtml() + '</td></tr>')
             toggleBtnParentTr.after(packagesTr);
             toggleBtn.html('<i class="fa fa-angle-down"></i>');
-            $.get('/packages/ajax-shipment-packages/' + toggleBtn.attr('data-warehouse-id')).done(function(data) {
+            $.get('/packages/ajax-shipment-packages/' + toggleBtn.attr('data-shipment-id')).done(function(data) {
                 packagesTr.children('td').html(data);
             });
         }

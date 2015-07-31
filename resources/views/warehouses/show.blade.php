@@ -28,7 +28,7 @@
             <div class="ibox">
                 <div class="ibox-content">
                     <h2>Pieces ({{ $warehouse->packages->count() }})</h2>
-                    @include('packages._list_warehouse', ['packages' => $warehouse->packages])
+                    @include('packages._warehouse_packages', ['packages' => $warehouse->packages])
                 </div>
             </div>
         </div>
@@ -37,10 +37,6 @@
                 <div class="ibox-content">
                     <h2>Details</h2>
                     <table class="table warehouse-info-table table-responsive">
-                        <tr>
-                            <th>Arrived</th>
-                            <td>{{ $warehouse->present()->arrivedAt() }}</td>
-                        </tr>
                         <tr>
                             <th>Shipper</th>
                             <td>{!! $warehouse->present()->shipperLink() !!}</td>

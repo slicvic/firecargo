@@ -37,9 +37,10 @@ class PackagesController extends BaseAuthController {
         $packages = Package::mine()
             ->with('type', 'shipment')
             ->where(['warehouse_id' => $warehouseId])
+            ->orderBy('shipment_id', 'ASC')
             ->get();
 
-        return view('packages._list_warehouse', ['packages' => $packages]);
+        return view('packages._warehouse_packages', ['packages' => $packages]);
     }
 
     /**
@@ -56,7 +57,7 @@ class PackagesController extends BaseAuthController {
             ->where(['shipment_id' => $shipmentId])
             ->get();
 
-        return view('packages._list_shipment', ['packages' => $packages]);
+        return view('packages._shipment_packages', ['packages' => $packages]);
     }
 
     /**

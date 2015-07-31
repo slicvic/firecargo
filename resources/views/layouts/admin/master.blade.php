@@ -25,7 +25,7 @@
     <!-- DataTables -->
     <link href="/assets/plugins/inspinia/Static_Seed_Project/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
     <link href="/assets/plugins/inspinia/Static_Seed_Project/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
-    <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="/assets/plugins/datatables/js/jquery.dataTables.min.js"></script>
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.bootstrap.js"></script>
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.responsive.js"></script>
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/dataTables/dataTables.tableTools.min.js"></script>

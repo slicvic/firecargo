@@ -26,14 +26,16 @@ class Html {
      * @param  string  $url
      * @param  string  $title
      * @param  string  $column
-     * @param  string  $sort
-     * @param  string  $order
+     * @param  string  $currentColumn
+     * @param  string  $currentOrder
      * @return string
      */
-    public function linkToSorting($url, $title, $column, $sortColumn, $order)
+    public function linkToSort($url, $title, $column, $currentColumn, $currentOrder)
     {
-        $query = sprintf('?sort=%s&order=%s', $column, ($order === 'asc' ? 'desc' : 'asc'));
-        $indicator = ($column === $sortColumn) ? ' <i class="fa fa-angle-' . ($order === 'asc' ? 'up' : 'down') . '"></i>' : '';
+        $query = sprintf('?sort=%s&order=%s', $column, ($currentOrder === 'asc' ? 'desc' : 'asc'));
+        $indicator = ($column === $currentColumn)
+            ? ' <i class="fa fa-angle-' . ($currentOrder === 'asc' ? 'up' : 'down') . '"></i>'
+            : '';
 
         return "<a href=\"{$url}{$query}\">{$title}{$indicator}</a>";
     }

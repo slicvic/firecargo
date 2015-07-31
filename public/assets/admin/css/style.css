@@ -134,6 +134,10 @@ legend {
     font-size: 14px;
 }
 
+.warehouses.edit .panel-heading label {
+    font-weight: normal;
+}
+
 .bs-callout {
     padding: 20px;
     margin: 20px 0;

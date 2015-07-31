@@ -22,7 +22,7 @@
         <div class="form-group">
             <label class="control-label ccol-sm-2">Carrier</label>
             <div class="ccol-sm-4">
-                <input required type="text" id="carrier" name="shipment[carrier]" placeholder="" class="form-control" value="{{ $shipment->present()->carrier() }}">
+                <input required type="text" id="carrier" name="shipment[carrier]" placeholder="e.g. DHL" class="form-control" value="{{ $shipment->present()->carrier() }}">
                 <input type="hidden" id="carrierId" name="shipment[carrier_id]" value="{{ $shipment->carrier_id }}">
             </div>
         </div>

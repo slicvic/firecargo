@@ -3,15 +3,6 @@
         <h2>Details</h2>
         <div class="clear hr-line-dashed"></div>
         <div class="form-group">
-            <label class="control-label ccol-sm-2">Date *</label>
-            <div class="ccol-sm-3">
-                <div class="input-group">
-                    <input required type="text" name="warehouse[date]" class="form-control" value="{{ ($warehouse->exists) ? date('m/d/Y', strtotime($warehouse->arrived_at)) : date('m/d/Y g:i A') }}">
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="control-label ccol-sm-2">Shipper *</label>
             <div class="ccol-sm-5">
                 <input type="hidden" id="shipper-id" name="warehouse[shipper_account_id]" value="{{ $warehouse->shipper_account_id }}">

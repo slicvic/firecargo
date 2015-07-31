@@ -74,12 +74,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getShow(Request $request, $id)
     {
-        $warehouse = Warehouse::findMine($id);
-
-        if ( ! $warehouse)
-        {
-            return $this->redirectBackWithError('Warehouse not found.');
-        }
+        $warehouse = Warehouse::findMineOrFail($id);
 
         return view('warehouses.show', ['warehouse' => $warehouse]);
     }
@@ -123,12 +118,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $warehouse = Warehouse::findMine($id);
-
-        if ( ! $warehouse)
-        {
-            return $this->redirectBackWithError('Warehouse not found.');
-        }
+        $warehouse = Warehouse::findMineOrFail($id);
 
         return $this->getEditForm($warehouse);
     }
@@ -142,7 +132,6 @@ class WarehousesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        // Lookup warehouse
         $warehouse = Warehouse::findMine($id);
 
         if ( ! $warehouse)
@@ -261,7 +250,6 @@ class WarehousesController extends BaseAuthController {
             'shipper' => 'required|min:3',
             'client' => 'required|min:5',
             'carrier' => 'required|min:3',
-            'date' => 'required',
         ];
 
         $validator = Validator::make($input['warehouse'], $rules);
@@ -304,7 +292,6 @@ class WarehousesController extends BaseAuthController {
         }
 
         // Save warehouse
-        $warehouse->arrived_at = date('Y-m-d H:i:s', strtotime($input['warehouse']['date']));
         $warehouse->shipper_account_id = $input['warehouse']['shipper_account_id'];
         $warehouse->client_account_id = $input['warehouse']['client_account_id'];
         $warehouse->carrier_id = $input['warehouse']['carrier_id'];

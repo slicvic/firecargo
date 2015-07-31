@@ -1,18 +1,18 @@
 <div class="table-responsive">
-    <table class="table">
+    <table id="warehouses-table" class="table">
         <thead>
             <tr>
                 <th></th>
                 @if (Auth::user()->isAdmin()) {!! '<th>Company</th>' !!} @endif
-                <th>{!! Html::linkToSorting('/warehouses', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/warehouses', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
                 <th>Pieces</th>
                 <th>Gross Weight</th>
                 <th>Volume</th>
                 <th>Carrier</th>
                 <th>Shipper</th>
                 <th>Client</th>
-                <th>{!! Html::linkToSorting('/warehouses', 'Created', 'created_at', $params['sort'], $params['order']) !!}</th>
-                <th>{!! Html::linkToSorting('/warehouses', 'Updated', 'updated_at', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/warehouses', 'Created', 'created_at', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/warehouses', 'Updated', 'updated_at', $params['sort'], $params['order']) !!}</th>
                 <th>Action</th>
             </tr>
         </thead>

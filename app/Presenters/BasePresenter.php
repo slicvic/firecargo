@@ -45,8 +45,13 @@ abstract class BasePresenter {
      *
      * @return string
      */
-    public function updatedAt()
+    public function updatedAt($default = 'N/A')
     {
+        if ($this->model->updated_at == $this->model->created_at)
+        {
+            return $default;
+        }
+
         $updatedAt = date('m/d/y g:i A', strtotime($this->model->updated_at));
 
         $updatedBy = ($this->model->updater_user_id) ? ' by ' . $this->model->updater->present()->fullname() : '';

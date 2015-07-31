@@ -1,6 +1,6 @@
 <div class="ibox">
     <div class="ibox-content">
-        <h2>Pieces</h2>
+        <h2>Pieces - In Shipment</h2>
         <div class="clear hr-line-dashed"></div>
         <table class="table table-stsriped">
             <thead>
@@ -8,16 +8,14 @@
                     <th></th>
                     <th>ID</th>
                     <th>Type</th>
-                    <th>L x W x H</th>
-                    <th>Weight</th>
                     <th>Tracking #</th>
-                    <th>Invoice #</th>
-                    <th>Invoice $</th>
+                    <th>Value</th>
                     <th>Description</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($groupedPackages as $warehouseId => $packages)
+                @foreach ($assignedPackagesGrouped as $warehouseId => $packages)
                     <tr class="info">
                         <td colspan="9">
                             <i>Warehouse</i> {!! $packages[0]->present()->warehouseLink() !!}
@@ -29,18 +27,20 @@
                             <td><input type="checkbox" class="icheck" name="packages[{{ $package->id }}]"{{ $shipment->exists && $shipment->id == $package->shipment_id ? ' checked' : '' }}></td>
                             <td>{{ $package->id }}</td>
                             <td>{{ $package->type->name }}</td>
-                            <td>{{ $package->present()->dimensions() }}</td>
-                            <td>{{ $package->present()->weight() }}</td>
                             <td>{{ $package->tracking_number }}</td>
-                            <td>{{ $package->invoice_number }}</td>
                             <td>{{ $package->present()->invoiceAmount() }}</td>
                             <td>{{ $package->description }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" data-package-id="{{ $package->id }}" class="show-package-modal-btn btn-white btn btn-sm">View</button>
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                 @endforeach
             </tbody>
         </table>
-        @if ( ! count($groupedPackages))
+        @if ( ! count($assignedPackagesGrouped))
             <div class="alert alert-danger">
                 <i class="fa fa-exclamation-triangle"></i>
                 No packages available for shipment.
@@ -48,3 +48,4 @@
         @endif
     </div>
 </div>
+

@@ -13,7 +13,7 @@
             @if ($params['search'])
                 {{ $shipments->count() }} results found for: <span class="text-navy">"{{ $params['search'] }}"</span>
             @else
-                Showing {{ $shipments->lastItem() ? $shipments->firstItem() : 0 }} - {{ $shipments->lastItem() }} of {{ $shipments->count() }} records
+                Showing {{ $shipments->lastItem() ? $shipments->firstItem() : 0 }} - {{ $shipments->lastItem() }} of {{ $shipments->total() }} records
             @endif
         </h2>
 
@@ -21,11 +21,13 @@
 
         <div class="clear hr-line-dashed"></div>
 
-        @include('shipments.index._results_table')
+        @include('shipments.index._results')
 
         <div class="row">
-            <div class="pull-right">
-                {!! $shipments->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
+            <div class="col-md-12">
+                <div class="pull-right">
+                    {!! $shipments->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
+                </div>
             </div>
         </div>
     </div>

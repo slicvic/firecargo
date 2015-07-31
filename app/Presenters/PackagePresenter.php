@@ -42,7 +42,29 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to the warehouse page.
+     * Presents the client's name.
+     *
+     * @return string
+     */
+    public function client()
+    {
+        return $this->model->client->name;
+    }
+
+    /**
+     * Presents a link to it's client account page.
+     *
+     * @return html
+     */
+    public function clientLink()
+    {
+        return Html::linkWithIcon(
+            "/clients/edit/{$this->model->client_account_id}",
+            $this->model->client->name);
+    }
+
+    /**
+     * Presents a link to it's warehouse page.
      *
      * @return html
      */
@@ -54,7 +76,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to the shipment page.
+     * Presents a link to it's shipment page.
      *
      * @return html
      */

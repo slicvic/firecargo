@@ -9,20 +9,15 @@
 @section('page_content')
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <h2>
-            @if ($params['search'])
-                {{ $warehouses->count() }} results found for: <span class="text-navy">"{{ $params['search'] }}"</span>
-            @else
-                Showing {{ $warehouses->lastItem() ? $warehouses->firstItem() : 0 }} - {{ $warehouses->lastItem() }} of {{ $warehouses->count() }} records
-            @endif
-        </h2>
-
-        @include('warehouses.index._search_form')
-
-        <div class="hr-line-dashed"></div>
-
         <div class="row">
             <div class="col-md-12">
+                <h2 class="pull-left">
+                    @if ($params['search'])
+                        {{ $warehouses->count() }} results found for: <span class="text-navy">"{{ $params['search'] }}"</span>
+                    @else
+                        Showing {{ $warehouses->lastItem() ? $warehouses->firstItem() : 0 }} - {{ $warehouses->lastItem() }} of {{ $warehouses->total() }} records
+                    @endif
+                </h2>
                 <div class="pull-right">
                     <i class="fa fa-circle text-danger"></i>&nbsp;&nbsp;Unprocessed &nbsp;&nbsp;
                     <i class="fa fa-circle text-warning"></i>&nbsp;&nbsp;Pending &nbsp;&nbsp;
@@ -31,13 +26,17 @@
             </div>
         </div>
 
+        @include('warehouses.index._search_form')
+
         <div class="hr-line-dashed"></div>
 
-        @include('warehouses.index._results_table')
+        @include('warehouses.index._results')
 
         <div class="row">
-            <div class="pull-right">
-                {!! $warehouses->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
+            <div class="col-md-12">
+                <div class="pull-right">
+                    {!! $warehouses->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
+                </div>
             </div>
         </div>
     </div>
