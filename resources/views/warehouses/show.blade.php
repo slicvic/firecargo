@@ -36,7 +36,7 @@
             <div class="ibox">
                 <div class="ibox-content">
                     <h2>Details</h2>
-                    <table class="table warehouse-info-table table-responsive">
+                    <table class="table table">
                         <tr>
                             <th>Shipper</th>
                             <td>{!! $warehouse->present()->shipperLink() !!}</td>
