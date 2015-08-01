@@ -66,11 +66,11 @@ class ShippersController extends BaseAuthController {
     {
         $input = $request->only('account', 'address');
 
-        // Validate input
         $rules = [
             'name' => 'required'
         ];
 
+        // Validate input
         $this->validate($input['account'], $rules);
 
         // Create account
@@ -115,11 +115,11 @@ class ShippersController extends BaseAuthController {
     {
         $input = $request->only('account', 'address');
 
-        // Validate input
         $rules = [
             'name' => 'required'
         ];
 
+        // Validate input
         $this->validate($input['account'], $rules);
 
         // Update account

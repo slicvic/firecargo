@@ -59,9 +59,8 @@ class UsersController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $this->beforeValidate($request);
+        $input = $this->prepareInput($request);
 
-        // Validate input
         $rules = [
             'company_id' => 'required',
             'role_id' => 'required',
@@ -71,6 +70,7 @@ class UsersController extends BaseAuthController {
             'password' => 'required|min:8'
         ];
 
+        // Validate input
         $this->validate($input['user'], $rules);
 
         // Create user
@@ -102,9 +102,8 @@ class UsersController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        $input = $this->beforeValidate($request);
+        $input = $this->prepareInput($request);
 
-        // Validate input
         $rules = [
             'company_id' => 'required',
             'role_id' => 'required',
@@ -114,6 +113,7 @@ class UsersController extends BaseAuthController {
             'password' => 'min:8'
         ];
 
+        // Validate input
         $this->validate($input['user'], $rules);
 
         // Update user
@@ -128,7 +128,7 @@ class UsersController extends BaseAuthController {
      * @param  Request $request
      * @return array
      */
-    private function beforeValidate(Request $request)
+    private function prepareInput(Request $request)
     {
         $input = $request->only('user');
 

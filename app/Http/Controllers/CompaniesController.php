@@ -58,12 +58,12 @@ class CompaniesController extends BaseAuthController {
     {
         $input = $request->all();
 
-        // Validate input
         $rules = [
             'name' => 'required',
             'shortname' => 'required'
         ];
 
+        // Validate input
         $this->validate($input, $rules);
 
         // Create company
@@ -102,12 +102,12 @@ class CompaniesController extends BaseAuthController {
     {
         $input = $request->only('name', 'shortname');
 
-        // Validate input
         $rules = [
             'name' => 'required',
             'shortname' => 'required'
         ];
 
+        // Validate input
         $this->validate($input, $rules);
 
         // Update company

@@ -66,12 +66,12 @@ class ClientsController extends BaseAuthController {
     {
         $input = $request->only('account', 'address');
 
-        // Validate input
         $rules = [
             'name' => 'required',
             'email' => 'email|unique:accounts,email',
         ];
 
+        // Validate input
         $this->validate($input['account'], $rules);
 
         // Create account
@@ -116,12 +116,12 @@ class ClientsController extends BaseAuthController {
     {
         $input = $request->only('account', 'address');
 
-        // Validate input
         $rules = [
             'name' => 'required',
             'email' => 'email|unique:accounts,email,' . $id,
         ];
 
+        // Validate input
         $this->validate($input['account'], $rules);
 
         // Update account

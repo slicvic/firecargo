@@ -166,7 +166,7 @@ class ShipmentsController extends BaseAuthController {
     }
 
     /**
-     * Prepares and validates the input for creating and updating a shipment.
+     * Prepares and validates the given input and applies it to the given shipment.
      *
      * @param  Request  $request
      * @param  Shipment $shipment
@@ -177,14 +177,13 @@ class ShipmentsController extends BaseAuthController {
     {
         $input = $request->only('shipment', 'pieces');
 
-        // Validate input
         $rules = [
             'departure_date' => 'required',
             'reference_number' => 'required',
-            'carrier' => 'required|min:3',
-            'pieces' => '',
+            'carrier' => 'required|min:3'
         ];
 
+        // Validate input
         $validator = Validator::make($input['shipment'], $rules);
 
         if ($validator->fails())

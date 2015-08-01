@@ -20,6 +20,7 @@ class AccountObserver {
         if ($account->isClient())
         {
             // Update client's packages hold status
+
             Package::where('client_account_id', $account->id)
                 ->whereNull('shipment_id')
                 ->update(['hold' => ($account->autoship ? FALSE : TRUE)]);

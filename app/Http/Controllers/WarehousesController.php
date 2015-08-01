@@ -199,15 +199,17 @@ class WarehousesController extends BaseAuthController {
     {
         $input = $request->only('term', 'type');
 
+        // Validate input
         if (strlen($input['term']) < 2)
         {
             return response()->json([]);
         }
 
-        $accounts = Account::autocompleteSearch(
-                $input['term'],
-                ($input['type'] === 'shipper' ? AccountType::SHIPPER : AccountType::CLIENT)
-            )
+        // Determine account type ID
+        $accountTypeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CLIENT;
+
+        // Search
+        $accounts = Account::autocompleteSearch($input['term'], $accountTypeId)
             ->mine()
             ->limit(25)
             ->get();
@@ -240,7 +242,7 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Validates the given input and applies it to the warehouse.
+     * Prepares and validates the given input and applies it to the given warehouse.
      *
      * @param  Request    $request
      * @param  Warehouse  $warehouse
@@ -251,13 +253,13 @@ class WarehousesController extends BaseAuthController {
     {
         $input = $request->only('warehouse', 'packages');
 
-        // Validate input
         $rules = [
             'shipper' => 'required|min:3',
             'client' => 'required|min:5',
             'carrier' => 'required|min:3',
         ];
 
+        // Validate input
         $validator = Validator::make($input['warehouse'], $rules);
 
         if ($validator->fails())

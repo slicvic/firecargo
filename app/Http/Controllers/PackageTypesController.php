@@ -113,7 +113,7 @@ class PackageTypesController extends BaseAuthController {
     {
         if ( ! PackageType::findOrFail($id)->delete())
         {
-            return $this->redirectBackWithError('Package type delete failed.');
+            return $this->redirectBackWithError('Package type deletion failed.');
         }
 
         return $this->redirectBackWithSuccess('Package type deleted.');

@@ -69,11 +69,11 @@ class CompanyProfileController extends BaseAuthController {
     {
         $input = $request->only('company', 'address');
 
-        // Validate input
         $rules = [
             'name' => 'required'
         ];
 
+        // Validate input
         $this->validate($input['company'], $rules);
 
         // Update company
@@ -103,6 +103,7 @@ class CompanyProfileController extends BaseAuthController {
         $input = $request->only('file');
 
         // Validate input
+
         $validator = Validator::make($input, [
             'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . Upload::MAX_FILE_SIZE
         ]);
@@ -112,7 +113,8 @@ class CompanyProfileController extends BaseAuthController {
            return response()->json(Flash::view($validator), 500);
         }
 
-        // Save photo
+        // Save logo
+
         try
         {
             Upload::saveCompanyLogo($input['file'], $this->user->company->id);

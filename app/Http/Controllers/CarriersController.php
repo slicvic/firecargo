@@ -112,14 +112,14 @@ class CarriersController extends BaseAuthController {
     {
         if ( ! Carrier::findOrFail($id)->delete())
         {
-            return $this->redirectBackWithError('Carrier delete failed.');
+            return $this->redirectBackWithError('Carrier deletion failed.');
         }
 
         return $this->redirectBackWithSuccess('Carrier deleted.');
     }
 
     /**
-     * Retrieves a list of carriers for a jquery autocomplete field.
+     * Retrieves a list of carriers for an ajax autocomplete field.
      *
      * @param  Request  $request
      * @return JsonResponse
@@ -128,14 +128,18 @@ class CarriersController extends BaseAuthController {
     {
         $input = $request->only('term');
 
+        // Validate input
         if (strlen($input['term']) < 2)
         {
             return response()->json([]);
         }
 
+        // Search
+        $carriers = Carrier::autocompleteSearch($input['term']);
+
         $response = [];
 
-        foreach(Carrier::autocompleteSearch($input['term']) as $carrier)
+        foreach( as $carrier)
         {
             $response[] = [
                 'id'    => $carrier->id,
