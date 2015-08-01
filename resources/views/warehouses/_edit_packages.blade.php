@@ -23,19 +23,19 @@
             <tbody>
                 <tr>
                     <td>
-                        <span id="total-packages" class="btn btn-default m-r-sm">0</span>
+                        <span id="total-packages" class="btn btn-primary m-r-sm">0</span>
                         Pieces
                     </td>
                     <td>
-                        <span id="gross-weight" class="btn btn-default m-r-sm">0</span>
+                        <span id="gross-weight" class="btn btn-primary m-r-sm">0</span>
                         Gross Weight
                     </td>
                     <td>
-                        <span id="volume-weight" class="btn btn-default m-r-sm">0</span>
+                        <span id="volume-weight" class="btn btn-primary m-r-sm">0</span>
                         Volume Weight
                     </td>
                     <td>
-                        <span id="charge-weight" class="btn btn-default m-r-sm">0</span>
+                        <span id="charge-weight" class="btn btn-primary m-r-sm">0</span>
                         Charge Weight
                     </td>
                 </tr>

@@ -2,6 +2,9 @@
 
 @section('title', 'Pieces')
 @section('subtitle', 'Manage Your Warehouse Pieces')
+@section('actions')
+    <a href="/shipments/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Shipment</a>
+@stop
 
 @section('page_content')
 <div class="ibox float-e-margins">

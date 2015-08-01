@@ -124,6 +124,14 @@ $(function() {
             $('#packages-container').on('click', '.clone-package-btn', that.clonePackage);
             $('#packages-container').on('click', '.remove-package-btn', that.removePackage);
             $('#add-package-btn').on('click', that.addPackage);
+            $('#add-package-tracking').keypress(function(e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    that.addPackage();
+                }
+            });
+
             $('#packages-container').on('keyup', '.metric', that.updateTotals);
 
             // Toggle panel theme based on checkbox state for packages
