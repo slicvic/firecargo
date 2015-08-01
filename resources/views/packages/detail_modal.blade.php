@@ -8,7 +8,7 @@
         <div class="col-xs-9"><p><a href="#" class="editable" data-name="tracking_number">{{ $package->tracking_number }}</a></p></div>
     </div>
     <div class="row">
-        <div class="col-xs-3"><strong>Client</strong></div>
+        <div class="col-xs-3"><strong>Customer</strong></div>
         <div class="col-xs-9"><p>{!! $package->present()->clientLink() !!}</p></div>
     </div>
     <div class="row">

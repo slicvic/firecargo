@@ -19,7 +19,7 @@
                     <tr class="info">
                         <td colspan="9">
                             <i>Warehouse</i> {!! $packages[0]->present()->warehouseLink() !!}
-                            <i>Client</i> {!! $packages[0]->warehouse->present()->clientLink() !!}
+                            <i>Customer</i> {!! $packages[0]->warehouse->present()->clientLink() !!}
                         </td>
                     </tr>
                     @foreach ($packages as $package)

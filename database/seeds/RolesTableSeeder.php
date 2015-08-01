@@ -17,7 +17,7 @@ class RolesTableSeeder extends Seeder {
         DB::table('roles')->insert([
             ['name' => 'Super Admin', 'description' => 'Administrative user, has access to everything'],
             ['name' => 'Super Agent', 'description' => 'Company owner or primary contact'],
-            ['name' => 'Client', 'description' => 'Company customer'],
+            ['name' => 'Customer', 'description' => 'Company customer or client'],
             ['name' => 'Agent', 'description' => 'Company staff'],
         ]);
     }

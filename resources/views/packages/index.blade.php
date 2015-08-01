@@ -16,9 +16,9 @@
                     @endif
                 </h2>
                 <div class="pull-right">
-                    <i class="fa fa-circle text-danger"></i>&nbsp;&nbsp;Unprocessed &nbsp;&nbsp;
-                    <i class="fa fa-circle text-warning"></i>&nbsp;&nbsp;On Hold Per Client's Request&nbsp;&nbsp;
-                    <i class="fa fa-circle text-navy"></i>&nbsp;&nbsp;Shipped
+                    <i class="fa fa-circle text-danger"></i>&nbsp;&nbsp;<span data-toggle="tooltip" data-placement="left" title="Pieces awaiting shipment.">Unprocessed</span>&nbsp;&nbsp;
+                    <i class="fa fa-circle text-warning"></i>&nbsp;&nbsp;<span data-toggle="tooltip" data-placement="left" title="Pieces on hold as per customer's request.">On Hold</span>&nbsp;&nbsp;
+                    <i class="fa fa-circle text-navy"></i>&nbsp;&nbsp;<span data-toggle="tooltip" data-placement="left" title="Pieces shipped.">Shipped</span>
                 </div>
             </div>
         </div>

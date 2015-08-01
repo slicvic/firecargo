@@ -15,7 +15,7 @@ class AccountTypesTableSeeder extends Seeder {
         DB::table('account_types')->delete();
 
         DB::table('account_types')->insert([
-            ['name' => 'Client'],
+            ['name' => 'Customer'],
             ['name' => 'Shipper'],
         ]);
     }

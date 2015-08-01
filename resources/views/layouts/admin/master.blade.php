@@ -121,7 +121,7 @@
                         </li>
 
                         <li{{ (Request::is('clients') || Request::is('clients/*')) ? ' class=active' : '' }}>
-                            <a href="/clients"><i class="fa fa-users"></i><span>Clients</span></a>
+                            <a href="/clients"><i class="fa fa-users"></i><span>Customers</span></a>
                         </li>
 
                         <li{{ (Request::is('shippers') || Request::is('shippers/*')) ? ' class=active' : '' }}>

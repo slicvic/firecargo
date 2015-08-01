@@ -1,7 +1,7 @@
 @extends('layouts.admin.page')
 
 @section('title', 'Warehouses')
-@section('subtitle', 'Manage Your Warehouses')
+@section('subtitle', 'Manage Your Consolidation Warehouses')
 @section('actions')
     <a href="/warehouses/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Warehouse</a>
 @stop
@@ -19,9 +19,9 @@
                     @endif
                 </h2>
                 <div class="pull-right">
-                    <i class="fa fa-circle text-danger"></i>&nbsp;&nbsp;Unprocessed &nbsp;&nbsp;
-                    <i class="fa fa-circle text-warning"></i>&nbsp;&nbsp;Pending &nbsp;&nbsp;
-                    <i class="fa fa-circle text-navy"></i>&nbsp;&nbsp;Complete
+                    <i class="fa fa-circle text-danger"></i>&nbsp;&nbsp;<span data-toggle="tooltip" data-placement="bottom" title="All pieces in warehouse awaiting shipment.">Unprocessed</span>&nbsp;&nbsp;
+                    <i class="fa fa-circle text-warning"></i>&nbsp;&nbsp;<span data-toggle="tooltip" data-placement="bottom" title="Some pieces in warehouse awaiting shipment.">Pending</span>&nbsp;&nbsp;
+                    <i class="fa fa-circle text-navy"></i>&nbsp;&nbsp;<span data-toggle="tooltip" data-placement="bottom" title="All pieces in warehouse shipped.">Complete</span>
                 </div>
             </div>
         </div>

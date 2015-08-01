@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label ccol-sm-2">Client *</label>
+            <label class="control-label ccol-sm-2">Customer *</label>
             <div class="ccol-sm-5">
                 <input type="hidden" id="client-id" name="warehouse[client_account_id]" value="{{ $warehouse->client_account_id }}">
                 <input required type="text" id="client" name="warehouse[client]" placeholder="e.g. Neymar Jr" class="form-control" value="{{ $warehouse->present()->client() }}">

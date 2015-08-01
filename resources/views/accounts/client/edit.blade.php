@@ -3,13 +3,13 @@
 @section('icon', 'client')
 
 @section('title')
-    {{ $account->exists ? 'Edit Client # ' . $account->id : 'Add New Client' }}
+    {{ $account->exists ? 'Edit Customer # ' . $account->id : 'Add New Customer' }}
 @stop
 
 @section('subtitle')
 <ol class="breadcrumb">
     <li>
-        <a href="/clients">Clients</a>
+        <a href="/clients">Customers</a>
     </li>
     <li class="active">
         <strong>{{ $account->exists ? 'Edit' : 'Create' }}</strong>
@@ -107,7 +107,7 @@
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">
                             <a class="btn btn-white" href="/clients">Cancel</a>
-                            <button class="btn btn-primary" type="submit">Save Client</button>
+                            <button class="btn btn-primary" type="submit">Save Customer</button>
                         </div>
                     </div>
                 </div>

@@ -79,13 +79,13 @@ class ClientsController extends BaseAuthController {
 
         if ( ! $account->save())
         {
-            return $this->redirectBackWithError('Client creation failed, please try again.');
+            return $this->redirectBackWithError('Customer creation failed, please try again.');
         }
 
         // Create address
         $account->address()->save(new Address($input['address']));
 
-        return $this->redirectWithSuccess('clients', 'Client created.');
+        return $this->redirectWithSuccess('clients', 'Customer created.');
     }
 
     /**
@@ -137,6 +137,6 @@ class ClientsController extends BaseAuthController {
             $account->address()->save(new Address($input['address']));
         }
 
-        return $this->redirectBackWithSuccess('Client updated.');
+        return $this->redirectBackWithSuccess('Customer updated.');
     }
 }

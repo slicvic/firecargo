@@ -8,7 +8,7 @@
                 <th>{!! Html::linkToSort('/packages', 'Value', 'invoice_value', $params['sort'], $params['order']) !!}</th>
                 <th>Description</th>
                 <th>{!! Html::linkToSort('/packages', 'Warehouse', 'warehouse_id', $params['sort'], $params['order']) !!}</th>
-                <th>{!! Html::linkToSort('/packages', 'Client', 'client_account_id', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/packages', 'Customer', 'client_account_id', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/packages', 'Shipment', 'shipment_id', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/packages', 'Created', 'created_at', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/packages', 'Updated', 'updated_at', $params['sort'], $params['order']) !!}</th>

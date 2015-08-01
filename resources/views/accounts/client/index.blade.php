@@ -1,11 +1,11 @@
 @extends('layouts.admin.page.index')
 
 @section('icon', 'group')
-@section('title', 'Clients')
-@section('subtitle', 'Manage Your Clients')
+@section('title', 'Customers')
+@section('subtitle', 'Manage Your Customers')
 
 @section('actions')
-    <a href="/clients/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Client</a>
+    <a href="/clients/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Customer</a>
 @stop
 
 @section('thead')

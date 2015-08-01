@@ -8,9 +8,9 @@
                 <th>Pieces</th>
                 <th>Gross Weight</th>
                 <th>Volume</th>
-                <th>Carrier</th>
+                <th>Customer</th>
                 <th>Shipper</th>
-                <th>Client</th>
+                <th>Carrier</th>
                 <th>{!! Html::linkToSort('/warehouses', 'Created', 'created_at', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/warehouses', 'Updated', 'updated_at', $params['sort'], $params['order']) !!}</th>
                 <th>Action</th>
@@ -25,9 +25,9 @@
                 <td><span class="label label-info">{{ $warehouse->packages->count() }}</span></td>
                 <td>{{ $warehouse->present()->grossWeight() }}</td>
                 <td>{{ $warehouse->present()->volumeWeight() }}</td>
-                <td>{{ $warehouse->present()->carrier() }}</td>
-                <td>{!! $warehouse->present()->shipperLink() !!}</td>
                 <td>{!! $warehouse->present()->clientLink() !!}</td>
+                <td>{!! $warehouse->present()->shipperLink() !!}</td>
+                <td>{{ $warehouse->present()->carrier() }}</td>
                 <td>{{ $warehouse->present()->createdAt() }}</td>
                 <td>{{ $warehouse->present()->updatedAt() }}</td>
                 <td>
