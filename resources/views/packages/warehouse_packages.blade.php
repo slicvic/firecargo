@@ -1,3 +1,7 @@
+<?php if ( ! count($packages)) { ?>
+    <div class="alert alert-warning text-center"><i class="fa fa-exclamation-triangle"></i> No Pieces In Warehouse</div>
+<?php return; } ?>
+
 <div class="table-responsive">
     <table class="table table-striped table-bordered datatable">
         <thead>
