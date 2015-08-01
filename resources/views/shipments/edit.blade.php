@@ -6,7 +6,7 @@
 
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-sm-4">
-            <h2>{{ $shipment->exists ? 'Edit Shipment # ' . $shipment->id : 'Create Shipment' }}</h2>
+            <h2>{{ $shipment->exists ? 'Edit Shipment # ' . $shipment->id : 'Create New Shipment' }}</h2>
             <ol class="breadcrumb">
                 <li>
                     <a href="/shipments">Shipments</a>
