@@ -14,6 +14,7 @@
     <th>Email</th>
     <th>Phone</th>
     <th>Mobile</th>
+    <th>Address</th>
     <th>Registered?</th>
     <th>Action</th>
 @stop
@@ -26,8 +27,8 @@
             <td>{{ $account->email }}</td>
             <td>{{ $account->phone }}</td>
             <td>{{ $account->mobile_phone }}</td>
+            <td>{!! $account->present()->address() !!}</td>
             <td>{!! $account->user_id ? '<span class="badge badge-primary">Yes</span>' : '<span class="badge badge-danger">No</span>' !!}</td>
-
             <td><a href="/customers/edit/{{ $account->id }}" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a></td>
         </tr>
     @endforeach
