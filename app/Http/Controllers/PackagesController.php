@@ -102,12 +102,12 @@ class PackagesController extends BaseAuthController {
      */
     public function getAjaxDetail(Request $request, $id)
     {
-        if ($this->user->isClient())
+        if ($this->user->isCustomer())
         {
-            $package = Package::where(['id' => $id, 'client_account_id' => $this->user->client->id])
+            $package = Package::where(['id' => $id, 'customer_account_id' => $this->user->customer->id])
                 ->firstOrFail();
 
-            return view('packages.client.detail_modal', ['package' => $package]);
+            return view('packages.customer.detail_modal', ['package' => $package]);
         }
 
         $package = Package::findMineOrFail($id);

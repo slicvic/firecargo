@@ -9,7 +9,7 @@
     </div>
     <div class="row">
         <div class="col-xs-3"><strong>Customer</strong></div>
-        <div class="col-xs-9"><p>{!! $package->present()->clientLink() !!}</p></div>
+        <div class="col-xs-9"><p>{!! $package->present()->customerLink() !!}</p></div>
     </div>
     <div class="row">
         <div class="col-xs-3"><strong>Warehouse #</strong></div>

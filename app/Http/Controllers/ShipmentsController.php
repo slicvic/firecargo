@@ -79,7 +79,7 @@ class ShipmentsController extends BaseAuthController {
     {
         // Retrieve all unprocessed packages
         $unprocessed = Package::mine()->unprocessed()
-            ->with('type', 'client')
+            ->with('type', 'customer')
             ->orderBy('warehouse_id', 'DESC')
             ->orderBy('id', 'ASC')
             ->get();
@@ -122,11 +122,11 @@ class ShipmentsController extends BaseAuthController {
         $shipment = Shipment::findMineOrFail($id);
 
         // Retrieve packages assigned to this shipment
-        $assigned = $shipment->packages()->with('client', 'type')->get();
+        $assigned = $shipment->packages()->with('customer', 'type')->get();
 
         // Retrieve all other unprocessed packages
         $unprocessed = Package::mine()->unprocessed()
-            ->with('type', 'client')
+            ->with('type', 'customer')
             ->orderBy('warehouse_id', 'DESC')
             ->orderBy('id', 'ASC')
             ->get();

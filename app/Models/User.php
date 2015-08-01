@@ -93,9 +93,9 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the user's client account.
+     * Gets the user's customer account.
      *
-     * NOTE: ONLY "CLIENT" USERS HAVE AN ACCOUNT.
+     * NOTE: ONLY "CUSTOMER" USERS HAVE AN ACCOUNT.
      *
      * @return Account
      */
@@ -125,13 +125,13 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Checks if the user is a client or not.
+     * Checks if the user is a customer or not.
      *
      * @return bool
      */
-    public function isClient()
+    public function isCustomer()
     {
-        return ((int) $this->role_id === Role::CLIENT);
+        return ((int) $this->role_id === Role::CUSTOMER);
     }
 
     /**

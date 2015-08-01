@@ -40,9 +40,9 @@ class UserProfileController extends BaseAuthController {
      */
     public function getProfile()
     {
-        if ($this->user->isClient())
+        if ($this->user->isCustomer())
         {
-            return view('user_profile.client.show', ['user' => $this->user]);
+            return view('user_profile.customer.show', ['user' => $this->user]);
         }
 
         return view('user_profile.show', ['user' => $this->user]);
@@ -55,9 +55,9 @@ class UserProfileController extends BaseAuthController {
      */
     public function getEdit()
     {
-        if ($this->user->isClient())
+        if ($this->user->isCustomer())
         {
-            return view('user_profile.client.edit', [
+            return view('user_profile.customer.edit', [
                 'account' => $this->user->account,
                 'address' => $this->user->account->address ?: new Address
             ]);
@@ -76,9 +76,9 @@ class UserProfileController extends BaseAuthController {
      */
     public function postProfile(Request $request)
     {
-        if ($this->user->isClient())
+        if ($this->user->isCustomer())
         {
-            $this->updateClientProfile($request);
+            $this->updateCustomerProfile($request);
         }
         else
         {
@@ -192,12 +192,12 @@ class UserProfileController extends BaseAuthController {
     }
 
     /**
-     * Updates a client profile.
+     * Updates a customer profile.
      *
      * @param  Request  $request
      * @return void
      */
-    private function updateClientProfile(Request $request)
+    private function updateCustomerProfile(Request $request)
     {
         $input = $request->only('account', 'address');
 

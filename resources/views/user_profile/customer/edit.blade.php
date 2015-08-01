@@ -1,72 +1,46 @@
-@extends('layouts.admin.page')
+@extends('user_profile.layout')
 
-@section('icon', 'client')
-
-@section('title')
-    {{ $account->exists ? 'Edit Customer # ' . $account->id : 'Add New Customer' }}
-@stop
-
-@section('subtitle')
-<ol class="breadcrumb">
-    <li>
-        <a href="/clients">Customers</a>
-    </li>
-    <li class="active">
-        <strong>{{ $account->exists ? 'Edit' : 'Create' }}</strong>
-    </li>
-</ol>
-@stop
-
-@section('page_content')
-<form action="/clients/{{ $account->exists ? 'update/' . $account->id : 'store' }}" method="post" class="form-horizontal">
+@section('user_profile_content')
+<form action="/user/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h3>Account Info</h3>
-                    <div class="hr-line-dashed"></div>
-                      <div class="form-group">
-                        <label class="control-label col-sm-2">Name *</label>
-                        <div class="col-sm-3">
-                            <input required type="text" name="account[name]" class="form-control" placeholder="Name" value="{{ Input::old('account.name', $account->name) }}">
+                    <h2>Account Info</h2>
+                    <div class="clear hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">First Name</label>
+                        <div class="col-sm-5">
+                            <input required type="text" name="account[firstname]" class="form-control" value="{{ Input::old('account.firstname', $account->firstname) }}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Contact</label>
-                        <div class="col-sm-3">
-                            <input type="text" name="account[firstname]" placeholder="First Name" class="form-control" value="{{ Input::old('account.firstname', $account->firstname) }}">
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" name="account[lastname]" placeholder="Last Name" class="form-control" value="{{ Input::old('account.lastname', $account->lastname) }}">
+                        <label class="control-label col-sm-2">Last Name</label>
+                        <div class="col-sm-5">
+                            <input required type="text" name="account[lastname]" class="form-control" value="{{ Input::old('account.lastname', $account->lastname) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Email</label>
-                        <div class="col-sm-6">
-                            <input type="email" name="account[email]" placeholder="Email" class="form-control" value="{{ Input::old('account.email', $account->email) }}">
+                        <div class="col-sm-5">
+                            <input required type="email" name="account[email]" class="form-control" value="{{ Input::old('account.email', $account->email) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Phone</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <input type="text" name="account[phone]" placeholder="Phone" class="form-control" value="{{ Input::old('account.phone', $account->phone) }}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Fax</label>
-                        <div class="col-sm-3">
-                            <input type="text" name="account[fax]" placeholder="Fax" class="form-control" value="{{ Input::old('account.fax', $account->fax) }}">
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="control-label col-sm-2">Mobile</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <input type="text" name="account[mobile_phone]" placeholder="Mobile" class="form-control" value="{{ Input::old('account.mobile_phone', $account->mobile_phone) }}">
                         </div>
                     </div>
-                    <h3>Address</h3>
-                    <div class="hr-line-dashed"></div>
+                    <h2>Address</h2>
+                    <div class="clear hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Address 1</label>
                         <div class="col-sm-5">
@@ -76,7 +50,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Address 2</label>
                         <div class="col-sm-5">
-                            <input type="text" name="address[address2]" placeholder="Address 2" placeholder="Company" class="form-control" value="{{ Input::old('address.address2', $address->address2) }}">
+                            <input type="text" name="address[address2]" placeholder="Address 2" class="form-control" value="{{ Input::old('address.address2', $address->address2) }}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -93,7 +67,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Postal Code</label>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <input type="text" name="address[postal_code]" placeholder="Postal Code" class="form-control" value="{{ Input::old('address.postal_code', $address->postal_code) }}">
                         </div>
                     </div>
@@ -103,11 +77,22 @@
                             @include('countries._select', ['name' => 'address[country_id]', 'selectedOption' => Input::old('address.country_id', $address->country_id)])
                         </div>
                     </div>
-                    <div class="hr-line-dashed"></div>
+                    <h2>Preferences</h2>
+                    <div class="clear hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Auto-ship Packages?</label>
+                        <div class="col-md-10">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" class="icheck-green" name="account[autoship]" value="1"{{ Input::old('account.autoship', $account->autoship) ? ' checked' : '' }}> Yes
+                                @include('user_profile.customer._autoship_alert')
+                            </label>
+                        </div>
+                    </div>
+                    <div class="clear hr-line-dashed"></div>
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">
-                            <a class="btn btn-white" href="/clients">Cancel</a>
-                            <button class="btn btn-primary" type="submit">Save Customer</button>
+                            <a class="btn btn-white" href="/user/profile">Cancel</a>
+                            <button class="btn btn-primary" type="submit">Save changes</button>
                         </div>
                     </div>
                 </div>

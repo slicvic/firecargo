@@ -82,7 +82,7 @@
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
                                 <li><a href="/user/profile">My Profile</a></li>
-                                @if ( ! Auth::user()->isClient())
+                                @if ( ! Auth::user()->isCustomer())
                                     <li><a href="/company/profile">Company Profile</a></li>
                                 @endif
                                 <li class="divider"></li>
@@ -120,8 +120,8 @@
                             <a href="/packages"><i class="fa fa-th"></i><span>Pieces</span></a>
                         </li>
 
-                        <li{{ (Request::is('clients') || Request::is('clients/*')) ? ' class=active' : '' }}>
-                            <a href="/clients"><i class="fa fa-users"></i><span>Customers</span></a>
+                        <li{{ (Request::is('customers') || Request::is('customers/*')) ? ' class=active' : '' }}>
+                            <a href="/customers"><i class="fa fa-users"></i><span>Customers</span></a>
                         </li>
 
                         <li{{ (Request::is('shippers') || Request::is('shippers/*')) ? ' class=active' : '' }}>

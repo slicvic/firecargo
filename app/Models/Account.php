@@ -104,7 +104,7 @@ class Account extends Base {
     /**
      * Gets the account's user.
      *
-     * NOTE: ONLY "CLIENT" ACCOUNTS HAVE A USER.
+     * NOTE: ONLY "CUSTOMER" ACCOUNTS HAVE A USER.
      *
      * @return User
      */
@@ -114,14 +114,14 @@ class Account extends Base {
     }
 
     /**
-     * Finds client accounts.
+     * Finds customer accounts.
      *
      * @param  Builder  $query
      * @return Builder
      */
-    public function scopeClients($query)
+    public function scopeCustomers($query)
     {
-        return $query->where('type_id', AccountType::CLIENT);
+        return $query->where('type_id', AccountType::CUSTOMER);
     }
 
     /**
@@ -136,13 +136,13 @@ class Account extends Base {
     }
 
     /**
-     * Checks if this is a client account or not.
+     * Checks if this is a customer account or not.
      *
      * @return bool
      */
-    public function isClient()
+    public function isCustomer()
     {
-        return ((int) $this->type_id === AccountType::CLIENT);
+        return ((int) $this->type_id === AccountType::CUSTOMER);
     }
 
     /**

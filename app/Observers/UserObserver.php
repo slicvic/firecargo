@@ -35,15 +35,15 @@ class UserObserver {
      */
     public function saved($user)
     {
-        if ($user->isClient())
+        if ($user->isCustomer())
         {
-            // Create or update user's client account
+            // Create or update user's customer account
 
             $account = $user->account ?: new Account;
             $account->firstname = $user->firstname;
             $account->lastname = $user->lastname;
             $account->name = "{$user->firstname} {$user->lastname}";
-            $account->type_id = AccountType::CLIENT;
+            $account->type_id = AccountType::CUSTOMER;
             $account->email = $user->email;
             $account->user()->associate($user);
             $account->save();

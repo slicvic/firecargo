@@ -22,7 +22,7 @@
                         <tr class="{{ $inShipment ? 'success' : 'default' }}">
                             <td><input type="checkbox" data-status="{{ $inShipment ? 'in' : 'out' }}" class="icheck-green status-icheck" name="pieces[{{ $package->id }}]"{{ $inShipment ? ' checked' : '' }}></td>
                             <td>{{ $package->id }}</td>
-                            <td><i>Warehouse:</i> {!! $package->present()->warehouseLink() !!} <i>Customer:</i> {!! $package->present()->clientLink() !!}</td>
+                            <td><i>Warehouse:</i> {!! $package->present()->warehouseLink() !!} <i>Customer:</i> {!! $package->present()->customerLink() !!}</td>
                             <td>{{ $package->type->name }}</td>
                             <td>{{ $package->tracking_number }}</td>
                             <td>{{ $package->description }}</td>

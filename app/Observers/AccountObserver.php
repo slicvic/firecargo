@@ -17,11 +17,11 @@ class AccountObserver {
      */
     public function saved($account)
     {
-        if ($account->isClient())
+        if ($account->isCustomer())
         {
-            // Update client's packages hold status
+            // Update customer's packages hold status
 
-            Package::where('client_account_id', $account->id)
+            Package::where('customer_account_id', $account->id)
                 ->whereNull('shipment_id')
                 ->update(['hold' => ($account->autoship ? FALSE : TRUE)]);
         }

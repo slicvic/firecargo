@@ -16,7 +16,7 @@ class Role extends Base {
      */
     const SUPER_ADMIN = 1;
     const SUPER_AGENT = 2;
-    const CLIENT      = 3;
+    const CUSTOMER    = 3;
     const AGENT       = 4;
 
     /**

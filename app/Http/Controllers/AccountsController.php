@@ -27,7 +27,7 @@ class AccountsController extends BaseAuthController {
     }
 
     /**
-     * Retrieves client or shipper accounts for an ajax autocomplete field.
+     * Retrieves customer or shipper accounts for an ajax autocomplete field.
      *
      * @param  Request  $request
      * @return JsonResponse
@@ -43,7 +43,7 @@ class AccountsController extends BaseAuthController {
         }
 
         // Determine account type ID
-        $typeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CLIENT;
+        $typeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CUSTOMER;
 
         // Search
         $accounts = Account::autocompleteSearch($input['term'], $typeId)

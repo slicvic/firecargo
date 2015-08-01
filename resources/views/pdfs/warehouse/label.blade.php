@@ -1,4 +1,4 @@
-<?php $client = $warehouse->client; ?>
+<?php $customer = $warehouse->customer; ?>
 <?php $company = $warehouse->company; ?>
 <?php $grossWeight = $warehouse->calculateGrossWeight(); ?>
 <?php $shipper = $warehouse->shipper; ?>
@@ -36,8 +36,8 @@ EMAIL: {{ $company->email }}
     <tr>
         <td width="20%">TO:</td>
         <td width="80%">
-<b>{{ strtoupper($client->name) }}</b><br>
-{!! strtoupper($client->present()->address()) !!}<br>
+<b>{{ strtoupper($customer->name) }}</b><br>
+{!! strtoupper($customer->present()->address()) !!}<br>
         </td>
     </tr>
 </table>

@@ -43,7 +43,7 @@
                         </tr>
                         <tr>
                             <th>Customer</th>
-                            <td>{!! $warehouse->present()->clientLink() !!}</td>
+                            <td>{!! $warehouse->present()->customerLink() !!}</td>
                         </tr>
                         <tr>
                             <th>Delivered By</th>

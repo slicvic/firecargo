@@ -20,9 +20,9 @@ class DashboardController extends BaseAuthController {
      */
     public function getIndex()
     {
-        if ($this->user->isClient())
+        if ($this->user->isCustomer())
         {
-            return $this->renderClientDashboard();
+            return $this->renderCustomerDashboard();
         }
         elseif ($this->user->isAgent())
         {
@@ -34,12 +34,12 @@ class DashboardController extends BaseAuthController {
         }
     }
 
-    private function renderClientDashboard()
+    private function renderCustomerDashboard()
     {
-        $criteria['client_account_id'] = $this->user->client->id;
+        $criteria['customer_account_id'] = $this->user->customer->id;
         $packages = Package::search($criteria);
 
-        return view('dashboard.client.index', ['packages' => $packages]);
+        return view('dashboard.customer.index', ['packages' => $packages]);
     }
 
     private function renderAgentDashboard()

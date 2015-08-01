@@ -42,25 +42,25 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the client's name.
+     * Presents the customer's name.
      *
      * @return string
      */
-    public function client()
+    public function customer()
     {
-        return $this->model->client->name;
+        return $this->model->customer->name;
     }
 
     /**
-     * Presents a link to its client's account page.
+     * Presents a link to its customer's account page.
      *
      * @return html
      */
-    public function clientLink()
+    public function customerLink()
     {
         return Html::linkWithIcon(
-            "/clients/edit/{$this->model->client_account_id}",
-            $this->model->client->name
+            "/customers/edit/{$this->model->customer_account_id}",
+            $this->model->customer->name
         );
     }
 

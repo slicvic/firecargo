@@ -21,7 +21,7 @@
                 <tr>
                     <td>{{ $package->id }}</td>
                     <td>{{ $package->tracking_number }}</td>
-                    <td>{!! $package->present()->clientLink() !!}</td>
+                    <td>{!! $package->present()->customerLink() !!}</td>
                     <td>{!! $package->present()->warehouseLink() !!}</td>
                     <td>{{ $package->type->name }}</td>
                     <td>{{ $package->present()->invoiceValue() }}</td>

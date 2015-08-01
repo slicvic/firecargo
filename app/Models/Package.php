@@ -47,7 +47,7 @@ class Package extends BaseSearchable {
         'type_id',
         'shipment_id',
         'warehouse_id',
-        'client_account_id',
+        'customer_account_id',
         'length',
         'width',
         'height',
@@ -69,7 +69,7 @@ class Package extends BaseSearchable {
         'warehouse_id',
         'type_id',
         'shipment_id',
-        'client_account_id',
+        'customer_account_id',
         'invoice_value',
         'tracking_number',
         'created_at',
@@ -103,9 +103,9 @@ class Package extends BaseSearchable {
      *
      * @return Warehouse
      */
-    public function client()
+    public function customer()
     {
-        return $this->belongsTo('App\Models\Account', 'client_account_id');
+        return $this->belongsTo('App\Models\Account', 'customer_account_id');
     }
 
     /**
@@ -245,16 +245,16 @@ class Package extends BaseSearchable {
     {
         $query = Package::query()
             ->orderBy('packages.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
-            ->with('type', 'client', 'shipment');
+            ->with('type', 'customer', 'shipment');
 
         if ( ! empty($criteria['company_id']))
         {
             $query->where('packages.company_id', $criteria['company_id']);
         }
 
-        if ( ! empty($criteria['client_account_id']))
+        if ( ! empty($criteria['customer_account_id']))
         {
-            $query->where('packages.client_account_id', $criteria['client_account_id']);
+            $query->where('packages.customer_account_id', $criteria['customer_account_id']);
         }
 
         if ( ! empty($criteria['status']))
@@ -278,19 +278,19 @@ class Package extends BaseSearchable {
             $searchTerm = '%' . $criteria['search'] . '%';
 
             $query
-                ->join('accounts AS clients', 'packages.client_account_id', '=', 'clients.id')
+                ->join('accounts AS customers', 'packages.customer_account_id', '=', 'customers.id')
                 ->leftJoin('shipments', 'packages.shipment_id', '=', 'shipments.id')
                 ->groupBy('packages.id')
                 ->whereRaw('(
                     packages.warehouse_id LIKE ?
-                    OR packages.client_account_id LIKE ?
+                    OR packages.customer_account_id LIKE ?
                     OR packages.description LIKE ?
                     OR packages.tracking_number LIKE ?
                     OR packages.invoice_number LIKE ?
                     OR packages.invoice_value LIKE ?
-                    OR clients.name LIKE ?
-                    OR clients.firstname LIKE ?
-                    OR clients.lastname LIKE ?
+                    OR customers.name LIKE ?
+                    OR customers.firstname LIKE ?
+                    OR customers.lastname LIKE ?
                     OR shipments.reference_number LIKE ?
                     )', [
                     $searchTerm,

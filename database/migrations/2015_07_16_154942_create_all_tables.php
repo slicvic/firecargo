@@ -189,7 +189,7 @@ class CreateAllTables extends Migration {
 		    $table->integer('company_id')->unsigned();
 		    $table->integer('status_id')->unsigned()->default(1);
 		    $table->integer('shipper_account_id')->unsigned();
-		    $table->integer('client_account_id')->unsigned();
+		    $table->integer('customer_account_id')->unsigned();
 		    $table->integer('carrier_id')->unsigned();
 		    $table->string('notes', 1000);
 		    $table->integer('creator_user_id')->unsigned();
@@ -200,7 +200,7 @@ class CreateAllTables extends Migration {
 		    $table->foreign('company_id')->references('id')->on('companies');
 		    $table->foreign('status_id')->references('id')->on('warehouse_statuses');
 		    $table->foreign('shipper_account_id')->references('id')->on('accounts');
-		    $table->foreign('client_account_id')->references('id')->on('accounts');
+		    $table->foreign('customer_account_id')->references('id')->on('accounts');
 		    $table->foreign('carrier_id')->references('id')->on('carriers');
 		    $table->foreign('creator_user_id')->references('id')->on('users');
 		    $table->foreign('updater_user_id')->references('id')->on('users');
@@ -222,7 +222,7 @@ class CreateAllTables extends Migration {
 		    $table->integer('company_id')->unsigned();
 		    $table->integer('warehouse_id')->unsigned();
 		    $table->integer('shipment_id')->unsigned()->nullable();
-		    $table->integer('client_account_id')->unsigned();
+		    $table->integer('customer_account_id')->unsigned();
 		    $table->integer('type_id')->unsigned();
 		    $table->float('length')->unsigned();
 		    $table->float('width')->unsigned();
@@ -243,7 +243,7 @@ class CreateAllTables extends Migration {
 		    $table->foreign('warehouse_id')->references('id')->on('warehouses');
 		    $table->foreign('shipment_id')->references('id')->on('shipments');
 		    $table->foreign('type_id')->references('id')->on('package_types');
-		    $table->foreign('client_account_id')->references('id')->on('accounts');
+		    $table->foreign('customer_account_id')->references('id')->on('accounts');
 		    $table->foreign('creator_user_id')->references('id')->on('users');
 		    $table->foreign('updater_user_id')->references('id')->on('users');
 		});
@@ -271,13 +271,13 @@ class CreateAllTables extends Migration {
 		Schema::drop('users');
 		Schema::drop('roles');
 
-		Schema::drop('clients');
-		Schema::drop('shippers');
+		Schema::drop('accounts');
+		Schema::drop('account_types');
 
 		Schema::drop('countries');
 		Schema::drop('addresses');
 		Schema::drop('carriers');
-		Schema::drop('log_user_actions');
 
+		Schema::drop('log_user_actions');
 	}
 }

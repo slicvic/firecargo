@@ -3,7 +3,7 @@
 <?php $chargeWeight = $warehouse->calculateChargeWeight(); ?>
 <?php $packages = $warehouse->packages; ?>
 <?php $totalPackages = count($packages); ?>
-<?php $client = $warehouse->client; ?>
+<?php $customer = $warehouse->customer; ?>
 <?php $company = $warehouse->company; ?>
 <style>
     .receipt-number {
@@ -21,8 +21,8 @@ TEL: {{ $company->phone }}<br>
 EMAIL: {{ $company->email }}<br><br>
 
 RECEIVED FOR:<br><br>
-{{ strtoupper($client->name) }}<br>
-{!! strtoupper($client->present()->address()) !!}<br>
+{{ strtoupper($customer->name) }}<br>
+{!! strtoupper($customer->present()->address()) !!}<br>
         </td>
         <td width="40%">
             <br><br><br><br><br><img src="data:image/png;base64,{{ $barcodeBase64 }}">

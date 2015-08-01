@@ -50,19 +50,19 @@ $(function() {
 
     /**
      * ---------------------------------------------
-     * Client autocomplete handler
+     * Customer autocomplete handler
      * ---------------------------------------------
      */
-    $('#client').keyup(function() {
-        $('#client-id').val('');
+    $('#customer').keyup(function() {
+        $('#customer-id').val('');
     });
 
-    $('#client').autocomplete({
-        source: '/accounts/ajax-autocomplete?type=client',
+    $('#customer').autocomplete({
+        source: '/accounts/ajax-autocomplete?type=customer',
         minLength: 2,
         select: function(event, ui) {
-            $('#client').val(ui.item.label);
-            $('#client-id').val(ui.item.id);
+            $('#customer').val(ui.item.label);
+            $('#customer-id').val(ui.item.id);
             return false;
         }
     }).autocomplete('instance')._renderItem = function(ul, item) {

@@ -10,11 +10,11 @@ use App\Models\AccountType;
 use App\Models\Address;
 
 /**
- * Client Accounts Controller
+ * Customer Accounts Controller
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class ClientsController extends BaseAuthController {
+class CustomersController extends BaseAuthController {
 
     /**
      * Constructor.
@@ -30,33 +30,33 @@ class ClientsController extends BaseAuthController {
     }
 
     /**
-     * Shows a list of client accounts.
+     * Shows a list of customer accounts.
      *
      * @param  Request  $request
      * @return Response
      */
     public function getIndex(Request $request)
     {
-        $accounts = Account::mine()->clients()->get();
+        $accounts = Account::mine()->customers()->get();
 
-        return view('accounts.client.index', ['accounts' => $accounts]);
+        return view('accounts.customer.index', ['accounts' => $accounts]);
     }
 
     /**
-     * Shows the form for creating a new client account.
+     * Shows the form for creating a new customer account.
      *
      * @return Response
      */
     public function getCreate()
     {
-        return view('accounts.client.edit', [
+        return view('accounts.customer.edit', [
             'account' => new Account,
             'address' => new Address
         ]);
     }
 
     /**
-     * Creates a new client account.
+     * Creates a new customer account.
      *
      * @param  Request  $request
      * @return Redirector
@@ -75,7 +75,7 @@ class ClientsController extends BaseAuthController {
 
         // Create account
         $account = new Account($input['account']);
-        $account->type_id = AccountType::CLIENT;
+        $account->type_id = AccountType::CUSTOMER;
 
         if ( ! $account->save())
         {
@@ -85,11 +85,11 @@ class ClientsController extends BaseAuthController {
         // Create address
         $account->address()->save(new Address($input['address']));
 
-        return $this->redirectWithSuccess('clients', 'Customer created.');
+        return $this->redirectWithSuccess('customers', 'Customer created.');
     }
 
     /**
-     * Shows the form for editing an client account.
+     * Shows the form for editing an customer account.
      *
      * @param  int  $id
      * @return Response
@@ -98,14 +98,14 @@ class ClientsController extends BaseAuthController {
     {
         $account = Account::findMineOrFail($id);
 
-        return view('accounts.client.edit', [
+        return view('accounts.customer.edit', [
             'account' => $account,
             'address' => $account->address ?: new Address
         ]);
     }
 
     /**
-     * Updates a specific client account.
+     * Updates a specific customer account.
      *
      * @param  Request  $request
      * @param  int      $id

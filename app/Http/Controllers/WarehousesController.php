@@ -215,7 +215,7 @@ class WarehousesController extends BaseAuthController {
 
         $rules = [
             'shipper' => 'required|min:3',
-            'client' => 'required|min:5',
+            'customer' => 'required|min:5',
             'carrier' => 'required|min:3',
         ];
 
@@ -247,21 +247,21 @@ class WarehousesController extends BaseAuthController {
             $input['warehouse']['shipper_account_id'] = $shipper->id;
         }
 
-        // Create a new client account if necessary
-        if (empty($input['warehouse']['client_account_id']))
+        // Create a new customer account if necessary
+        if (empty($input['warehouse']['customer_account_id']))
         {
-            $client = Account::firstOrCreate([
-                'name' => trim($input['warehouse']['client']),
+            $customer = Account::firstOrCreate([
+                'name' => trim($input['warehouse']['customer']),
                 'company_id' => $this->user->company_id,
-                'type_id' => AccountType::CLIENT
+                'type_id' => AccountType::CUSTOMER
             ]);
 
-            $input['warehouse']['client_account_id'] = $client->id;
+            $input['warehouse']['customer_account_id'] = $customer->id;
         }
 
         // Save warehouse
         $warehouse->shipper_account_id = $input['warehouse']['shipper_account_id'];
-        $warehouse->client_account_id = $input['warehouse']['client_account_id'];
+        $warehouse->customer_account_id = $input['warehouse']['customer_account_id'];
         $warehouse->carrier_id = $input['warehouse']['carrier_id'];
         $warehouse->notes = $input['warehouse']['notes'];
 

@@ -37,7 +37,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     protected $fillable = [
         'shipper_account_id',
         'status_id',
-        'client_account_id',
+        'customer_account_id',
         'carrier_id',
         'notes'
     ];
@@ -76,13 +76,13 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the warehouse's client account.
+     * Gets the warehouse's customer account.
      *
      * @return Account
      */
-    public function client()
+    public function customer()
     {
-        return $this->belongsTo('App\Models\Account', 'client_account_id');
+        return $this->belongsTo('App\Models\Account', 'customer_account_id');
     }
 
     /**
@@ -193,8 +193,8 @@ class Warehouse extends BaseSearchable implements ISearchable {
             $package = Package::firstOrNew(['id' => $id]);
 
             $data['warehouse_id'] = $this->id;
-            $data['client_account_id'] = $this->client_account_id;
-            $data['hold'] = ($package->shipment_id) ? $package->hold : ($this->client->autoship ? FALSE : TRUE);
+            $data['customer_account_id'] = $this->customer_account_id;
+            $data['hold'] = ($package->shipment_id) ? $package->hold : ($this->customer->autoship ? FALSE : TRUE);
 
             $package->fill($data);
             $package->save();
@@ -322,7 +322,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     {
         $query = Warehouse::query()
             ->orderBy('warehouses.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
-            ->with('creator', 'updater', 'shipper', 'client', 'carrier', 'company');
+            ->with('creator', 'updater', 'shipper', 'customer', 'carrier', 'company');
 
         if ( ! empty($criteria['status_id']))
         {
@@ -339,17 +339,17 @@ class Warehouse extends BaseSearchable implements ISearchable {
             $searchTerm = '%' . $criteria['search'] . '%';
 
             $query
-                ->join('accounts AS clients', 'warehouses.client_account_id', '=', 'clients.id')
+                ->join('accounts AS customers', 'warehouses.customer_account_id', '=', 'customers.id')
                 ->join('accounts AS shippers', 'warehouses.shipper_account_id', '=', 'shippers.id')
                 ->join('carriers', 'warehouses.carrier_id', '=', 'carriers.id')
                 ->leftJoin('packages', 'warehouses.id', '=', 'packages.warehouse_id')
                 ->groupBy('warehouses.id')
                 ->whereRaw('(
                     warehouses.id LIKE ?
-                    OR clients.id LIKE ?
-                    OR clients.name LIKE ?
-                    OR clients.firstname LIKE ?
-                    OR clients.lastname LIKE ?
+                    OR customers.id LIKE ?
+                    OR customers.name LIKE ?
+                    OR customers.firstname LIKE ?
+                    OR customers.lastname LIKE ?
                     OR shippers.id LIKE ?
                     OR shippers.name LIKE ?
                     OR shippers.firstname LIKE ?

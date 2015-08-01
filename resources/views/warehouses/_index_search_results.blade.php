@@ -25,7 +25,7 @@
                 <td><span class="label label-info">{{ $warehouse->packages->count() }}</span></td>
                 <td>{{ $warehouse->present()->grossWeight() }}</td>
                 <td>{{ $warehouse->present()->volumeWeight() }}</td>
-                <td>{!! $warehouse->present()->clientLink() !!}</td>
+                <td>{!! $warehouse->present()->customerLink() !!}</td>
                 <td>{!! $warehouse->present()->shipperLink() !!}</td>
                 <td>{{ $warehouse->present()->carrier() }}</td>
                 <td>{{ $warehouse->present()->createdAt() }}</td>
