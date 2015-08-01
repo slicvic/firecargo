@@ -32,7 +32,7 @@ abstract class Base extends Model {
     }
 
     /**
-     * Deletes the model from the database.
+     * Deletes the model from the database and logs the transaction.
      *
      * @return bool|null
      * @throws \Exception
@@ -50,7 +50,7 @@ abstract class Base extends Model {
     }
 
     /**
-     * Logs the database operation.
+     * Logs a database transaction.
      *
      * @param  string  $action  create|read|update|delete
      * @return void

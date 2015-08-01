@@ -202,7 +202,7 @@ class ShipmentsController extends BaseAuthController {
 
         // Save shipment
         $shipment->reference_number = $input['shipment']['reference_number'];
-        $shipment->departed_at = date('Y-m-d H:i:s', strtotime($input['shipment']['departure_date']));
+        $shipment->departed_at = $input['shipment']['departure_date'];
         $shipment->carrier_id = $input['shipment']['carrier_id'];
 
         if ( ! $shipment->save())

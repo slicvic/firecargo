@@ -52,7 +52,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to it's client account page.
+     * Presents a link to its client's account page.
      *
      * @return html
      */
@@ -65,7 +65,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to it's warehouse page.
+     * Presents a link to its warehouse's page.
      *
      * @return html
      */
@@ -78,32 +78,30 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to it's shipment page.
+     * Presents a link to its shipment's page.
      *
      * @return html
      */
     public function shipmentLink()
     {
-        if ($this->model->isShipped())
+        if ( ! $this->model->isShipped())
         {
-            $shipment = $this->model->shipment;
-
-            return Html::linkWithIcon(
-                "/shipments/show/{$shipment->id}",
-                sprintf(
-                    '%s (Reference: %s, Date: %s)',
-                    $shipment->carrier->name,
-                    $shipment->reference_number,
-                    $shipment->present()->departedAt()
-                )
-            );
+            return 'N/A';
         }
 
-        return 'N/A';
+        $shipment = $this->model->shipment;
+
+        $title = sprintf('%s (Reference: %s, Date: %s)',
+            $shipment->id,
+            $shipment->reference_number,
+            $shipment->present()->departedAt()
+        );
+
+        return Html::linkWithIcon("/shipments/show/{$shipment->id}", $title);
     }
 
     /**
-     * Presents the status color CSS class.
+     * Determines the color status CSS class.
      *
      * @return string
      */

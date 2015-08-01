@@ -56,11 +56,11 @@ class Carrier extends Base {
         switch ($key)
         {
             case 'name':
-                // Strip all non alpha-numeric characters except spaces, (), /
+                // 1. Strip all non alpha-numeric characters except spaces, (), /
+                // 2. Strip consecutive spaces
+                // 3. Trim and uppercase
                 $value = preg_replace('/[^a-z0-9()\/ ]/i', '', $value);
-                // Strip consecutive spaces
                 $value = preg_replace('/\s+/S', ' ', $value);
-                // Trim and uppercase
                 $value = strtoupper(trim($value));
                 break;
         }
@@ -69,7 +69,8 @@ class Carrier extends Base {
     }
 
     /**
-     * Finds carriers matching the provided search term.
+     * Finds carriers matching the provided search term for an ajax
+     * autocomplete field.
      *
      * @param  string  $searchTerm
      * @return User[]

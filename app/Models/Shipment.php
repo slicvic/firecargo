@@ -83,7 +83,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the packages.
+     * Gets the shipment's packages.
      *
      * @return Package[]
      */
@@ -93,7 +93,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the carrier.
+     * Gets the shipment's carrier.
      *
      * @return Carrier
      */
@@ -103,7 +103,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the creator.
+     * Gets the creator user.
      *
      * @return Carrier
      */
@@ -113,7 +113,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the last updater.
+     * Gets the last updater user.
      *
      * @return Carrier
      */
@@ -163,7 +163,6 @@ class Shipment extends BaseSearchable implements ISearchable {
      */
     public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
-        // Build query
         $query = Shipment::query()
             ->orderBy('shipments.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
             ->with('carrier', 'creator', 'updater', 'company');
@@ -182,11 +181,11 @@ class Shipment extends BaseSearchable implements ISearchable {
                 ->join('carriers', 'shipments.carrier_id', '=', 'carriers.id')
                 ->groupBy('shipments.id')
                 ->whereRaw('(
-                    packages.id LIKE ?
+                    shipments.id LIKE ?
+                    OR shipments.reference_number LIKE ?
+                    OR packages.id LIKE ?
                     OR packages.tracking_number LIKE ?
                     OR carriers.name LIKE ?
-                    OR shipments.id LIKE ?
-                    OR shipments.reference_number LIKE ?
                     )', [
                     $searchTerm,
                     $searchTerm,

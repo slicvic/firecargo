@@ -204,8 +204,13 @@ class WarehousesController extends BaseAuthController {
             return response()->json([]);
         }
 
-        $accountTypeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CLIENT;
-        $accounts = Account::autocompleteSearch($input['term'], $accountTypeId)->mine()->limit(25)->get();
+        $accounts = Account::autocompleteSearch(
+                $input['term'],
+                ($input['type'] === 'shipper' ? AccountType::SHIPPER : AccountType::CLIENT)
+            )
+            ->mine()
+            ->limit(25)
+            ->get();
 
         $response = [];
 

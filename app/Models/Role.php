@@ -10,7 +10,7 @@ use Auth;
 class Role extends Base {
 
     /**
-     * The types of roles.
+     * The different types of roles.
      *
      * @var int
      */

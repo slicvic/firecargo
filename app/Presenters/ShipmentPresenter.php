@@ -21,7 +21,7 @@ class ShipmentPresenter extends BasePresenter {
     }
 
     /**
-     * Presents the departed date.
+     * Presents the departure date.
      *
      * @return string
      */
@@ -33,7 +33,7 @@ class ShipmentPresenter extends BasePresenter {
     }
 
     /**
-     * Presents the total monetary value in dollar format.
+     * Presents the monetary value in dollar format.
      *
      * @return string
      */

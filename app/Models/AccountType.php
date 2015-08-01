@@ -8,7 +8,7 @@
 class AccountType extends Base {
 
     /**
-     * The account types.
+     * The different types of accounts.
      *
      * @var int
      */

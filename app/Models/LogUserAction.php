@@ -8,7 +8,7 @@
 class LogUserAction extends Base {
 
     /**
-     * The types of actions.
+     * The different types of actions.
      *
      * @var string
      */

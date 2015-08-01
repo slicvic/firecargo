@@ -89,7 +89,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the warehouse.
+     * Gets the package's warehouse.
      *
      * @return Warehouse
      */
@@ -99,7 +99,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the client.
+     * Gets the package's owner.
      *
      * @return Warehouse
      */
@@ -109,7 +109,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the package type.
+     * Gets the package's type.
      *
      * @return PackageType
      */
@@ -119,7 +119,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the shipment.
+     * Gets the package's shipment.
      *
      * @return Shipment
      */
@@ -129,7 +129,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the creator.
+     * Gets the creator user.
      *
      * @return Carrier
      */
@@ -139,7 +139,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the last updater.
+     * Gets the last updater user.
      *
      * @return Carrier
      */
@@ -217,7 +217,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Calculates the package cubic feet.
+     * Calculates the cubic feet of the package.
      *
      * @return float
      */
@@ -227,7 +227,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Calculates the package cubic meter.
+     * Calculates the cubic meter of the package.
      *
      * @return float
      */
@@ -243,7 +243,6 @@ class Package extends BaseSearchable {
      */
     public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
-        // Build query
         $query = Package::query()
             ->orderBy('packages.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
             ->with('type', 'client', 'shipment');
@@ -265,11 +264,9 @@ class Package extends BaseSearchable {
                 case 'unprocessed':
                     $query->unprocessed();
                     break;
-
                 case 'hold':
                     $query->onHold();
                     break;
-
                 case 'shipped':
                     $query->shipped();
                     break;
@@ -308,6 +305,7 @@ class Package extends BaseSearchable {
                     $searchTerm,
                 ]);
         }
+
         return $query->paginate($perPage);
     }
 }

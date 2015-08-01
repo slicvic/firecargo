@@ -83,7 +83,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the role of the user.
+     * Gets the user's role.
      *
      * @return Role
      */
@@ -95,6 +95,8 @@ class User extends Base implements AuthenticatableInterface {
     /**
      * Gets the user's client account.
      *
+     * NOTE: ONLY "CLIENT" USERS HAVE AN ACCOUNT.
+     *
      * @return Account
      */
     public function account()
@@ -103,7 +105,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Checks if the user is an agent.
+     * Checks if the user is an agent or not.
      *
      * @return bool
      */
@@ -113,7 +115,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Checks if the user is an administrator.
+     * Checks if the user is an administrator or not.
      *
      * @return bool
      */
@@ -123,7 +125,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Checks if the user is a client.
+     * Checks if the user is a client or not.
      *
      * @return bool
      */
@@ -153,7 +155,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Checks if a password recovery token is valid.
+     * Checks if a password recovery token is valid or not.
      *
      * @param  string  $token
      * @return bool
@@ -204,12 +206,23 @@ class User extends Base implements AuthenticatableInterface {
 
         if ( ! empty($criteria['search']))
         {
-            $q = '%' . $criteria['q'] . '%';
+            $searchTerm = '%' . $criteria['search'] . '%';
 
-            $query->whereRaw(
-                '(id LIKE ? OR name LIKE ? OR company_name LIKE ? OR email LIKE ? OR phone LIKE ? or mobile_phone LIKE ?)',
-                [$q, $q, $q, $q, $q, $q]
-            );
+            $query->whereRaw('(
+                id LIKE ?
+                OR name LIKE ?
+                OR company_name LIKE ?
+                OR email LIKE ?
+                OR phone LIKE ?
+                OR mobile_phone LIKE ?
+                )', [
+                $searchTerm,
+                $searchTerm,
+                $searchTerm,
+                $searchTerm,
+                $searchTerm,
+                $searchTerm
+                ]);
         }
 
         return $query;

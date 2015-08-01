@@ -127,13 +127,13 @@ class CarriersController extends BaseAuthController {
     public function getAjaxAutocomplete(Request $request)
     {
         $input = $request->only('term');
-        $response = [];
 
         if (strlen($input['term']) < 2)
         {
-            // Return nothing
-            return response()->json($response);
+            return response()->json([]);
         }
+
+        $response = [];
 
         foreach(Carrier::autocompleteSearch($input['term']) as $carrier)
         {

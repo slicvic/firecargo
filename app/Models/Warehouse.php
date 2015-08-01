@@ -66,7 +66,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the shipper.
+     * Gets the warehouse's shipper account.
      *
      * @return Account
      */
@@ -76,7 +76,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the client.
+     * Gets the warehouse's client account.
      *
      * @return Account
      */
@@ -86,7 +86,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the creator.
+     * Gets the creator user.
      *
      * @return Carrier
      */
@@ -96,7 +96,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the last updater.
+     * Gets the last updater user.
      *
      * @return Carrier
      */
@@ -106,7 +106,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the carrier.
+     * Gets the warehouse's carrier.
      *
      * @return Carrier
      */
@@ -116,7 +116,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the warehouse packages.
+     * Gets the warehouse's packages.
      *
      * @return Package[]
      */
@@ -252,8 +252,6 @@ class Warehouse extends BaseSearchable implements ISearchable {
      */
     public function calculateCubicFeet()
     {
-        $total = 0;
-
         $packages = DB::table('packages')
             ->where('warehouse_id', $this->id)
             ->select(['length', 'width', 'height'])
@@ -322,7 +320,6 @@ class Warehouse extends BaseSearchable implements ISearchable {
      */
     public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
-        // Build query
         $query = Warehouse::query()
             ->orderBy('warehouses.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
             ->with('creator', 'updater', 'shipper', 'client', 'carrier', 'company');

@@ -82,7 +82,7 @@ class Account extends Base {
     }
 
     /**
-     * Gets the account type.
+     * Gets the account's type.
      *
      * @return Role
      */
@@ -92,7 +92,7 @@ class Account extends Base {
     }
 
     /**
-     * Gets the account address.
+     * Gets the account's address.
      *
      * @return Address
      */
@@ -104,7 +104,7 @@ class Account extends Base {
     /**
      * Gets the account's user.
      *
-     * NOTE: ONLY "CLIENT" ACCOUNTS HAVE USERS.
+     * NOTE: ONLY "CLIENT" ACCOUNTS HAVE A USER.
      *
      * @return User
      */
@@ -136,7 +136,7 @@ class Account extends Base {
     }
 
     /**
-     * Checks if this is a client account.
+     * Checks if this is a client account or not.
      *
      * @return bool
      */
@@ -146,7 +146,8 @@ class Account extends Base {
     }
 
     /**
-     * Finds accounts matching the provided search term and type.
+     * Finds accounts matching the provided search term and type for an
+     * ajax autocomplete field.
      *
      * @param  string  $searchTerm
      * @param  int     $accountTypeId

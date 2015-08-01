@@ -42,7 +42,7 @@ class Company extends Base {
     ];
 
     /**
-     * Gets the company address.
+     * Gets the company's address.
      *
      * @return Address
      */

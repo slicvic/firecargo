@@ -43,7 +43,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to it's shipper account page.
+     * Presents a link to its shipper's account page.
      *
      * @return html
      */
@@ -56,7 +56,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to it's client account page.
+     * Presents a link to its client's account page.
      *
      * @return html
      */
@@ -117,7 +117,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the total monetary value in dollar format.
+     * Presents the monetary value in dollar format.
      *
      * @return string
      */
