@@ -17,7 +17,7 @@
                 </h2>
                 <div class="pull-right">
                     <i class="fa fa-circle text-danger"></i>&nbsp;&nbsp;Unprocessed &nbsp;&nbsp;
-                    <i class="fa fa-circle text-warning"></i>&nbsp;&nbsp;On Hold Per Client&nbsp;&nbsp;
+                    <i class="fa fa-circle text-warning"></i>&nbsp;&nbsp;On Hold Per Client's Request&nbsp;&nbsp;
                     <i class="fa fa-circle text-navy"></i>&nbsp;&nbsp;Shipped
                 </div>
             </div>
