@@ -20,7 +20,7 @@ IF totalPkgsDiff = 0 THEN
     # Complete (Green)
     SET newStatusId = 3;
 ELSEIF totalPkgsDiff = totalPkgs THEN
-    # New (Red)
+    # Unprocessed (Red)
     SET newStatusId = 1;
 ELSE
     # Pending (Yellow)

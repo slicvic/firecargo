@@ -61,7 +61,7 @@ $(function() {
             { label: "Shipped", value: '{{ $totals['packages']['shipped'] }}' }
          ],
         resize: false,
-        colors: ['#ed5565', '#1ab394'],
+        colors: ['#ed5565', '#f8ac59', '#1ab394'],
     });
 });
 </script>
