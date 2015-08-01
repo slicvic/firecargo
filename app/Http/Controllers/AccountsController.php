@@ -1,0 +1,66 @@
+<?php namespace App\Http\Controllers;
+
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Http\Request;
+
+use App\Models\Account;
+use App\Models\AccountType;
+
+/**
+ * AccountsController
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
+class AccountsController extends BaseAuthController {
+
+    /**
+     * Constructor.
+     *
+     * @param  Guard $auth
+     * @return void
+     */
+    public function __construct(Guard $auth)
+    {
+        parent::__construct($auth);
+
+        $this->middleware('agent');
+    }
+
+    /**
+     * Retrieves client or shipper accounts for an ajax autocomplete field.
+     *
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function getAjaxAutocomplete(Request $request)
+    {
+        $input = $request->only('term', 'type');
+
+        // Validate input
+        if (strlen($input['term']) < 2)
+        {
+            return response()->json([]);
+        }
+
+        // Determine account type ID
+        $typeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CLIENT;
+
+        // Search
+        $accounts = Account::autocompleteSearch($input['term'], $typeId)
+            ->mine()
+            ->limit(25)
+            ->get();
+
+        $response = [];
+
+        foreach($accounts as $account)
+        {
+            $response[] = [
+                'id'    => $account->id,
+                'label' => $account->name
+            ];
+        }
+
+        return response()->json($response);
+    }
+}

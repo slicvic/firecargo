@@ -190,44 +190,6 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Retrieves client or shipper accounts for an autocomplete field.
-     *
-     * @param  Request  $request
-     * @return JsonResponse
-     */
-    public function getAjaxAccountAutocomplete(Request $request)
-    {
-        $input = $request->only('term', 'type');
-
-        // Validate input
-        if (strlen($input['term']) < 2)
-        {
-            return response()->json([]);
-        }
-
-        // Determine account type ID
-        $accountTypeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CLIENT;
-
-        // Search
-        $accounts = Account::autocompleteSearch($input['term'], $accountTypeId)
-            ->mine()
-            ->limit(25)
-            ->get();
-
-        $response = [];
-
-        foreach($accounts as $account)
-        {
-            $response[] = [
-                'id'    => $account->id,
-                'label' => $account->name
-            ];
-        }
-
-        return response()->json($response);
-    }
-
-    /**
      * Creates the form for creating and editing a warehouse.
      *
      * @param  Warehouse  $warehouse

@@ -139,7 +139,7 @@ class CarriersController extends BaseAuthController {
 
         $response = [];
 
-        foreach( as $carrier)
+        foreach($carriers as $carrier)
         {
             $response[] = [
                 'id'    => $carrier->id,

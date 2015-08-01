@@ -19,6 +19,7 @@ Route::controller('packages', 'PackagesController');
 Route::controller('sites', 'SitesController');
 Route::controller('companies', 'CompaniesController');
 Route::controller('roles', 'RolesController');
+Route::controller('accounts', 'AccountsController');
 Route::controller('clients', 'ClientsController');
 Route::controller('shippers', 'ShippersController');
 Route::controller('users', 'UsersController');

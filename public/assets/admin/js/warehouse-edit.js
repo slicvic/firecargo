@@ -37,7 +37,7 @@ $(function() {
     });
 
     $('#shipper').autocomplete({
-        source: '/warehouses/ajax-account-autocomplete?type=shipper',
+        source: '/accounts/ajax-autocomplete?type=shipper',
         minLength: 2,
         select: function(event, ui) {
             $('#shipper-id').val(ui.item.id);
@@ -58,7 +58,7 @@ $(function() {
     });
 
     $('#client').autocomplete({
-        source: '/warehouses/ajax-account-autocomplete?type=client',
+        source: '/accounts/ajax-autocomplete?type=client',
         minLength: 2,
         select: function(event, ui) {
             $('#client').val(ui.item.label);
