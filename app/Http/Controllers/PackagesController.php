@@ -1,5 +1,7 @@
 <?php namespace App\Http\Controllers;
 
+use Validator;
+
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 
@@ -111,5 +113,65 @@ class PackagesController extends BaseAuthController {
         $package = Package::findMineOrFail($id);
 
         return view('packages.detail_modal', ['package' => $package]);
+    }
+
+    /**
+     * Updates a jquery x-editable field.
+     *
+     * @param  Request  $request
+     * @return JsonResponse
+     */
+    public function postAjaxUpdateEditableField(Request $request)
+    {
+        $input = $request->only('pk', 'name', 'value');
+
+        // Validate input
+
+        $rules = [
+            'pk' => 'required',
+            'name' => 'required',
+            'value' => 'required'
+        ];
+
+
+        $validator = Validator::make($input, $rules);
+
+        if ($validator->fails())
+        {
+            return response()->json(implode(' ', $validator->messages()->all(':message')), 400);
+        }
+
+        // Validate field name
+
+        $validFields = [
+            'type_id',
+            'length',
+            'width',
+            'height',
+            'weight',
+            'description',
+            'invoice_number',
+            'invoice_value',
+            'tracking_number'
+        ];
+
+        if ( ! in_array($input['name'], $validFields))
+        {
+            return response()->json('Invalid field name.', 400);
+        }
+
+        // Find package
+        $package = Package::findMine($input['pk']);
+
+        if ( ! $package)
+        {
+            return response()->json('Package not found.', 404);
+        }
+
+        // Update package
+        $package->$input['name'] = $input['value'];
+        $package->save();
+
+        return response()->json();
     }
 }

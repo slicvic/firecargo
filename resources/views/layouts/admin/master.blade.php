@@ -12,7 +12,7 @@
     <link href="/assets/plugins/inspinia/Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/plugins/inspinia/Static_Seed_Project/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <!-- Mainly scripts -->
+    <!-- Mainly Scripts -->
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/jquery-2.1.1.js"></script>
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/bootstrap.min.js"></script>
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -35,7 +35,7 @@
     <!--<script src="/assets/plugins/parsleyjs/parsley.min.js"></script>
     <link href="/assets/plugins/parsleyjs/parsley.css" rel="stylesheet">-->
 
-    <!-- iChecks -->
+    <!-- iCheck -->
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/iCheck/icheck.min.js"></script>
     <link href="/assets/plugins/inspinia/Static_Seed_Project/css/plugins/iCheck/custom.css" rel="stylesheet">
 
@@ -51,7 +51,11 @@
     <link href="/assets/plugins/inspinia/Static_Seed_Project/css/plugins/toastr/toastr.min.css" rel="stylesheet">
     <script src="/assets/plugins/inspinia/Static_Seed_Project/js/plugins/toastr/toastr.min.js"></script>
 
-    <!-- Inspinia -->
+    <!-- X-Editable -->
+    <link href="/assets/plugins/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    <script src="/assets/plugins/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
+    <!-- Inspinia Styles -->
     <link href="/assets/plugins/inspinia/Static_Seed_Project/css/animate.css" rel="stylesheet">
     <link href="/assets/plugins/inspinia/Static_Seed_Project/css/style.css" rel="stylesheet">
 

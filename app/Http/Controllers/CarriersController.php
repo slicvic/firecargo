@@ -135,17 +135,17 @@ class CarriersController extends BaseAuthController {
         // Search
         $carriers = Carrier::autocompleteSearch($input['term']);
 
-        $response = [];
+        $json = [];
 
         foreach($carriers as $carrier)
         {
-            $response[] = [
+            $json[] = [
                 'id'    => $carrier->id,
                 'label' => $carrier->name,
                 'prefix' => $carrier->prefix
             ];
         }
 
-        return response()->json($response);
+        return response()->json($json);
     }
 }

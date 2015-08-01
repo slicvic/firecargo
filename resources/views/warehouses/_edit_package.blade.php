@@ -67,7 +67,7 @@
             </div>
             <div class="col-sm-2">
                 <label class="control-label">Invoice $</label>
-                <input type="text" name="packages[{{ $package->id }}][invoice_value]" data-name="invoice_value" class="form-control" value="{{ str_replace('$', '', $package->present()->invoiceValue()) }}">
+                <input type="text" name="packages[{{ $package->id }}][invoice_value]" data-name="invoice_value" class="form-control" value="{{ $package->present()->invoiceValue(FALSE) }}">
             </div>
             <div class="col-sm-4">
                 <label class="control-label">Description</label>

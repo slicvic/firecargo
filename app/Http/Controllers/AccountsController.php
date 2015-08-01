@@ -51,16 +51,16 @@ class AccountsController extends BaseAuthController {
             ->limit(25)
             ->get();
 
-        $response = [];
+        $json = [];
 
         foreach($accounts as $account)
         {
-            $response[] = [
+            $json[] = [
                 'id'    => $account->id,
                 'label' => $account->name
             ];
         }
 
-        return response()->json($response);
+        return response()->json($json);
     }
 }

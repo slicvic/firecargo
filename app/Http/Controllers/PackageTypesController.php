@@ -117,4 +117,18 @@ class PackageTypesController extends BaseAuthController {
 
         return $this->redirectBackWithSuccess('Package type deleted.');
     }
+
+    public function getAjaxEditableOptions()
+    {
+        $types = PackageType::all();
+
+        $json = [];
+
+        foreach ($types as $type)
+        {
+            $json[] = ['value' => $type->id, 'text' => $type->name];
+        }
+
+        return response()->json($json);
+    }
 }

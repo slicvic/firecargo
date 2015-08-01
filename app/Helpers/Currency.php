@@ -27,10 +27,14 @@ class Currency {
     /**
      * Formats amount as a dollar amount.
      *
+     * @param  bool  $showSign
      * @return string
      */
-    public function asDollar()
+    public function asDollar($showSign = TRUE)
     {
-        return '$' . number_format($this->amount, 2, '.', ',');
+        $amount = ($showSign) ? '$' : '';
+        $amount .= number_format($this->amount, 2, '.', ',');
+
+        return $amount;
     }
 }

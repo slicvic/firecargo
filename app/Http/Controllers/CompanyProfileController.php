@@ -2,6 +2,7 @@
 
 use Validator;
 use Config;
+use Exception;
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
@@ -118,12 +119,15 @@ class CompanyProfileController extends BaseAuthController {
         try
         {
             Upload::saveCompanyLogo($input['file'], $this->user->company->id);
+
             $this->user->company->update(['has_logo' => TRUE]);
-            return response()->json([]);
+
+            return response()->json();
         }
-        catch(\Exception $e)
+        catch(Exception $e)
         {
             $this->user->company->update(['has_logo' => FALSE]);
+
             return response()->json(Flash::view('Upload failed, please try again.'), 500);
         }
     }

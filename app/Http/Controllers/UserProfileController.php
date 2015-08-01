@@ -3,6 +3,7 @@
 use Validator;
 use Auth;
 use Hash;
+use Exception;
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
@@ -154,12 +155,15 @@ class UserProfileController extends BaseAuthController {
         try
         {
             Upload::saveUserProfilePhoto($input['file'], $this->user->id);
+
             $this->user->update(['has_photo' => TRUE]);
-            return response()->json([]);
+
+            return response()->json();
         }
-        catch(\Exception $e)
+        catch(Exception $e)
         {
             $this->user->update(['has_photo' => FALSE]);
+
             return response()->json(Flash::view('Upload failed, please try again.'), 500);
         }
     }
