@@ -1,8 +1,6 @@
 <?php namespace App\Http\Controllers;
 
 use Validator;
-use Auth;
-use DB;
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;

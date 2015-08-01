@@ -1,7 +1,5 @@
 <?php namespace App\Http\Controllers;
 
-use Auth;
-
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 

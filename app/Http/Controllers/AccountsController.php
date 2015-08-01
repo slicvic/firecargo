@@ -7,7 +7,7 @@ use App\Models\Account;
 use App\Models\AccountType;
 
 /**
- * AccountsController
+ * General Purpose Accounts Controller
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */

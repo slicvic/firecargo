@@ -1,7 +1,6 @@
 <?php namespace App\Http\Controllers;
 
 use Validator;
-use Auth;
 
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
@@ -11,7 +10,7 @@ use App\Models\AccountType;
 use App\Models\Address;
 
 /**
- * ClientsController
+ * Client Accounts Controller
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
