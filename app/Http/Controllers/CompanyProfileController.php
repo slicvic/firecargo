@@ -90,7 +90,7 @@ class CompanyProfileController extends BaseAuthController {
             $this->user->company->address()->save(new Address($input['address']));
         }
 
-        return $this->redirectWithSuccess('company/profile', 'Your company profile was updated.');
+        return $this->redirectWithSuccess('company/profile', 'Your company profile has been updated.');
     }
 
     /**
@@ -122,7 +122,7 @@ class CompanyProfileController extends BaseAuthController {
 
             $this->user->company->update(['has_logo' => TRUE]);
 
-            return response()->json('Logo uploaded.');
+            return response()->json('Your logo has been uploaded.');
         }
         catch(Exception $e)
         {

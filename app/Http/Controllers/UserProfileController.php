@@ -85,7 +85,7 @@ class UserProfileController extends BaseAuthController {
             $this->updateProfile($request);
         }
 
-        return $this->redirectWithSuccess('user/profile', 'Your profile was updated.');
+        return $this->redirectWithSuccess('user/profile', 'Your profile has been updated.');
     }
 
     /**
@@ -126,7 +126,7 @@ class UserProfileController extends BaseAuthController {
         $this->user->password = $input['new_password'];
         $this->user->save();
 
-        return $this->redirectBackWithSuccess('Your password was changed successfully.');
+        return $this->redirectBackWithSuccess('Your password has been changed.');
     }
 
     /**
@@ -158,7 +158,7 @@ class UserProfileController extends BaseAuthController {
 
             $this->user->update(['has_photo' => TRUE]);
 
-            return response()->json('Photo uploaded.');
+            return response()->json('Your photo has been uploaded.');
         }
         catch(Exception $e)
         {
