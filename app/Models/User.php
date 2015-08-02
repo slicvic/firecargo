@@ -121,7 +121,7 @@ class User extends Base implements AuthenticatableInterface {
      */
     public function isAdmin()
     {
-        return ((int) $this->role_id === Role::SUPER_ADMIN);
+        return (in_array((int) $this->role_id, [Role::ADMIN, Role::SUPER_ADMIN]));
     }
 
     /**

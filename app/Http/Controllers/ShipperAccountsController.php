@@ -10,11 +10,11 @@ use App\Models\AccountType;
 use App\Models\Address;
 
 /**
- * Shipper Accounts Controller
+ * ShipperAccountsController
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class ShippersController extends BaseAuthController {
+class ShipperAccountsController extends BaseAuthController {
 
     /**
      * Constructor.
@@ -26,7 +26,7 @@ class ShippersController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('agent');
+        $this->middleware('agentOrHigher');
     }
 
     /**

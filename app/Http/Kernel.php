@@ -27,8 +27,9 @@ class Kernel extends HttpKernel {
 		'auth' => 'App\Http\Middleware\Authenticate',
 		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
 		'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
-		'admin' => 'App\Http\Middleware\AuthenticateAdmin',
-		'agent' => 'App\Http\Middleware\AuthenticateAgent',
+		'customer' => 'App\Http\Middleware\CustomerMiddleware',
+		'agentOrHigher' => 'App\Http\Middleware\AgentOrHigherMiddleware',
+		'adminOrHigher' => 'App\Http\Middleware\AdminOrHigherMiddleware'
 	];
 
 }

@@ -32,7 +32,7 @@ class CompanyProfileController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('agent');
+        $this->middleware('agentOrHigher');
     }
 
     /**

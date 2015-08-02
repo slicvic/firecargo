@@ -18,6 +18,7 @@ class Role extends Base {
     const SUPER_AGENT = 2;
     const CUSTOMER    = 3;
     const AGENT       = 4;
+    const ADMIN       = 5;
 
     /**
      * Rules for validation.

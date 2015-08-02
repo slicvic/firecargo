@@ -19,6 +19,7 @@ class RolesTableSeeder extends Seeder {
             ['name' => 'Super Agent', 'description' => 'Company owner or primary contact'],
             ['name' => 'Customer', 'description' => 'Company customer or client'],
             ['name' => 'Agent', 'description' => 'Company staff'],
+            ['name' => 'Admin', 'description' => 'Administrative user'],
         ]);
     }
 }

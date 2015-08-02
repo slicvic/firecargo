@@ -22,19 +22,19 @@ class DashboardController extends BaseAuthController {
     {
         if ($this->user->isCustomer())
         {
-            return $this->renderCustomerDashboard();
+            return $this->showCustomerDashboard();
         }
         elseif ($this->user->isAgent())
         {
-            return $this->renderAgentDashboard();
+            return $this->showAgentDashboard();
         }
         else
         {
-            return $this->renderAdminDashboard();
+            return $this->showAdminDashboard();
         }
     }
 
-    private function renderCustomerDashboard()
+    private function showCustomerDashboard()
     {
         $criteria['customer_account_id'] = $this->user->customer->id;
         $packages = Package::search($criteria);
@@ -42,7 +42,7 @@ class DashboardController extends BaseAuthController {
         return view('dashboard.customer.index', ['packages' => $packages]);
     }
 
-    private function renderAgentDashboard()
+    private function showAgentDashboard()
     {
         $totals = [
             'warehouses' => [
@@ -60,7 +60,7 @@ class DashboardController extends BaseAuthController {
         return view('dashboard.index', ['totals' => $totals]);
     }
 
-    private function renderAdminDashboard()
+    private function showAdminDashboard()
     {
         $totals = [
             'warehouses' => [

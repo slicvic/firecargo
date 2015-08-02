@@ -40,11 +40,6 @@ class UserProfileController extends BaseAuthController {
      */
     public function getProfile()
     {
-        if ($this->user->isCustomer())
-        {
-            return view('user_profile.customer.show', ['user' => $this->user]);
-        }
-
         return view('user_profile.show', ['user' => $this->user]);
     }
 
@@ -55,14 +50,6 @@ class UserProfileController extends BaseAuthController {
      */
     public function getEdit()
     {
-        if ($this->user->isCustomer())
-        {
-            return view('user_profile.customer.edit', [
-                'account' => $this->user->account,
-                'address' => $this->user->account->address ?: new Address
-            ]);
-        }
-
         return view('user_profile.edit', [
             'user' => $this->user
         ]);
@@ -76,16 +63,21 @@ class UserProfileController extends BaseAuthController {
      */
     public function postProfile(Request $request)
     {
-        if ($this->user->isCustomer())
-        {
-            $this->updateCustomerProfile($request);
-        }
-        else
-        {
-            $this->updateProfile($request);
-        }
+        $input = $request->only('user');
 
-        return $this->redirectWithSuccess('user/profile', 'Your profile has been updated.');
+        $rules = [
+            'email' => 'required|email|unique:users,email,' . $this->user->id,
+            'firstname' => 'required',
+            'lastname' => 'required'
+        ];
+
+        // Validate input
+        $this->validate($input['user'], $rules);
+
+        // Update user
+        $this->user->update($input['user']);
+
+        return $this->redirectBackWithSuccess('Your profile has been updated.');
     }
 
     /**
@@ -165,72 +157,6 @@ class UserProfileController extends BaseAuthController {
             $this->user->update(['has_photo' => FALSE]);
 
             return response()->json('Upload failed, please try again.', 500);
-        }
-    }
-
-    /**
-     * Updates an admin's or agent's profile.
-     *
-     * @param  Request  $request
-     * @return void
-     */
-    private function updateProfile(Request $request)
-    {
-        $input = $request->only('user');
-
-        $rules = [
-            'email' => 'required|email|unique:users,email,' . $this->user->id,
-            'firstname' => 'required',
-            'lastname' => 'required'
-        ];
-
-        // Validate input
-        $this->validate($input['user'], $rules);
-
-        // Update user
-        $this->user->update($input['user']);
-    }
-
-    /**
-     * Updates a customer profile.
-     *
-     * @param  Request  $request
-     * @return void
-     */
-    private function updateCustomerProfile(Request $request)
-    {
-        $input = $request->only('account', 'address');
-
-        $rules = [
-            'email' => 'required|email|unique:users,email,' . $this->user->id,
-            'firstname' => 'required',
-            'lastname' => 'required'
-        ];
-
-        // Validate input
-        $this->validate($input['account'], $rules);
-
-        // Update user
-        $this->user->firstname = $input['account']['firstname'];
-        $this->user->lastname = $input['account']['lastname'];
-        $this->user->email = $input['account']['email'];
-        $this->user->save();
-
-        // Update user's account
-        $account = $this->user->account;
-        $account->phone = $input['account']['phone'];
-        $account->mobile_phone = $input['account']['mobile_phone'];
-        $account->autoship = isset($input['account']['autoship']);
-        $account->save();
-
-        // Update user's account address
-        if ($account->address)
-        {
-            $account->address->update($input['address']);
-        }
-        else
-        {
-            $account->address()->save(new Address($input['address']));
         }
     }
 }

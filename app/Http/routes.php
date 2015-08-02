@@ -11,7 +11,7 @@
 |
 */
 
-// Agent/Admin/Members
+// Admin/Agent/Customers
 Route::controller('dashboard', 'DashboardController');
 Route::controller('carriers', 'CarriersController');
 Route::controller('package-types', 'PackageTypesController');
@@ -20,15 +20,21 @@ Route::controller('sites', 'SitesController');
 Route::controller('companies', 'CompaniesController');
 Route::controller('roles', 'RolesController');
 Route::controller('accounts', 'AccountsController');
-Route::controller('customers', 'CustomersController');
-Route::controller('shippers', 'ShippersController');
+Route::controller('customers', 'CustomerAccountsController');
+Route::controller('shippers', 'ShipperAccountsController');
 Route::controller('users', 'UsersController');
+Route::controller('user', 'UserProfileController');
 Route::controller('warehouses', 'WarehousesController');
 Route::controller('shipments', 'ShipmentsController');
 Route::controller('company', 'CompanyProfileController');
-
-Route::controller('user', 'UserProfileController');
 Route::get('logout', 'UserProfileController@getLogout');
+
+
+Route::group(['middleware' => 'customer'], function()
+{
+    Route::controller('user', 'CustomerUserProfileController');
+});
+
 
 // Auth
 Route::get('login', 'AuthController@getLogin');

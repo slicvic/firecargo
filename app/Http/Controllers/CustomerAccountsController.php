@@ -10,11 +10,11 @@ use App\Models\AccountType;
 use App\Models\Address;
 
 /**
- * Customer Accounts Controller
+ * CustomerAccountsController
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class CustomersController extends BaseAuthController {
+class CustomerAccountsController extends BaseAuthController {
 
     /**
      * Constructor.
@@ -26,7 +26,7 @@ class CustomersController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('agent');
+        $this->middleware('agentOrHigher');
     }
 
     /**

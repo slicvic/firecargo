@@ -24,7 +24,7 @@ class SitesController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('admin');
+        $this->middleware('adminOrHigher');
     }
 
     /**

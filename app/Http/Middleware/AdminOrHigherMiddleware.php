@@ -3,7 +3,7 @@
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
-class AuthenticateAgent {
+class AdminOrHigherMiddleware {
 
     /**
      * The Guard implementation.
@@ -32,19 +32,18 @@ class AuthenticateAgent {
      */
     public function handle($request, Closure $next)
     {
-        if ( ! $this->auth->user()->isAdmin() && ! $this->auth->user()->isAgent())
+        if ($this->auth->user()->isAdmin())
         {
-            if ($request->ajax())
-            {
-                return response('Unauthorized.', 401);
-            }
-            else
-            {
-                return redirect('dashboard');
-            }
+            return $next($request);
         }
 
-        return $next($request);
+        if ($request->ajax())
+        {
+            return response('Unauthorized.', 401);
+        }
+        else
+        {
+            return redirect('dashboard');
+        }
     }
-
 }
