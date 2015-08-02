@@ -4,7 +4,9 @@ $(function() {
      * Bind dropzone
      * ---------------------------------------------
      */
-    $('#edit-photo-btn').dropzone({
+    var uploadBtn = $('#edit-photo-btn');
+
+    uploadBtn.dropzone({
         url: '/user/ajax-upload-photo',
         maxFileSize: 10,
         acceptedFiles: 'image/*',
@@ -13,14 +15,21 @@ $(function() {
         addedfile: function(file) {
             file.previewElement = Dropzone.createElement(this.options.previewTemplate);
             file.previewTemplate = file.previewElement;
-            $('#flash-message').hide();
             $('#photo-container').html(file.previewElement);
         },
         sending: function(file, xhr, formData) {
+            uploadBtn.attr('data-loading-text', app.getSpinnerHtml());
+            uploadBtn.button('loading');
             formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
         },
-        error: function(file, errorMessage, xhr) {
-            $('#flash-message').html(errorMessage).show();
+        success: function(file, message) {
+            toastr.success(message, 'Success');
+        },
+        error: function(file, errorMessage) {
+            toastr.error(errorMessage, 'Error');
+        },
+        complete: function() {
+            uploadBtn.button('reset');
         }
     });
 });

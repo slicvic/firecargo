@@ -14,7 +14,6 @@
                     <img class="img-circle" src="{{ $company->present()->logoUrl('md') }}" style="width:100px;height:100px">
                 </div>
                 <button type="button" id="edit-logo-btn" class="btn btn-link btn-block"><i class="fa fa-pencil"></i> Edit Logo</button>
-                <div id="flash-message" class="text-danger"></div>
                 <div class="list-group">
                     <a href="/company/edit-profile" class="btn btn-block btn-primary">Edit Company Profile</a>
                 </div>

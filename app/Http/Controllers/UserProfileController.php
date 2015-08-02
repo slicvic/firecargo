@@ -147,7 +147,7 @@ class UserProfileController extends BaseAuthController {
 
         if ($validator->fails())
         {
-           return response()->json(Flash::view($validator), 500);
+           return response()->json(implode(' ', $validator->messages()->all(':message')), 400);
         }
 
         // Save photo
@@ -158,13 +158,13 @@ class UserProfileController extends BaseAuthController {
 
             $this->user->update(['has_photo' => TRUE]);
 
-            return response()->json();
+            return response()->json('Photo uploaded.');
         }
         catch(Exception $e)
         {
             $this->user->update(['has_photo' => FALSE]);
 
-            return response()->json(Flash::view('Upload failed, please try again.'), 500);
+            return response()->json('Upload failed, please try again.', 500);
         }
     }
 
