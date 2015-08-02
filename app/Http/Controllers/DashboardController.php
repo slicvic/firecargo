@@ -20,6 +20,8 @@ class DashboardController extends BaseAuthController {
      */
     public function getIndex()
     {
+                    return $this->showCustomerDashboard();
+
         if ($this->user->isCustomer())
         {
             return $this->showCustomerDashboard();
@@ -36,7 +38,8 @@ class DashboardController extends BaseAuthController {
 
     private function showCustomerDashboard()
     {
-        $criteria['customer_account_id'] = $this->user->customer->id;
+        $criteria['customer_account_id'] = $this->user->account->id;
+
         $packages = Package::search($criteria);
 
         return view('dashboard.customer.index', ['packages' => $packages]);

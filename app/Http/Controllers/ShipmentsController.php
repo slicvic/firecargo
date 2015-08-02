@@ -11,6 +11,7 @@ use App\Models\Package;
 use App\Models\Warehouse;
 use Flash;
 use App\Exceptions\ValidationException;
+use App\Http\ToastrJsonResponse;
 
 /**
  * ShipmentsController
@@ -29,7 +30,7 @@ class ShipmentsController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('agentOrHigher');
+        $this->middleware('auth.agentOrHigher');
     }
 
     /**
@@ -103,7 +104,7 @@ class ShipmentsController extends BaseAuthController {
         // Validate input and save shipment
         if ( ! $this->validateAndSave($request, $shipment))
         {
-            return response()->json(['error' => Flash::view($request->input())], 500);
+            return ToastrJsonResponse::error('Shipment creation failed, please try again.', 500);
         }
 
         Flash::success('Shipment created.');
@@ -151,13 +152,13 @@ class ShipmentsController extends BaseAuthController {
 
         if ( ! $shipment)
         {
-            return response()->json(['error' => Flash::view('Shipment not found.')], 404);
+            return ToastrJsonResponse::error('Shipment not found.', 404);
         }
 
         // Validate input and save shipment
         if ( ! $this->validateAndSave($request, $shipment))
         {
-            return response()->json(['error' => Flash::view('Shipment update failed, please try again.')], 500);
+            return ToastrJsonResponse::error('Shipment update failed, please try again.', 500);
         }
 
         Flash::success('Shipment updated.');
@@ -180,7 +181,7 @@ class ShipmentsController extends BaseAuthController {
         $rules = [
             'departure_date' => 'required',
             'reference_number' => 'required',
-            'carrier' => 'required|min:3'
+            'carrier_name' => Carrier::$rules['name']
         ];
 
         // Validate input
@@ -194,7 +195,7 @@ class ShipmentsController extends BaseAuthController {
         // Create new carrier if necessary
         if (empty($input['shipment']['carrier_id']))
         {
-            $carrier = Carrier::firstOrCreate(['name' => $input['shipment']['carrier']]);
+            $carrier = Carrier::firstOrCreate(['name' => $input['shipment']['carrier_name']]);
 
             $input['shipment']['carrier_id'] = $carrier->id;
         }

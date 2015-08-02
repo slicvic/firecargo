@@ -42,7 +42,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the customer's name.
+     * Presents the customer name.
      *
      * @return string
      */
@@ -52,7 +52,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to its customer's account page.
+     * Presents a link to the customer account page.
      *
      * @return html
      */
@@ -65,7 +65,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to its warehouse's page.
+     * Presents a link to the warehouse page.
      *
      * @return html
      */
@@ -78,7 +78,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to its shipment's page.
+     * Presents a link to the shipment page.
      *
      * @return html
      */

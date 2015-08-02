@@ -182,6 +182,8 @@
             <div class="modal-content animated bounceInRight"></div>
         </div>
     </div>
+
+    {!! Flash::getToastr() !!}
 </body>
 
 </html>

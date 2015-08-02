@@ -16,6 +16,16 @@ class Account extends Base {
     use CompanyTrait, PresentableTrait;
 
     /**
+     * Rules for validation.
+     *
+     * @var array
+     */
+    public static $rules = [
+        'name' => ['required', 'min:3', 'regex:/(^[A-Za-z0-9 ]+$)+/'],
+        'email' => 'email'
+    ];
+
+    /**
      * The database table name.
      *
      * @var string
@@ -82,7 +92,7 @@ class Account extends Base {
     }
 
     /**
-     * Gets the account's type.
+     * Gets the account type.
      *
      * @return Role
      */
@@ -92,7 +102,7 @@ class Account extends Base {
     }
 
     /**
-     * Gets the account's address.
+     * Gets the account address.
      *
      * @return Address
      */
@@ -102,7 +112,7 @@ class Account extends Base {
     }
 
     /**
-     * Gets the account's user.
+     * Gets the account user.
      *
      * NOTE: ONLY "CUSTOMER" ACCOUNTS HAVE A USER.
      *

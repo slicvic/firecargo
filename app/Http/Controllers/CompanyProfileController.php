@@ -13,7 +13,7 @@ use App\Models\Company;
 use App\Models\Address;
 use App\Models\Country;
 use App\Helpers\Upload;
-use Flash;
+use App\Http\ToastrJsonResponse;
 
 /**
  * CompanyProfileController
@@ -32,11 +32,11 @@ class CompanyProfileController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('agentOrHigher');
+        $this->middleware('auth.agentOrHigher');
     }
 
     /**
-     * Shows the company's profile.
+     * Shows the company profile.
      *
      * @return Response
      */
@@ -48,7 +48,7 @@ class CompanyProfileController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for editing a company's profile.
+     * Shows the form for editing the company profile.
      *
      * @return Response
      */
@@ -61,7 +61,7 @@ class CompanyProfileController extends BaseAuthController {
     }
 
     /**
-     * Updates the company's profile.
+     * Updates the company profile.
      *
      * @param  Request  $request
      * @return Redirector
@@ -94,7 +94,7 @@ class CompanyProfileController extends BaseAuthController {
     }
 
     /**
-     * Uploads the company's logo.
+     * Uploads the company logo.
      *
      * @param  Request  $request
      * @return JsonResponse
@@ -103,7 +103,7 @@ class CompanyProfileController extends BaseAuthController {
     {
         $input = $request->only('file');
 
-        // Validate input
+        // Validate file
 
         $validator = Validator::make($input, [
             'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . Upload::MAX_FILE_SIZE
@@ -111,7 +111,7 @@ class CompanyProfileController extends BaseAuthController {
 
         if ($validator->fails())
         {
-           return response()->json(implode(' ', $validator->messages()->all(':message')), 400);
+            return ToastrJsonResponse::error($validator, 404);
         }
 
         // Save logo
@@ -122,13 +122,13 @@ class CompanyProfileController extends BaseAuthController {
 
             $this->user->company->update(['has_logo' => TRUE]);
 
-            return response()->json('Your logo has been uploaded.');
+            return ToastrJsonResponse::success('Your logo has been uploaded.');
         }
         catch(Exception $e)
         {
             $this->user->company->update(['has_logo' => FALSE]);
 
-            return response()->json('Upload failed, please try again.', 500);
+            return ToastrJsonResponse::error('Upload failed, please try again.', 500);
         }
     }
 }

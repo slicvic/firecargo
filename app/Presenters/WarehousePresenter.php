@@ -13,7 +13,7 @@ use Html;
 class WarehousePresenter extends BasePresenter {
 
     /**
-     * Presents the carrier's name.
+     * Presents the carrier name.
      *
      * @return string
      */
@@ -23,7 +23,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the customer's name.
+     * Presents the customer name.
      *
      * @return string
      */
@@ -33,7 +33,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the shipper's name.
+     * Presents the shipper name.
      *
      * @return string
      */
@@ -43,7 +43,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to its shipper's account page.
+     * Presents a link to the shipper account page.
      *
      * @return html
      */
@@ -56,7 +56,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to its customer's account page.
+     * Presents a link to the customer account page.
      *
      * @return html
      */

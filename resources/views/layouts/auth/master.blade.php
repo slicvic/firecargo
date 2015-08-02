@@ -25,7 +25,6 @@
         <div class="row">
             <div class="col-md-12">
                 <h1 class="text-center" style="margin-bottom:30px;">{!! env('APP_NAME_HTML') !!}</h1>
-                {!! Flash::getHtml() !!}
                 @yield('content')
             </div>
         </div>
@@ -39,5 +38,7 @@
             </div>
         </div>
     </div>
+
+    {!! Flash::getToastr() !!}
 </body>
 </html>

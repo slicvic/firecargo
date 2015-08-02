@@ -12,7 +12,7 @@ use App\Models\User;
 use App\Models\Address;
 use App\Exceptions\ValidationException;
 use App\Helpers\Upload;
-use Flash;
+use App\Http\ToastrJsonResponse;
 
 /**
  * UserProfileController
@@ -34,54 +34,66 @@ class UserProfileController extends BaseAuthController {
     }
 
     /**
-     * Displays the user's profile.
+     * Displays the user profile.
      *
      * @return Response
      */
     public function getProfile()
     {
-        return view('user_profile.show', ['user' => $this->user]);
+        if ($this->user->isCustomer())
+        {
+            return view('user_profile.customer.show', ['user' => $this->user]);
+        }
+        else
+        {
+            return view('user_profile.show', ['user' => $this->user]);
+        }
     }
 
     /**
-     * Shows the form for updating the user's profile.
+     * Shows the form for updating the user profile.
      *
      * @return Response
      */
     public function getEdit()
     {
-        return view('user_profile.edit', [
-            'user' => $this->user
-        ]);
+        if ($this->user->isCustomer())
+        {
+            return view('user_profile.customer.edit', [
+                'account' => $this->user->account,
+                'address' => $this->user->account->address ?: new Address
+            ]);
+        }
+        else
+        {
+            return view('user_profile.edit', [
+                'user' => $this->user
+            ]);
+        }
     }
 
     /**
-     * Updates the user's profile.
+     * Updates the user profile.
      *
      * @param  Request  $request
      * @return Redirector
      */
     public function postProfile(Request $request)
     {
-        $input = $request->only('user');
+        if ($this->user->isCustomer())
+        {
+            $this->updateCustomerProfile($request);
+        }
+        else
+        {
+            $this->updateProfile($request);
+        }
 
-        $rules = [
-            'email' => 'required|email|unique:users,email,' . $this->user->id,
-            'firstname' => 'required',
-            'lastname' => 'required'
-        ];
-
-        // Validate input
-        $this->validate($input['user'], $rules);
-
-        // Update user
-        $this->user->update($input['user']);
-
-        return $this->redirectBackWithSuccess('Your profile has been updated.');
+        return $this->redirectWithSuccess('user/profile', 'Your profile has been updated.');
     }
 
     /**
-     * Shows the form for changing the user's password.
+     * Shows the form for changing the user password.
      *
      * @return Response
      */
@@ -91,7 +103,7 @@ class UserProfileController extends BaseAuthController {
     }
 
     /**
-     * Updates the user's password.
+     * Updates the user password.
      *
      * @param  Request  $request
      * @return Redirector
@@ -122,7 +134,7 @@ class UserProfileController extends BaseAuthController {
     }
 
     /**
-     * Uploads the user's photo.
+     * Uploads the profile photo.
      *
      * @param  Request  $request
      * @return JsonResponse
@@ -131,7 +143,7 @@ class UserProfileController extends BaseAuthController {
     {
         $input = $request->only('file');
 
-        // Validate input
+        // Validate file
 
         $validator = Validator::make($input, [
             'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . Upload::MAX_FILE_SIZE
@@ -139,7 +151,7 @@ class UserProfileController extends BaseAuthController {
 
         if ($validator->fails())
         {
-           return response()->json(implode(' ', $validator->messages()->all(':message')), 400);
+            return ToastrJsonResponse::error($validator, 404);
         }
 
         // Save photo
@@ -150,13 +162,79 @@ class UserProfileController extends BaseAuthController {
 
             $this->user->update(['has_photo' => TRUE]);
 
-            return response()->json('Your photo has been uploaded.');
+            return ToastrJsonResponse::success('Your photo has been uploaded.');
         }
         catch(Exception $e)
         {
             $this->user->update(['has_photo' => FALSE]);
 
-            return response()->json('Upload failed, please try again.', 500);
+            return ToastrJsonResponse::error('Upload failed, please try again.', 500);
+        }
+    }
+
+    /**
+     * Updates an admin or agent profile.
+     *
+     * @param  Request  $request
+     * @return void
+     */
+    private function updateProfile(Request $request)
+    {
+        $input = $request->only('user');
+
+        $rules = [
+            'email' => 'required|email|unique:users,email,' . $this->user->id,
+            'firstname' => 'required',
+            'lastname' => 'required'
+        ];
+
+        // Validate input
+        $this->validate($input['user'], $rules);
+
+        // Update user
+        $this->user->update($input['user']);
+    }
+
+    /**
+     * Updates a customer profile.
+     *
+     * @param  Request  $request
+     * @return void
+     */
+    private function updateCustomerProfile(Request $request)
+    {
+        $input = $request->only('account', 'address');
+
+        $rules = [
+            'email' => 'required|email|unique:users,email,' . $this->user->id,
+            'firstname' => 'required',
+            'lastname' => 'required'
+        ];
+
+        // Validate input
+        $this->validate($input['account'], $rules);
+
+        // Update customer
+        $this->user->firstname = $input['account']['firstname'];
+        $this->user->lastname = $input['account']['lastname'];
+        $this->user->email = $input['account']['email'];
+        $this->user->save();
+
+        // Update customer account
+        $account = $this->user->account;
+        $account->phone = $input['account']['phone'];
+        $account->mobile_phone = $input['account']['mobile_phone'];
+        $account->autoship = isset($input['account']['autoship']);
+        $account->save();
+
+        // Update customer account address
+        if ($account->address)
+        {
+            $account->address->update($input['address']);
+        }
+        else
+        {
+            $account->address()->save(new Address($input['address']));
         }
     }
 }

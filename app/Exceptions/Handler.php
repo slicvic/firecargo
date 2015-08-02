@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 use App\Exceptions\ValidationException;
 use Flash;
+use App\Http\ToastrJsonResponse;
 
 class Handler extends ExceptionHandler {
 
@@ -90,17 +91,17 @@ class Handler extends ExceptionHandler {
     {
         if ($e instanceof ValidationException)
         {
-            return response()->json(['error' => Flash::view($e->errors())], 400);
+            return ToastrJsonResponse::error($e, 400);
         }
         elseif ($e instanceof ModelNotFoundException)
         {
-            return response()->json(['error' => Flash::view(trans('messages.error_model_not_found'))], 404);
+            return ToastrJsonResponse::error(trans('messages.error_model_not_found'), 404);
         }
         else
         {
             $message = env('APP_DEBUG') ? $e->getMessage() : trans('messages.error_500');
 
-            return response()->json(['error' => Flash::view($message)], 500);
+            return ToastrJsonResponse::error($message, 500);
         }
     }
 }

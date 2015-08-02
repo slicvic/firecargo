@@ -26,7 +26,7 @@ class ShipperAccountsController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('agentOrHigher');
+        $this->middleware('auth.agentOrHigher');
     }
 
     /**
@@ -65,12 +65,8 @@ class ShipperAccountsController extends BaseAuthController {
     {
         $input = $request->only('account', 'address');
 
-        $rules = [
-            'name' => 'required'
-        ];
-
         // Validate input
-        $this->validate($input['account'], $rules);
+        $this->validate($input['account'], Account::$rules);
 
         // Create account
         $account = new Account($input['account']);
@@ -114,12 +110,8 @@ class ShipperAccountsController extends BaseAuthController {
     {
         $input = $request->only('account', 'address');
 
-        $rules = [
-            'name' => 'required'
-        ];
-
         // Validate input
-        $this->validate($input['account'], $rules);
+        $this->validate($input['account'], Account::$rules);
 
         // Update account
         $account = Account::findMineOrFail($id);

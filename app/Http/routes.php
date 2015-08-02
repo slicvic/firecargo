@@ -29,13 +29,6 @@ Route::controller('shipments', 'ShipmentsController');
 Route::controller('company', 'CompanyProfileController');
 Route::get('logout', 'UserProfileController@getLogout');
 
-
-Route::group(['middleware' => 'customer'], function()
-{
-    Route::controller('user', 'CustomerUserProfileController');
-});
-
-
 // Auth
 Route::get('login', 'AuthController@getLogin');
 Route::post('login', 'AuthController@postLogin');

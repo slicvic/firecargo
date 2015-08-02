@@ -27,7 +27,7 @@ abstract class BasePresenter {
     }
 
     /**
-     * Presents the created datetime along with the creator's name.
+     * Presents the creator name and date.
      *
      * @return string
      */
@@ -41,7 +41,7 @@ abstract class BasePresenter {
     }
 
     /**
-     * Presents the updated datetime along with the updater's name.
+     * Presents the updater name and date.
      *
      * @return string
      */

@@ -89,7 +89,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the package's warehouse.
+     * Gets the warehouse.
      *
      * @return Warehouse
      */
@@ -99,7 +99,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the package's owner.
+     * Gets the customer.
      *
      * @return Warehouse
      */
@@ -109,7 +109,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the package's type.
+     * Gets the package type.
      *
      * @return PackageType
      */
@@ -119,7 +119,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the package's shipment.
+     * Gets the shipment.
      *
      * @return Shipment
      */

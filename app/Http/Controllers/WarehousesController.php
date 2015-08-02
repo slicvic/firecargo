@@ -16,6 +16,8 @@ use App\Models\Carrier;
 use App\Pdf\WarehousePdf;
 use App\Exceptions\ValidationException;
 use Flash;
+use App\Http\ToastrJsonResponse;
+
 
 /**
  * WarehousesController
@@ -34,7 +36,7 @@ class WarehousesController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('agentOrHigher');
+        $this->middleware('auth.agentOrHigher');
     }
 
     /**
@@ -100,7 +102,7 @@ class WarehousesController extends BaseAuthController {
         // Validate input and save warehouse
         if ( ! $this->validateAndSave($request, $warehouse))
         {
-            return response()->json(['error' => Flash::view('Warehouse creation failed, please try again.')], 500);
+            return ToastrJsonResponse::error('Warehouse creation failed, please try again.', 500);
         }
 
         Flash::success('Warehouse created.');
@@ -135,13 +137,13 @@ class WarehousesController extends BaseAuthController {
 
         if ( ! $warehouse)
         {
-            return response()->json(['error' => Flash::view('Warehouse not found.')], 404);
+            return ToastrJsonResponse::error('Warehouse not found.', 404);
         }
 
         // Validate input and save warehouse
         if ( ! $this->validateAndSave($request, $warehouse))
         {
-            return response()->json(['error' => Flash::view('Warehouse update failed, please try again.')], 500);
+            return ToastrJsonResponse::error('Warehouse update failed, please try again.', 500);
         }
 
         Flash::success('Warehouse updated.');
@@ -214,9 +216,9 @@ class WarehousesController extends BaseAuthController {
         $input = $request->only('warehouse', 'packages');
 
         $rules = [
-            'shipper' => 'required|min:3',
-            'customer' => 'required|min:5',
-            'carrier' => 'required|min:3',
+            'shipper_name' => Account::$rules['name'],
+            'customer_name' => Account::$rules['name'],
+            'carrier_name' => Carrier::$rules['name']
         ];
 
         // Validate input
@@ -227,19 +229,19 @@ class WarehousesController extends BaseAuthController {
             throw new ValidationException($validator->messages());
         }
 
-        // Create a new carrier if necessary
+        // Create new carrier if necessary
         if (empty($input['warehouse']['carrier_id']))
         {
-            $carrier = Carrier::firstOrCreate(['name' => $input['warehouse']['carrier']]);
+            $carrier = Carrier::firstOrCreate(['name' => $input['warehouse']['carrier_name']]);
 
             $input['warehouse']['carrier_id'] = $carrier->id;
         }
 
-        // Create a new shipper account if necessary
+        // Create new shipper account if necessary
         if (empty($input['warehouse']['shipper_account_id']))
         {
             $shipper = Account::firstOrCreate([
-                'name' => trim($input['warehouse']['shipper']),
+                'name' => trim($input['warehouse']['shipper_name']),
                 'company_id' => $this->user->company_id,
                 'type_id' => AccountType::SHIPPER
             ]);
@@ -247,11 +249,11 @@ class WarehousesController extends BaseAuthController {
             $input['warehouse']['shipper_account_id'] = $shipper->id;
         }
 
-        // Create a new customer account if necessary
+        // Create new customer account if necessary
         if (empty($input['warehouse']['customer_account_id']))
         {
-            $customer = Account::firstOrCreate([
-                'name' => trim($input['warehouse']['customer']),
+            $customer = Account::create([
+                'name' => trim($input['warehouse']['customer_name']),
                 'company_id' => $this->user->company_id,
                 'type_id' => AccountType::CUSTOMER
             ]);

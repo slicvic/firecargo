@@ -11,7 +11,7 @@ use App\Helpers\Currency;
 class ShipmentPresenter extends BasePresenter {
 
     /**
-     * Gets the carrier's name.
+     * Gets the carrier name.
      *
      * @return string
      */

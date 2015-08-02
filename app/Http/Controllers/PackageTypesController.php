@@ -24,7 +24,7 @@ class PackageTypesController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('adminOrHigher');
+        $this->middleware('auth.adminOrHigher');
     }
 
     /**
@@ -118,6 +118,11 @@ class PackageTypesController extends BaseAuthController {
         return $this->redirectBackWithSuccess('Package type deleted.');
     }
 
+    /**
+     * Returns all package types formatted for a jquery x-editable select field.
+     *
+     * @return JsonResponse
+     */
     public function getAjaxEditableOptions()
     {
         $types = PackageType::all();

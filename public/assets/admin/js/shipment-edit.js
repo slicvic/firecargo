@@ -82,11 +82,11 @@ $(function() {
      * Carrier autocomplete handler
      * ---------------------------------------------
      */
-    $('#carrier').keyup(function() {
+    $('#carrier-name').keyup(function() {
         $('#carrier-id').val('');
     });
 
-    $('#carrier').autocomplete({
+    $('#carrier-name').autocomplete({
         source: '/carriers/ajax-autocomplete',
         minLength: 2,
         select: function(event, ui) {
@@ -103,7 +103,6 @@ $(function() {
         event.preventDefault();
 
         var form = $(this),
-            flashMessage = $('#flash-message'),
             saveBtn = $(this).find('button[type=submit]');
 
         if (!form.valid()) return false;
@@ -115,7 +114,7 @@ $(function() {
                 window.location = data.redirect_url;
             })
             .fail(function(xhr) {
-                flashMessage.html(xhr.responseJSON.error);
+                toastr.error(xhr.responseJSON.message, xhr.responseJSON.title);
                 $('html, body').scrollTop(0);
                 saveBtn.button('reset');
             });

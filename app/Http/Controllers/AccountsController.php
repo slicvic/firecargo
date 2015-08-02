@@ -23,7 +23,7 @@ class AccountsController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('agentOrHigher');
+        $this->middleware('auth.agentOrHigher');
     }
 
     /**
@@ -57,7 +57,9 @@ class AccountsController extends BaseAuthController {
         {
             $json[] = [
                 'id'    => $account->id,
-                'label' => $account->name
+                'label' => $account->name,
+                'email' => $account->email,
+                'address' => $account->present()->address(' ')
             ];
         }
 

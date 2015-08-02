@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 
 use App\Models\Package;
+use App\Http\ToastrJsonResponse;
 
 /**
  * PackagesController
@@ -24,7 +25,7 @@ class PackagesController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('agentOrHigher', ['except' => ['getAjaxDetail']]);
+        $this->middleware('auth.agentOrHigher', ['except' => ['getAjaxDetail']]);
     }
 
     /**
@@ -104,15 +105,26 @@ class PackagesController extends BaseAuthController {
     {
         if ($this->user->isCustomer())
         {
-            $package = Package::where(['id' => $id, 'customer_account_id' => $this->user->customer->id])
-                ->firstOrFail();
+            $view = 'packages.customer.detail_modal';
 
-            return view('packages.customer.detail_modal', ['package' => $package]);
+            $package = Package::where([
+                'id' => $id,
+                'customer_account_id' => $this->user->uss->id
+            ])->first();
+        }
+        else
+        {
+            $view = 'packages.detail_modal';
+
+            $package = Package::findMine($id);
         }
 
-        $package = Package::findMineOrFail($id);
+        if ( ! $package)
+        {
+            return ToastrJsonResponse::error('Package not found.', 404);
+        }
 
-        return view('packages.detail_modal', ['package' => $package]);
+        return view($view, ['package' => $package]);
     }
 
     /**

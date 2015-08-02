@@ -30,8 +30,6 @@
     </div>
 
     <div class="wrapper wrapper-content">
-        {!! Flash::getHtml() !!}
-        <div id="flash-message"></div>
         <div class="row">
             <div class="col-md-9">
                 @include('shipments._edit_packages', ['packages' => $packages])

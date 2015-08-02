@@ -16,7 +16,6 @@
 <div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-lg-12">
-            {!! Flash::getHtml() !!}
             @yield('page_content')
         </div>
     </div>

@@ -22,7 +22,7 @@ class CarriersController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('adminOrHigher');
+        $this->middleware('auth.adminOrHigher');
     }
 
     /**

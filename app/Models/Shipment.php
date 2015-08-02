@@ -83,7 +83,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the shipment's packages.
+     * Gets the packages.
      *
      * @return Package[]
      */
@@ -93,7 +93,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the shipment's carrier.
+     * Gets the carrier.
      *
      * @return Carrier
      */

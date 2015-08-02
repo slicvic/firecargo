@@ -78,7 +78,7 @@ class Flash {
     }
 
     /**
-     * Retrieves a message.
+     * Retrieves the message.
      *
      * @return array|NULL
      */
@@ -88,11 +88,11 @@ class Flash {
     }
 
     /**
-     * Retrieves a message and renders it as an HTML view.
+     * Renders the message as bootstrap alert.
      *
      * @return string|NULL
      */
-    public function getHtml()
+    public function getClassic()
     {
         $value = $this->get();
 
@@ -101,11 +101,42 @@ class Flash {
             return NULL;
         }
 
-        return self::view($value['message'], $value['level']);
+        return self::view("classic.{$value['level']}", $value['message']);
     }
 
     /**
-     * Stores a message in the session.
+     * Renders the message as a toastr.
+     *
+     * @return string|NULL
+     */
+    public function getToastr()
+    {
+        $value = $this->get();
+
+        if ($value === NULL)
+        {
+            return NULL;
+        }
+
+        return self::view("toastr.{$value['level']}", $value['message']);
+    }
+
+    /**
+     * Makes the HTML view for the message.
+     *
+     * @param  string  $view
+     * @param  mixed   $message
+     * @return string
+     */
+    public function view($view, $message)
+    {
+        return view("flash_messages.{$view}", [
+            'message' => self::normalizeMessage($message)
+        ])->render();
+    }
+
+    /**
+     * Stores the message in the session.
      *
      * @param   string        $level    success|info|warning|error
      * @param   string|array  $message
@@ -117,53 +148,34 @@ class Flash {
     }
 
     /**
-     * Builds the HTML view for a message.
+     * Normalizes the message before sending to the view.
      *
-     * @param  string  $level  success|info|warning|error
      * @param  string|array|ValidationException|Validator|MessageBag  $message
      * @return string
      */
-    public static function view($message, $level = 'error')
+    public static function normalizeMessage($message)
     {
-        switch ($level)
+        if (is_string($message))
         {
-            case self::SUCCESS:
-            case self::INFO:
-            case self::WARNING:
-
-                $message = is_string($message) ? $message : NULL;
-                break;
-
-            case self::ERROR:
-
-                if (is_string($message) || is_array($message))
-                {
-                    // Do nothing
-                }
-                elseif ($message instanceof \Illuminate\Validation\Validator)
-                {
-                    $message = $message->messages()->all(':message');
-                }
-                elseif ($message instanceof \Illuminate\Support\MessageBag)
-                {
-                    $message = $message->all(':message');
-                }
-                elseif ($message instanceof \App\Exceptions\ValidationException)
-                {
-                    $message = $message->getMessage();
-                }
-                else
-                {
-                    $message = NULL;
-                }
-
-                break;
-
-            default:
-
-                return NULL;
+            return $message;
+        }
+        elseif (is_array($message))
+        {
+            return '<ul><li>' . implode('</li><li>', $message) . '</li></ul>';
+        }
+        elseif ($message instanceof \Illuminate\Validation\Validator)
+        {
+            return '<ul>' . implode('', $message->messages()->all('<li>:message</li>')) . '</ul>';
+        }
+        elseif ($message instanceof \Illuminate\Support\MessageBag)
+        {
+            return '<ul>' . implode('', $message->all('<li>:message</li>')) . '</ul>';
+        }
+        elseif ($message instanceof \App\Exceptions\ValidationException)
+        {
+            return '<ul>' . implode('', $message->errors()->all('<li>:message</li>')) . '</ul>';
         }
 
-        return view('flash_messages.' . $level, ['message' => $message])->render();
+        return '';
     }
 }

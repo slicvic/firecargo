@@ -23,10 +23,10 @@ $(function() {
             formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
         },
         success: function(file, message) {
-            toastr.success(message, 'Success');
+            toastr.success(message.message, message.title);
         },
         error: function(file, errorMessage) {
-            toastr.error(errorMessage, 'Error');
+            toastr.error(errorMessage.message, errorMessage.title);
         },
         complete: function() {
             uploadBtn.button('reset');

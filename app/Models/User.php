@@ -83,7 +83,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the user's role.
+     * Gets the user role.
      *
      * @return Role
      */
@@ -93,7 +93,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the user's customer account.
+     * Gets the user customer account.
      *
      * NOTE: ONLY "CUSTOMER" USERS HAVE AN ACCOUNT.
      *

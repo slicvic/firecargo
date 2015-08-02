@@ -99,12 +99,12 @@ var app = {
 
             $.get('/packages/ajax-detail/' + viewBtn.attr('data-package-id'), function(response) {
                 modalContent.html(response);
+                modal.modal({});
             })
             .fail(function(xhr) {
-                modalContent.html('<div class="modal-content">' + xhr.responseJSON.error + '</div>');
+                toastr.error(xhr.responseJSON.message, xhr.responseJSON.title);
             })
             .always(function() {
-                modal.modal({});
                 viewBtn.button('reset');
             });
         });

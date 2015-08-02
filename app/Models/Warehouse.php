@@ -66,7 +66,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the warehouse's shipper account.
+     * Gets the shipper account.
      *
      * @return Account
      */
@@ -76,7 +76,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the warehouse's customer account.
+     * Gets the customer account.
      *
      * @return Account
      */
@@ -106,7 +106,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the warehouse's carrier.
+     * Gets the carrier.
      *
      * @return Carrier
      */
@@ -116,7 +116,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the warehouse's packages.
+     * Gets the packages.
      *
      * @return Package[]
      */
