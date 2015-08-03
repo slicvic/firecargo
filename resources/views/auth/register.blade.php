@@ -15,7 +15,7 @@
                 <div class="col-md-12">
                     <form action="/register" method="post" class="form-horizontal">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="referer_id" value="{{ Request::input('referer_id') }}">
+                        <input type="hidden" name="ref_id" value="{{ Request::input('ref_id') }}">
                         <h3>Personal Information</h3>
                         <hr>
                         <div class="form-group">

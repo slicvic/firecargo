@@ -29,7 +29,7 @@ class RegisterUserFormRequest extends Request {
 	public function rules()
 	{
 		return [
-            'referer_id' => 'required|exists:companies',
+            'ref_id' => 'required|exists:companies,referer_id',
             'firstname' => 'required|min:3',
             'lastname' => 'required|min:3',
             'email' => 'required|email|unique:users,email',
