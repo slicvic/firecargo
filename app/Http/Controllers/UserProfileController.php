@@ -4,7 +4,7 @@ use Validator;
 use Auth;
 use Hash;
 use Exception;
-
+use Log;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
@@ -166,6 +166,8 @@ class UserProfileController extends BaseAuthController {
         catch(Exception $e)
         {
             $this->user->update(['has_photo' => FALSE]);
+
+            Log::error($e->getMessage());
 
             return ToastrJsonResponse::error('Upload failed, please try again.', 500);
         }

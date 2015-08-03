@@ -2,7 +2,6 @@
 
 use Validator;
 use Event;
-
 use Illuminate\Http\Request;
 
 use App\Models\User;

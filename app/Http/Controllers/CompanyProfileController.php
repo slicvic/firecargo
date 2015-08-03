@@ -3,7 +3,7 @@
 use Validator;
 use Config;
 use Exception;
-
+use Log;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 
@@ -127,6 +127,8 @@ class CompanyProfileController extends BaseAuthController {
         catch(Exception $e)
         {
             $this->user->company->update(['has_logo' => FALSE]);
+
+            Log::error($e->getMessage());
 
             return ToastrJsonResponse::error('Upload failed, please try again.', 500);
         }
