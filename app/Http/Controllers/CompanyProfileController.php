@@ -126,8 +126,6 @@ class CompanyProfileController extends BaseAuthController {
         }
         catch(Exception $e)
         {
-            $this->user->company->update(['has_logo' => FALSE]);
-
             Log::error($e);
 
             return ToastrJsonResponse::error('Upload failed, please try again.', 500);

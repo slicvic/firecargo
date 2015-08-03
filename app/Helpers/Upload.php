@@ -31,10 +31,10 @@ class Upload {
      */
     private static $resources = [
         'user' => [
-            'profile_photo' => 'users/{{OWNER_ID}}/images/profile/'
+            'profile_photo' => 'users/{{ENTITY_ID}}/images/profile/'
         ],
         'company' => [
-            'logo'  => 'companies/{{OWNER_ID}}/images/logo/'
+            'logo'  => 'companies/{{ENTITY_ID}}/images/logo/'
         ]
     ];
 
@@ -114,15 +114,15 @@ class Upload {
      * @see    Upload::$resources
      *
      * @param  string  $key
-     * @param  int     $ownerId
+     * @param  int     $entityId
      * @return string
      */
-    private static function resourcePath($key, $ownerId)
+    private static function resourcePath($key, $entityId)
     {
         $keyParts = explode('.', $key);
 
         $path = public_path() . self::ROOT_PATH;
-        $path .= str_replace('{{OWNER_ID}}', $ownerId, self::$resources[$keyParts[0]][$keyParts[1]]);
+        $path .= str_replace('{{ENTITY_ID}}', $entityId, self::$resources[$keyParts[0]][$keyParts[1]]);
 
         return $path;
     }
@@ -134,17 +134,38 @@ class Upload {
      *
      * @param  string  $key
      * @param  string  $filename
-     * @param  int     $ownerId
+     * @param  int     $entityId
      * @return string
      */
-    public static function resourceUrl($key, $filename, $ownerId)
+    public static function resourceUrl($key, $filename, $entityId)
     {
         $keyParts = explode('.', $key);
 
         $path = self::ROOT_PATH;
-        $path .= str_replace('{{OWNER_ID}}', $ownerId, self::$resources[$keyParts[0]][$keyParts[1]]);
+        $path .= str_replace('{{ENTITY_ID}}', $entityId, self::$resources[$keyParts[0]][$keyParts[1]]);
         $path .= $filename . '?cb=' . time();
 
         return url($path);
+    }
+
+    /**
+     * Checks if a resource exists or not.
+     *
+     * @see    Upload::$resources
+     *
+     * @param  string  $key
+     * @param  string  $filename
+     * @param  int     $entityId
+     * @return bool
+     */
+    public static function resourceExists($key, $filename, $entityId)
+    {
+        $keyParts = explode('.', $key);
+
+        $path = public_path() . self::ROOT_PATH;
+        $path .= str_replace('{{ENTITY_ID}}', $entityId, self::$resources[$keyParts[0]][$keyParts[1]]);
+        $path .= $filename;
+
+        return File::exists($path);
     }
 }

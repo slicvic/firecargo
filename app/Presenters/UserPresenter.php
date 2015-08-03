@@ -40,7 +40,7 @@ class UserPresenter extends BasePresenter {
      */
     public function profilePhotoUrl($size = 'sm')
     {
-        if ($this->model->has_photo)
+        if (Upload::resourceExists('user.profile_photo', "{$size}.png", $this->model->id))
         {
             return Upload::resourceUrl('user.profile_photo', "{$size}.png", $this->model->id);
         }

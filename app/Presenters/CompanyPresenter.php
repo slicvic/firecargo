@@ -28,7 +28,7 @@ class CompanyPresenter extends BasePresenter {
      */
     public function logoUrl($size = 'sm')
     {
-        if ($this->model->has_logo)
+        if (Upload::resourceExists('company.logo', "{$size}.png", $this->model->id))
         {
             return Upload::resourceUrl('company.logo', "{$size}.png", $this->model->id);
         }
