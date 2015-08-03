@@ -245,7 +245,7 @@ class Package extends BaseSearchable {
     {
         $query = Package::query()
             ->orderBy('packages.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
-            ->with('type', 'customer', 'shipment');
+            ->with('type', 'customer', 'shipment', 'company');
 
         if ( ! empty($criteria['company_id']))
         {
