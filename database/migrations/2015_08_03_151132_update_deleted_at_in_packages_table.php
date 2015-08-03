@@ -14,7 +14,7 @@ class UpdateDeletedAtInPackagesTable extends Migration {
 	{
 		Schema::table('packages', function($table)
 		{
-		    $table->dateTime('deleted_at')->nullable()->change();
+		    //$table->dateTime('deleted_at')->nullable()->change();
 		});
 	}
 

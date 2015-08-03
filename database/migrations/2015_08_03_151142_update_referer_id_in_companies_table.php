@@ -14,7 +14,7 @@ class UpdateRefererIdInCompaniesTable extends Migration {
 	{
 		Schema::table('companies', function($table)
 		{
-		    $table->string('referer_id', 30)->unique()->change();
+		    //$table->string('referer_id', 30)->unique()->nullable()->change();
 		});
 	}
 

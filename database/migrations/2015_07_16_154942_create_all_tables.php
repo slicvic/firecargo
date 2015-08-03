@@ -21,7 +21,7 @@ class CreateAllTables extends Migration {
 		    $table->string('phone', 30);
 		    $table->string('fax', 30);
 		    $table->string('email', 255);
-		    $table->string('referer_id', 30)->unique();
+		    $table->string('referer_id', 30)->nullable()->unique();
 		    $table->tinyInteger('has_logo')->unsigned()->default(0);
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
