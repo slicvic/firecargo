@@ -137,7 +137,6 @@
                                     <li{{ (Request::is('roles') || Request::is('role/*')) ? ' class=active' : '' }}><a href="/roles">Roles</a></li>
                                     <li{{ (Request::is('package-types') || Request::is('package-type/*')) ? ' class=active' : '' }}><a href="/package-types">Package Types</a></li>
                                     <li{{ (Request::is('carriers') || Request::is('carrier/*')) ? ' class=active' : '' }}><a href="/carriers">Carriers</a></li>
-                                    <li{{ (Request::is('sites') || Request::is('site/*')) ? ' class=active' : '' }}><a href="/sites">Sites</a></li>
                                 @endif
                                 <li{{ (Request::is('company') || Request::is('company/*')) ? ' class=active' : '' }}><a href="/company/profile">Company Profile</a></li>
                             </ul>
