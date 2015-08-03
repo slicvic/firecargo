@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Account;
 use App\Models\AccountType;
-
+//TOOK INTO CONSIDERATION
 /**
  * General Purpose Accounts Controller
  *

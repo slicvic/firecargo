@@ -1,6 +1,7 @@
 <?php namespace App\Helpers;
 
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\File;
 
 /**
  * Upload
@@ -50,10 +51,7 @@ class Upload {
         // Create destination directory
         $destination = self::resourcePath('user.profile_photo', $userId);
 
-        if ( ! file_exists($destination))
-        {
-            mkdir($destination, 0777, TRUE);
-        }
+        File::makeDirectory($destination, 0775, TRUE);
 
         // Generate thumbnails
         $dimensions = [
@@ -86,10 +84,7 @@ class Upload {
         // Create destination directory
         $destination = self::resourcePath('company.logo', $companyId);
 
-        if ( ! file_exists($destination))
-        {
-            mkdir($destination, 0777, TRUE);
-        }
+        File::makeDirectory($destination, 0775, TRUE);
 
         // Generate thumbnails
         $dimensions = [
