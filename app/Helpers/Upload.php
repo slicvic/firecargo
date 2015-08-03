@@ -51,7 +51,7 @@ class Upload {
         // Create destination directory
         $destination = self::resourcePath('user.profile_photo', $userId);
 
-        File::makeDirectory($destination, 0775, TRUE);
+        File::exists($destination) OR File::makeDirectory($destination, 0775, TRUE);
 
         // Generate thumbnails
         $dimensions = [
@@ -84,7 +84,7 @@ class Upload {
         // Create destination directory
         $destination = self::resourcePath('company.logo', $companyId);
 
-        File::makeDirectory($destination, 0775, TRUE);
+        File::exists($destination) OR File::makeDirectory($destination, 0775, TRUE);
 
         // Generate thumbnails
         $dimensions = [
