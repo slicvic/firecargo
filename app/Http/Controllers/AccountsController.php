@@ -31,8 +31,9 @@ class AccountsController extends BaseAuthController {
      *
      * @param  Request  $request
      * @return JsonResponse
+     * @uses   Ajax
      */
-    public function getAjaxAutocomplete(Request $request)
+    public function getAutocompleteSearch(Request $request)
     {
         $input = $request->only('term', 'type');
 

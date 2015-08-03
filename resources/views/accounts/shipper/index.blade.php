@@ -5,7 +5,7 @@
 @section('subtitle', 'Manage Your Shippers')
 
 @section('actions')
-    <a href="/shippers/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Shipper</a>
+    <a href="/shipper/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Shipper</a>
 @stop
 
 @section('thead')
@@ -21,7 +21,7 @@
             <td>{{ $account->id }}</td>
             <td>{{ $account->name }}</td>
             <td>{!! $account->present()->address() !!}</td>
-            <td><a href="/shippers/edit/{{ $account->id }}" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a></td>
+            <td><a href="/shipper/{{ $account->id }}/edit" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a></td>
         </tr>
     @endforeach
 @stop

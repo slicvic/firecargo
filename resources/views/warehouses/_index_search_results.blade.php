@@ -32,8 +32,8 @@
                 <td>{{ $warehouse->present()->updatedAt() }}</td>
                 <td>
                     <div class="btn-group" style="min-width:100px;">
-                        <a href="/warehouses/show/{{ $warehouse->id }}" class="btn btn-sm btn-white">View</a>
-                        <a href="/warehouses/edit/{{ $warehouse->id }}" class="btn btn-sm btn-white">Edit</a>
+                        <a href="/warehouse/{{ $warehouse->id }}/show" class="btn btn-sm btn-white">View</a>
+                        <a href="/warehouse/{{ $warehouse->id }}/edit" class="btn btn-sm btn-white">Edit</a>
                     </div>
                 </td>
             </tr>

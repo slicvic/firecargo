@@ -1,7 +1,7 @@
 @extends('layouts.admin.master')
 
 @section('content')
-<form id="warehouse-edit-form" action="/warehouses/{{ $warehouse->exists ? 'update/' . $warehouse->id : 'store' }}" method="post" class="">
+<form id="warehouse-edit-form" action="/warehouse/{{ $warehouse->exists ? $warehouse->id . '/update' : 'store' }}" method="post" class="">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
     <div class="row wrapper border-bottom white-bg page-heading">
@@ -13,7 +13,7 @@
                 </li>
                 @if ($warehouse->exists)
                     <li>
-                        <a href="/warehouses/show/{{ $warehouse->id }}">Detail</a>
+                        <a href="/warehouse/{{ $warehouse->id }}/show">Detail</a>
                     </li>
                 @endif
                 <li class="active">
@@ -23,7 +23,7 @@
         </div>
         <div class="col-sm-8">
             <div class="title-action">
-                <a class="btn btn-white" href="/warehouses{{ $warehouse->exists ? '/show/' . $warehouse->id : '' }}">Cancel</a>
+                <a class="btn btn-white" href="{{ $warehouse->exists ? '/warehouse/' . $warehouse->id . '/show' : '/warehouses' }}">Cancel</a>
                 <button class="btn btn-primary" data-loading-text="Saving..." type="submit">Save Warehouse</button>
             </div>
         </div>
@@ -42,7 +42,7 @@
             <div class="col-md-12">
                 <div class="ibox">
                     <div class="ibox-content text-right">
-                        <a class="btn btn-white" href="/warehouses{{ $warehouse->exists ? '/show/' . $warehouse->id : '' }}">Cancel</a>
+                        <a class="btn btn-white" href="{{ $warehouse->exists ? '/warehouse/' . $warehouse->id . '/show' : '/warehouses' }}">Cancel</a>
                         <button class="btn btn-primary" data-loading-text="Saving..." type="submit">Save Warehouse</button>
                     </div>
                 </div>

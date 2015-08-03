@@ -97,12 +97,18 @@ var app = {
             viewBtn.attr('data-loading-text', that.getSpinnerHtml());
             viewBtn.button('loading');
 
-            $.get('/packages/ajax-detail/' + viewBtn.attr('data-package-id'), function(response) {
+            $.get('/package/' + viewBtn.attr('data-package-id') + '/details', function(response) {
                 modalContent.html(response);
                 modal.modal({});
             })
             .fail(function(xhr) {
-                toastr.error(xhr.responseJSON.message, xhr.responseJSON.title);
+                if (xhr.responseJSON && xhr.responseJSON.hasOwnProperty('message')) {
+                    toastr.error(xhr.responseJSON.message, xhr.responseJSON.title);
+                }
+                else {
+                    console.log(xhr);
+                    toastr.error(xhr.responseText, 'Error');
+                }
             })
             .always(function() {
                 viewBtn.button('reset');

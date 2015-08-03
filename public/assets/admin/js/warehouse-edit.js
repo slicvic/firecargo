@@ -16,7 +16,7 @@ $(function() {
     });
 
     $('#carrier-name').autocomplete({
-        source: '/carriers/ajax-autocomplete',
+        source: '/carriers/autocomplete-search',
         minLength: 2,
         select: function(event, ui) {
             $('#carrier-id').val(ui.item.id);
@@ -37,7 +37,7 @@ $(function() {
     });
 
     $('#shipper-name').autocomplete({
-        source: '/accounts/ajax-autocomplete?type=shipper',
+        source: '/accounts/autocomplete-search?type=shipper',
         minLength: 2,
         select: function(event, ui) {
             $('#shipper-id').val(ui.item.id);
@@ -64,7 +64,7 @@ $(function() {
     });
 
     $('#customer-name').autocomplete({
-        source: '/accounts/ajax-autocomplete?type=customer',
+        source: '/accounts/autocomplete-search?type=customer',
         minLength: 2,
         select: function(event, ui) {
             $('#customer-id').val(ui.item.id);

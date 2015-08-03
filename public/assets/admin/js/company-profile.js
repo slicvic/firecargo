@@ -8,7 +8,7 @@ $(function() {
     var uploadBtn = $('#edit-logo-btn');
 
     uploadBtn.dropzone({
-        url: '/company/ajax-upload-logo',
+        url: '/company/logo',
         maxFileSize: 10,
         acceptedFiles: 'image/*',
         parallelUploads: 1,

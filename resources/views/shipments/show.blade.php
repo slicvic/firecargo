@@ -16,7 +16,7 @@
 @stop
 
 @section('actions')
-    <a href="/shipments/edit/{{ $shipment->id }}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit Shipment</a>
+    <a href="/shipment/{{ $shipment->id }}/edit" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit Shipment</a>
 @stop
 
 @section('page_content')

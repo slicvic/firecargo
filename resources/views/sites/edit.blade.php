@@ -18,7 +18,7 @@
 @stop
 
 @section('page_content')
-<form action="/sites/{{ ($site->exists) ? 'update/' . $site->id : 'store' }}" method="post" class="form-horizontal">
+<form action="/site/{{ ($site->exists) ? $site->id . '/update' : 'store' }}" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="form-group">
         <label class="control-label col-sm-2">Company</label>

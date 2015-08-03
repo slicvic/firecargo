@@ -1,7 +1,7 @@
 @extends('layouts.admin.master')
 
 @section('content')
-<form id="shipment-edit-form" action="/shipments/{{ $shipment->exists ? 'update/' . $shipment->id : 'store' }}" method="post" class="form-horsizontal">
+<form id="shipment-edit-form" action="/shipment/{{ $shipment->exists ? $shipment->id . '/update' : 'store' }}" method="post" class="form-horsizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
     <div class="row wrapper border-bottom white-bg page-heading">
@@ -13,7 +13,7 @@
                 </li>
                 @if ($shipment->exists)
                     <li>
-                        <a href="/shipments/show/{{ $shipment->id }}">Detail</a>
+                        <a href="/shipment/{{ $shipment->id }}/show">Detail</a>
                     </li>
                 @endif
                 <li class="active">
@@ -23,7 +23,7 @@
         </div>
         <div class="col-sm-8">
             <div class="title-action">
-                <a class="btn btn-white" href="/shipments{{ $shipment->exists ? '/show/' . $shipment->id : '' }}">Cancel</a>
+                <a class="btn btn-white" href="{{ $shipment->exists ? '/shipment/' . $shipment->id . '/show' : '/shipments' }}">Cancel</a>
                 <button class="btn btn-primary" data-loading-text="Saving..." type="submit">Save Shipment</button>
             </div>
         </div>
@@ -42,7 +42,7 @@
             <div class="col-md-12">
                 <div class="ibox">
                     <div class="ibox-content text-right">
-                        <a class="btn btn-white" href="/shipments{{ $shipment->exists ? '/show/' . $shipment->id : '' }}">Cancel</a>
+                        <a class="btn btn-white" href="{{ $shipment->exists ? '/shipment/' . $shipment->id . '/show' : '/shipments' }}">Cancel</a>
                         <button class="btn btn-primary" data-loading-text="Saving..." type="submit">Save Shipment</button>
                     </div>
                 </div>

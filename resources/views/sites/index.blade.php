@@ -5,7 +5,7 @@
 @section('subtitle', 'Manage Sites')
 
 @section('actions')
-    <a href="/sites/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Site</a>
+    <a href="/site/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Site</a>
 @stop
 
 @section('thead')
@@ -23,7 +23,7 @@
             <td>{{ $site->name }}</td>
             <td>
                 <div class="btn-group">
-                    <a href="/sites/edit/{{ $site->id }}" class="btn-white btn btn-sm"><i class="fa fa-pencil"></i> Edit</a>
+                    <a href="/site/{{ $site->id }}/edit" class="btn-white btn btn-sm"><i class="fa fa-pencil"></i> Edit</a>
                 </div>
             </td>
         </tr>

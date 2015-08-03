@@ -24,7 +24,7 @@
 
     <div class="row">
         <div class="col-xs-3"><strong>Type</strong></div>
-        <div class="col-xs-9"><p><a href="#" id="type" class="editable" data-type="select" data-value="{{ $package->type_id }}" data-source="/package-types/ajax-editable-options" data-name="type_id">{{ $package->present()->type() }}</a></p></div>
+        <div class="col-xs-9"><p><a href="#" id="type" class="editable" data-type="select" data-value="{{ $package->type_id }}" data-source="/package-types/editable-options" data-name="type_id">{{ $package->present()->type() }}</a></p></div>
     </div>
     <div class="row">
         <div class="col-xs-3"><strong>Weight</strong></div>
@@ -67,7 +67,7 @@
     $(document).ready(function() {
         $('.editable').editable({
             pk: '{{ $package->id }}',
-            url: '/packages/ajax-update-editable-field'
+            url: '/package/{{ $package->id}}/editable-field'
         });
     });
 </script>

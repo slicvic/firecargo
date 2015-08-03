@@ -122,8 +122,9 @@ class PackageTypesController extends BaseAuthController {
      * Returns all package types formatted for a jquery x-editable select field.
      *
      * @return JsonResponse
+     * @uses   Ajax
      */
-    public function getAjaxEditableOptions()
+    public function getEditableOptions()
     {
         $types = PackageType::all();
 

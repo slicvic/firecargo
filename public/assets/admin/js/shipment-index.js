@@ -8,7 +8,7 @@ $(function() {
             var packagesTr = $('<tr><td colspan="' + toggleBtnParentTr.children('td').length + '">' + app.getSpinnerHtml() + '</td></tr>')
             toggleBtnParentTr.after(packagesTr);
             toggleBtn.html('<i class="fa fa-angle-down"></i>');
-            $.get('/packages/ajax-shipment-packages/' + toggleBtn.attr('data-shipment-id')).done(function(data) {
+            $.get('/shipment/' + toggleBtn.attr('data-shipment-id') + '/packages').done(function(data) {
                 packagesTr.children('td').html(data);
             });
         }

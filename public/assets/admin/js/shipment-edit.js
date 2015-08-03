@@ -87,7 +87,7 @@ $(function() {
     });
 
     $('#carrier-name').autocomplete({
-        source: '/carriers/ajax-autocomplete',
+        source: '/carriers/autocomplete-search',
         minLength: 2,
         select: function(event, ui) {
             $('#carrier-id').val(ui.item.id);

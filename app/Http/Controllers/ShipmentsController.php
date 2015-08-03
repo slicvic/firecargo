@@ -109,7 +109,7 @@ class ShipmentsController extends BaseAuthController {
 
         Flash::success('Shipment created.');
 
-        return response()->json(['redirect_url' => '/shipments/show/' . $shipment->id]);
+        return response()->json(['redirect_url' => "/shipment/{$shipment->id}/show"]);
     }
 
     /**
@@ -163,7 +163,7 @@ class ShipmentsController extends BaseAuthController {
 
         Flash::success('Shipment updated.');
 
-        return response()->json(['redirect_url' => '/shipments/edit/' . $shipment->id]);
+        return response()->json(['redirect_url' => "/shipment/{$shipment->id}/edit"]);
     }
 
     /**

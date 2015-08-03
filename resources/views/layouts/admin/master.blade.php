@@ -104,40 +104,40 @@
                             <a href="#"><i class="fa fa-cube"></i> <span class="nav-label">Warehouses</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses">Warehouses</a></li>
-                                <li{{ (Request::is('warehouses/create')) ? ' class=active' : '' }}><a href="/warehouses/create">Create Warehouse</a></li>
+                                <li{{ (Request::is('warehouse/create')) ? ' class=active' : '' }}><a href="/warehouse/create">Create Warehouse</a></li>
                             </ul>
                         </li>
 
-                        <li{{ preg_match('/shipments/', $uri) ? ' class=active' : '' }}>
+                        <li{{ preg_match('/shipment/', $uri) ? ' class=active' : '' }}>
                             <a href="#"><i class="fa fa-plane"></i> <span class="nav-label">Shipments</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 <li{{ (Request::is('shipments')) ? ' class=active' : '' }}><a href="/shipments">Shipments</a></li>
-                                <li{{ (Request::is('shipments/create')) ? ' class=active' : '' }}><a href="/shipments/create">Create Shipment</a></li>
+                                <li{{ (Request::is('shipment/create')) ? ' class=active' : '' }}><a href="/shipment/create">Create Shipment</a></li>
                             </ul>
                         </li>
 
-                        <li{{ (Request::is('packages') || Request::is('packages/*')) ? ' class=active' : '' }}>
+                        <li{{ (Request::is('packages') || Request::is('package/*')) ? ' class=active' : '' }}>
                             <a href="/packages"><i class="fa fa-th"></i><span>Pieces</span></a>
                         </li>
 
-                        <li{{ (Request::is('customers') || Request::is('customers/*')) ? ' class=active' : '' }}>
+                        <li{{ (Request::is('customers') || Request::is('customer/*')) ? ' class=active' : '' }}>
                             <a href="/customers"><i class="fa fa-users"></i><span>Customers</span></a>
                         </li>
 
-                        <li{{ (Request::is('shippers') || Request::is('shippers/*')) ? ' class=active' : '' }}>
+                        <li{{ (Request::is('shippers') || Request::is('shipper/*')) ? ' class=active' : '' }}>
                             <a href="/shippers"><i class="fa fa-truck"></i><span>Shippers</span></a>
                         </li>
 
-                        <li{{ preg_match('/carriers|sites|company|package-|companies|roles|users/', $uri) ? ' class=active' : '' }}>
+                        <li{{ preg_match('/carrier|site|company|package-type|companies|role|user/', $uri) ? ' class=active' : '' }}>
                             <a href="#"><i class="fa fa-cog"></i> <span class="nav-label">Settings</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
                                 @if ($user->isAdmin())
-                                    <li{{ (Request::is('users') || Request::is('users/*')) ? ' class=active' : '' }}><a href="/users">Users</a></li>
-                                    <li{{ (Request::is('companies') || Request::is('companies/*')) ? ' class=active' : '' }}><a href="/companies">Companies</a></li>
-                                    <li{{ (Request::is('roles') || Request::is('roles/*')) ? ' class=active' : '' }}><a href="/roles">Roles</a></li>
-                                    <li{{ (Request::is('package-types') || Request::is('package-types/*')) ? ' class=active' : '' }}><a href="/package-types">Package Types</a></li>
-                                    <li{{ (Request::is('carriers') || Request::is('carriers/*')) ? ' class=active' : '' }}><a href="/carriers">Carriers</a></li>
-                                    <li{{ (Request::is('sites') || Request::is('sites/*')) ? ' class=active' : '' }}><a href="/sites">Sites</a></li>
+                                    <li{{ (Request::is('users') || Request::is('user/*')) ? ' class=active' : '' }}><a href="/users">Users</a></li>
+                                    <li{{ (Request::is('companies') || Request::is('company/*')) ? ' class=active' : '' }}><a href="/companies">Companies</a></li>
+                                    <li{{ (Request::is('roles') || Request::is('role/*')) ? ' class=active' : '' }}><a href="/roles">Roles</a></li>
+                                    <li{{ (Request::is('package-types') || Request::is('package-type/*')) ? ' class=active' : '' }}><a href="/package-types">Package Types</a></li>
+                                    <li{{ (Request::is('carriers') || Request::is('carrier/*')) ? ' class=active' : '' }}><a href="/carriers">Carriers</a></li>
+                                    <li{{ (Request::is('sites') || Request::is('site/*')) ? ' class=active' : '' }}><a href="/sites">Sites</a></li>
                                 @endif
                                 <li{{ (Request::is('company') || Request::is('company/*')) ? ' class=active' : '' }}><a href="/company/profile">Company Profile</a></li>
                             </ul>

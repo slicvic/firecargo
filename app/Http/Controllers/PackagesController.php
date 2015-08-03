@@ -25,7 +25,7 @@ class PackagesController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('auth.agentOrHigher', ['except' => ['getAjaxDetail']]);
+        $this->middleware('auth.agentOrHigher', ['except' => ['getDetails']]);
     }
 
     /**
@@ -65,8 +65,9 @@ class PackagesController extends BaseAuthController {
      * @param  Request  $request
      * @param  int      $warehouseId
      * @return Response
+     * @uses   Ajax
      */
-    public function getAjaxWarehousePackages(Request $request, $warehouseId)
+    public function getWarehousePackages(Request $request, $warehouseId)
     {
         $packages = Package::mine()
             ->with('type', 'shipment')
@@ -83,8 +84,9 @@ class PackagesController extends BaseAuthController {
      * @param  Request  $request
      * @param  int      $warehouseId
      * @return Response
+     * @uses   Ajax
      */
-    public function getAjaxShipmentPackages(Request $request, $shipmentId)
+    public function getShipmentPackages(Request $request, $shipmentId)
     {
         $packages = Package::mine()
             ->with('type')
@@ -95,26 +97,27 @@ class PackagesController extends BaseAuthController {
     }
 
     /**
-     * Shows a specific package.
+     * Shows a specific package details.
      *
      * @param  Request  $request
      * @param  int      $id
      * @return Response
+     * @uses   Ajax
      */
-    public function getAjaxDetail(Request $request, $id)
+    public function getDetails(Request $request, $id)
     {
         if ($this->user->isCustomer())
         {
-            $view = 'packages.customer.detail_modal';
+            $view = 'packages.customer.details';
 
             $package = Package::where([
                 'id' => $id,
-                'customer_account_id' => $this->user->uss->id
+                'customer_account_id' => $this->user->account->id
             ])->first();
         }
         else
         {
-            $view = 'packages.detail_modal';
+            $view = 'packages.details';
 
             $package = Package::findMine($id);
         }
@@ -132,8 +135,9 @@ class PackagesController extends BaseAuthController {
      *
      * @param  Request  $request
      * @return JsonResponse
+     * @uses   Ajax
      */
-    public function postAjaxUpdateEditableField(Request $request)
+    public function postEditableField(Request $request)
     {
         $input = $request->only('pk', 'name', 'value');
 

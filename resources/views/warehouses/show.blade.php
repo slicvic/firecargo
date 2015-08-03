@@ -16,9 +16,9 @@
 @stop
 
 @section('actions')
-    <a href="/warehouses/edit/{{ $warehouse->id }}" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit Warehouse</a>
-    <a target="_blank" href="/warehouses/print-receipt/{{ $warehouse->id }}" class="btn btn-success"><i class="fa fa-print"></i> Print Receipt</a>
-    <a target="_blank" href="/warehouses/print-label/{{ $warehouse->id }}" class="btn btn-success"><i class="fa fa-print"></i> Print Label</a>
+    <a href="/warehouse/{{ $warehouse->id }}/edit" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit Warehouse</a>
+    <a target="_blank" href="/warehouse/{{ $warehouse->id }}/print-receipt" class="btn btn-success"><i class="fa fa-print"></i> Print Receipt</a>
+    <a target="_blank" href="/warehouse/{{ $warehouse->id }}/print-label" class="btn btn-success"><i class="fa fa-print"></i> Print Label</a>
 @stop
 
 @section('page_content')

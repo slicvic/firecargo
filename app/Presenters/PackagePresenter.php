@@ -12,6 +12,16 @@ use Html;
 class PackagePresenter extends BasePresenter {
 
     /**
+     * Presents the arrival date.
+     *
+     * @return
+     */
+    public function arrivalDate()
+    {
+        return date('m/d/y', strtotime($this->model->created_at));
+    }
+
+    /**
      * Presents the package type.
      *
      * @return string
@@ -59,7 +69,7 @@ class PackagePresenter extends BasePresenter {
     public function customerLink()
     {
         return Html::linkWithIcon(
-            "/customers/edit/{$this->model->customer_account_id}",
+            "/customer/{$this->model->customer_account_id}/edit",
             $this->model->customer->name
         );
     }
@@ -72,7 +82,7 @@ class PackagePresenter extends BasePresenter {
     public function warehouseLink()
     {
         return Html::linkWithIcon(
-            "/warehouses/show/{$this->model->warehouse_id}",
+            "/warehouse/{$this->model->warehouse_id}/show",
             $this->model->warehouse_id
         );
     }
@@ -97,7 +107,7 @@ class PackagePresenter extends BasePresenter {
             $shipment->present()->departedAt()
         );
 
-        return Html::linkWithIcon("/shipments/show/{$shipment->id}", $title);
+        return Html::linkWithIcon("/shipment/{$shipment->id}/show", $title);
     }
 
     /**
@@ -118,6 +128,21 @@ class PackagePresenter extends BasePresenter {
         }
 
         return 'danger';
+    }
+
+    /**
+     * Determines the color status CSS class.
+     *
+     * @return string
+     */
+    public function statusText()
+    {
+        if ($this->model->isShipped())
+        {
+            return 'Shipped';
+        }
+
+        return 'Received USA';
     }
 
     /**

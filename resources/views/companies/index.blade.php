@@ -5,7 +5,7 @@
 @section('subtitle', 'Manage Companies')
 
 @section('actions')
-    <a href="/companies/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Company</a>
+    <a href="/company/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Company</a>
 @stop
 
 @section('thead')
@@ -23,7 +23,7 @@
             <td>{{ $company->shortname }}</td>
             <td>
                 <div class="btn-group">
-                    <a href="/companies/edit/{{ $company->id }}" class="btn-white btn btn-sm"><i class="fa fa-pencil"></i> Edit</a>
+                    <a href="/company/{{ $company->id }}/edit" class="btn-white btn btn-sm"><i class="fa fa-pencil"></i> Edit</a>
                 </div>
             </td>
        </tr>

@@ -99,7 +99,7 @@ class CompanyProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function postAjaxUploadLogo(Request $request)
+    public function postLogo(Request $request)
     {
         $input = $request->only('file');
 

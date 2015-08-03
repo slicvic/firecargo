@@ -3,7 +3,7 @@
 @section('title', 'Warehouses')
 @section('subtitle', 'Manage Your Consolidation Warehouses')
 @section('actions')
-    <a href="/warehouses/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Warehouse</a>
+    <a href="/warehouse/create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New Warehouse</a>
 @stop
 
 @section('page_content')

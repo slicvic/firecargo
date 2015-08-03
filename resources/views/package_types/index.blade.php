@@ -5,7 +5,7 @@
 @section('subtitle', 'Manage Package Types')
 
 @section('actions')
-    <a href="/package-types/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New</a>
+    <a href="/package-type/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New</a>
 @stop
 
 @section('thead')
@@ -21,8 +21,8 @@
             <td>{{ $type->name }}</td>
             <td>
                 <div class="btn-group">
-                    <a href="/package-types/edit/{{ $type->id }}" class="btn-white btn btn-sm">Edit</a>
-                    <a href="/package-types/delete/{{ $type->id }}" class="delete-record-btn btn-white btn btn-sm">Delete</a>
+                    <a href="/package-type/{{ $type->id }}/edit" class="btn-white btn btn-sm">Edit</a>
+                    <a href="/package-type/{{ $type->id }}/delete" class="delete-record-btn btn-white btn btn-sm">Delete</a>
                 </div>
             </td>
        </tr>

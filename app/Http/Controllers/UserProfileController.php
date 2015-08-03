@@ -139,7 +139,7 @@ class UserProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function postAjaxUploadPhoto(Request $request)
+    public function postPhoto(Request $request)
     {
         $input = $request->only('file');
 

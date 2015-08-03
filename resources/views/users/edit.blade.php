@@ -18,7 +18,7 @@
 @stop
 
 @section('page_content')
-<form action="/users/{{ $user->exists ? 'update/' . $user->id : 'store' }}" method="post" class="form-horizontal">
+<form action="/user/{{ $user->exists ? $user->id . '/update' : 'store' }}" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="row">
         <div class="col-lg-12">

@@ -5,7 +5,7 @@
 @section('subtitle', 'Manage Your Customers')
 
 @section('actions')
-    <a href="/customers/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Customer</a>
+    <a href="/customer/create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Customer</a>
 @stop
 
 @section('thead')
@@ -29,7 +29,7 @@
             <td>{{ $account->mobile_phone }}</td>
             <td>{!! $account->present()->address() !!}</td>
             <td>{!! $account->user_id ? '<span class="badge badge-primary">Yes</span>' : '<span class="badge badge-danger">No</span>' !!}</td>
-            <td><a href="/customers/edit/{{ $account->id }}" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a></td>
+            <td><a href="/customer/{{ $account->id }}/edit" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a></td>
         </tr>
     @endforeach
 @stop
@@ -41,7 +41,7 @@
             'aaSorting': [[ 0, 'desc' ]],
             'processing': true,
             'serverSide': true,
-            'ajax': '/customers/ajax-datatable',
+            'ajax': '',
         });*/
     });
 </script>
