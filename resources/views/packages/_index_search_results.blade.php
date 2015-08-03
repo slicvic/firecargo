@@ -11,7 +11,7 @@
                 <th>{!! Html::linkToSort('/packages', 'Customer', 'customer_account_id', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/packages', 'Shipment', 'shipment_id', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/packages', 'Created', 'created_at', $params['sort'], $params['order']) !!}</th>
-                <th>{!! Html::linkToSort('/packages', 'Updated', 'updated_at', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/packages', 'Modified', 'updated_at', $params['sort'], $params['order']) !!}</th>
                 <th>Action</th>
             </tr>
         </thead>

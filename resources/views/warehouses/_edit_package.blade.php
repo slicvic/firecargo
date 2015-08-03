@@ -78,7 +78,7 @@
         <div class="panel-footer text-right">
             <small>Created: {{ $package->present()->createdAt() }}</small>
             @if ($updatedAt = $package->present()->updatedAt(NULL))
-                <small>Updated: {{ $updatedAt }}</small>
+                <small>Modified: {{ $updatedAt }}</small>
             @endif
         </div>
     @endif

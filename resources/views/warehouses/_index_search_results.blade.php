@@ -12,7 +12,7 @@
                 <th>Shipper</th>
                 <th>Carrier</th>
                 <th>{!! Html::linkToSort('/warehouses', 'Created', 'created_at', $params['sort'], $params['order']) !!}</th>
-                <th>{!! Html::linkToSort('/warehouses', 'Updated', 'updated_at', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/warehouses', 'Modified', 'updated_at', $params['sort'], $params['order']) !!}</th>
                 <th>Action</th>
             </tr>
         </thead>

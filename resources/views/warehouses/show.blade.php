@@ -78,7 +78,7 @@
                             <td>{{ $warehouse->present()->createdAt() }}</td>
                         </tr>
                         <tr>
-                            <th>Updated</th>
+                            <th>Modified</th>
                             <td>{{ $warehouse->present()->updatedAt() }}</td>
                         </tr>
                     </table>

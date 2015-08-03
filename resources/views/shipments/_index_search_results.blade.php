@@ -10,7 +10,7 @@
                 <th>Carrier</th>
                 <th>{!! Html::linkToSort('/shipments', 'Departed', 'departed_at', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/shipments', 'Created', 'created_at', $params['sort'], $params['order']) !!}</th>
-                <th>{!! Html::linkToSort('/shipments', 'Updated', 'updated_at', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/shipments', 'Modified', 'updated_at', $params['sort'], $params['order']) !!}</th>
                 <th>Action</th>
             </tr>
         </thead>

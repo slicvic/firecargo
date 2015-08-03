@@ -16,6 +16,7 @@
     <th>Mobile</th>
     <th>Address</th>
     <th>Registered?</th>
+    <th>Created</th>
     <th>Action</th>
 @stop
 
@@ -29,6 +30,7 @@
             <td>{{ $account->mobile_phone }}</td>
             <td>{!! $account->present()->address() !!}</td>
             <td>{!! $account->user_id ? '<span class="badge badge-primary">Yes</span>' : '<span class="badge badge-danger">No</span>' !!}</td>
+            <td>{{ $account->present()->createdAt() }}</td>
             <td><a href="/customer/{{ $account->id }}/edit" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a></td>
         </tr>
     @endforeach

@@ -55,7 +55,7 @@
                         <td>{{ $shipment->present()->createdAt() }}</td>
                     </tr>
                     <tr>
-                        <th>Updated</th>
+                        <th>Modified</th>
                         <td>{{ $shipment->present()->updatedAt() }}</td>
                     </tr>
                 </table>
