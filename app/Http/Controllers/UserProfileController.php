@@ -167,7 +167,7 @@ class UserProfileController extends BaseAuthController {
         {
             $this->user->update(['has_photo' => FALSE]);
 
-            Log::error($e->getMessage());
+            Log::error($e);
 
             return ToastrJsonResponse::error('Upload failed, please try again.', 500);
         }
