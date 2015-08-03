@@ -23,6 +23,16 @@ class UserPresenter extends BasePresenter {
     }
 
     /**
+     * Presents the last login date.
+     *
+     * @return string
+     */
+    public function lastLogin()
+    {
+        return date('m/d/y g:i A', strtotime($this->model->last_login));
+    }
+
+    /**
      * Presents the profile photo URL.
      *
      * @param  string  $size  sm|md
@@ -36,6 +46,18 @@ class UserPresenter extends BasePresenter {
         }
 
         return asset('assets/admin/img/avatar.png');
+    }
+
+    /**
+     * Presents the active status.
+     *
+     * @return string
+     */
+    public function active()
+    {
+        return $this->model->active
+            ? '<span class="badge badge-primary">Yes</span>'
+            : '<span class="badge badge-danger">No</span>';
     }
 
     /**

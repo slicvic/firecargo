@@ -15,6 +15,9 @@
     <th>Email</th>
     <th>Role</th>
     <th>Active</th>
+    <th>Last Login</th>
+    <th>Logins</th>
+    <th>Created</th>
     <th>Action</th>
 @stop
 
@@ -26,7 +29,10 @@
             <td>{{ $user->present()->fullname() }}</td>
             <td>{{ $user->email }}</td>
             <td>{!! $user->present()->role() !!}</td>
-            <td>{!! $user->active ? '<span class="badge badge-primary">Yes</span>' : '<span class="badge badge-danger">No</span>' !!}</td>
+            <td>{!! $user->present()->active() !!}</td>
+            <td>{{ $user->present()->lastLogin() }}</td>
+            <td>{{ $user->logins }}</td>
+            <td>{{ $user->present()->createdAt() }}</td>
             <td><a href="/user/{{ $user->id }}/edit" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a></td>
         </tr>
     @endforeach
