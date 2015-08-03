@@ -17,7 +17,7 @@
             @endif
         </h2>
 
-        @include('shipments._index_search_form')
+        @include('shipments._index_search_box')
 
         <div class="clear hr-line-dashed"></div>
 
@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        @include('shipments._index_search_results')
+        @include('shipments._index_search_result')
 
         <div class="row">
             <div class="col-md-12">

@@ -2,7 +2,7 @@
     <form class="form-inline" method="get" action="/warehouses">
         <div class="form-group">
             <label>Search: </label>
-            <input type="text" class="form-control" name="search" value="{{ $params['search'] }}">
+            <input type="text" class="form-control" name="search" minlength="3" value="{{ $params['search'] }}">
         </div>
         <div class="form-group">
             <label>Status: </label>

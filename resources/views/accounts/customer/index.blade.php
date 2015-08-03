@@ -1,6 +1,5 @@
 @extends('layouts.admin.page.index')
 
-@section('icon', 'group')
 @section('title', 'Customers')
 @section('subtitle', 'Manage Your Customers')
 

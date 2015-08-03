@@ -245,6 +245,7 @@ class Package extends BaseSearchable {
     public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
         $query = Package::query()
+            ->select('packages.*')
             ->orderBy('packages.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
             ->with('type', 'customer', 'shipment', 'company');
 

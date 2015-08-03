@@ -92,7 +92,7 @@ class Flash {
      *
      * @return string|NULL
      */
-    public function getClassic()
+    public function getBootstrap()
     {
         $value = $this->get();
 
@@ -101,7 +101,7 @@ class Flash {
             return NULL;
         }
 
-        return self::view("classic.{$value['level']}", $value['message']);
+        return self::view("bootstrap.{$value['level']}", $value['message']);
     }
 
     /**

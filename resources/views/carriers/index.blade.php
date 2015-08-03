@@ -1,6 +1,5 @@
 @extends('layouts.admin.page.index')
 
-@section('icon', 'truck')
 @section('title', 'Carriers')
 @section('subtitle', 'Manage Carriers')
 

@@ -1,7 +1,5 @@
 @extends('layouts.admin.page')
 
-@section('icon', 'building-o')
-
 @section('title')
     {{ $company->exists ? 'Edit' : 'Add New' }} Company
 @stop

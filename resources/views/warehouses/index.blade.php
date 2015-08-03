@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        @include('warehouses._index_search_form')
+        @include('warehouses._index_search_box')
 
         <div class="hr-line-dashed"></div>
 
@@ -38,7 +38,7 @@
             </div>
         </div>
 
-        @include('warehouses._index_search_results')
+        @include('warehouses._index_search_result')
 
         <div class="row">
             <div class="col-md-12">

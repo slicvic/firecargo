@@ -1,7 +1,5 @@
 @extends('layouts.admin.page')
 
-@section('icon', 'truck')
-
 @section('title')
     {{ $type->exists ? 'Edit' : 'Add' }} Package Type
 @stop

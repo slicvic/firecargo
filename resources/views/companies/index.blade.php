@@ -1,6 +1,5 @@
 @extends('layouts.admin.page.index')
 
-@section('icon', 'building-o')
 @section('title', 'Companies')
 @section('subtitle', 'Manage Companies')
 

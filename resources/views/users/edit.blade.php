@@ -1,7 +1,5 @@
 @extends('layouts.admin.page')
 
-@section('icon', 'user')
-
 @section('title')
     {{ $user->exists ? 'Edit User # ' . $user->id : 'Add New User' }}
 @stop

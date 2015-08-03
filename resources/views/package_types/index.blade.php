@@ -1,6 +1,5 @@
 @extends('layouts.admin.page.index')
 
-@section('icon', 'info-circle')
 @section('title', 'Package Types')
 @section('subtitle', 'Manage Package Types')
 

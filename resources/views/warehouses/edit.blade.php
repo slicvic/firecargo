@@ -13,7 +13,7 @@
                 </li>
                 @if ($warehouse->exists)
                     <li>
-                        <a href="/warehouse/{{ $warehouse->id }}/show">Detail</a>
+                        <a href="/warehouse/{{ $warehouse->id }}/show">Details</a>
                     </li>
                 @endif
                 <li class="active">
@@ -32,7 +32,7 @@
     <div class="wrapper wrapper-content">
         <div class="row">
             <div class="col-md-9">
-                @include('warehouses._edit_packages')
+                @include('packages._warehouse_edit_packages')
             </div>
             <div class="col-md-3">
                 @include('warehouses._edit_details')

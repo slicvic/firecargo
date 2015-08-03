@@ -1,7 +1,5 @@
 @extends('layouts.admin.page')
 
-@section('icon', 'truck')
-
 @section('title')
     {{ $carrier->exists ? 'Edit' : 'Add New' }} Carrier
 @stop

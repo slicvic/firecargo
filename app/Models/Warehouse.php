@@ -322,6 +322,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
         $query = Warehouse::query()
+            ->select('warehouses.*')
             ->orderBy('warehouses.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
             ->with('creator', 'updater', 'shipper', 'customer', 'carrier', 'company');
 
@@ -347,11 +348,9 @@ class Warehouse extends BaseSearchable implements ISearchable {
                 ->groupBy('warehouses.id')
                 ->whereRaw('(
                     warehouses.id LIKE ?
-                    OR customers.id LIKE ?
                     OR customers.name LIKE ?
                     OR customers.firstname LIKE ?
                     OR customers.lastname LIKE ?
-                    OR shippers.id LIKE ?
                     OR shippers.name LIKE ?
                     OR shippers.firstname LIKE ?
                     OR shippers.lastname LIKE ?
@@ -367,8 +366,6 @@ class Warehouse extends BaseSearchable implements ISearchable {
                     $searchTerm,
                     $searchTerm,
                     $searchTerm,
-                    $searchTerm,
-                    $searchTerm
                 ]);
         }
 

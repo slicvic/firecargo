@@ -1,6 +1,5 @@
 @extends('layouts.admin.page')
 
-@section('icon', 'building-o')
 @section('title', 'Your Company Profile')
 @section('subtitle', 'Manage Your Company Profile')
 

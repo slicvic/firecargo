@@ -2,7 +2,7 @@
     <form class="form-inline" method="get" action="/shipments">
         <div class="form-group">
             <label>Search: </label>
-            <input type="text" class="form-control" name="search" value="{{ $params['search'] }}">
+            <input type="text" class="form-control" name="search" minlength="3" value="{{ $params['search'] }}">
         </div>
         @if ($params['search'])
             <a href="/shipments" class="btn btn-md btn-white" type="submit">Clear</a>

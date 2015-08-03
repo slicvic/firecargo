@@ -80,6 +80,6 @@ class UserPresenter extends BasePresenter {
                 break;
         }
 
-        return sprintf('<div class="badge badge-%s">%s</div>', $cssClass, $this->model->role->name);
+        return sprintf('<div class="label label-%s">%s</div>', $cssClass, $this->model->role->name);
     }
 }

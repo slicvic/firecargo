@@ -165,6 +165,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
         $query = Shipment::query()
+            ->select('shipments.*')
             ->orderBy('shipments.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
             ->with('carrier', 'creator', 'updater', 'company');
 
@@ -184,11 +185,9 @@ class Shipment extends BaseSearchable implements ISearchable {
                 ->whereRaw('(
                     shipments.id LIKE ?
                     OR shipments.reference_number LIKE ?
-                    OR packages.id LIKE ?
                     OR packages.tracking_number LIKE ?
                     OR carriers.name LIKE ?
                     )', [
-                    $searchTerm,
                     $searchTerm,
                     $searchTerm,
                     $searchTerm,

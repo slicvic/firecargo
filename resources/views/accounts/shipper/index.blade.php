@@ -1,6 +1,5 @@
 @extends('layouts.admin.page.index')
 
-@section('icon', 'group')
 @section('title', 'Shippers')
 @section('subtitle', 'Manage Your Shippers')
 

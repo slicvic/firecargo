@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12">
             <h1 class="text-center" style="margin-bottom:30px;">{!! env('APP_NAME_HTML') !!}</h1>
-            {!! Flash::getClassic() !!}
+            {!! Flash::getBootstrap() !!}
             @yield('narrow_content')
         </div>
     </div>

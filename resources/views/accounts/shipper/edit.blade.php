@@ -1,7 +1,5 @@
 @extends('layouts.admin.page')
 
-@section('icon', 'shipper')
-
 @section('title')
     {{ $account->exists ? 'Edit Shipper # ' . $account->id : 'Add New Shipper' }}
 @stop

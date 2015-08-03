@@ -1,6 +1,5 @@
 @extends('layouts.admin.page.index')
 
-@section('icon', 'male')
 @section('title', 'Roles')
 @section('subtitle', 'Manage Account Roles')
 

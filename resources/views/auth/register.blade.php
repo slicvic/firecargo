@@ -4,7 +4,7 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <h1 class="text-center">{!! env('APP_NAME_HTML') !!}</h1>
-        {!! Flash::getClassic() !!}
+        {!! Flash::getBootstrap() !!}
     </div>
 </div>
 <div class="row">

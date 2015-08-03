@@ -1,6 +1,5 @@
 @extends('layouts.admin.page.index')
 
-@section('icon', 'group')
 @section('title', 'Users')
 @section('subtitle', 'Manage User Users')
 
