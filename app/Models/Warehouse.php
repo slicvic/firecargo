@@ -49,6 +49,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
      */
     protected static $sortable = [
         'id',
+        'company_id',
         'created_at',
         'updated_at'
     ];

@@ -28,6 +28,11 @@ trait CompanyTrait {
      */
     public function scopeMine($query)
     {
+        if (Auth::user()->isAdmin())
+        {
+            return $query->with('company');
+        }
+
         return $query->where('company_id', Auth::user()->company_id);
     }
 

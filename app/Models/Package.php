@@ -66,6 +66,7 @@ class Package extends BaseSearchable {
      */
     protected static $sortable = [
         'id',
+        'company_id',
         'warehouse_id',
         'type_id',
         'shipment_id',

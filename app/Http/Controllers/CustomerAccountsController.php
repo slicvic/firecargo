@@ -37,7 +37,7 @@ class CustomerAccountsController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
-        $accounts = Account::mine()->customers()->get();
+        $accounts = Account::customers()->mine()->get();
 
         return view('accounts.customer.index', ['accounts' => $accounts]);
     }

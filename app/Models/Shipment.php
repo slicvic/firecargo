@@ -46,6 +46,7 @@ class Shipment extends BaseSearchable implements ISearchable {
      */
     protected static $sortable = [
         'id',
+        'company_id',
         'departed_at',
         'created_at',
         'updated_at'

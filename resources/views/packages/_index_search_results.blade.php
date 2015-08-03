@@ -2,7 +2,9 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                @if (Auth::user()->isAdmin()) {!! '<th>Company</th>' !!} @endif
+                @if (Auth::user()->isAdmin())
+                    <th>{!! Html::linkToSort('/packages', 'Company', 'company_id', $params['sort'], $params['order']) !!}</th>
+                @endif
                 <th>{!! Html::linkToSort('/packages', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/packages', 'Type', 'type_id', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/packages', 'Tracking #', 'tracking_number', $params['sort'], $params['order']) !!}</th>

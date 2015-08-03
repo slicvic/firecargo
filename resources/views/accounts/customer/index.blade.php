@@ -9,6 +9,9 @@
 @stop
 
 @section('thead')
+    @if (Auth::user()->isAdmin())
+        <th>Company</th>
+    @endif
     <th>ID</th>
     <th>Name</th>
     <th>Email</th>
@@ -23,6 +26,9 @@
 @section('tbody')
     @foreach ($accounts as $account)
         <tr>
+            @if (Auth::user()->isAdmin())
+                <td>{{ $account->company->name }}</td>
+            @endif
             <td>{{ $account->id }}</td>
             <td>{{ $account->name }}</td>
             <td>{{ $account->email }}</td>

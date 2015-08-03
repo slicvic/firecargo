@@ -3,8 +3,9 @@
         <thead>
             <tr>
                 <th></th>
-                @if (Auth::user()->isAdmin()) {!! '<th>Company</th>' !!} @endif
-                <th>{!! Html::linkToSort('/shipments', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
+                @if (Auth::user()->isAdmin())
+                    <th>{!! Html::linkToSort('/shipments', 'Company', 'company_id', $params['sort'], $params['order']) !!}</th>
+                @endif                <th>{!! Html::linkToSort('/shipments', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
                 <th>Pieces</th>
                 <th>Reference #</th>
                 <th>Carrier</th>

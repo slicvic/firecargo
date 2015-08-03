@@ -37,7 +37,7 @@ class ShipperAccountsController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
-        $accounts = Account::mine()->shippers()->get();
+        $accounts = Account::shippers()->mine()->get();
 
         return view('accounts.shipper.index', ['accounts' => $accounts]);
     }
