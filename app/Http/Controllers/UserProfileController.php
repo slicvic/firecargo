@@ -114,8 +114,7 @@ class UserProfileController extends BaseAuthController {
 
         $rules = [
             'current_password' => 'required',
-            'new_password' => 'required|min:8',
-            'confirm_new_password' => 'required|same:new_password'
+            'new_password' => 'required|min:8|confirmed'
         ];
 
         // Validate input

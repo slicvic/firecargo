@@ -68,6 +68,7 @@ class CompaniesController extends BaseAuthController {
 
         // Create company
         $company = Company::create($input);
+        $company->referer_id = sprintf('%s%s', strtolower($company->shortname), $company->id);
 
         // Create address
         if ($company->exists)

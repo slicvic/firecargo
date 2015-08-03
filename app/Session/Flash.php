@@ -131,7 +131,7 @@ class Flash {
     public function view($view, $message)
     {
         return view("flash_messages.{$view}", [
-            'message' => self::normalizeMessage($message)
+            'message' => is_string($message) ? $message : self::tidyMessage($message)
         ])->render();
     }
 
@@ -144,16 +144,16 @@ class Flash {
      */
     private function set($level, $message)
     {
-        Session::flash($this->sessionKey, ['level' => $level, 'message' => $message]);
+        Session::flash($this->sessionKey, ['level' => $level, 'message' => self::tidyMessage($message)]);
     }
 
     /**
-     * Normalizes the message before sending to the view.
+     * Normalizes the message before storing in session.
      *
      * @param  string|array|ValidationException|Validator|MessageBag  $message
      * @return string
      */
-    public static function normalizeMessage($message)
+    public static function tidyMessage($message)
     {
         if (is_string($message))
         {

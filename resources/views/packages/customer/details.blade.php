@@ -9,7 +9,7 @@
     </div>
     <div class="row">
         <div class="col-xs-3"><strong>Status</strong></div>
-        <div class="col-xs-9"><p>{{ $package->present()->statusText() }}</p></div>
+        <div class="col-xs-9"><p>{!! $package->present()->statusText() !!}</p></div>
     </div>
     <div class="row">
         <div class="col-xs-3"><strong>Arrived</strong></div>

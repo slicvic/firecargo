@@ -68,7 +68,6 @@ $(function() {
         minLength: 2,
         select: function(event, ui) {
             $('#customer-id').val(ui.item.id);
-            return false;
         }
     }).autocomplete('instance')._renderItem = function(ul, item) {
         var html = '<li><a><strong>' + item.id + ' - ' + item.label + '</strong>';

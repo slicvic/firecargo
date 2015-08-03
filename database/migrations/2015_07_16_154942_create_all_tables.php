@@ -21,11 +21,45 @@ class CreateAllTables extends Migration {
 		    $table->string('phone', 30);
 		    $table->string('fax', 30);
 		    $table->string('email', 255);
+		    $table->string('referer_id', 30);
 		    $table->tinyInteger('has_logo')->unsigned()->default(0);
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
 		});
+/*
+		// Create company_site_settings
+		Schema::create('company_site_settings', function($table)
+		{
+		    $table->increments('id')->unsigned();
+		    $table->integer('company_id')->unique();
+		    $table->string('site_title', 100);
+		    $table->string('site_heading', 100);
+		    $table->dateTime('created_at');
+		    $table->dateTime('updated_at');
+		});
 
+		// Create company_emails
+		Schema::create('company_emails', function($table)
+		{
+		    $table->increments('id')->unsigned();
+		    $table->integer('company_id')->unique();
+		    $table->string('site_title', 100);
+		    $table->string('site_heading', 100);
+		    $table->dateTime('created_at');
+		    $table->dateTime('updated_at');
+		});
+
+		// Create company_emails
+		Schema::create('company_emails', function($table)
+		{
+		    $table->increments('id')->unsigned();
+		    $table->integer('company_id')->unique();
+		    $table->string('site_title', 100);
+		    $table->string('site_heading', 100);
+		    $table->dateTime('created_at');
+		    $table->dateTime('updated_at');
+		});
+*/
 		// Create roles
 		Schema::create('roles', function($table)
 		{
@@ -235,6 +269,14 @@ class CreateAllTables extends Migration {
 		    $table->foreign('creator_user_id')->references('id')->on('users');
 		    $table->foreign('updater_user_id')->references('id')->on('users');
 		});
+
+		DB::statement('ALTER TABLE users AUTO_INCREMENT = 1000');
+		DB::statement('ALTER TABLE companies AUTO_INCREMENT = 1000');
+		DB::statement('ALTER TABLE warehouses AUTO_INCREMENT = 1000');
+		DB::statement('ALTER TABLE shipments AUTO_INCREMENT = 1000');
+		DB::statement('ALTER TABLE accounts AUTO_INCREMENT = 1000');
+		DB::statement('ALTER TABLE packages AUTO_INCREMENT = 1000');
+		DB::statement('ALTER TABLE carriers AUTO_INCREMENT = 1000');
 	}
 
 	/**

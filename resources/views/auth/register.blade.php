@@ -51,7 +51,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-3">Confirm Password *</label>
                             <div class="col-md-4">
-                                <input type="password" name="confirm_password" class="form-control" value="{{ Input::old('confirm_password') }}" equalto="#password" required>
+                                <input type="password" name="password_confirmation" class="form-control" value="{{ Input::old('password_confirmation') }}" equalto="#password" required>
                             </div>
                         </div>
                         <br>
@@ -97,12 +97,12 @@
                         <h3>Terms & Conditions</h3>
                         <hr>
                         <div class="form-group">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <textarea class="form-control" rows="7"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-12">
+                            <div class="col-md-12">
                                 <div class="checkbox">
                                     <label>
                                         <input id="termscheck" name="terms_and_conditions" type="checkbox" required{{ Input::old('terms_and_conditions') ? ' checked' : ''}}> I have read and agree with the terms
@@ -111,7 +111,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-12">
+                            <div class="col-md-12">
                                 <button type="submit" class="btn btn-lg btn-block btn-primary">Register</button>
                             </div>
                         </div>

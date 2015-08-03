@@ -15,6 +15,8 @@ use Flash;
 use App\Events\UserLoggedIn;
 use App\Events\UserRegistered;
 use App\Helpers\Mailer;
+use App\Http\Requests\RegisterUserFormRequest;
+
 /**
  * AuthController
  *
@@ -70,55 +72,24 @@ class AuthController extends BaseController {
      */
     public function getRegister()
     {
-
         return view('auth.register');
     }
 
     /**
-     * Signs up a new user.
+     * Registers a new user.
      *
      * @param  Request  $request
      * @return Response
      */
-    public function postRegister(Request $request)
+    public function postRegister(RegisterUserFormRequest $request)
     {
         $input = $request->all();
 
-        $rules = [
-            'referer_id' => 'required',
-            'firstname' => 'required|min:3',
-            'lastname' => 'required|min:3',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'required|min:7',
-            'password' => 'required|min:8',
-            'confirm_password' => 'required|same:password',
-            'address1' => 'required|min:3',
-            'city' => 'required|min:3',
-            'state' => 'required|min:3',
-            'country_id' => 'required',
-            'terms_and_conditions' => 'accepted',
-        ];
-
-
-        // Validate input
-        $validator = Validator::make($input, $rules);
-
-        if ($validator->fails())
-        {
-            Flash::error($validator);
-            return redirect()->back()->withInput();
-        }
-
-        // Validate referer
-        if ( ! Company::find($input['referer_id']))
-        {
-            Flash::error('Referer ID is not valid.');
-            return redirect()->back()->withInput();
-        }
+        $company = Company::where('referer_id', $input['referer_id'])->first();
 
         // Create user
         $user = new User;
-        $user->company_id = $input['referer_id'];
+        $user->company_id = $company->id;
         $user->firstname = $input['firstname'];
         $user->lastname = $input['lastname'];
         $user->email = $input['email'];
@@ -130,7 +101,6 @@ class AuthController extends BaseController {
         // Create customer account
         $account = $user->account()->first();
         $account->phone = $input['phone'];
-        $account->autoship = TRUE;
         $account->save();
 
         // Create customer account address
@@ -173,7 +143,7 @@ class AuthController extends BaseController {
         $this->validate($input, ['email' => 'required|email']);
 
         // Verify user
-        $user = User::where('email', '=', $input['email'])->first();
+        $user = User::where('email', $input['email'])->first();
 
         if ( ! $user)
         {
@@ -181,15 +151,14 @@ class AuthController extends BaseController {
         }
 
         // Send password recovery
-        Mailer::sendPasswordRecovery($user);
+        //Mailer::sendPasswordRecovery($user);
         // TODO: change message
         // Show success message regardless
         // @TODO: uncomment
         //
-        Flash::success('<a href="/reset-password?email=' . $user->email . '&token=' . $user->makePasswordRecoveryToken() . '">Click here to reset your password</a>');
+        //Flash::success('<a href="/reset-password?email=' . $user->email . '&token=' . $user->makePasswordRecoveryToken() . '">Click here to reset your password</a>');
 
-        return redirect()->back();
-        //return $this->redirectBackWithSuccess('An email with instructions on how to reset your password has been sent.');
+        return $this->redirectBackWithSuccess('An email with instructions on how to reset your password has been sent.');
     }
 
     /**
@@ -223,7 +192,7 @@ class AuthController extends BaseController {
         $this->validate($input, $rules);
 
         // Verify user
-        $user = User::where('email', '=', $input['email'])->first();
+        $user = User::where('email', $input['email'])->first();
 
         if ( ! $user || ! $user->verifyPasswordRecoveryToken($input['token']))
         {

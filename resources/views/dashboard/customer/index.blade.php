@@ -24,7 +24,7 @@
                 @foreach ($packages as $package)
                     <tr>
                         <td>{{ $package->id }}</td>
-                        <td>{{ $package->present()->statusText() }}</td>
+                        <td>{!! $package->present()->statusText() !!}</td>
                         <td>{{ $package->present()->arrivalDate() }}</td>
                         <td>{{ $package->warehouse->shipper->name }}</td>
                         <td>{{ $package->tracking_number }}</td>

@@ -15,13 +15,13 @@
             <div class="form-group">
                 <label class="col-md-3 control-label">New Password</label>
                 <div class="col-md-5">
-                    <input id="new" type="password" name="new_password" class="form-control" minlength="8" required>
+                    <input id="password" type="password" name="new_password" class="form-control" minlength="8" required>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-3 control-label">Confirm Password</label>
                 <div class="col-md-5">
-                    <input type="password" name="confirm_new_password" class="form-control" equalto="#new" required>
+                    <input type="password" name="new_password_confirmation" class="form-control" equalto="#password" required>
                 </div>
             </div>
             <div class="form-group">

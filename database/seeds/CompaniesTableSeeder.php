@@ -15,7 +15,18 @@ class CompaniesTableSeeder extends Seeder {
         DB::table('companies')->delete();
 
         DB::table('companies')->insert([
-            ['name' => 'Lantigua Group', 'shortname' => 'LG'],
+            [
+                'id' => 1,
+                'name' => 'Lantigua Group',
+                'shortname' => 'LG',
+                'referer_id' => ''
+            ],
+            [
+                'id' => 1000,
+                'name' => 'Sion Services Group',
+                'shortname' => 'SSG',
+                'referer_id' => 'ssg1000'
+            ]
         ]);
     }
 }

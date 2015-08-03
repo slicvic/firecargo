@@ -139,10 +139,17 @@ class PackagePresenter extends BasePresenter {
     {
         if ($this->model->isShipped())
         {
-            return 'Shipped';
+            return '<span class="label label-primary">Shipped</span>';
         }
 
-        return 'Received USA';
+        if ($this->model->isOnHold())
+        {
+            return '<span class="label label-warning">On Hold</span>';
+        }
+
+        // @TODO: Add recibido colombia
+
+        return '<span class="label label-success">Received USA</span>';
     }
 
     /**

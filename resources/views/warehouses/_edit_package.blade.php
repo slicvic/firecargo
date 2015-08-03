@@ -1,9 +1,8 @@
 <div class="panel package{{ $package->exists ? ' panel-info panel-info-light' : ' new hidden package-template panel-warning panel-warning-light' }}">
     <div class="panel-heading clear">
         <h3 class="pull-left panel-title">
-            #
             @if ($package->exists)
-                {{ $package->id  }}
+                # {{ $package->id  }}
             @else
                 New Piece
             @endif

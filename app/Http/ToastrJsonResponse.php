@@ -20,8 +20,8 @@ class ToastrJsonResponse {
     public static function success($message, $status = 200)
     {
         return response()->json([
-            'title' => trans('messages.success_message_title'),
-            'message' => Flash::normalizeMessage($message)
+            'title' => trans('messages.flash_success_title'),
+            'message' => Flash::tidyMessage($message)
         ], $status);
     }
 
@@ -35,8 +35,8 @@ class ToastrJsonResponse {
     public static function error($message, $status)
     {
         return response()->json([
-            'title' => trans('messages.error_message_title'),
-            'message' => Flash::normalizeMessage($message)
+            'title' => trans('messages.flash_error_title'),
+            'message' => Flash::tidyMessage($message)
         ], $status);
     }
 }
