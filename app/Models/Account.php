@@ -21,8 +21,16 @@ class Account extends Base {
      * @var array
      */
     public static $rules = [
-        'name' => ['required', 'min:3', 'regex:/(^[A-Za-z0-9 ]+$)+/'],
-        'email' => 'email'
+        'shipper' => [
+            'name' => ['required', 'min:3', 'regex:/(^[A-Za-z0-9 ]+$)+/'],
+            'email' => 'email'
+        ],
+        'customer' => [
+            'name' => ['required', 'min:5', 'regex:/(^[A-Za-z ]+$)+/'],
+            'firstname' => ['min:3', 'regex:/(^[A-Za-z ]+$)+/'],
+            'lastname' => ['min:3', 'regex:/(^[A-Za-z ]+$)+/'],
+            'email' => 'email'
+        ]
     ];
 
     /**

@@ -6,12 +6,14 @@ use Event;
 use Illuminate\Http\Request;
 
 use App\Models\User;
-use App\Models\Site;
 use App\Models\Role;
-use App\Helpers\Html;
+use App\Models\Account;
+use App\Models\AccountType;
+use App\Models\Address;
+use App\Models\Company;
 use Flash;
 use App\Events\UserLoggedIn;
-use App\Events\UserJoined;
+use App\Events\UserRegistered;
 use App\Helpers\Mailer;
 /**
  * AuthController
@@ -40,12 +42,12 @@ class AuthController extends BaseController {
     {
         $input = $request->only('email', 'password');
 
-        // Validate input
         $rules = [
             'email' => 'required|email',
             'password' => 'required|min:8'
         ];
 
+        // Validate input
         $this->validate($input, $rules);
 
         // Authenticate user
@@ -57,6 +59,7 @@ class AuthController extends BaseController {
         }
 
         Event::fire(new UserLoggedIn($user));
+
         return redirect('/dashboard');
     }
 
@@ -65,9 +68,10 @@ class AuthController extends BaseController {
      *
      * @return Response
      */
-    public function getSignup()
+    public function getRegister()
     {
-        return view('auth.signup');
+
+        return view('auth.register');
     }
 
     /**
@@ -76,20 +80,28 @@ class AuthController extends BaseController {
      * @param  Request  $request
      * @return Response
      */
-    public function postSignup(Request $request)
+    public function postRegister(Request $request)
     {
-        $input = $request->only('user');
+        $input = $request->all();
 
-        // Validate input
         $rules = [
-            'site_id' => 'required',
+            'referer_id' => 'required',
+            'firstname' => 'required|min:3',
+            'lastname' => 'required|min:3',
             'email' => 'required|email|unique:users,email',
+            'phone' => 'required|min:7',
             'password' => 'required|min:8',
-            'first_name' => 'required',
-            'last_name' => 'required'
+            'confirm_password' => 'required|same:password',
+            'address1' => 'required|min:3',
+            'city' => 'required|min:3',
+            'state' => 'required|min:3',
+            'country_id' => 'required',
+            'terms_and_conditions' => 'accepted',
         ];
 
-        $validator = Validator::make($input['user'], $rules);
+
+        // Validate input
+        $validator = Validator::make($input, $rules);
 
         if ($validator->fails())
         {
@@ -97,19 +109,42 @@ class AuthController extends BaseController {
             return redirect()->back()->withInput();
         }
 
-        // Validate site ID
-        if ( ! Site::find($input['user']['site_id']))
+        // Validate referer
+        if ( ! Company::find($input['referer_id']))
         {
-            Flash::error('Your site ID is not valid.');
+            Flash::error('Referer ID is not valid.');
             return redirect()->back()->withInput();
         }
 
         // Create user
-        $user = User::create($input['user']);
-        $user->roles()->sync([Role::CUSTOMER, Role::LOGIN]);
+        $user = new User;
+        $user->company_id = $input['referer_id'];
+        $user->firstname = $input['firstname'];
+        $user->lastname = $input['lastname'];
+        $user->email = $input['email'];
+        $user->password = $input['password'];
+        $user->active = TRUE;
+        $user->role_id = Role::CUSTOMER;
+        $user->save();
 
-        // Fire event
-        Event::fire(new UserJoined($user));
+        // Create customer account
+        $account = $user->account()->first();
+        $account->phone = $input['phone'];
+        $account->autoship = TRUE;
+        $account->save();
+
+        // Create customer account address
+        $address = new Address;
+        $address->address1 = $input['address1'];
+        $address->address2 = $input['address2'];
+        $address->city = $input['city'];
+        $address->state = $input['state'];
+        $address->postal_code = $input['postal_code'];
+        $address->country_id = $input['country_id'];
+
+        $account->address()->save($address);
+
+        Event::fire(new UserRegistered($user));
 
         return redirect('dashboard');
     }
@@ -140,18 +175,19 @@ class AuthController extends BaseController {
         // Verify user
         $user = User::where('email', '=', $input['email'])->first();
 
-        // Send password recovery
         if ( ! $user)
         {
             return $this->redirectBackWithError('This email address is not associated with any account.');
         }
 
+        // Send password recovery
         Mailer::sendPasswordRecovery($user);
         // TODO: change message
         // Show success message regardless
         // @TODO: uncomment
         //
         Flash::success('<a href="/reset-password?email=' . $user->email . '&token=' . $user->makePasswordRecoveryToken() . '">Click here to reset your password</a>');
+
         return redirect()->back();
         //return $this->redirectBackWithSuccess('An email with instructions on how to reset your password has been sent.');
     }
@@ -176,7 +212,6 @@ class AuthController extends BaseController {
     {
         $input = $request->only('email', 'token', 'password', 'confirm_password');
 
-        // Validate input
         $rules = [
             'email' => 'required|email',
             'token' => 'required',
@@ -184,17 +219,18 @@ class AuthController extends BaseController {
             'confirm_password' => 'required|same:password'
         ];
 
+        // Validate input
         $this->validate($input, $rules);
 
         // Verify user
         $user = User::where('email', '=', $input['email'])->first();
 
-        // Reset password
         if ( ! $user || ! $user->verifyPasswordRecoveryToken($input['token']))
         {
             return $this->redirectBackWithError('Password reset failed.');
         }
 
+        // Reset password
         $user->password = $input['password'];
         $user->save();
 

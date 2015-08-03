@@ -1,11 +1,11 @@
-@extends('layouts.auth.master')
+@extends('layouts.auth.narrow')
 
-@section('content')
+@section('narrow_content')
 <div class="ibox-content">
     <h2 class="font-bold">Reset your password</h2>
     <p>New passwords must be a mininum of 8 characters in length.</p>
 	<div class="row">
-	    <div class="col-lg-12">
+	    <div class="col-md-12">
         	<form action="{{ Request::fullUrl() }}" method="post" class="m-t">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">

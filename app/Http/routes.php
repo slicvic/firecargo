@@ -11,6 +11,12 @@
 |
 */
 
+/**
+ * -------------------------------------------------
+ * Admin
+ * -------------------------------------------------
+ */
+
 // Accounts
 Route::get('accounts/autocomplete-search', 'AccountsController@getAutocompleteSearch');
 
@@ -111,13 +117,20 @@ Route::controller('company', 'CompanyProfileController');
 // Dashboard
 Route::controller('dashboard', 'DashboardController');
 
+/**
+ * -------------------------------------------------
+ * Frontend
+ * -------------------------------------------------
+ */
+
 // Auth
 Route::get('login', 'AuthController@getLogin');
 Route::post('login', 'AuthController@postLogin');
 Route::get('logout', 'UserProfileController@getLogout');
 
-Route::get('signup', 'AuthController@getSignup');
-Route::post('signup', 'AuthController@postSignup');
+// Frontend
+Route::get('register', 'AuthController@getRegister');
+Route::post('register', 'AuthController@postRegister');
 Route::get('forgot-password', 'AuthController@getForgotPassword');
 Route::post('forgot-password', 'AuthController@postForgotPassword');
 Route::get('reset-password', 'AuthController@getResetPassword');

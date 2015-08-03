@@ -7,7 +7,7 @@
     <div class="ibox-content">
         <h2>My Packages</h2>
         <hr>
-        <table class="table table-striped">
+        <table class="table table-striped datatable">
             <thead>
                 <tr>
                     <th>ID</th>

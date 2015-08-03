@@ -5,7 +5,7 @@ use Illuminate\Contracts\Queue\ShouldBeQueued;
 use Auth;
 
 use App\Events\UserLoggedIn;
-use App\Events\UserJoined;
+use App\Events\UserRegistered;
 use App\Helpers\Mailer;
 use App\Models\LogUserVisit;
 
@@ -22,7 +22,7 @@ class UserEventHandler {
     }
 
     /**
-     * Handle user login events.
+     * Handles user login events.
      */
     public function onUserLogin(UserLoggedIn $event)
     {
@@ -33,9 +33,9 @@ class UserEventHandler {
     }
 
     /**
-     * Handle user signup events.
+     * Handles user register events.
      */
-    public function onUserJoin(UserJoined $event)
+    public function onUserRegister(UserRegistered $event)
     {
         Auth::login($event->user);
         Mailer::sendWelcome($event->user);
@@ -50,6 +50,6 @@ class UserEventHandler {
     public function subscribe($events)
     {
         $events->listen('App\Events\UserLoggedIn', 'App\Handlers\Events\UserEventHandler@onUserLogin');
-        $events->listen('App\Events\UserJoined', 'App\Handlers\Events\UserEventHandler@onUserJoin');
+        $events->listen('App\Events\UserRegistered', 'App\Handlers\Events\UserEventHandler@onUserRegister');
     }
 }

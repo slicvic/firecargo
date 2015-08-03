@@ -66,7 +66,7 @@ class ShipperAccountsController extends BaseAuthController {
         $input = $request->only('account', 'address');
 
         // Validate input
-        $this->validate($input['account'], Account::$rules);
+        $this->validate($input['account'], Account::$rules['shipper']);
 
         // Create account
         $account = new Account($input['account']);
@@ -111,7 +111,7 @@ class ShipperAccountsController extends BaseAuthController {
         $input = $request->only('account', 'address');
 
         // Validate input
-        $this->validate($input['account'], Account::$rules);
+        $this->validate($input['account'], Account::$rules['shipper']);
 
         // Update account
         $account = Account::findMineOrFail($id);

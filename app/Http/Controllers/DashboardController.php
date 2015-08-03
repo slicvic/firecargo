@@ -20,8 +20,6 @@ class DashboardController extends BaseAuthController {
      */
     public function getIndex()
     {
-                    return $this->showCustomerDashboard();
-
         if ($this->user->isCustomer())
         {
             return $this->showCustomerDashboard();

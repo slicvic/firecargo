@@ -1,4 +1,0 @@
-$(function() {
-    $('form').validate();
-});
-

@@ -1,10 +1,10 @@
-@extends('layouts.auth.master')
+@extends('layouts.auth.narrow')
 
-@section('content')
+@section('narrow_content')
 <div class="ibox-content">
     <h2 class="font-bold">Sign in to your account</h2>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
   			<form class="m-t" role="form" action="/login" method="post">
             	<input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">

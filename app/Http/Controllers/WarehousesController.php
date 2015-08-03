@@ -216,8 +216,8 @@ class WarehousesController extends BaseAuthController {
         $input = $request->only('warehouse', 'packages');
 
         $rules = [
-            'shipper_name' => Account::$rules['name'],
-            'customer_name' => Account::$rules['name'],
+            'shipper_name' => Account::$rules['shipper']['name'],
+            'customer_name' => Account::$rules['customer']['name'],
             'carrier_name' => Carrier::$rules['name']
         ];
 

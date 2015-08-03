@@ -4,7 +4,12 @@ use App\Events\Event;
 use App\Models\User;
 use Illuminate\Queue\SerializesModels;
 
-class UserJoined extends Event {
+/**
+ * UserRegistered
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
+class UserRegistered extends Event {
 
     use SerializesModels;
 

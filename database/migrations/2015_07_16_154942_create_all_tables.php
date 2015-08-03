@@ -26,18 +26,6 @@ class CreateAllTables extends Migration {
 		    $table->dateTime('updated_at');
 		});
 
-		// Create sites
-		Schema::create('sites', function($table)
-		{
-		    $table->increments('id')->unsigned();
-		    $table->integer('company_id')->unsigned();
-		    $table->string('name', 100);
-		    $table->dateTime('created_at');
-		    $table->dateTime('updated_at');
-
-		    $table->foreign('company_id')->references('id')->on('companies');
-		});
-
 		// Create roles
 		Schema::create('roles', function($table)
 		{
@@ -257,7 +245,6 @@ class CreateAllTables extends Migration {
 	public function down()
 	{
 		Schema::drop('companies');
-		Schema::drop('sites');
 
 		Schema::drop('packages');
 		Schema::drop('package_types');

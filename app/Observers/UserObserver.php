@@ -20,7 +20,7 @@ class UserObserver {
      */
     public function saving($user)
     {
-        if ( ! Auth::user()->isAdmin() && $user->isAdmin())
+        if (Auth::check() && ! Auth::user()->isAdmin() && $user->isAdmin())
         {
             // Sorry, only admins can create "admin" users.
             return FALSE;
@@ -40,13 +40,13 @@ class UserObserver {
             // Create or update user's customer account
 
             $account = $user->account ?: new Account;
+            $account->company_id = $user->company_id;
+            $account->name = "{$user->firstname} {$user->lastname}";
             $account->firstname = $user->firstname;
             $account->lastname = $user->lastname;
-            $account->name = "{$user->firstname} {$user->lastname}";
             $account->type_id = AccountType::CUSTOMER;
             $account->email = $user->email;
-            $account->user()->associate($user);
-            $account->save();
+            $user->account()->save($account);
         }
     }
 }
