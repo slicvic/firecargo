@@ -21,7 +21,7 @@ class CreateAllTables extends Migration {
 		    $table->string('phone', 30);
 		    $table->string('fax', 30);
 		    $table->string('email', 255);
-		    $table->string('referer_id', 30);
+		    $table->string('referer_id', 30)->unique();
 		    $table->tinyInteger('has_logo')->unsigned()->default(0);
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
@@ -259,7 +259,7 @@ class CreateAllTables extends Migration {
 		    $table->integer('updater_user_id')->unsigned()->nullable();
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
-		    $table->dateTime('deleted_at');
+		    $table->dateTime('deleted_at')->nullable();
 
 		    $table->foreign('company_id')->references('id')->on('companies');
 		    $table->foreign('warehouse_id')->references('id')->on('warehouses');
