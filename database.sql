@@ -1,3 +1,6 @@
+delimiter |
+CREATE TRIGGER update_warehouse_status AFTER UPDATE ON packages
+FOR EACH ROW
 BEGIN
 
 # Total packages in the warehouse
@@ -29,7 +32,12 @@ END IF;
 
 UPDATE warehouses SET status_id = newStatusId WHERE id = NEW.warehouse_id;
 
-END
+END;
+
+|
+
+delimiter ;
+
 
 -- phpMyAdmin SQL Dump
 -- version 4.1.12
