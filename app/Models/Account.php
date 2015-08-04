@@ -22,13 +22,13 @@ class Account extends Base {
      */
     public static $rules = [
         'shipper' => [
-            'name' => ['required', 'min:3', 'regex:/(^[A-Za-z0-9 ]+$)+/'],
+            'name' => 'required|min:3|alpha_spaces',
             'email' => 'email'
         ],
         'customer' => [
-            'name' => ['required', 'min:5', 'regex:/(^[A-Za-z ]+$)+/'],
-            'firstname' => ['min:3', 'regex:/(^[A-Za-z ]+$)+/'],
-            'lastname' => ['min:3', 'regex:/(^[A-Za-z ]+$)+/'],
+            'name' => 'required|min:3|alpha_spaces',
+            'firstname' => 'required|min:3|alpha_spaces',
+            'lastname' => 'required|min:3|alpha_spaces',
             'email' => 'email'
         ]
     ];

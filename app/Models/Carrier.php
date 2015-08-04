@@ -47,6 +47,23 @@ class Carrier extends Base {
     ];
 
     /**
+     * Overrides parent method to sanitize attributes.
+     *
+     * @see parent::setAttribute()
+     */
+    public function setAttribute($key, $value)
+    {
+        switch ($key)
+        {
+            case 'name':
+                $value = strtoupper($value);
+                break;
+        }
+
+        return parent::setAttribute($key, $value);
+    }
+
+    /**
      * Finds carriers matching the provided search term for an ajax
      * autocomplete field.
      *
@@ -70,22 +87,4 @@ class Carrier extends Base {
             ->limit(25)
             ->get();
     }
-
-    /**
-     * Normalizes a carrier name before saving to database.
-     *
-     * @param  string  $name
-     * @return str
-     */
-    // public static function normalizeName($name)
-    // {
-    //     // 1. Strip all non alpha-numeric characters except spaces, (), /
-    //     // 2. Strip consecutive spaces
-    //     // 3. Trim and uppercase
-    //     $name = preg_replace('/[^a-z0-9()\/ ]/i', '', $name);
-    //     $name = preg_replace('/\s+/S', ' ', $name);
-    //     $name = strtoupper(trim($name));
-
-    //     return $name;
-    // }
 }
