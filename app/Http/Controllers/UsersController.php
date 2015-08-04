@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Http\Requests\UserFormRequest;
 
 /**
  * UsersController
@@ -56,24 +57,11 @@ class UsersController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postStore(Request $request)
+    public function postStore(UserFormRequest $request)
     {
         $input = $this->prepareInput($request);
 
-        $rules = [
-            'company_id' => 'required',
-            'role_id' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'password' => 'required|min:8'
-        ];
-
-        // Validate input
-        $this->validate($input['user'], $rules);
-
-        // Create user
-        User::create($input['user']);
+        User::create($input);
 
         return $this->redirectWithSuccess('users', 'User created.');
     }
@@ -99,39 +87,26 @@ class UsersController extends BaseAuthController {
      * @param  int      $id
      * @return Redirector
      */
-    public function postUpdate(Request $request, $id)
+    public function postUpdate(UserFormRequest $request, $id)
     {
         $input = $this->prepareInput($request);
 
-        $rules = [
-            'company_id' => 'required',
-            'role_id' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'password' => 'min:8'
-        ];
-
-        // Validate input
-        $this->validate($input['user'], $rules);
-
-        // Update user
-        User::findOrFail($id)->update($input['user']);
+        User::findOrFail($id)->update($input);
 
         return $this->redirectBackWithSuccess('User updated.');
     }
 
     /**
-     * Prepares the input before validation.
+     * Prepares the input before saving to database.
      *
      * @param  Request $request
      * @return array
      */
     private function prepareInput(Request $request)
     {
-        $input = $request->only('user');
+        $input = $request->all();
 
-        $input['user']['active'] = isset($input['user']['active']);
+        $input['active'] = isset($input['active']);
 
         return $input;
     }

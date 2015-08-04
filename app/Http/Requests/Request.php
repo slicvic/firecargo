@@ -8,6 +8,13 @@ use App\Session\Flash;
 abstract class Request extends FormRequest {
 
     /**
+     * The input keys that should not be flashed on redirect.
+     *
+     * @var array
+     */
+    protected $dontsFlash = [];
+
+    /**
      * Format the errors from the given Validator instance.
      *
      * @param  \Illuminate\Validation\Validator  $validator

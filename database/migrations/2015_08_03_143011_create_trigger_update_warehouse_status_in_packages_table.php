@@ -12,8 +12,7 @@ class CreateTriggerUpdateWarehouseStatusInPackagesTable extends Migration {
 	 */
 	public function up()
 	{
-		$sql = <<<'EOD'
-
+		$sql = "
 CREATE TRIGGER update_warehouse_status AFTER UPDATE ON packages
 FOR EACH ROW
 BEGIN
@@ -48,8 +47,7 @@ BEGIN
 	UPDATE warehouses SET status_id = newStatusId WHERE id = NEW.warehouse_id;
 
 END;
-
-EOD;
+";
 		DB::unprepared($sql);
 	}
 

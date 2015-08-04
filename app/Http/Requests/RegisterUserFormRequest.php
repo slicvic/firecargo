@@ -5,13 +5,6 @@ use App\Http\Requests\Request;
 class RegisterUserFormRequest extends Request {
 
 	/**
-     * The input keys that should not be flashed on redirect.
-     *
-     * @var array
-     */
-    protected $dontsFlash = [];
-
-	/**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool

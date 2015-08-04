@@ -21,6 +21,17 @@ class Company extends Base {
     protected $table = 'companies';
 
     /**
+     * Rules for validation.
+     *
+     * @var array
+     */
+    public static $rules = [
+        'name' => 'required',
+        'shortname' => 'required:between:2,10'
+
+    ];
+
+    /**
      * The presenter path.
      *
      * @var string

@@ -56,19 +56,15 @@ class CompaniesController extends BaseAuthController {
      */
     public function postStore(Request $request)
     {
-        $input = $request->all();
-
-        $rules = [
-            'name' => 'required',
-            'shortname' => 'required'
-        ];
+        $input = $request->only('name', 'shortname');
 
         // Validate input
-        $this->validate($input, $rules);
+        $this->validate($input, Company::$rules);
 
         // Create company
         $company = Company::create($input);
         $company->referer_id = sprintf('%s%s', strtolower($company->shortname), $company->id);
+        $company->save();
 
         // Create address
         if ($company->exists)
@@ -103,13 +99,8 @@ class CompaniesController extends BaseAuthController {
     {
         $input = $request->only('name', 'shortname');
 
-        $rules = [
-            'name' => 'required',
-            'shortname' => 'required'
-        ];
-
         // Validate input
-        $this->validate($input, $rules);
+        $this->validate($input, Company::$rules);
 
         // Update company
         Company::findOrFail($id)->update($input);
