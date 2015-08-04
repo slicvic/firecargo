@@ -28,7 +28,7 @@
                             <td>{{ $package->id }}</td>
                             <td>{{ $package->type->name }}</td>
                             <td>{{ $package->tracking_number }}</td>
-                            <td>{{ $package->present()->invoiceValue() }}</td>
+                            <td>{{ $package->present()->value() }}</td>
                             <td>{{ $package->description }}</td>
                             <td>
                                 <div class="btn-group">

@@ -24,7 +24,7 @@
                     <td>{{ $package->tracking_number }}</td>
                     <td>{{ $package->type->name }}</td>
                     <td>{{ $package->present()->weight() }}</td>
-                    <td>{{ $package->present()->invoiceValue() }}</td>
+                    <td>{{ $package->present()->value() }}</td>
                     <td>{{ $package->description }}</td>
                     <td>{!! $package->present()->customerLink() !!}</td>
                     <td>{!! $package->present()->warehouseLink() !!}</td>

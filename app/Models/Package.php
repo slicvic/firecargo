@@ -73,6 +73,7 @@ class Package extends BaseSearchable {
         'customer_account_id',
         'invoice_value',
         'tracking_number',
+        'weight',
         'created_at',
         'updated_at'
     ];

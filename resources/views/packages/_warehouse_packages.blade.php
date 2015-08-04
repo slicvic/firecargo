@@ -23,7 +23,7 @@
                     <td>{{ $package->tracking_number }}</td>
                     <td>{{ $package->present()->type() }}</td>
                     <td>{{ $package->present()->weight() }}</td>
-                    <td>{{ $package->present()->invoiceValue() }}</td>
+                    <td>{{ $package->present()->value() }}</td>
                     <td>{{ $package->description }}</td>
                     <td>{!! $package->present()->shipmentLink() !!}</td>
                     <td>

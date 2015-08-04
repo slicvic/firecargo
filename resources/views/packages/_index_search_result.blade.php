@@ -6,8 +6,9 @@
                     <th>{!! Html::linkToSort('/packages', 'Company', 'company_id', $params['sort'], $params['order']) !!}</th>
                 @endif
                 <th>{!! Html::linkToSort('/packages', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
-                <th>{!! Html::linkToSort('/packages', 'Type', 'type_id', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/packages', 'Tracking #', 'tracking_number', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/packages', 'Type', 'type_id', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/packages', 'Weight', 'weight', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/packages', 'Value', 'invoice_value', $params['sort'], $params['order']) !!}</th>
                 <th>Description</th>
                 <th>{!! Html::linkToSort('/packages', 'Warehouse', 'warehouse_id', $params['sort'], $params['order']) !!}</th>
@@ -23,9 +24,10 @@
                 <tr class="{{ $package->present()->statusCssClass() }}">
                     @if ($isAdminUser) {!! '<td>' . $package->company->name . '</td>' !!} @endif
                     <td>{{ $package->id }}</td>
-                    <td>{{ $package->type->name }}</td>
                     <td>{{ $package->tracking_number }}</td>
-                    <td>{{ $package->present()->invoiceValue() }}</td>
+                    <td>{{ $package->type->name }}</td>
+                    <td>{{ $package->present()->weight() }}</td>
+                    <td>{{ $package->present()->value() }}</td>
                     <td>{{ $package->description }}</td>
                     <td>{!! $package->present()->warehouseLink() !!}</td>
                     <td>{!! $package->present()->customerLink() !!}</td>

@@ -2,6 +2,11 @@
 
 use Auth;
 
+/**
+ * CustomerUserProfileFormRequest
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class CustomerUserProfileFormRequest extends Request {
 
     /**
@@ -11,7 +16,7 @@ class CustomerUserProfileFormRequest extends Request {
      */
     public function rules()
     {
-        $rules = [
+        return [
             'firstname' => 'required|min:3|alpha_spaces',
             'lastname' => 'required|min:3|alpha_spaces',
             'email' => 'required|email|unique:users,email,' . Auth::user()->id,
@@ -22,7 +27,5 @@ class CustomerUserProfileFormRequest extends Request {
             'state' => 'required|alpha_spaces',
             'country_id' => 'required'
         ];
-
-        return $rules;
     }
 }

@@ -18,7 +18,6 @@ use App\Exceptions\ValidationException;
 use Flash;
 use App\Http\ToastrJsonResponse;
 
-
 /**
  * WarehousesController
  *

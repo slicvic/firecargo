@@ -1,5 +1,10 @@
 <?php namespace App\Http\Requests;
 
+/**
+ * CustomerAccountFormRequest
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class CustomerAccountFormRequest extends Request {
 
     /**
@@ -9,7 +14,7 @@ class CustomerAccountFormRequest extends Request {
      */
     public function rules()
     {
-        $rules = [
+        return [
             'name' => 'required|min:3|alpha_spaces',
             'email' => 'email',
             'phone' => 'min:7|phone',
@@ -20,7 +25,5 @@ class CustomerAccountFormRequest extends Request {
             'state' => 'required|alpha_spaces',
             'country_id' => 'required'
         ];
-
-        return $rules;
     }
 }

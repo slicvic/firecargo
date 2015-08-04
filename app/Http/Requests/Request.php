@@ -5,6 +5,11 @@ use Illuminate\Validation\Validator;
 
 use App\Session\Flash;
 
+/**
+ * Request
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 abstract class Request extends FormRequest {
 
     /**

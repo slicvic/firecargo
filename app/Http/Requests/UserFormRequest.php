@@ -1,5 +1,10 @@
 <?php namespace App\Http\Requests;
 
+/**
+ * UserFormRequest
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class UserFormRequest extends Request {
 
     /**

@@ -158,7 +158,7 @@ class PackagePresenter extends BasePresenter {
      * @param  bool  $showSign
      * @return string
      */
-    public function invoiceValue($showSign = TRUE)
+    public function value($showSign = TRUE)
     {
         return ($this->model->exists) ? (new Currency($this->model->invoice_value))->asDollar($showSign) : '';
     }

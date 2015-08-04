@@ -47,7 +47,7 @@
     </div>
     <div class="row">
         <div class="col-xs-3"><strong>Invoice $</strong></div>
-        <div class="col-xs-9"><p>$ <a href="#" class="editable" data-name="invoice_value">{{ $package->present()->invoiceValue(FALSE) }}</a></p></div>
+        <div class="col-xs-9"><p>$ <a href="#" class="editable" data-name="invoice_value">{{ $package->present()->value(FALSE) }}</a></p></div>
     </div>
 
     <hr>

@@ -1,15 +1,20 @@
 <?php namespace App\Http\Requests;
 
+/**
+ * RegisterUserFormRequest
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class RegisterUserFormRequest extends Request {
 
-	/**
-	 * Get the validation rules that apply to the request.
-	 *
-	 * @return array
-	 */
-	public function rules()
-	{
-		return [
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
             'affiliate_id' => 'required|exists:companies,affiliate_id',
             'firstname' => 'required|min:3|alpha_spaces',
             'lastname' => 'required|min:3|alpha_spaces',
@@ -22,6 +27,6 @@ class RegisterUserFormRequest extends Request {
             'state' => 'required|alpha_spaces',
             'country_id' => 'required',
             'terms_and_conditions' => 'accepted',
-		];
-	}
+        ];
+    }
 }
