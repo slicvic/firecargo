@@ -105,7 +105,7 @@ $(function() {
                 window.location = data.redirect_url;
             })
             .fail(function(xhr) {
-                toastr.error(xhr.responseJSON.message, xhr.responseJSON.title);
+                toastr.error(xhr.responseJSON.message, xhr.responseJSON.title, {timeOut: 60000});
                 $('html, body').scrollTop(0);
                 saveBtn.button('reset');
             });
