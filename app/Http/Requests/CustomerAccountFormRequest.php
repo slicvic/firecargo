@@ -14,6 +14,7 @@ class CustomerAccountFormRequest extends Request {
             'email' => 'email',
             'phone' => 'min:7|phone',
             'mobile_phone' => 'min:7|phone',
+            'fax' => 'min:7|phone',
             'address1' => 'required',
             'city' => 'required|alpha_spaces',
             'state' => 'required|alpha_spaces',

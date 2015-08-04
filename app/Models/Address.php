@@ -45,6 +45,9 @@ class Address extends Base {
             case 'zip':
                 $value = strtoupper(trim($value));
                 break;
+            case 'country_id':
+                $value = empty($value) ? NULL : $value;
+                break;
         }
 
         return parent::setAttribute($key, $value);

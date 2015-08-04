@@ -122,13 +122,14 @@ class ShipperAccountsController extends BaseAuthController {
         $account->save();
 
         // Update address
-        $address = $account->address;
+        $address = ($account->address) ?: new Address;
         $address->address1 = $input['address1'];
         $address->address2 = $input['address2'];
         $address->city = $input['city'];
         $address->state = $input['state'];
         $address->postal_code = $input['postal_code'];
         $address->country_id = $input['country_id'];
+        $address->account()->associate($account);
         $address->save();
 
         return $this->redirectBackWithSuccess('Shipper updated.');
