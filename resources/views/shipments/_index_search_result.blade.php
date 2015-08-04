@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th></th>
-                @if (Auth::user()->isAdmin())
+                @if ($isAdminUser)
                     <th>{!! Html::linkToSort('/shipments', 'Company', 'company_id', $params['sort'], $params['order']) !!}</th>
                 @endif                <th>{!! Html::linkToSort('/shipments', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
                 <th>Pieces</th>
@@ -19,7 +19,7 @@
             @foreach ($shipments as $shipment)
             <tr>
                 <td><button class="toggle-packages-btn btn btn-link btn-sm" data-shipment-id="{{ $shipment->id }}"><i class="fa fa-angle-right"></i></button></td>
-                @if (Auth::user()->isAdmin()) {!! '<td>' . $shipment->company->name . '</td>' !!} @endif
+                @if ($isAdminUser) {!! '<td>' . $shipment->company->name . '</td>' !!} @endif
                 <td>{{ $shipment->id }}</td>
                 <td><span class="label label-info">{{ $shipment->packages()->count() }}</span></td>
                 <td>{{ $shipment->reference_number }}</td>

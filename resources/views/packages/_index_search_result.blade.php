@@ -2,7 +2,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                @if (Auth::user()->isAdmin())
+                @if ($isAdminUser)
                     <th>{!! Html::linkToSort('/packages', 'Company', 'company_id', $params['sort'], $params['order']) !!}</th>
                 @endif
                 <th>{!! Html::linkToSort('/packages', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
@@ -21,7 +21,7 @@
         <tbody>
             @foreach ($packages as $package)
                 <tr class="{{ $package->present()->statusCssClass() }}">
-                    @if (Auth::user()->isAdmin()) {!! '<td>' . $package->company->name . '</td>' !!} @endif
+                    @if ($isAdminUser) {!! '<td>' . $package->company->name . '</td>' !!} @endif
                     <td>{{ $package->id }}</td>
                     <td>{{ $package->type->name }}</td>
                     <td>{{ $package->tracking_number }}</td>

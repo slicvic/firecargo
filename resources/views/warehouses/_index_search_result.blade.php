@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th></th>
-                @if (Auth::user()->isAdmin())
+                @if ($isAdminUser)
                     <th>{!! Html::linkToSort('/warehouses', 'Company', 'company_id', $params['sort'], $params['order']) !!}</th>
                 @endif
                 <th>{!! Html::linkToSort('/warehouses', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
@@ -22,7 +22,7 @@
             @foreach ($warehouses as $warehouse)
             <tr class="{{ $warehouse->present()->statusCssClass() }}">
                 <td><button class="toggle-packages-btn btn btn-link btn-sm" data-warehouse-id="{{ $warehouse->id }}"><i class="fa fa-angle-right"></i></button></td>
-                @if (Auth::user()->isAdmin()) {!! '<td>' . $warehouse->company->name . '</td>' !!} @endif
+                @if ($isAdminUser) {!! '<td>' . $warehouse->company->name . '</td>' !!} @endif
                 <td>{{ $warehouse->id }}</td>
                 <td><span class="label label-info">{{ $warehouse->packages->count() }}</span></td>
                 <td>{{ $warehouse->present()->grossWeight() }}</td>

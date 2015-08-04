@@ -4,7 +4,7 @@ $(function() {
      * Close left nav
      * ---------------------------------------------
      */
-    $('body').toggleClass("mini-navbar");
+    $('body').toggleClass('mini-navbar');
 
     /**
      * ---------------------------------------------

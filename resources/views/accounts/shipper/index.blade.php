@@ -8,7 +8,7 @@
 @stop
 
 @section('thead')
-    @if (Auth::user()->isAdmin())
+    @if ($isAdminUser)
         <th>Company</th>
     @endif
     <th>ID</th>
@@ -20,7 +20,7 @@
 @section('tbody')
     @foreach ($accounts as $account)
         <tr>
-            @if (Auth::user()->isAdmin())
+            @if ($isAdminUser)
                 <td>{{ $account->company->name }}</td>
             @endif
             <td>{{ $account->id }}</td>

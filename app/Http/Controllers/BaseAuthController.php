@@ -1,6 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Auth\Guard;
+use View;
+use Request;
 
 /**
  * BaseAuthController
@@ -35,5 +37,11 @@ abstract class BaseAuthController extends BaseController {
         $this->user = $auth->user();
 
         $this->middleware('auth');
+
+        View::share('isAdminUser', $this->user->isAdmin());
+        View::share('isAgentUser', $this->user->isAgent());
+        View::share('isCustomerUser', $this->user->isCustomer());
+        View::share('currentUser', $this->user);
+        View::share('currentUri', Request::path());
     }
 }

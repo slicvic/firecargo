@@ -1,5 +1,3 @@
-<?php $user = Auth::user(); ?>
-<?php $uri = Request::path(); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ env('APP_NAME')}}</title>
+    <title>{{ env('APP_NAME') }}</title>
 
     <link href="/assets/plugins/inspinia/Static_Seed_Project/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/plugins/inspinia/Static_Seed_Project/font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -63,26 +61,23 @@
     <link rel="stylesheet" type="text/css" href="/assets/admin/css/style.css">
     <script src="/assets/admin/js/app.js"></script>
 </head>
-
 <body>
-
-    <div id="wrapper" class="{{ str_replace('/', ' ', Request::path()) }}">
-
+    <div id="wrapper" class="{{ str_replace('/', ' ', $currentUri) }}">
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav metismenu" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="{{ Auth::user()->present()->profilePhotoUrl() }}" style="width:48px;height:48px"></span>
+                            <span><img alt="image" class="img-circle" src="{{ $currentUser->present()->profilePhotoUrl() }}" style="width:48px;height:48px"></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
-                                    <span class="block m-t-xs"><strong class="font-bold">{{ $user->present()->fullname() }}</strong></span>
-                                    <span class="text-muted text-xs block">{{ $user->role->name }} <b class="caret"></b></span>
+                                    <span class="block m-t-xs"><strong class="font-bold">{{ $currentUser->present()->fullname() }}</strong></span>
+                                    <span class="text-muted text-xs block">{{ $currentUser->role->name }} <b class="caret"></b></span>
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
                                 <li><a href="/user/profile">My Profile</a></li>
-                                @if ( ! Auth::user()->isCustomer())
+                                @if ($isAdminUser || $isAgentUser)
                                     <li><a href="/company/profile">Company Profile</a></li>
                                 @endif
                                 <li class="divider"></li>
@@ -94,51 +89,51 @@
                         </div>
                     </li>
 
-                    <li class="{{ ('dashboard' == $uri) ? 'active' : '' }}">
+                    <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
                         <a href="/dashboard"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a>
                     </li>
 
-                    @if ($user->isAdmin() || $user->isAgent())
+                    @if ($isAdminUser || $isAgentUser)
 
-                        <li{{ preg_match('/warehouse/', $uri) ? ' class=active' : '' }}>
+                        <li class="{{ (Request::is('warehouses') || Request::is('warehouse/*')) ? 'active' : '' }}">
                             <a href="#"><i class="fa fa-cube"></i> <span class="nav-label">Warehouses</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                <li{{ (Request::is('warehouses')) ? ' class=active' : '' }}><a href="/warehouses">Warehouses</a></li>
-                                <li{{ (Request::is('warehouse/create')) ? ' class=active' : '' }}><a href="/warehouse/create">Create Warehouse</a></li>
+                                <li class="{{ Request::is('warehouses') ? 'active' : '' }}"><a href="/warehouses">Warehouses</a></li>
+                                <li class="{{ Request::is('warehouse/create') ? 'active' : '' }}"><a href="/warehouse/create">Create Warehouse</a></li>
                             </ul>
                         </li>
 
-                        <li{{ preg_match('/shipment/', $uri) ? ' class=active' : '' }}>
+                        <li class="{{ (Request::is('shipments') || Request::is('shipment/*')) ? 'active' : '' }}">
                             <a href="#"><i class="fa fa-plane"></i> <span class="nav-label">Shipments</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                <li{{ (Request::is('shipments')) ? ' class=active' : '' }}><a href="/shipments">Shipments</a></li>
-                                <li{{ (Request::is('shipment/create')) ? ' class=active' : '' }}><a href="/shipment/create">Create Shipment</a></li>
+                                <li class="{{ Request::is('shipments') ? 'active' : '' }}"><a href="/shipments">Shipments</a></li>
+                                <li class="{{ Request::is('shipment/create') ? 'active' : '' }}"><a href="/shipment/create">Create Shipment</a></li>
                             </ul>
                         </li>
 
-                        <li{{ (Request::is('packages') || Request::is('package/*')) ? ' class=active' : '' }}>
+                        <li class="{{ (Request::is('packages') || Request::is('package/*')) ? 'active' : '' }}">
                             <a href="/packages"><i class="fa fa-th"></i><span>Pieces</span></a>
                         </li>
 
-                        <li{{ (Request::is('customers') || Request::is('customer/*')) ? ' class=active' : '' }}>
+                        <li class="{{ (Request::is('customers') || Request::is('customer/*')) ? 'active' : '' }}">
                             <a href="/customers"><i class="fa fa-users"></i><span>Customers</span></a>
                         </li>
 
-                        <li{{ (Request::is('shippers') || Request::is('shipper/*')) ? ' class=active' : '' }}>
+                        <li class="{{ (Request::is('shippers') || Request::is('shipper/*')) ? 'active' : '' }}">
                             <a href="/shippers"><i class="fa fa-truck"></i><span>Shippers</span></a>
                         </li>
 
-                        <li{{ preg_match('/carrier|site|company|package-type|companies|role|user/', $uri) ? ' class=active' : '' }}>
+                        <li{{ preg_match('/carrier|company|package-type|companies|role|user/', $currentUri) ? ' class=active' : '' }}>
                             <a href="#"><i class="fa fa-cog"></i> <span class="nav-label">Settings</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                @if ($user->isAdmin())
-                                    <li{{ (Request::is('users') || Request::is('user/*')) ? ' class=active' : '' }}><a href="/users">Users</a></li>
-                                    <li{{ (Request::is('companies') || Request::is('company/*')) ? ' class=active' : '' }}><a href="/companies">Companies</a></li>
-                                    <li{{ (Request::is('roles') || Request::is('role/*')) ? ' class=active' : '' }}><a href="/roles">Roles</a></li>
-                                    <li{{ (Request::is('package-types') || Request::is('package-type/*')) ? ' class=active' : '' }}><a href="/package-types">Package Types</a></li>
-                                    <li{{ (Request::is('carriers') || Request::is('carrier/*')) ? ' class=active' : '' }}><a href="/carriers">Carriers</a></li>
+                                @if ($isAdminUser)
+                                    <li class="{{ (Request::is('users') || Request::is('user/*')) ? 'active' : '' }}"><a href="/users">Users</a></li>
+                                    <li class="{{ (Request::is('companies') || Request::is('company/*')) ? 'active' : '' }}"><a href="/companies">Companies</a></li>
+                                    <li class="{{ (Request::is('roles') || Request::is('role/*')) ? 'active' : '' }}"><a href="/roles">Roles</a></li>
+                                    <li class="{{ (Request::is('package-types') || Request::is('package-type/*')) ? 'active' : '' }}"><a href="/package-types">Package Types</a></li>
+                                    <li class="{{ (Request::is('carriers') || Request::is('carrier/*')) ? 'active' : '' }}"><a href="/carriers">Carriers</a></li>
                                 @endif
-                                <li{{ (Request::is('company') || Request::is('company/*')) ? ' class=active' : '' }}><a href="/company/profile">Company Profile</a></li>
+                                <li class="{{ (Request::is('company') || Request::is('company/*')) ? 'active' : '' }}"><a href="/company/profile">Company Profile</a></li>
                             </ul>
                         </li>
                     @endif
@@ -156,7 +151,7 @@
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li>
-                            <span class="m-r-sm text-muted welcome-message">Howdy {{ $user->present()->fullname() }}! Welcome to {{ env('APP_NAME') }}!</span>
+                            <span class="m-r-sm text-muted welcome-message">Howdy {{ $currentUser->present()->fullname() }}! Welcome to {{ env('APP_NAME') }}!</span>
                         </li>
                         <li>
                             <a href="/logout">
@@ -181,8 +176,6 @@
             <div class="modal-content animated bounceInRight"></div>
         </div>
     </div>
-
     {!! Flash::getToastr() !!}
 </body>
-
 </html>
