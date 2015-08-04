@@ -68,12 +68,6 @@
                             <input type="password" name="password" placeholder="Password" class="form-control" value="{{ Input::old('password') }}" minlength="8"{{ $user->exists ? '' : ' required'}}>
                         </div>
                     </div>
-                                        <div class="form-group">
-                        <label class="control-label col-sm-2">Password</label>
-                        <div class="col-sm-5">
-                            <input type="password" name="passwxxxxxord" placeholder="Password" class="form-control" value="{{ Input::old('password') }}" minlength="8"{{ $user->exists ? '' : ' required'}}>
-                        </div>
-                    </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Active</label>
                         <div class="col-sm-5">

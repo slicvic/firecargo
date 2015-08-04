@@ -8,11 +8,12 @@
             <tr>
                 <th>ID</th>
                 <th>Tracking #</th>
-                <th>Customer</th>
-                <th>Warehouse</th>
                 <th>Type</th>
+                <th>Weight</th>
                 <th>Value</th>
                 <th>Description</th>
+                <th>Customer</th>
+                <th>Warehouse</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -21,11 +22,12 @@
                 <tr>
                     <td>{{ $package->id }}</td>
                     <td>{{ $package->tracking_number }}</td>
-                    <td>{!! $package->present()->customerLink() !!}</td>
-                    <td>{!! $package->present()->warehouseLink() !!}</td>
                     <td>{{ $package->type->name }}</td>
+                    <td>{{ $package->present()->weight() }}</td>
                     <td>{{ $package->present()->invoiceValue() }}</td>
                     <td>{{ $package->description }}</td>
+                    <td>{!! $package->present()->customerLink() !!}</td>
+                    <td>{!! $package->present()->warehouseLink() !!}</td>
                     <td>
                         <div class="btn-group">
                             <button type="button" data-package-id="{{ $package->id }}" class="show-package-modal-btn btn-white btn btn-sm">View</button>

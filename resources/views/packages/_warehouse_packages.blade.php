@@ -8,10 +8,11 @@
             <tr>
                 <th>ID</th>
                 <th>Tracking #</th>
-                <th>Shipment</th>
                 <th>Type</th>
+                <th>Weight</th>
                 <th>Value</th>
                 <th>Description</th>
+                <th>Shipment</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -20,10 +21,11 @@
                 <tr class="{{ $package->present()->statusCssClass() }}">
                     <td>{{ $package->id }}</td>
                     <td>{{ $package->tracking_number }}</td>
-                    <td>{!! $package->present()->shipmentLink() !!}</td>
                     <td>{{ $package->present()->type() }}</td>
+                    <td>{{ $package->present()->weight() }}</td>
                     <td>{{ $package->present()->invoiceValue() }}</td>
                     <td>{{ $package->description }}</td>
+                    <td>{!! $package->present()->shipmentLink() !!}</td>
                     <td>
                         <div class="btn-group">
                             <button type="button" data-package-id="{{ $package->id }}" data-loading-text="Loading..." class="show-package-modal-btn btn-white btn btn-sm">View</button>

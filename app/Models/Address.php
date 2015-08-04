@@ -51,13 +51,23 @@ class Address extends Base {
     }
 
     /**
-     * Gets the address' country.
+     * Gets the country.
      *
      * @return Country
      */
     public function country()
     {
         return $this->belongsTo('App\Models\Country');
+    }
+
+    /**
+     * Gets the account.
+     *
+     * @return Country
+     */
+    public function account()
+    {
+        return $this->belongsTo('App\Models\Account');
     }
 
     /**

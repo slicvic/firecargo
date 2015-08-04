@@ -13,6 +13,7 @@ use App\Models\Address;
 use App\Exceptions\ValidationException;
 use App\Helpers\Upload;
 use App\Http\ToastrJsonResponse;
+use App\Http\Requests\CustomerUserProfileFormRequest;
 
 /**
  * UserProfileController
@@ -73,21 +74,63 @@ class UserProfileController extends BaseAuthController {
     }
 
     /**
-     * Updates the user profile.
+     * Updates a user profile.
      *
      * @param  Request  $request
      * @return Redirector
      */
     public function postProfile(Request $request)
     {
-        if ($this->user->isCustomer())
-        {
-            $this->updateCustomerProfile($request);
-        }
-        else
-        {
-            $this->updateProfile($request);
-        }
+        $input = $request->only('user');
+
+        $rules = [
+            'email' => 'required|email|unique:users,email,' . $this->user->id,
+            'firstname' => 'required|min:3|alpha_spaces',
+            'lastname' => 'required|min:3|alpha_spaces'
+        ];
+
+        // Validate input
+        $this->validate($input['user'], $rules);
+
+        // Update user
+        $this->user->update($input['user']);
+
+        return $this->redirectWithSuccess('user/profile', 'Your profile has been updated.');
+    }
+
+    /**
+     * Updates a customer user profile.
+     *
+     * @param  Request  $request
+     * @return Redirector
+     */
+    public function postCustomerProfile(CustomerUserProfileFormRequest $request)
+    {
+        $input = $request->all();
+
+        // Update customer
+        $user = $this->user;
+        $user->firstname = $input['firstname'];
+        $user->lastname = $input['lastname'];
+        $user->email = $input['email'];
+        $user->save();
+
+        // Update customer account
+        $account = $this->user->account;
+        $account->phone = $input['phone'];
+        $account->mobile_phone = $input['mobile_phone'];
+        $account->autoship = isset($input['autoship']);
+        $account->save();
+
+        // Update customer account address
+        $address = $account->address;
+        $address->address1 = $input['address1'];
+        $address->address2 = $input['address2'];
+        $address->city = $input['city'];
+        $address->state = $input['state'];
+        $address->postal_code = $input['postal_code'];
+        $address->country_id = $input['country_id'];
+        $address->save();
 
         return $this->redirectWithSuccess('user/profile', 'Your profile has been updated.');
     }
@@ -168,72 +211,6 @@ class UserProfileController extends BaseAuthController {
             Log::error($e);
 
             return ToastrJsonResponse::error('Upload failed, please try again.', 500);
-        }
-    }
-
-    /**
-     * Updates an admin or agent profile.
-     *
-     * @param  Request  $request
-     * @return void
-     */
-    private function updateProfile(Request $request)
-    {
-        $input = $request->only('user');
-
-        $rules = [
-            'email' => 'required|email|unique:users,email,' . $this->user->id,
-            'firstname' => 'required',
-            'lastname' => 'required'
-        ];
-
-        // Validate input
-        $this->validate($input['user'], $rules);
-
-        // Update user
-        $this->user->update($input['user']);
-    }
-
-    /**
-     * Updates a customer profile.
-     *
-     * @param  Request  $request
-     * @return void
-     */
-    private function updateCustomerProfile(Request $request)
-    {
-        $input = $request->only('account', 'address');
-
-        $rules = [
-            'email' => 'required|email|unique:users,email,' . $this->user->id,
-            'firstname' => 'required',
-            'lastname' => 'required'
-        ];
-
-        // Validate input
-        $this->validate($input['account'], $rules);
-
-        // Update customer
-        $this->user->firstname = $input['account']['firstname'];
-        $this->user->lastname = $input['account']['lastname'];
-        $this->user->email = $input['account']['email'];
-        $this->user->save();
-
-        // Update customer account
-        $account = $this->user->account;
-        $account->phone = $input['account']['phone'];
-        $account->mobile_phone = $input['account']['mobile_phone'];
-        $account->autoship = isset($input['account']['autoship']);
-        $account->save();
-
-        // Update customer account address
-        if ($account->address)
-        {
-            $account->address->update($input['address']);
-        }
-        else
-        {
-            $account->address()->save(new Address($input['address']));
         }
     }
 }

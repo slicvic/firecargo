@@ -60,7 +60,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-3">Address *</label>
                             <div class="col-md-6">
-                                <input name="address1" class="form-control" value="{{ Input::old('address1') }}" minlength="3" required>
+                                <input name="address1" class="form-control" value="{{ Input::old('address1') }}" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -72,13 +72,13 @@
                         <div class="form-group">
                             <label class="control-label col-md-3">City *</label>
                             <div class="col-md-3">
-                                <input name="city" class="form-control" value="{{ Input::old('city') }}" minlength="3" required>
+                                <input name="city" class="form-control" value="{{ Input::old('city') }}" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">State/Province/Region *</label>
                             <div class="col-md-3">
-                                <input type="text" name="state" class="form-control" value="{{ Input::old('state') }}" minlength="3" required>
+                                <input type="text" name="state" class="form-control" value="{{ Input::old('state') }}" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -90,7 +90,7 @@
                         <div class="form-group">
                             <label class="control-label col-md-3">Country</label>
                             <div class="col-md-3">
-                                @include('countries._select', ['name' => 'country_id', 'selectedOption' => Input::old('country_id')])
+                                @include('countries._select', ['name' => 'country_id', 'required' => TRUE, 'default' => Input::old('country_id')])
                             </div>
                         </div>
                         <br>

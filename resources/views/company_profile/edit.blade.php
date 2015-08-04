@@ -66,7 +66,7 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Country</label>
                 <div class="col-sm-3">
-                    @include('countries._select', ['name' => 'address[country_id]', 'selectedOption' => Input::old('address.country_id', $address->country_id)])
+                    @include('countries._select', ['name' => 'address[country_id]', 'required' => TRUE, 'default' => Input::old('address.country_id', $address->country_id)])
                 </div>
             </div>
             <div class="clear hr-line-dashed"></div>

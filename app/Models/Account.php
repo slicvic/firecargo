@@ -21,16 +21,7 @@ class Account extends Base {
      * @var array
      */
     public static $rules = [
-        'shipper' => [
-            'name' => 'required|min:3|alpha_spaces',
-            'email' => 'email'
-        ],
-        'customer' => [
-            'name' => 'required|min:3|alpha_spaces',
-            'firstname' => 'required|min:3|alpha_spaces',
-            'lastname' => 'required|min:3|alpha_spaces',
-            'email' => 'email'
-        ]
+        'name' => 'required|min:3|alpha_spaces'
     ];
 
     /**

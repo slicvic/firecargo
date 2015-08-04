@@ -109,7 +109,14 @@ Route::post('shipment/store', 'ShipmentsController@postStore');
 Route::get('shipment/{id}/packages', 'PackagesController@getShipmentPackages');
 
 // User Profile
-Route::controller('user', 'UserProfileController');
+Route::get('logout', 'UserProfileController@getLogout');
+Route::get('user/profile', 'UserProfileController@getProfile');
+Route::get('user/edit', 'UserProfileController@getEdit');
+Route::post('user/profile', 'UserProfileController@postProfile');
+Route::post('customer/profile', 'UserProfileController@postCustomerProfile');
+Route::get('user/password', 'UserProfileController@getPassword');
+Route::post('user/password', 'UserProfileController@postPassword');
+Route::post('user/photo', 'UserProfileController@postPhoto');
 
 // Company Profile
 Route::controller('company', 'CompanyProfileController');
@@ -126,7 +133,6 @@ Route::controller('dashboard', 'DashboardController');
 // Auth
 Route::get('login', 'AuthController@getLogin');
 Route::post('login', 'AuthController@postLogin');
-Route::get('logout', 'UserProfileController@getLogout');
 
 // Frontend
 Route::get('register', 'AuthController@getRegister');

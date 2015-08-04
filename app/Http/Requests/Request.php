@@ -8,6 +8,16 @@ use App\Session\Flash;
 abstract class Request extends FormRequest {
 
     /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return TRUE;
+    }
+
+    /**
      * The input keys that should not be flashed on redirect.
      *
      * @var array

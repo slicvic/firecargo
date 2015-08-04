@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Account;
 use App\Models\AccountType;
 use App\Models\Address;
+use App\Http\Requests\CustomerAccountFormRequest;
 
 /**
  * CustomerAccountsController
@@ -61,15 +62,19 @@ class CustomerAccountsController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postStore(Request $request)
+    public function postStore(CustomerAccountFormRequest $request)
     {
-        $input = $request->only('account', 'address');
-
-        // Validate input
-        $this->validate($input['account'], Account::$rules['customer']);
+        $input = $request->all();
 
         // Create account
-        $account = new Account($input['account']);
+        $account = new Account;
+        $account->name = $input['name'];
+        $account->firstname = $input['firstname'];
+        $account->lastname = $input['lastname'];
+        $account->email = $input['email'];
+        $account->phone = $input['phone'];
+        $account->fax = $input['fax'];
+        $account->mobile_phone = $input['mobile_phone'];
         $account->type_id = AccountType::CUSTOMER;
 
         if ( ! $account->save())
@@ -78,7 +83,14 @@ class CustomerAccountsController extends BaseAuthController {
         }
 
         // Create address
-        $account->address()->save(new Address($input['address']));
+        $address = new Address;
+        $address->address1 = $input['address1'];
+        $address->address2 = $input['address2'];
+        $address->city = $input['city'];
+        $address->state = $input['state'];
+        $address->postal_code = $input['postal_code'];
+        $address->country_id = $input['country_id'];
+        $account->address()->save($address);
 
         return $this->redirectWithSuccess('customers', 'Customer created.');
     }
@@ -106,26 +118,31 @@ class CustomerAccountsController extends BaseAuthController {
      * @param  int      $id
      * @return Redirector
      */
-    public function postUpdate(Request $request, $id)
+    public function postUpdate(CustomerAccountFormRequest $request, $id)
     {
-        $input = $request->only('account', 'address');
-
-        // Validate input
-        $this->validate($input['account'], Account::$rules['customer']);
+        $input = $request->all();
 
         // Update account
         $account = Account::findMineOrFail($id);
-        $account->update($input['account']);
+        $account->name = $input['name'];
+        $account->firstname = $input['firstname'];
+        $account->lastname = $input['lastname'];
+        $account->email = $input['email'];
+        $account->phone = $input['phone'];
+        $account->fax = $input['fax'];
+        $account->mobile_phone = $input['mobile_phone'];
+        $account->save();
 
         // Update address
-        if ($account->address)
-        {
-            $account->address->update($input['address']);
-        }
-        else
-        {
-            $account->address()->save(new Address($input['address']));
-        }
+        $address = ($account->address) ?: new Address;
+        $address->address1 = $input['address1'];
+        $address->address2 = $input['address2'];
+        $address->city = $input['city'];
+        $address->state = $input['state'];
+        $address->postal_code = $input['postal_code'];
+        $address->country_id = $input['country_id'];
+        $address->account()->associate($account);
+        $address->save();
 
         return $this->redirectBackWithSuccess('Customer updated.');
     }

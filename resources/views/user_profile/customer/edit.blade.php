@@ -1,7 +1,7 @@
 @extends('user_profile.layout')
 
 @section('user_profile_content')
-<form action="/user/profile" method="post" class="form-horizontal">
+<form action="/customer/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="row">
         <div class="col-md-12">
@@ -12,31 +12,31 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">First Name</label>
                         <div class="col-sm-5">
-                            <input required type="text" name="account[firstname]" class="form-control" value="{{ Input::old('account.firstname', $account->firstname) }}">
+                            <input required type="text" name="firstname" class="form-control" required value="{{ Input::old('firstname', $account->firstname) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Last Name</label>
                         <div class="col-sm-5">
-                            <input required type="text" name="account[lastname]" class="form-control" value="{{ Input::old('account.lastname', $account->lastname) }}">
+                            <input required type="text" name="lastname" class="form-control" required value="{{ Input::old('lastname', $account->lastname) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Email</label>
                         <div class="col-sm-5">
-                            <input required type="email" name="account[email]" class="form-control" value="{{ Input::old('account.email', $account->email) }}">
+                            <input required type="email" name="email" class="form-control" required value="{{ Input::old('email', $account->email) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Phone</label>
                         <div class="col-sm-4">
-                            <input type="text" name="account[phone]" placeholder="Phone" class="form-control" value="{{ Input::old('account.phone', $account->phone) }}">
+                            <input type="text" name="phone" placeholder="Phone" required class="form-control" value="{{ Input::old('phone', $account->phone) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Mobile</label>
                         <div class="col-sm-4">
-                            <input type="text" name="account[mobile_phone]" placeholder="Mobile" class="form-control" value="{{ Input::old('account.mobile_phone', $account->mobile_phone) }}">
+                            <input type="text" name="mobile_phone" placeholder="Mobile" class="form-control" value="{{ Input::old('mobile_phone', $account->mobile_phone) }}">
                         </div>
                     </div>
                     <h2>Address</h2>
@@ -44,37 +44,37 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Address 1</label>
                         <div class="col-sm-5">
-                            <input type="text" name="address[address1]" placeholder="Address 1" class="form-control" value="{{ Input::old('address.address1', $address->address1) }}">
+                            <input type="text" name="address1" placeholder="Address 1" required class="form-control" value="{{ Input::old('address1', $address->address1) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Address 2</label>
                         <div class="col-sm-5">
-                            <input type="text" name="address[address2]" placeholder="Address 2" class="form-control" value="{{ Input::old('address.address2', $address->address2) }}">
+                            <input type="text" name="address2" placeholder="Address 2" class="form-control" value="{{ Input::old('address2', $address->address2) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">City</label>
                         <div class="col-sm-5">
-                            <input type="text" name="address[city]" placeholder="City" class="form-control" value="{{ Input::old('address.city', $address->city) }}">
+                            <input type="text" name="city" placeholder="City" class="form-control" required value="{{ Input::old('city', $address->city) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">State</label>
                         <div class="col-sm-5">
-                            <input type="text" name="address[state]" placeholder="State" class="form-control" value="{{ Input::old('address.state', $address->state) }}">
+                            <input type="text" name="state" placeholder="State" class="form-control" required value="{{ Input::old('state', $address->state) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Postal Code</label>
                         <div class="col-sm-3">
-                            <input type="text" name="address[postal_code]" placeholder="Postal Code" class="form-control" value="{{ Input::old('address.postal_code', $address->postal_code) }}">
+                            <input type="text" name="postal_code" placeholder="Postal Code" class="form-control" value="{{ Input::old('postal_code', $address->postal_code) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Country</label>
                         <div class="col-sm-3">
-                            @include('countries._select', ['name' => 'address[country_id]', 'selectedOption' => Input::old('address.country_id', $address->country_id)])
+                            @include('countries._select', ['name' => 'country_id', 'required' => TRUE, 'default' => Input::old('country_id', $address->country_id)])
                         </div>
                     </div>
                     <h2>Preferences</h2>
@@ -83,7 +83,7 @@
                         <label class="col-md-2 control-label">Auto-ship Packages?</label>
                         <div class="col-md-10">
                             <label class="checkbox-inline">
-                                <input type="checkbox" class="icheck-green" name="account[autoship]" value="1"{{ Input::old('account.autoship', $account->autoship) ? ' checked' : '' }}> Yes
+                                <input type="checkbox" class="icheck-green" name="autoship" value="1"{{ Input::old('autoship', $account->autoship) ? ' checked' : '' }}> Yes
                                 @include('user_profile.customer._autoship_alert')
                             </label>
                         </div>
