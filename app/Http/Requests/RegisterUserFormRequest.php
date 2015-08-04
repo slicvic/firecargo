@@ -22,7 +22,7 @@ class RegisterUserFormRequest extends Request {
 	public function rules()
 	{
 		return [
-            'af_id' => 'required|exists:companies,affiliate_id',
+            'affiliate_id' => 'required|exists:companies,affiliate_id',
             'firstname' => 'required|min:3|alpha_spaces',
             'lastname' => 'required|min:3|alpha_spaces',
             'email' => 'required|email|unique:users,email',

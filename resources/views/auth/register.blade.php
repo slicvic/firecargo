@@ -15,7 +15,7 @@
                 <div class="col-md-12">
                     <form action="/register" method="post" class="form-horizontal">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="af_id" value="{{ Request::input('af_id') }}">
+                        <input type="hidden" name="affiliate_id" value="{{ Request::input('rid') }}">
                         <h3>Personal Information</h3>
                         <hr>
                         <div class="form-group">
