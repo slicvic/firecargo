@@ -74,6 +74,10 @@ return [
 	"url"                  => "The :attribute format is invalid.",
 	"timezone"             => "The :attribute must be a valid zone.",
 
+	'alpha_spaces'     => 'The :attribute may only contain letters and spaces.',
+    'alpha_num_spaces' => 'The :attribute may only contain letters, numbers, and spaces.',
+    'phone'            => 'The :attribute number may only contain numbers and + - ( )',
+
 	/*
 	|--------------------------------------------------------------------------
 	| Custom Validation Language Lines

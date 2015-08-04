@@ -85,7 +85,7 @@ class AuthController extends BaseController {
     {
         $input = $request->all();
 
-        $company = Company::where('referer_id', $input['ref_id'])->first();
+        $company = Company::where('affiliate_id', $input['af_id'])->first();
 
         // Create user
         $user = new User;

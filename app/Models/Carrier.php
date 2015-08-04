@@ -18,7 +18,7 @@ class Carrier extends Base {
      * @var array
      */
     public static $rules = [
-        'name' => ['required', 'min:3', 'regex:/(^[A-Za-z0-9() ]+$)+/']
+        'name' => 'required|min:3|alpha_spaces'
     ];
 
     /**

@@ -113,8 +113,8 @@ class Upload {
      *
      * @see    Upload::$resources
      *
-     * @param  string  $key
-     * @param  int     $entityId
+     * @param  string  $key       The resource key e.g. "user.profile_photo"
+     * @param  string  $filename  A filename e.g. "sm.png"
      * @return string
      */
     private static function resourcePath($key, $entityId)
@@ -132,9 +132,9 @@ class Upload {
      *
      * @see    Upload::$resources
      *
-     * @param  string  $key
-     * @param  string  $filename
-     * @param  int     $entityId
+     * @param  string  $key       The resource key e.g. "user.profile_photo"
+     * @param  string  $filename  A filename e.g. "sm.png"
+     * @param  int     $entityId  The entity ID to which the resource is attached.
      * @return string
      */
     public static function resourceUrl($key, $filename, $entityId)
@@ -153,9 +153,9 @@ class Upload {
      *
      * @see    Upload::$resources
      *
-     * @param  string  $key
-     * @param  string  $filename
-     * @param  int     $entityId
+     * @param  string  $key       The resource key e.g. "user.profile_photo"
+     * @param  string  $filename  A filename e.g. "sm.png"
+     * @param  int     $entityId  A user or company ID.
      * @return bool
      */
     public static function resourceExists($key, $filename, $entityId)

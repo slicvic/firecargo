@@ -22,15 +22,15 @@ class RegisterUserFormRequest extends Request {
 	public function rules()
 	{
 		return [
-            'ref_id' => 'required|exists:companies,referer_id',
-            'firstname' => 'required|min:3',
-            'lastname' => 'required|min:3',
+            'af_id' => 'required|exists:companies,affiliate_id',
+            'firstname' => 'required|min:3|alpha_spaces',
+            'lastname' => 'required|min:3|alpha_spaces',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'required|min:7',
+            'phone' => 'required|min:7|phone',
             'password' => 'required|between:8,20|confirmed',
             'address1' => 'required|min:3',
-            'city' => 'required|min:3',
-            'state' => 'required|min:3',
+            'city' => 'required|min:3|alpha_spaces',
+            'state' => 'required|min:3|alpha_spaces',
             'country_id' => 'required',
             'terms_and_conditions' => 'accepted',
 		];

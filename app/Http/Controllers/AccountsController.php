@@ -43,11 +43,11 @@ class AccountsController extends BaseAuthController {
             return response()->json([]);
         }
 
-        // Determine account type ID
-        $typeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CUSTOMER;
+        // Determine account type
+        $accountTypeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CUSTOMER;
 
         // Search
-        $accounts = Account::autocompleteSearch($input['term'], $typeId)
+        $accounts = Account::autocompleteSearch($input['term'], $accountTypeId)
             ->mine()
             ->limit(25)
             ->get();
