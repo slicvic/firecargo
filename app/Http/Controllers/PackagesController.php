@@ -48,7 +48,7 @@ class PackagesController extends BaseAuthController {
 
         $packages = Package::search($criteria, $params['sort'], $params['order'], $params['limit']);
 
-        return view('packages.index', [
+        return view('admin.packages.index', [
             'packages' => $packages,
             'params' => $params,
             'statuses' => [
@@ -75,7 +75,7 @@ class PackagesController extends BaseAuthController {
             ->orderBy('shipment_id', 'ASC')
             ->get();
 
-        return view('packages._warehouse_packages', ['packages' => $packages]);
+        return view('admin.packages._warehouse_packages', ['packages' => $packages]);
     }
 
     /**
@@ -93,7 +93,7 @@ class PackagesController extends BaseAuthController {
             ->where(['shipment_id' => $shipmentId])
             ->get();
 
-        return view('packages._shipment_packages', ['packages' => $packages]);
+        return view('admin.packages._shipment_packages', ['packages' => $packages]);
     }
 
     /**
@@ -108,7 +108,7 @@ class PackagesController extends BaseAuthController {
     {
         if ($this->user->isCustomer())
         {
-            $view = 'packages._customer_package_details';
+            $view = 'admin.packages._customer_package_details';
 
             $package = Package::where([
                 'id' => $id,
@@ -117,7 +117,7 @@ class PackagesController extends BaseAuthController {
         }
         else
         {
-            $view = 'packages._package_details';
+            $view = 'admin.packages._package_details';
 
             $package = Package::findMine($id);
         }

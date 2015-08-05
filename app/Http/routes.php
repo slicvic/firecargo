@@ -20,6 +20,18 @@
 // Accounts
 Route::get('accounts/autocomplete-search', 'AccountsController@getAutocompleteSearch');
 
+Route::get('accounts/customers', 'CustomerAccountsController@getIndex');
+Route::get('accounts/customer/{id}/edit', 'CustomerAccountsController@getEdit');
+Route::post('accounts/customer/{id}/update', 'CustomerAccountsController@postUpdate');
+Route::get('accounts/customer/create', 'CustomerAccountsController@getCreate');
+Route::post('accounts/customer/store', 'CustomerAccountsController@postStore');
+
+Route::get('accounts/shippers', 'ShipperAccountsController@getIndex');
+Route::get('accounts/shipper/{id}/edit', 'ShipperAccountsController@getEdit');
+Route::post('accounts/shipper/{id}/update', 'ShipperAccountsController@postUpdate');
+Route::get('accounts/shipper/create', 'ShipperAccountsController@getCreate');
+Route::post('accounts/shipper/store', 'ShipperAccountsController@postStore');
+
 // Carriers
 Route::get('carriers', 'CarriersController@getIndex');
 Route::get('carrier/{id}/edit', 'CarriersController@getEdit');
@@ -38,36 +50,8 @@ Route::post('package-type/store', 'PackageTypesController@postStore');
 Route::get('package-type/{id}/delete', 'PackageTypesController@getDelete');
 Route::get('package-types/editable-options', 'PackageTypesController@getEditableOptions');
 
-// Sites
-Route::get('sites', 'SitesController@getIndex');
-Route::get('site/{id}/edit', 'SitesController@getEdit');
-Route::post('site/{id}/update', 'SitesController@postUpdate');
-Route::get('site/create', 'SitesController@getCreate');
-Route::post('site/store', 'SitesController@postStore');
-
 // Roles
 Route::get('roles', 'RolesController@getIndex');
-
-// Sites
-Route::get('customers', 'CustomerAccountsController@getIndex');
-Route::get('customer/{id}/edit', 'CustomerAccountsController@getEdit');
-Route::post('customer/{id}/update', 'CustomerAccountsController@postUpdate');
-Route::get('customer/create', 'CustomerAccountsController@getCreate');
-Route::post('customer/store', 'CustomerAccountsController@postStore');
-
-// Sites
-Route::get('shippers', 'ShipperAccountsController@getIndex');
-Route::get('shipper/{id}/edit', 'ShipperAccountsController@getEdit');
-Route::post('shipper/{id}/update', 'ShipperAccountsController@postUpdate');
-Route::get('shipper/create', 'ShipperAccountsController@getCreate');
-Route::post('shipper/store', 'ShipperAccountsController@postStore');
-
-// Companies
-Route::get('companies', 'CompaniesController@getIndex');
-Route::get('company/{id}/edit', 'CompaniesController@getEdit');
-Route::post('company/{id}/update', 'CompaniesController@postUpdate');
-Route::get('company/create', 'CompaniesController@getCreate');
-Route::post('company/store', 'CompaniesController@postStore');
 
 // Companies
 Route::get('companies', 'CompaniesController@getIndex');

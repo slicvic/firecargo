@@ -35,7 +35,7 @@ class CompaniesController extends BaseAuthController {
     {
         $companies = Company::all();
 
-        return view('companies.index', ['companies' => $companies]);
+        return view('admin.companies.index', ['companies' => $companies]);
     }
 
     /**
@@ -45,7 +45,7 @@ class CompaniesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('companies.edit', ['company' => new Company]);
+        return view('admin.companies.create', ['company' => new Company]);
     }
 
     /**
@@ -85,7 +85,7 @@ class CompaniesController extends BaseAuthController {
     {
         $company = Company::findOrFail($id);
 
-        return view('companies.edit', ['company' => $company]);
+        return view('admin.companies.edit', ['company' => $company]);
     }
 
     /**

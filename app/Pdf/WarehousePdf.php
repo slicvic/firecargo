@@ -32,7 +32,7 @@ class WarehousePdf {
 
         $pdf->AddPage();
 
-        $html = view('pdfs/warehouse/receipt', [
+        $html = view('admin/pdfs/warehouse/receipt', [
             'warehouse' => $warehouse,
             'barcodeBase64' => $barcodeBase64
         ])->render();
@@ -64,7 +64,7 @@ class WarehousePdf {
         // White out the header border
         $pdf->SetHeaderData('', 0, '', '', array(0, 0, 0), array(255, 255, 255));
 
-        $html = view('pdfs/warehouse/label', [
+        $html = view('admin/pdfs/warehouse/label', [
             'warehouse' => $warehouse,
             'packages' => $packages,
             'totalPackages' => $totalPackages,

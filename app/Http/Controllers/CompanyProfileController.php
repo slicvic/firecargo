@@ -42,7 +42,7 @@ class CompanyProfileController extends BaseAuthController {
      */
     public function getProfile()
     {
-        return view('company_profile.show', [
+        return view('admin.company_profile.show', [
             'company' => $this->user->company,
         ]);
     }
@@ -52,9 +52,9 @@ class CompanyProfileController extends BaseAuthController {
      *
      * @return Response
      */
-    public function getEditProfile()
+    public function getEdit()
     {
-        return view('company_profile.edit', [
+        return view('admin.company_profile.edit', [
             'company' => $this->user->company,
             'address' => $this->user->company->address ?: new Address
         ]);

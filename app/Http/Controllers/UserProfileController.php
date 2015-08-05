@@ -43,11 +43,11 @@ class UserProfileController extends BaseAuthController {
     {
         if ($this->user->isCustomer())
         {
-            return view('user_profile.customer.show', ['user' => $this->user]);
+            return view('admin.user_profile.customer.show', ['user' => $this->user]);
         }
         else
         {
-            return view('user_profile.show', ['user' => $this->user]);
+            return view('admin.user_profile.show', ['user' => $this->user]);
         }
     }
 
@@ -60,14 +60,14 @@ class UserProfileController extends BaseAuthController {
     {
         if ($this->user->isCustomer())
         {
-            return view('user_profile.customer.edit', [
+            return view('admin.user_profile.customer.edit', [
                 'account' => $this->user->account,
                 'address' => $this->user->account->address ?: new Address
             ]);
         }
         else
         {
-            return view('user_profile.edit', [
+            return view('admin.user_profile.edit', [
                 'user' => $this->user
             ]);
         }
@@ -142,7 +142,7 @@ class UserProfileController extends BaseAuthController {
      */
     public function getPassword()
     {
-        return view('user_profile.password');
+        return view('admin.user_profile.password');
     }
 
     /**

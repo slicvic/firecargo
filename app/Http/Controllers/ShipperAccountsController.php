@@ -40,7 +40,7 @@ class ShipperAccountsController extends BaseAuthController {
     {
         $accounts = Account::shippers()->mine()->get();
 
-        return view('accounts.shipper.index', ['accounts' => $accounts]);
+        return view('admin.accounts.shippers.index', ['accounts' => $accounts]);
     }
 
     /**
@@ -50,7 +50,7 @@ class ShipperAccountsController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('accounts.shipper.edit', [
+        return view('admin.accounts.shippers.create', [
             'account' => new Account,
             'address' => new Address
         ]);
@@ -86,7 +86,7 @@ class ShipperAccountsController extends BaseAuthController {
         $address->country_id = $input['country_id'];
         $account->address()->save($address);
 
-        return $this->redirectWithSuccess('shippers', 'Shipper created.');
+        return $this->redirectWithSuccess('accounts/shippers', 'Shipper created.');
     }
 
     /**
@@ -99,7 +99,7 @@ class ShipperAccountsController extends BaseAuthController {
     {
         $account = Account::findMineOrFail($id);
 
-        return view('accounts.shipper.edit', [
+        return view('admin.accounts.shippers.edit', [
             'account' => $account,
             'address' => $account->address ?: new Address
         ]);

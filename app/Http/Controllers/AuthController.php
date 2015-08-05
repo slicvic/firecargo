@@ -31,7 +31,7 @@ class AuthController extends BaseController {
      */
     public function getLogin()
     {
-        return view('auth.login');
+        return view('site.login');
     }
 
     /**
@@ -72,7 +72,7 @@ class AuthController extends BaseController {
      */
     public function getRegister()
     {
-        return view('auth.register');
+        return view('site.register');
     }
 
     /**
@@ -126,7 +126,7 @@ class AuthController extends BaseController {
      */
     public function getForgotPassword()
     {
-        return view('auth.forgot_password');
+        return view('site.forgot_password');
     }
 
     /**
@@ -168,7 +168,7 @@ class AuthController extends BaseController {
      */
     public function getResetPassword()
     {
-        return view('auth.reset_password');
+        return view('site.reset_password');
     }
 
     /**

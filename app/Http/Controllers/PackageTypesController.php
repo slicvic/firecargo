@@ -36,7 +36,7 @@ class PackageTypesController extends BaseAuthController {
     {
         $types = PackageType::all();
 
-        return view('package_types.index', ['types' => $types]);
+        return view('admin.package_types.index', ['types' => $types]);
     }
 
     /**
@@ -46,7 +46,7 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('package_types.edit', ['type' => new PackageType]);
+        return view('admin.package_types.create', ['type' => new PackageType]);
     }
 
     /**
@@ -78,7 +78,7 @@ class PackageTypesController extends BaseAuthController {
     {
         $type = PackageType::findOrFail($id);
 
-        return view('package_types.edit', ['type' => $type]);
+        return view('admin.package_types.edit', ['type' => $type]);
     }
 
     /**

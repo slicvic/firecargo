@@ -36,6 +36,6 @@ class RolesController extends BaseAuthController {
     {
         $roles = Role::all();
 
-        return view('roles.index', ['roles' => $roles]);
+        return view('admin.roles.index', ['roles' => $roles]);
     }
 }

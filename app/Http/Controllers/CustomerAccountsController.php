@@ -40,7 +40,7 @@ class CustomerAccountsController extends BaseAuthController {
     {
         $accounts = Account::customers()->mine()->get();
 
-        return view('accounts.customer.index', ['accounts' => $accounts]);
+        return view('admin.accounts.customers.index', ['accounts' => $accounts]);
     }
 
     /**
@@ -50,7 +50,7 @@ class CustomerAccountsController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('accounts.customer.edit', [
+        return view('admin.accounts.customers.create', [
             'account' => new Account,
             'address' => new Address
         ]);
@@ -92,7 +92,7 @@ class CustomerAccountsController extends BaseAuthController {
         $address->country_id = $input['country_id'];
         $account->address()->save($address);
 
-        return $this->redirectWithSuccess('customers', 'Customer created.');
+        return $this->redirectWithSuccess('accounts/customers', 'Customer created.');
     }
 
     /**
@@ -105,7 +105,7 @@ class CustomerAccountsController extends BaseAuthController {
     {
         $account = Account::findMineOrFail($id);
 
-        return view('accounts.customer.edit', [
+        return view('admin.accounts.customers.edit', [
             'account' => $account,
             'address' => $account->address ?: new Address
         ]);

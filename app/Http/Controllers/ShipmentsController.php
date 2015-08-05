@@ -51,7 +51,7 @@ class ShipmentsController extends BaseAuthController {
 
         $shipments = Shipment::search($criteria, $params['sort'], $params['order'], $params['limit']);
 
-        return view('shipments.index', [
+        return view('admin.shipments.index', [
             'shipments' => $shipments,
             'params' => $params
         ]);
@@ -68,7 +68,7 @@ class ShipmentsController extends BaseAuthController {
     {
         $shipment = Shipment::findMineOrFail($id);
 
-        return view('shipments.show', ['shipment' => $shipment]);
+        return view('admin.shipments.show', ['shipment' => $shipment]);
     }
 
     /**
@@ -85,7 +85,7 @@ class ShipmentsController extends BaseAuthController {
             ->orderBy('id', 'ASC')
             ->get();
 
-        return view('shipments.edit', [
+        return view('admin.shipments.form', [
             'shipment' => new Shipment,
             'packages' => $unprocessed
         ]);
@@ -132,7 +132,7 @@ class ShipmentsController extends BaseAuthController {
             ->orderBy('id', 'ASC')
             ->get();
 
-        return view('shipments.edit', [
+        return view('admin.shipments.form', [
             'shipment' =>  $shipment,
             'packages' => $assigned->merge($unprocessed)
         ]);

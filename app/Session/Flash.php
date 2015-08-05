@@ -130,7 +130,7 @@ class Flash {
      */
     public function view($view, $message)
     {
-        return view("flash_messages.{$view}", [
+        return view("shared.flash.{$view}", [
             'message' => is_string($message) ? $message : self::tidyMessage($message)
         ])->render();
     }

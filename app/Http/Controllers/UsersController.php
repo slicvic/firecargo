@@ -38,7 +38,7 @@ class UsersController extends BaseAuthController {
     {
         $users = User::with('company')->get();
 
-        return view('users.index', ['users' => $users]);
+        return view('admin.users.index', ['users' => $users]);
     }
 
     /**
@@ -48,7 +48,7 @@ class UsersController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return view('users.edit', ['user' => new User]);
+        return view('admin.users.create', ['user' => new User]);
     }
 
     /**
@@ -77,7 +77,7 @@ class UsersController extends BaseAuthController {
     {
         $user = User::findOrFail($id);
 
-        return view('users.edit', ['user' => $user]);
+        return view('admin.users.edit', ['user' => $user]);
     }
 
     /**

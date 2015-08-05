@@ -58,7 +58,7 @@ class WarehousesController extends BaseAuthController {
 
         $warehouses = Warehouse::search($criteria, $params['sort'], $params['order'], $params['limit']);
 
-        return view('warehouses.index', [
+        return view('admin.warehouses.index', [
             'warehouses' => $warehouses,
             'params' => $params
         ]);
@@ -75,7 +75,7 @@ class WarehousesController extends BaseAuthController {
     {
         $warehouse = Warehouse::findMineOrFail($id);
 
-        return view('warehouses.show', ['warehouse' => $warehouse]);
+        return view('admin.warehouses.show', ['warehouse' => $warehouse]);
     }
 
     /**
@@ -85,7 +85,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getCreate()
     {
-        return $this->getEditForm(new Warehouse);
+        return $this->renderForm(new Warehouse);
     }
 
     /**
@@ -119,7 +119,7 @@ class WarehousesController extends BaseAuthController {
     {
         $warehouse = Warehouse::findMineOrFail($id);
 
-        return $this->getEditForm($warehouse);
+        return $this->renderForm($warehouse);
     }
 
     /**
@@ -194,9 +194,9 @@ class WarehousesController extends BaseAuthController {
      * @param  Warehouse  $warehouse
      * @return View
      */
-    private function getEditForm(Warehouse $warehouse)
+    private function renderForm(Warehouse $warehouse)
     {
-        return view('warehouses.edit', [
+        return view('admin.warehouses.form', [
             'warehouse'       => $warehouse,
             'packageTypes'    => PackageType::orderBy('name', 'ASC')->get()
         ]);
