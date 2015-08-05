@@ -4,7 +4,7 @@
 <div class="passwordBox animated fadeInDown">
     <div class="row">
         <div class="col-md-12">
-            <h1 class="text-center">{!! env('APP_TEXT_LOGO') !!}</h1>
+            <h1 class="text-center">{!! env('APP_HTML_LOGO') !!}</h1>
             <br>
             {!! Flash::getBootstrap() !!}
             @yield('narrow_content')

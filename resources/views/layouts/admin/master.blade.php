@@ -151,7 +151,7 @@
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li>
-                            <span class="m-r-sm text-muted welcome-message">Howdy {{ $currentUser->present()->fullname() }}! Welcome to {{ env('APP_NAME') }}!</span>
+                            <span class="m-r-sm text-muted welcome-message">Hey {{ $currentUser->firstname }}! Welcome to {{ env('APP_NAME') }}!</span>
                         </li>
                         <li>
                             <a href="/logout">
@@ -166,7 +166,7 @@
 
             <div class="footer">
                 <div>
-                    <strong>Copyright</strong> {{ env('APP_NAME') }} &copy; 2014-{{ date('Y') }}
+                    <strong>Copyright</strong> &copy; {{ date('Y') }}, {{ env('APP_COMPANY_NAME') }}
                 </div>
             </div>
         </div>
