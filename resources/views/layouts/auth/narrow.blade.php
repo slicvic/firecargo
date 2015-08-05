@@ -4,14 +4,13 @@
 <div class="passwordBox animated fadeInDown">
     <div class="row">
         <div class="col-md-12">
-            <h1 class="text-center" style="margin-bottom:30px;">{!! env('APP_NAME_HTML') !!}</h1>
+            <h1 class="text-center">{!! env('APP_TEXT_LOGO') !!}</h1>
+            <br>
             {!! Flash::getBootstrap() !!}
             @yield('narrow_content')
         </div>
     </div>
-    <hr/>
-    <div class="row">
-        @include('layouts.auth._footer')
-    </div>
+    <br>
+    @include('layouts.auth._footer')
 </div>
 @stop

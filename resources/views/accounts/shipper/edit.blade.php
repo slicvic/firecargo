@@ -33,15 +33,15 @@
                     <h3>Address</h3>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Address 1</label>
+                        <label class="control-label col-sm-2">Address</label>
                         <div class="col-sm-5">
-                            <input type="text" name="address1" placeholder="Address 1" class="form-control" value="{{ Input::old('address1', $address->address1) }}">
+                            <input type="text" name="address1" placeholder="Address Line 1" class="form-control" value="{{ Input::old('address1', $address->address1) }}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Address 2</label>
+                        <label class="control-label col-sm-2"></label>
                         <div class="col-sm-5">
-                            <input type="text" name="address2" placeholder="Address 2" placeholder="Company" class="form-control" value="{{ Input::old('address2', $address->address2) }}">
+                            <input type="text" name="address2" placeholder="Address Line 2" placeholder="Company" class="form-control" value="{{ Input::old('address2', $address->address2) }}">
                         </div>
                     </div>
                     <div class="form-group">

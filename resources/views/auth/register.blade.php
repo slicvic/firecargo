@@ -1,39 +1,27 @@
-@extends('layouts.auth.master')
+@extends('layouts.auth.wide')
 
-@section('content')
+@section('wide_content')
 <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-        <h1 class="text-center">{!! env('APP_NAME_HTML') !!}</h1>
-        {!! Flash::getBootstrap() !!}
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-12">
         <div class="ibox-content">
             <h1 class="font-bold text-center">Register</h1>
             <div class="row">
                 <div class="col-md-12">
                     <form action="/register" method="post" class="form-horizontal">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="affiliate_id" value="{{ Request::input('rid') }}">
-                        <h3>Personal Information</h3>
+                        <input type="hidden" name="referer_id" value="{{ Request::input('referer_id') }}">
+                        <h3>Contact Information</h3>
                         <hr>
                         <div class="form-group">
                             <label class="control-label col-md-3">First Name *</label>
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <input type="text" name="firstname" class="form-control" value="{{ Input::old('firstname') }}" minlength="3" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Last Name *</label>
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <input type="text" name="lastname" class="form-control" value="{{ Input::old('lastname') }}" minlength="3" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3">Email *</label>
-                            <div class="col-md-6">
-                                <input type="email" name="email" class="form-control" value="{{ Input::old('email') }}" required>
                             </div>
                         </div>
                         <div class="form-group">
@@ -43,41 +31,56 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="control-label col-md-3">Mobile Phone</label>
+                            <div class="col-md-4">
+                                <input type="text" name="mobile_phone" class="form-control" value="{{ Input::old('mobile_phone') }}" minlength="7">
+                            </div>
+                        </div>
+                        <br>
+                        <h3>Login Information</h3>
+                        <hr>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Email *</label>
+                            <div class="col-md-7">
+                                <input type="email" name="email" class="form-control" value="{{ Input::old('email') }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label col-md-3">Password *</label>
                             <div class="col-md-4">
                                 <input id="password" type="password" name="password" class="form-control" value="{{ Input::old('password') }}" minlength="8" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">Confirm Password *</label>
+                            <label class="control-label col-md-3">Confirm <br> Password *</label>
                             <div class="col-md-4">
                                 <input type="password" name="password_confirmation" class="form-control" value="{{ Input::old('password_confirmation') }}" equalto="#password" required>
                             </div>
                         </div>
                         <br>
-                        <h3>Personal Information</h3>
+                        <h3>Delivery Address</h3>
                         <hr>
                         <div class="form-group">
                             <label class="control-label col-md-3">Address *</label>
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <input name="address1" class="form-control" value="{{ Input::old('address1') }}" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3"></label>
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <input name="address2" class="form-control" value="{{ Input::old('address2') }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">City *</label>
-                            <div class="col-md-3">
+                            <div class="col-md-5">
                                 <input name="city" class="form-control" value="{{ Input::old('city') }}" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-md-3">State/Province/Region *</label>
-                            <div class="col-md-3">
+                            <label class="control-label col-md-3">State *</label>
+                            <div class="col-md-5">
                                 <input type="text" name="state" class="form-control" value="{{ Input::old('state') }}" required>
                             </div>
                         </div>
@@ -89,7 +92,7 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Country</label>
-                            <div class="col-md-3">
+                            <div class="col-md-5">
                                 @include('countries._select', ['name' => 'country_id', 'required' => TRUE, 'default' => Input::old('country_id')])
                             </div>
                         </div>

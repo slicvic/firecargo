@@ -23,6 +23,7 @@ class UserFormRequest extends Request {
             'password' => 'required|between:8,20'
         ];
 
+echo '<pre>';var_dump($this);exit;
         if ($this->path() != 'user/store')
         {
             $rules['email'] .= ',' . $this->id;
