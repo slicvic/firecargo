@@ -1,7 +1,7 @@
 @extends('admin.company_profile.layout')
 
 @section('company_profile_content')
-<form action="/company/profile" method="post" class="form-horizontal">
+<form action="/company/profile/update" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="ibox">
         <div class="ibox-content">

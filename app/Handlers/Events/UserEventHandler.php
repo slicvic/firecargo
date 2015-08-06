@@ -6,7 +6,7 @@ use Auth;
 
 use App\Events\UserLoggedIn;
 use App\Events\UserRegistered;
-use App\Helpers\Mailer;
+use App\Helpers\Email;
 use App\Models\LogUserVisit;
 
 class UserEventHandler {
@@ -38,7 +38,7 @@ class UserEventHandler {
     public function onUserRegister(UserRegistered $event)
     {
         Auth::login($event->user);
-        Mailer::sendWelcome($event->user);
+        Email::welcome($event->user);
     }
 
     /**

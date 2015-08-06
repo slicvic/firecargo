@@ -166,6 +166,16 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
+     * Generates an account activation code for registration.
+     *
+     * @return string
+     */
+    public static function makeActivationCode()
+    {
+        return md5(md5(time()));
+    }
+
+    /**
      * Validates the given login credentials.
      *
      * @param  string  $email

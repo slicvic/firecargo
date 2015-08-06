@@ -15,7 +15,7 @@
                 <button type="button" id="edit-photo-btn" class="btn btn-block btn-link"><i class="fa fa-pencil"></i> Upload Photo</button>
                 <div class="list-group">
                     <a href="/user/profile" class="{{ Request::is('user/profile') ? 'active ' : '' }}list-group-item btn btn-block btn-success">My Profile</a>
-                    <a href="/user/edit-profile" class="{{ Request::is('user/edit-profile') ? 'active ' : '' }}list-group-item btn btn-block btn-success">Edit Profile</a>
+                    <a href="/user/profile/edit" class="{{ Request::is('user/edit-profile') ? 'active ' : '' }}list-group-item btn btn-block btn-success">Edit Profile</a>
                     <a href="/user/change-password" class="{{ Request::is('user/change-password') ? 'active ' : '' }}list-group-item btn btn-block btn-success">Change Password</a>
                 </div>
             </div>

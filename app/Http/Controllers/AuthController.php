@@ -15,7 +15,6 @@ use App\Models\Company;
 use Flash;
 use App\Events\UserLoggedIn;
 use App\Events\UserRegistered;
-use App\Helpers\Mailer;
 use App\Http\Requests\RegisterUserFormRequest;
 
 /**
@@ -30,8 +29,8 @@ class AuthController extends BaseController {
      */
     public function __construct()
     {
-        $rid = ( ! empty($_GET['rid'])) ? $_GET['rid'] : NULL;
-        $company = ($rid) ? Company::where('affiliate_id', $rid)->first() : NULL;
+        $affiliateId = ( ! empty($_GET['af_id'])) ? $_GET['af_id'] : NULL;
+        $company = ($affiliateId) ? Company::where('affiliate_id', $affiliateId)->first() : NULL;
         $queryString = ( ! empty($_SERVER['QUERY_STRING'])) ? '?' . $_SERVER['QUERY_STRING'] : '';
 
         View::share('company', $company);
@@ -83,7 +82,7 @@ class AuthController extends BaseController {
 
         if ( ! $user)
         {
-            return $this->redirectBackWithError('These credentials do not match our records.');
+            return $this->redirectBackWithError('The email or password you entered is not valid.');
         }
 
         Event::fire(new UserLoggedIn($user));
@@ -111,7 +110,7 @@ class AuthController extends BaseController {
     {
         $input = $request->all();
 
-        $company = Company::where('affiliate_id', $input['referer_id'])->first();
+        $company = Company::where('affiliate_id', $input['affiliate_id'])->first();
 
         // Create user
         $user = new User;
@@ -230,5 +229,80 @@ class AuthController extends BaseController {
         $user->save();
 
         return $this->redirectWithSuccess('login', 'Your password was reset successfully.');
+    }
+
+    /**
+     * Activates a customer account.
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function getActivateAccount(Request $request)
+    {
+        $input = $request->only('email', 'activation_code');
+
+        $validator = Validator::make($input, [
+            'email'           => 'required|email',
+            'activation_code' => 'required'
+        ]);
+
+        if ($validator->fails())
+        {
+            Flash::error($validator);
+            return view('site.activate');
+        }
+
+        $user = User::where(['email' => $input['email'], 'activation_code' => $input['activation_code']])->first();
+
+        if ( ! $user)
+        {
+            Flash::error('Account not found.');
+            return view('site.activate');
+        }
+
+        $user->active = TRUE;
+        $user->save();
+
+        Auth::login($user);
+
+        $this->redirectWithSuccess('dashboard', 'Your account was successfully activated.');
+    }
+
+    /**
+     * Activates a customer account.
+     *
+     * @param  Request $request
+     * @return Response
+     */
+    public function getResendActivationCode(Request $request)
+    {
+        $input = $request->only('email');
+
+        $validator = Validator::make($input, [
+            'email'           => 'required|email',
+        ]);
+
+        if ($validator->fails())
+        {
+            Flash::error($validator);
+            return view('site.activate');
+        }
+
+        $user = User::where(['email' => $input['email']])->first();
+
+        if ( ! $user)
+        {
+            Flash::error('Account not found.');
+            return view('site.activate');
+        }
+
+        $user->activation_code = User::makeActivationCode();
+        $user->save();
+
+        Auth::login($user);
+
+        Flash::success('An activation code was sent to your email.');
+
+        return view('site.activate');
     }
 }

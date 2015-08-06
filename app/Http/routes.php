@@ -95,17 +95,17 @@ Route::post('user/store', 'UsersController@postStore');
 
 // User Profile
 Route::get('user/profile', ['uses' => 'UserProfileController@getProfile']);
-Route::get('user/edit-profile', 'UserProfileController@getEditProfile');
-Route::post('user/profile', 'UserProfileController@postUpdateProfile');
+Route::get('user/profile/edit', 'UserProfileController@getEditProfile');
+Route::post('user/profile/update', 'UserProfileController@postUpdateProfile');
 Route::get('user/change-password', 'UserProfileController@getChangePassword');
 Route::post('user/change-password', 'UserProfileController@postChangePassword');
 Route::post('user/upload-photo', 'UserProfileController@postUploadPhoto');
-Route::post('customer/user/profile', 'UserProfileController@postUpdateCustomerProfile');
+Route::post('customer/profile/update', 'UserProfileController@postUpdateCustomerProfile');
 
 // Company Profile
 Route::get('company/profile', 'CompanyProfileController@getProfile');
-Route::get('company/edit-profile', 'CompanyProfileController@getEditProfile');
-Route::post('company/profile', 'CompanyProfileController@postUpdateProfile');
+Route::get('company/profile/edit', 'CompanyProfileController@getEditProfile');
+Route::post('company/profile/update', 'CompanyProfileController@postUpdateProfile');
 Route::post('company/upload-logo', 'CompanyProfileController@postUploadLogo');
 
 // Dashboard
@@ -127,6 +127,7 @@ Route::get('forgot-password', 'AuthController@getForgotPassword');
 Route::post('forgot-password', 'AuthController@postForgotPassword');
 Route::get('reset-password', 'AuthController@getResetPassword');
 Route::post('reset-password', 'AuthController@postResetPassword');
+Route::get('activate', 'AuthController@getActivateAccount');
 
 Route::get('/', 'AuthController@getLogin');
 Route::get('home', 'AuthController@getLogin');

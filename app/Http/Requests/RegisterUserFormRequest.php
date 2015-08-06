@@ -15,7 +15,7 @@ class RegisterUserFormRequest extends Request {
     public function rules()
     {
         return [
-            'referer_id' => 'required|exists:companies,affiliate_id',
+            'corp_code' => 'required|exists:companies,affiliate_id',
             'firstname' => 'required|min:3|alpha_spaces',
             'lastname' => 'required|min:3|alpha_spaces',
             'email' => 'required|email|unique:users,email',
