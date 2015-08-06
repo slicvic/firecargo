@@ -4,7 +4,6 @@ $(function() {
      * Bind dropzone
      * ---------------------------------------------
      */
-
     var uploadBtn = $('#edit-logo-btn');
 
     uploadBtn.dropzone({

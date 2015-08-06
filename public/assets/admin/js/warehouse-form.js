@@ -1,10 +1,6 @@
 $(function() {
-    /**
-     * ---------------------------------------------
-     * Close left nav
-     * ---------------------------------------------
-     */
-    $('body').toggleClass('mini-navbar');
+
+    app.closeNavbar();
 
     /**
      * ---------------------------------------------
@@ -90,15 +86,20 @@ $(function() {
      * Form submit handler
      * ---------------------------------------------
      */
-    $('#warehouse-edit-form').on('submit', function() {
+
+    $('.save-warehouse-btn').click(function() {
+        $('#warehouse-form').submit();
+    });
+
+    $('#warehouse-form').on('submit', function() {
         event.preventDefault();
 
         var form = $(this),
-            saveBtn = $(this).find('button[type=submit]');
+            saveButton = $('.save-warehouse-btn');
 
         if (!form.valid()) return false;
 
-        saveBtn.button('loading');
+        saveButton.button('loading');
 
         $.post(form.attr('action'), form.serialize(), 'json')
             .done(function(data) {
@@ -107,8 +108,10 @@ $(function() {
             .fail(function(xhr) {
                 toastr.error(xhr.responseJSON.message, xhr.responseJSON.title, {timeOut: 60000});
                 $('html, body').scrollTop(0);
-                saveBtn.button('reset');
+                saveButton.button('reset');
             });
+
+        return false;
     });
 
     /**

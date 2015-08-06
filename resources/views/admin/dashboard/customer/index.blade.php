@@ -32,7 +32,7 @@
                         <td>{{ $package->description }}</td>
                         <td>
                             <div class="btn-group">
-                                <button type="button" data-package-id="{{ $package->id }}" class="show-package-modal-btn btn-white btn btn-sm">More Info</button>
+                                <button type="button" data-url="/customer/package{{ $package->id }}/details" class="show-package-modal-btn btn-white btn btn-sm">More Info</button>
                             </div>
                         </td>
                     </tr>

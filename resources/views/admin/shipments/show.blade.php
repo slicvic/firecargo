@@ -63,4 +63,9 @@
         </div>
     </div>
 </div>
+<script>
+$(function() {
+    app.closeNavbar();
+});
+</script>
 @stop

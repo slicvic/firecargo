@@ -25,7 +25,7 @@ class PackagesController extends BaseAuthController {
     {
         parent::__construct($auth);
 
-        $this->middleware('auth.agentOrHigher', ['except' => ['getDetails']]);
+        $this->middleware('auth.agentOrHigher', ['except' => ['getCustomerPackageDetails']]);
     }
 
     /**
@@ -104,30 +104,40 @@ class PackagesController extends BaseAuthController {
      * @return Response
      * @uses   Ajax
      */
-    public function getDetails(Request $request, $id)
+    public function getPackageDetails(Request $request, $id)
     {
-        if ($this->user->isCustomer())
-        {
-            $view = 'admin.packages._customer_package_details';
-
-            $package = Package::where([
-                'id' => $id,
-                'customer_account_id' => $this->user->account->id
-            ])->first();
-        }
-        else
-        {
-            $view = 'admin.packages._package_details';
-
-            $package = Package::findMine($id);
-        }
+        $package = Package::findMine($id);
 
         if ( ! $package)
         {
             return ToastrJsonResponse::error('Package not found.', 404);
         }
 
-        return view($view, ['package' => $package]);
+        return view('admin.packages._package_details', ['package' => $package]);
+    }
+
+    /**
+     * Shows a specific package details.
+     *
+     * @param  Request  $request
+     * @param  int      $id
+     * @return Response
+     * @uses   Ajax
+     */
+    public function getCustomerPackageDetails(Request $request, $id)
+    {
+        $package = Package::where([
+            'id' => $id,
+            'customer_account_id' => $this->user->account->id
+        ])->first();
+
+
+        if ( ! $package)
+        {
+            return ToastrJsonResponse::error('Package not found.', 404);
+        }
+
+        return view('admin.packages._customer_package_details', ['package' => $package]);
     }
 
     /**
@@ -141,15 +151,13 @@ class PackagesController extends BaseAuthController {
     {
         $input = $request->only('pk', 'name', 'value');
 
-        // Validate input
-
         $rules = [
             'pk' => 'required',
             'name' => 'required',
             'value' => 'required'
         ];
 
-
+        // Validate input
         $validator = Validator::make($input, $rules);
 
         if ($validator->fails())
@@ -158,7 +166,6 @@ class PackagesController extends BaseAuthController {
         }
 
         // Validate field name
-
         $validFields = [
             'type_id',
             'length',

@@ -97,7 +97,7 @@ var app = {
             viewBtn.attr('data-loading-text', that.getSpinnerHtml());
             viewBtn.button('loading');
 
-            $.get('/package/' + viewBtn.attr('data-package-id') + '/details', function(response) {
+            $.get(viewBtn.attr('data-url'), function(response) {
                 modalContent.html(response);
                 modal.modal({});
             })
@@ -133,6 +133,10 @@ var app = {
             </div>';
 
         return html;
+    },
+
+    closeNavbar: function() {
+        $('body').toggleClass('mini-navbar');
     }
 }
 

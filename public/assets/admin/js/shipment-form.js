@@ -1,10 +1,6 @@
 $(function() {
-    /**
-     * ---------------------------------------------
-     * Close left nav
-     * ---------------------------------------------
-     */
-    $('body').toggleClass('mini-navbar');
+
+    app.closeNavbar();
 
     /**
      * ---------------------------------------------
@@ -105,15 +101,20 @@ $(function() {
      * Form submit handler
      * ---------------------------------------------
      */
-    $('#shipment-edit-form').on('submit', function() {
+
+    $('.save-shipment-btn').click(function() {
+        $('#shipment-form').submit();
+    });
+
+    $('#shipment-form').on('submit', function() {
         event.preventDefault();
 
         var form = $(this),
-            saveBtn = $(this).find('button[type=submit]');
+            saveButton = $('.save-shipment-btn');
 
         if (!form.valid()) return false;
 
-        saveBtn.button('loading');
+        saveButton.button('loading');
 
         $.post(form.attr('action'), form.serialize() + '&' + dataTable.$('input').serialize(), 'json')
             .done(function(data) {
@@ -122,7 +123,9 @@ $(function() {
             .fail(function(xhr) {
                 toastr.error(xhr.responseJSON.message, xhr.responseJSON.title, {timeOut: 60000});
                 $('html, body').scrollTop(0);
-                saveBtn.button('reset');
+                saveButton.button('reset');
             });
+
+        return false;
     });
  });

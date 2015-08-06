@@ -69,8 +69,9 @@ Route::post('user/store', 'UsersController@postStore');
 
 // Packages
 Route::get('packages', 'PackagesController@getIndex');
-Route::get('package/{id}/details', 'PackagesController@getDetails');
+Route::get('package/{id}/details', 'PackagesController@getPackageDetails');
 Route::post('package/{id}/editable-field', 'PackagesController@postEditableField');
+Route::get('customer/package/{id}/details', 'PackagesController@getCustomerPackageDetails');
 
 // Warehouses
 Route::get('warehouses', 'WarehousesController@getIndex');
