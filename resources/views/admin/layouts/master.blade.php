@@ -68,7 +68,7 @@
                 <ul class="nav metismenu" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="{{ $currentUser->present()->profilePhotoUrl() }}" style="width:48px;height:48px"></span>
+                            <span><img alt="image" class="img-circle" src="{{ $currentUser->present()->profilePhotoUrl('sm', asset(env('APP_DEFAULT_AVATAR'))) }}" style="width:48px;height:48px"></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                     <span class="block m-t-xs"><strong class="font-bold">{{ $currentUser->present()->fullname() }}</strong></span>

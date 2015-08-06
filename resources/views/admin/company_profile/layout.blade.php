@@ -10,7 +10,7 @@
             <div class="ibox-content text-center">
                 <h1>{{ "$company->name ($company->shortname)" }}</h1>
                 <div id="logo-container" class="m-b-sm">
-                    <img class="img-circle" src="{{ $company->present()->logoUrl('md') }}" style="width:100px;height:100px">
+                    <img class="img-circle" src="{{ $company->present()->logoUrl('md', 'png', asset(env('APP_DEFAULT_AVATAR'))) }}" style="width:100px;height:100px">
                 </div>
                 <button type="button" id="edit-logo-btn" class="btn btn-link btn-block"><i class="fa fa-pencil"></i> Upload Logo</button>
                 <div class="list-group">

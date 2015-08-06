@@ -37,16 +37,16 @@ class UserPresenter extends BasePresenter {
      *
      * @param  string  $size  The possible values are: 'sm'|'md'
      * @param  string  $default
-     * @return string
+     * @return string|NULL
      */
-    public function profilePhotoUrl($size = 'sm', $default = 'assets/admin/img/avatar.png')
+    public function profilePhotoUrl($size = 'sm', $default = NULL)
     {
-        if ( ! Upload::resourceExists('user.profile_photo', "{$size}.png", $this->model->id))
+        if ( $this->model->has_photo)
         {
-            return asset($default);
+            return Upload::resourceUrl('user.profile_photo', "{$size}.png", $this->model->id);
         }
 
-        return Upload::resourceUrl('user.profile_photo', "{$size}.png", $this->model->id);
+        return $default;
     }
 
     /**

@@ -10,7 +10,7 @@
             <div class="ibox-content text-center">
                 <h1>{{ $currentUser->present()->fullname() }}</h1>
                 <div id="photo-container" class="m-b-sm">
-                    <img class="img-circle" src="{{ $currentUser->present()->profilePhotoUrl('md') }}" style="width:200px;height:200px">
+                    <img class="img-circle" src="{{ $currentUser->present()->profilePhotoUrl('md', asset(env('APP_DEFAULT_AVATAR'))) }}" style="width:200px;height:200px">
                 </div>
                 <button type="button" id="edit-photo-btn" class="btn btn-block btn-link"><i class="fa fa-pencil"></i> Upload Photo</button>
                 <div class="list-group">
