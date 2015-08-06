@@ -100,7 +100,7 @@ class CompanyProfileController extends BaseAuthController {
      */
     public function postUploadLogo(Request $request)
     {
-        $input = $request->only('file');
+        $input = $request->all();
 
         // Validate file
         $validator = Validator::make($input, [

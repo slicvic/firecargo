@@ -161,7 +161,7 @@ class UserProfileController extends BaseAuthController {
      */
     public function postUploadPhoto(Request $request)
     {
-        $input = $request->only('file');
+        $input = $request->all();
 
         // Validate file
         $validator = Validator::make($input, [
