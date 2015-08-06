@@ -69,7 +69,7 @@ class PackagePresenter extends BasePresenter {
     public function customerLink()
     {
         return Html::linkWithIcon(
-            "/customer/{$this->model->customer_account_id}/edit",
+            '/customer/' . $this->model->customer_account_id . '/edit',
             $this->model->customer->name
         );
     }
@@ -82,7 +82,7 @@ class PackagePresenter extends BasePresenter {
     public function warehouseLink()
     {
         return Html::linkWithIcon(
-            "/warehouse/{$this->model->warehouse_id}/show",
+            '/warehouse/' . $this->model->warehouse_id,
             $this->model->warehouse_id
         );
     }
@@ -107,7 +107,7 @@ class PackagePresenter extends BasePresenter {
             $shipment->present()->departedAt()
         );
 
-        return Html::linkWithIcon("/shipment/{$shipment->id}/show", $title);
+        return Html::linkWithIcon('/shipment/' . $shipment->id, $title);
     }
 
     /**

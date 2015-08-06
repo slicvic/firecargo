@@ -109,7 +109,7 @@ class WarehousesController extends BaseAuthController {
 
         Flash::success('Warehouse created.');
 
-        return response()->json(['redirect_url' => "/warehouse/{$warehouse->id}/show"]);
+        return response()->json(['redirect_url' => '/warehouse/' . $warehouse->id]);
     }
 
     /**
