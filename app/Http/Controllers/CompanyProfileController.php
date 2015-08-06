@@ -14,6 +14,7 @@ use App\Models\Address;
 use App\Models\Country;
 use App\Helpers\Upload;
 use App\Http\ToastrJsonResponse;
+use App\Http\Requests\CompanyProfileFormRequest;
 
 /**
  * CompanyProfileController
@@ -66,29 +67,27 @@ class CompanyProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postUpdateProfile(Request $request)
+    public function postUpdateProfile(CompanyProfileFormRequest $request)
     {
         $input = $request->only('company', 'address');
 
-        $rules = [
-            'name' => 'required'
-        ];
-
-        // Validate input
-        $this->validate($input['company'], $rules);
-
         // Update company
-        $this->user->company->update($input['company']);
+        $company = $this->user->company;
+        $company->name = $input['company']['name'];
+        $company->phone = $input['company']['phone'];
+        $company->fax = $input['company']['fax'];
+        $company->email = $input['company']['email'];
+        $company->save();
 
         // Update address
-        if ($this->user->company->address)
-        {
-            $this->user->company->address->update($input['address']);
-        }
-        else
-        {
-            $this->user->company->address()->save(new Address($input['address']));
-        }
+        $address = $company->address;
+        $address->address1 = $input['address']['address1'];
+        $address->address2 = $input['address']['address2'];
+        $address->city = $input['address']['city'];
+        $address->state = $input['address']['state'];
+        $address->postal_code = $input['address']['postal_code'];
+        $address->country_id = $input['address']['country_id'];
+        $address->save();
 
         return $this->redirectWithSuccess('company/profile', 'Your company profile has been updated.');
     }
@@ -104,7 +103,6 @@ class CompanyProfileController extends BaseAuthController {
         $input = $request->only('file');
 
         // Validate file
-
         $validator = Validator::make($input, [
             'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . Upload::MAX_FILE_SIZE
         ]);
@@ -115,7 +113,6 @@ class CompanyProfileController extends BaseAuthController {
         }
 
         // Save logo
-
         try
         {
             Upload::saveCompanyLogo($input['file'], $this->user->company->id);

@@ -64,10 +64,9 @@ class CompaniesController extends BaseAuthController {
         // Create company
         $company = Company::create($input);
         $company->affiliate_id = sprintf('%s%s', strtolower($company->shortname), $company->id);
-        $company->save();
 
         // Create address
-        if ($company->exists)
+        if ($company->save())
         {
             $company->address()->save(new Address);
         }

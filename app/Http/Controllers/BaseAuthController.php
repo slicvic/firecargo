@@ -33,10 +33,10 @@ abstract class BaseAuthController extends BaseController {
      */
     public function __construct(Guard $auth)
     {
+        $this->middleware('auth');
+
         $this->auth = $auth;
         $this->user = $auth->user();
-
-        $this->middleware('auth');
 
         View::share('isAdminUser', $this->user->isAdmin());
         View::share('isAgentUser', $this->user->isAgent());

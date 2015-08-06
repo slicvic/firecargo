@@ -26,8 +26,8 @@ class Company extends Base {
      * @var array
      */
     public static $rules = [
-        'name' => 'required',
-        'shortname' => 'required:between:2,10'
+        'name' => 'required|min:3|alpha_num_spaces',
+        'shortname' => 'required:between:2,10|alpha_num_spaces'
 
     ];
 

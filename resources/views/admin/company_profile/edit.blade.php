@@ -1,4 +1,4 @@
-@extends('admin.layouts.pages.company_profile')
+@extends('admin.company_profile.layout')
 
 @section('company_profile_content')
 <form action="/company/profile" method="post" class="form-horizontal">
@@ -9,7 +9,7 @@
             <div class="clear hr-line-dashed"></div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Name</label>
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <input required type="text" name="company[name]" placeholder="e.g. Coca Cola" class="form-control" value="{{ Input::old('company.name', $company->name) }}">
                 </div>
             </div>
@@ -27,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Email</label>
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                     <input type="email" name="company[email]" placeholder="Email" class="form-control" value="{{ Input::old('company.email', $company->email) }}">
                 </div>
             </div>
@@ -35,25 +35,25 @@
             <div class="clear hr-line-dashed"></div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Address</label>
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                     <input type="text" name="address[address1]" placeholder="Address Line 1" class="form-control" value="{{ Input::old('address.address1', $address->address1) }}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2"></label>
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                     <input type="text" name="address[address2]" placeholder="Address Line 2" placeholder="Company" class="form-control" value="{{ Input::old('address.address2', $address->address2) }}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">City</label>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <input type="text" name="address[city]" placeholder="City" class="form-control" value="{{ Input::old('address.city', $address->city) }}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">State</label>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <input type="text" name="address[state]" placeholder="State" class="form-control" value="{{ Input::old('address.state', $address->state) }}">
                 </div>
             </div>

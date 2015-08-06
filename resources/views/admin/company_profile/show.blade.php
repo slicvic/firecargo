@@ -1,4 +1,4 @@
-@extends('admin.layouts.pages.company_profile')
+@extends('admin.company_profile.layout')
 
 @section('company_profile_content')
 <div class="ibox">

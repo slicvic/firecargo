@@ -1,4 +1,4 @@
-@extends('admin.layouts.pages.user_profile')
+@extends('admin.user_profile.layout')
 
 @section('user_profile_content')
 <form action="/customer/user/profile" method="post" class="form-horizontal">
@@ -23,7 +23,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Email</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-6">
                             <input required type="email" name="email" class="form-control" required value="{{ Input::old('email', $account->email) }}">
                         </div>
                     </div>
@@ -43,25 +43,25 @@
                     <div class="clear hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Address</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-6">
                             <input type="text" name="address1" placeholder="Address Line 1" required class="form-control" value="{{ Input::old('address1', $address->address1) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2"></label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-6">
                             <input type="text" name="address2" placeholder="Address Line 2" class="form-control" value="{{ Input::old('address2', $address->address2) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">City</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-4">
                             <input type="text" name="city" placeholder="City" class="form-control" required value="{{ Input::old('city', $address->city) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">State</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-4">
                             <input type="text" name="state" placeholder="State" class="form-control" required value="{{ Input::old('state', $address->state) }}">
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Country</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             @include('shared._country_select', ['name' => 'country_id', 'required' => TRUE, 'default' => Input::old('country_id', $address->country_id)])
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                         <div class="col-md-10">
                             <label class="checkbox-inline">
                                 <input type="checkbox" class="icheck-green" name="autoship" value="1"{{ Input::old('autoship', $account->autoship) ? ' checked' : '' }}> Yes
-                                @include('admin.user_profile.customer._autoship_alert')
+                                @include('admin.user_profile.customers._autoship_alert')
                             </label>
                         </div>
                     </div>

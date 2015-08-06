@@ -40,7 +40,7 @@ class DashboardController extends BaseAuthController {
 
         $packages = Package::search($criteria, 'id', 'desc', 100);
 
-        return view('admin.dashboard.customer.index', ['packages' => $packages]);
+        return view('admin.dashboard.customers.index', ['packages' => $packages]);
     }
 
     private function showAgentDashboard()
@@ -58,7 +58,7 @@ class DashboardController extends BaseAuthController {
             ]
         ];
 
-        return view('admin.dashboard.index', ['totals' => $totals]);
+        return view('admin.dashboard.admins.index', ['totals' => $totals]);
     }
 
     private function showAdminDashboard()
@@ -76,6 +76,6 @@ class DashboardController extends BaseAuthController {
             ]
         ];
 
-        return view('admin.dashboard.index', ['totals' => $totals]);
+        return view('admin.dashboard.admins.index', ['totals' => $totals]);
     }
 }

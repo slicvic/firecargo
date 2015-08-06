@@ -1,4 +1,4 @@
-@extends('admin.layouts.pages.accounts')
+@extends('admin.accounts.layout')
 
 @section('accounts_title', 'Shippers')
 

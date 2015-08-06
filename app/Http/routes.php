@@ -60,7 +60,6 @@ Route::post('company/{id}/update', 'CompaniesController@postUpdate');
 Route::get('company/create', 'CompaniesController@getCreate');
 Route::post('company/store', 'CompaniesController@postStore');
 
-
 // Packages
 Route::get('packages', 'PackagesController@getIndex');
 Route::get('package/{id}/details', 'PackagesController@getPackageDetails');
@@ -95,7 +94,7 @@ Route::get('user/create', 'UsersController@getCreate');
 Route::post('user/store', 'UsersController@postStore');
 
 // User Profile
-Route::get('user/profile', 'UserProfileController@getProfile');
+Route::get('user/profile', ['uses' => 'UserProfileController@getProfile']);
 Route::get('user/edit-profile', 'UserProfileController@getEditProfile');
 Route::post('user/profile', 'UserProfileController@postUpdateProfile');
 Route::get('user/change-password', 'UserProfileController@getChangePassword');

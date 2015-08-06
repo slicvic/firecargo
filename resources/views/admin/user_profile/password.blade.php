@@ -1,4 +1,4 @@
-@extends('admin.layouts.pages.user_profile')
+@extends('admin.user_profile.layout')
 
 @section('user_profile_content')
 <div class="ibox">
