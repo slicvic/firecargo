@@ -60,12 +60,6 @@ Route::post('company/{id}/update', 'CompaniesController@postUpdate');
 Route::get('company/create', 'CompaniesController@getCreate');
 Route::post('company/store', 'CompaniesController@postStore');
 
-// Users
-Route::get('users', 'UsersController@getIndex');
-Route::get('user/{id}/edit', 'UsersController@getEdit');
-Route::post('user/{id}/update', 'UsersController@postUpdate');
-Route::get('user/create', 'UsersController@getCreate');
-Route::post('user/store', 'UsersController@postStore');
 
 // Packages
 Route::get('packages', 'PackagesController@getIndex');
@@ -75,7 +69,7 @@ Route::get('customer/package/{id}/details', 'PackagesController@getCustomerPacka
 
 // Warehouses
 Route::get('warehouses', 'WarehousesController@getIndex');
-Route::get('warehouse/{id}/show', 'WarehousesController@getShow');
+Route::get('warehouse/{id}', 'WarehousesController@getShow');
 Route::get('warehouse/{id}/edit', 'WarehousesController@getEdit');
 Route::post('warehouse/{id}/update', 'WarehousesController@postUpdate');
 Route::get('warehouse/{id}/print-receipt', 'WarehousesController@getPrintReceipt');
@@ -86,25 +80,34 @@ Route::get('warehouse/{id}/packages', 'PackagesController@getWarehousePackages')
 
 // Shipments
 Route::get('shipments', 'ShipmentsController@getIndex');
-Route::get('shipment/{id}/show', 'ShipmentsController@getShow');
+Route::get('shipment/{id}', 'ShipmentsController@getShow');
 Route::get('shipment/{id}/edit', 'ShipmentsController@getEdit');
 Route::post('shipment/{id}/update', 'ShipmentsController@postUpdate');
 Route::get('shipment/create', 'ShipmentsController@getCreate');
 Route::post('shipment/store', 'ShipmentsController@postStore');
 Route::get('shipment/{id}/packages', 'PackagesController@getShipmentPackages');
 
+// Users
+Route::get('users', 'UsersController@getIndex');
+Route::get('user/{id}/edit', 'UsersController@getEdit');
+Route::post('user/{id}/update', 'UsersController@postUpdate');
+Route::get('user/create', 'UsersController@getCreate');
+Route::post('user/store', 'UsersController@postStore');
+
 // User Profile
-Route::get('logout', 'UserProfileController@getLogout');
 Route::get('user/profile', 'UserProfileController@getProfile');
-Route::get('user/edit', 'UserProfileController@getEdit');
-Route::post('user/profile', 'UserProfileController@postProfile');
-Route::post('customer/profile', 'UserProfileController@postCustomerProfile');
-Route::get('user/password', 'UserProfileController@getPassword');
-Route::post('user/password', 'UserProfileController@postPassword');
-Route::post('user/photo', 'UserProfileController@postPhoto');
+Route::get('user/edit-profile', 'UserProfileController@getEditProfile');
+Route::post('user/profile', 'UserProfileController@postUpdateProfile');
+Route::get('user/change-password', 'UserProfileController@getChangePassword');
+Route::post('user/change-password', 'UserProfileController@postChangePassword');
+Route::post('user/upload-photo', 'UserProfileController@postUploadPhoto');
+Route::post('customer/user/profile', 'UserProfileController@postUpdateCustomerProfile');
 
 // Company Profile
-Route::controller('company', 'CompanyProfileController');
+Route::get('company/profile', 'CompanyProfileController@getProfile');
+Route::get('company/edit-profile', 'CompanyProfileController@getEditProfile');
+Route::post('company/profile', 'CompanyProfileController@postUpdateProfile');
+Route::post('company/upload-logo', 'CompanyProfileController@postUploadLogo');
 
 // Dashboard
 Route::controller('dashboard', 'DashboardController');
@@ -118,8 +121,7 @@ Route::controller('dashboard', 'DashboardController');
 // Auth
 Route::get('login', 'AuthController@getLogin');
 Route::post('login', 'AuthController@postLogin');
-
-// Frontend
+Route::get('logout', 'AuthController@getLogout');
 Route::get('register', 'AuthController@getRegister');
 Route::post('register', 'AuthController@postRegister');
 Route::get('forgot-password', 'AuthController@getForgotPassword');

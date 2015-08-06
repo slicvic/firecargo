@@ -52,7 +52,7 @@ class CompanyProfileController extends BaseAuthController {
      *
      * @return Response
      */
-    public function getEdit()
+    public function getEditProfile()
     {
         return view('admin.company_profile.edit', [
             'company' => $this->user->company,
@@ -66,7 +66,7 @@ class CompanyProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postProfile(Request $request)
+    public function postUpdateProfile(Request $request)
     {
         $input = $request->only('company', 'address');
 
@@ -99,7 +99,7 @@ class CompanyProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function postLogo(Request $request)
+    public function postUploadLogo(Request $request)
     {
         $input = $request->only('file');
 

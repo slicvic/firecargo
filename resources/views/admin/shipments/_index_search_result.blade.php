@@ -29,7 +29,7 @@
                 <td>{{ $shipment->present()->updatedAt() }}</td>
                 <td>
                     <div class="btn-group" style="min-width:100px;">
-                        <a href="/shipment/{{ $shipment->id }}/show" class="btn-white btn btn-sm">View</a>
+                        <a href="/shipment/{{ $shipment->id }}" class="btn-white btn btn-sm">View</a>
                         <a href="/shipment/{{ $shipment->id }}/edit" class="btn-white btn btn-sm">Edit</a>
                     </div>
                 </td>

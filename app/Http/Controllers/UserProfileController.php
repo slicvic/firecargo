@@ -23,18 +23,6 @@ use App\Http\Requests\CustomerUserProfileFormRequest;
 class UserProfileController extends BaseAuthController {
 
     /**
-     * Logs out the user.
-     *
-     * @return Redirector
-     */
-    public function getLogout()
-    {
-        Auth::logout();
-
-        return redirect('/');
-    }
-
-    /**
      * Displays the user profile.
      *
      * @return Response
@@ -45,10 +33,8 @@ class UserProfileController extends BaseAuthController {
         {
             return view('admin.user_profile.customer.show', ['user' => $this->user]);
         }
-        else
-        {
-            return view('admin.user_profile.show', ['user' => $this->user]);
-        }
+
+        return view('admin.user_profile.show', ['user' => $this->user]);
     }
 
     /**
@@ -56,7 +42,7 @@ class UserProfileController extends BaseAuthController {
      *
      * @return Response
      */
-    public function getEdit()
+    public function getEditProfile()
     {
         if ($this->user->isCustomer())
         {
@@ -65,12 +51,10 @@ class UserProfileController extends BaseAuthController {
                 'address' => $this->user->account->address ?: new Address
             ]);
         }
-        else
-        {
-            return view('admin.user_profile.edit', [
-                'user' => $this->user
-            ]);
-        }
+
+        return view('admin.user_profile.edit', [
+            'user' => $this->user
+        ]);
     }
 
     /**
@@ -79,14 +63,14 @@ class UserProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postProfile(Request $request)
+    public function postUpdateProfile(Request $request)
     {
         $input = $request->only('user');
 
         $rules = [
-            'email' => 'required|email|unique:users,email,' . $this->user->id,
+            'email'     => 'required|email|unique:users,email,' . $this->user->id,
             'firstname' => 'required|min:3|alpha_spaces',
-            'lastname' => 'required|min:3|alpha_spaces'
+            'lastname'  => 'required|min:3|alpha_spaces'
         ];
 
         // Validate input
@@ -104,7 +88,7 @@ class UserProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postCustomerProfile(CustomerUserProfileFormRequest $request)
+    public function postUpdateCustomerProfile(CustomerUserProfileFormRequest $request)
     {
         $input = $request->all();
 
@@ -140,9 +124,9 @@ class UserProfileController extends BaseAuthController {
      *
      * @return Response
      */
-    public function getPassword()
+    public function getChangePassword()
     {
-        return view('admin.user_profile.password');
+        return view('admin.user_profile.change_password');
     }
 
     /**
@@ -151,13 +135,13 @@ class UserProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postPassword(Request $request)
+    public function postChangePassword(Request $request)
     {
         $input = $request->all();
 
         $rules = [
             'current_password' => 'required',
-            'new_password' => 'required|min:8|confirmed'
+            'new_password'     => 'required|min:8|confirmed'
         ];
 
         // Validate input
@@ -181,7 +165,7 @@ class UserProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return JsonResponse
      */
-    public function postPhoto(Request $request)
+    public function postUploadPhoto(Request $request)
     {
         $input = $request->only('file');
 

@@ -7,7 +7,7 @@ $(function() {
     var uploadBtn = $('#edit-photo-btn');
 
     uploadBtn.dropzone({
-        url: '/user/photo',
+        url: '/user/upload-photo',
         maxFileSize: 10,
         acceptedFiles: 'image/*',
         parallelUploads: 1,

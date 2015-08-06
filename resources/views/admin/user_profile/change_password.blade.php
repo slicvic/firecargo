@@ -1,10 +1,10 @@
-@extends('layouts.admin.pages.user_profile')
+@extends('admin.layouts.pages.user_profile')
 
 @section('user_profile_content')
 <div class="ibox">
     <div class="ibox-content">
         <h2>Change Password</h2>
-        <form action="/user/password" method="post" class="form-horizontal">
+        <form action="/user/change-password" method="post" class="form-horizontal">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="form-group">
                 <label class="col-md-3 control-label">Current Password</label>

@@ -11,7 +11,7 @@
     </li>
     @if ($shipment->exists)
         <li>
-            <a href="/shipment/{{ $shipment->id }}/show">Details</a>
+            <a href="/shipment/{{ $shipment->id }}">Details</a>
         </li>
     @endif
     <li class="active">

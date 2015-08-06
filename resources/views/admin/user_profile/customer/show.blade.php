@@ -1,4 +1,4 @@
-@extends('layouts.admin.pages.user_profile')
+@extends('admin.layouts.pages.user_profile')
 
 @section('user_profile_content')
 <div class="ibox">
@@ -34,7 +34,7 @@
             <div class="col-xs-3"><strong>Auto-ship Packages?</strong></div>
             <div class="col-xs-9">
                 <p>{!! $user->account->autoship ? '<span class="label label-primary">Yes</span>' : '<span class="label label-danger">No</span>' !!}</p>
-                @include('user_profile.customer._autoship_alert')
+                @include('admin.user_profile.customer._autoship_alert')
             </div>
         </div>
     </div>

@@ -2,7 +2,7 @@
 
 use Validator;
 use Event;
-
+use Auth;
 use Illuminate\Http\Request;
 
 use App\Models\User;
@@ -23,6 +23,18 @@ use App\Http\Requests\RegisterUserFormRequest;
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
 class AuthController extends BaseController {
+
+    /**
+     * Logs out the user.
+     *
+     * @return Redirector
+     */
+    public function getLogout()
+    {
+        Auth::logout();
+
+        return redirect('/');
+    }
 
     /**
      * Shows the login form.

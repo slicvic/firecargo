@@ -119,6 +119,6 @@ class Address extends Base {
             $address[] = $this->country->name;
         }
 
-        return implode($lineSeparator, $address);
+        return strtoupper(implode($lineSeparator, $address));
     }
 }

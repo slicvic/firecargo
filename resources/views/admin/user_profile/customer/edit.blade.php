@@ -1,7 +1,7 @@
-@extends('layouts.admin.pages.user_profile')
+@extends('admin.layouts.pages.user_profile')
 
 @section('user_profile_content')
-<form action="/accounts/customer/profile" method="post" class="form-horizontal">
+<form action="/customer/user/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="row">
         <div class="col-md-12">
@@ -74,7 +74,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Country</label>
                         <div class="col-sm-3">
-                            @include('countries._select', ['name' => 'country_id', 'required' => TRUE, 'default' => Input::old('country_id', $address->country_id)])
+                            @include('shared._country_select', ['name' => 'country_id', 'required' => TRUE, 'default' => Input::old('country_id', $address->country_id)])
                         </div>
                     </div>
                     <h2>Preferences</h2>
@@ -84,7 +84,7 @@
                         <div class="col-md-10">
                             <label class="checkbox-inline">
                                 <input type="checkbox" class="icheck-green" name="autoship" value="1"{{ Input::old('autoship', $account->autoship) ? ' checked' : '' }}> Yes
-                                @include('user_profile.customer._autoship_alert')
+                                @include('admin.user_profile.customer._autoship_alert')
                             </label>
                         </div>
                     </div>
