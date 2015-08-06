@@ -63,7 +63,8 @@ class Upload {
         {
             Image::make($file->getPathName())
                 ->orientate()
-                ->resize($dimension, $dimension)
+                ->fit($dimension, $dimension)
+                ->encode('png', 100)
                 ->save("{$destination}{$filename}.png");
         }
 
@@ -95,13 +96,15 @@ class Upload {
 
         foreach ($dimensions as $filename => $dimension)
         {
-            Image::make($file->getPathName())
+            $image = Image::make($file->getPathName())
                 ->orientate()
-                ->resize($dimension, NULL, function($constraint) {
+                ->fit($dimension, NULL, function($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();
-                })
-                ->save("{$destination}{$filename}.png");
+                });
+
+            $image->encode('png', 100)->save("{$destination}{$filename}.png");
+            $image->encode('jpg', 100)->save("{$destination}{$filename}.jpg");
         }
 
         // Remove temp file

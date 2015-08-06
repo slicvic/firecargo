@@ -14,7 +14,7 @@
                     <input type="password" name="password" class="form-control" placeholder="Enter password" required minlength="8">
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b">Sign in</button>
-                <a href="/forgot-password">
+                <a href="/forgot-password{{ $queryString }}">
                     <small>Forgot password?</small>
                 </a>
             </form>

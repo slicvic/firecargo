@@ -12,7 +12,7 @@
 					<input type="email" name="email" class="form-control input-lg" placeholder="Your email address" value="{{ Input::old('email') }}" required>
 				</div>
 				<button type="submit" class="btn btn-primary block full-width m-b">Send new password</button>
-				<a href="/login">
+				<a href="/login{{ $queryString }}">
                     <small>Sign in to your account</small>
                 </a>
 			</form>

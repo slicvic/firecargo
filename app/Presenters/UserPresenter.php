@@ -35,7 +35,7 @@ class UserPresenter extends BasePresenter {
     /**
      * Presents the profile photo URL.
      *
-     * @param  string  $size  sm|md
+     * @param  string  $size  The possible values are: 'sm'|'md'
      * @return string
      */
     public function profilePhotoUrl($size = 'sm')

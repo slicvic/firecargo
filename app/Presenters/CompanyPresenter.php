@@ -23,14 +23,15 @@ class CompanyPresenter extends BasePresenter {
     /**
      * Presents the logo URL.
      *
-     * @param  string  $size  sm|md|lg
+     * @param  string  $size  The possible values are: 'sm'|'md'|'lg'
+     * @param  string  $ext   The possible values are: 'png'|'jpg'
      * @return string
      */
-    public function logoUrl($size = 'sm')
+    public function logoUrl($size = 'sm', $ext = 'png')
     {
-        if (Upload::resourceExists('company.logo', "{$size}.png", $this->model->id))
+        if (Upload::resourceExists('company.logo', "{$size}.{$ext}", $this->model->id))
         {
-            return Upload::resourceUrl('company.logo', "{$size}.png", $this->model->id);
+            return Upload::resourceUrl('company.logo', "{$size}.{$ext}", $this->model->id);
         }
 
         return asset('assets/admin/img/avatar.png');

@@ -147,7 +147,7 @@
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li>
-                            <span class="m-r-sm text-muted welcome-message">Hey {{ $currentUser->firstname }}! Welcome to {{ env('APP_NAME') }}!</span>
+                            <span class="m-r-sm text-muted welcome-message">Welcome, {{ $currentUser->firstname }}!</span>
                         </li>
                         <li>
                             <a href="/logout">

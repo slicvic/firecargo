@@ -4,6 +4,7 @@ use Validator;
 use Event;
 use Auth;
 use Illuminate\Http\Request;
+use View;
 
 use App\Models\User;
 use App\Models\Role;
@@ -23,6 +24,19 @@ use App\Http\Requests\RegisterUserFormRequest;
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
 class AuthController extends BaseController {
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $rid = ( ! empty($_GET['rid'])) ? $_GET['rid'] : NULL;
+        $company = ($rid) ? Company::where('affiliate_id', $rid)->first() : NULL;
+        $queryString = ( ! empty($_SERVER['QUERY_STRING'])) ? '?' . $_SERVER['QUERY_STRING'] : '';
+
+        View::share('company', $company);
+        View::share('queryString', $queryString);
+    }
 
     /**
      * Logs out the user.

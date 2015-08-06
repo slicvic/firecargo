@@ -3,16 +3,12 @@
 @section('content')
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
-        <h1 class="text-center">{!! env('APP_HTML_LOGO') !!}</h1>
+        @include('site.layouts._header_logo')
         <br>
         {!! Flash::getBootstrap() !!}
         @yield('wide_content')
         <br>
-        <div class="row">
-            <div class="col-md-12 text-center">
-               &copy; {{ date('Y') }}, {{ env('APP_COMPANY_NAME') }}
-            </div>
-        </div>
+        @include('site.layouts._footer')
     </div>
 </div>
 @stop
