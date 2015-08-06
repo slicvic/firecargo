@@ -69,7 +69,7 @@ class PackagePresenter extends BasePresenter {
     public function customerLink()
     {
         return Html::linkWithIcon(
-            '/customer/' . $this->model->customer_account_id . '/edit',
+            '/accounts/customer/' . $this->model->customer_account_id . '/edit',
             $this->model->customer->name
         );
     }
