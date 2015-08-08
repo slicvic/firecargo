@@ -8,7 +8,7 @@
             <h2>General Information</h2>
             <div class="clear hr-line-dashed"></div>
             <div class="form-group">
-                <label class="control-label col-sm-2">Name</label>
+                <label class="control-label col-sm-2">Company Name</label>
                 <div class="col-sm-6">
                     <input required type="text" name="company[name]" placeholder="e.g. Coca Cola" class="form-control" value="{{ Input::old('company.name', $company->name) }}">
                 </div>
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="clear hr-line-dashed"></div>
-            <h2>Billing Address</h2>
+            <h2>Address</h2>
             <div class="clear hr-line-dashed"></div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Address</label>

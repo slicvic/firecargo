@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h2>Edit Profile</h2>
+                    <h2>General Information</h2>
                     <div class="clear hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">First Name</label>

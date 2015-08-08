@@ -18,8 +18,6 @@ class CompaniesTableSeeder extends Seeder {
             [
                 'id' => 1,
                 'name' => 'Lantigua Lab',
-                'shipping_address_id' => 1,
-                'billing_address_id' => 2
             ]
         ]);
     }

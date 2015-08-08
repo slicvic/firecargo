@@ -36,9 +36,9 @@
             </table>
         </div>
         @if ( ! count($packages))
-            <div class="alert alert-danger">
+            <div class="alert alert-warning">
                 <i class="fa fa-exclamation-triangle"></i>
-                There are no pieces available for shipment at this moment.
+                No pieces available for shipment at this moment.
             </div>
         @endif
     </div>

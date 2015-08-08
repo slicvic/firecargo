@@ -30,10 +30,10 @@ class CompanyPresenter extends BasePresenter {
     {
         if ($type === 'shipping')
         {
-            return $this->model->shippingAddress->toString();
+            return ($address = $this->model->shippingAddress) ? $address->toString() : '';
         }
 
-        return $this->model->billingAddress->toString();
+        return ($address = $this->model->billingAddress) ? $address->toString() : '';
     }
 
     /**
