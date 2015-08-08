@@ -8,7 +8,7 @@
     <div class="col-md-4">
         <div class="ibox">
             <div class="ibox-content text-center">
-                <h1>{{ "$company->name ($company->shortname)" }}</h1>
+                <h1>{{ $company->name }}</h1>
                 <div id="logo-container" class="m-b-sm">
                     <img class="img-circle" src="{{ $company->present()->logoUrl('md', 'png', asset(env('APP_DEFAULT_AVATAR'))) }}" style="width:100px;height:100px">
                 </div>

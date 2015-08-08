@@ -12,19 +12,19 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">First Name</label>
                         <div class="col-sm-4">
-                            <input required type="text" name="firstname" placeholder="First Name" class="form-control" value="{{ Input::old('firstname', $user->firstname) }}">
+                            <input required type="text" name="firstname" placeholder="First Name" class="form-control" value="{{ Input::old('firstname', $currentUser->firstname) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Last Name</label>
                         <div class="col-sm-4">
-                            <input required type="text" name="lastname" placeholder="Last Name" class="form-control" value="{{ Input::old('lastname', $user->lastname) }}">
+                            <input required type="text" name="lastname" placeholder="Last Name" class="form-control" value="{{ Input::old('lastname', $currentUser->lastname) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Email</label>
                         <div class="col-sm-6">
-                            <input required type="email" name="email" class="form-control" value="{{ Input::old('email', $user->email) }}">
+                            <input required type="email" name="email" class="form-control" value="{{ Input::old('email', $currentUser->email) }}">
                         </div>
                     </div>
                 </div>

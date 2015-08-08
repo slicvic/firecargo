@@ -15,7 +15,7 @@ use App\Models\Company;
 use Flash;
 use App\Events\UserLoggedIn;
 use App\Events\UserRegistered;
-use App\Http\Requests\RegisterUserFormRequest;
+use App\Http\Requests\CustomerRegisterFormRequest;
 
 /**
  * AuthController
@@ -29,9 +29,9 @@ class AuthController extends BaseController {
      */
     public function __construct()
     {
-        $affiliateId = ( ! empty($_GET['af_id'])) ? $_GET['af_id'] : NULL;
-        $company = ($affiliateId) ? Company::where('affiliate_id', $affiliateId)->first() : NULL;
-        $queryString = ( ! empty($_SERVER['QUERY_STRING'])) ? '?' . $_SERVER['QUERY_STRING'] : '';
+        $linkCode = ( ! empty($_GET['link_code'])) ? $_GET['link_code'] : NULL;
+        $company = ($linkCode) ? Company::where('link_code', $linkCode)->first() : NULL;
+        $queryString = ( ! empty($_SERVER['QUERY_STRING'])) ? '/?' . $_SERVER['QUERY_STRING'] : '';
 
         View::share('company', $company);
         View::share('queryString', $queryString);
@@ -74,10 +74,8 @@ class AuthController extends BaseController {
             'password' => 'required|min:8'
         ];
 
-        // Validate input
         $this->validate($input, $rules);
 
-        // Authenticate user
         $user = User::validateCredentials($input['email'], $input['password']);
 
         if ( ! $user)
@@ -106,11 +104,11 @@ class AuthController extends BaseController {
      * @param  Request  $request
      * @return Response
      */
-    public function postRegister(RegisterUserFormRequest $request)
+    public function postRegister(CustomerRegisterFormRequest $request)
     {
         $input = $request->all();
 
-        $company = Company::where('affiliate_id', $input['affiliate_id'])->first();
+        $company = Company::where('link_code', $input['registration_code'])->first();
 
         // Create user
         $user = new User;
@@ -164,10 +162,8 @@ class AuthController extends BaseController {
     {
         $input = $request->only('email');
 
-        // Validate input
         $this->validate($input, ['email' => 'required|email']);
 
-        // Verify user
         $user = User::where('email', $input['email'])->first();
 
         if ( ! $user)
@@ -257,6 +253,7 @@ class AuthController extends BaseController {
         if ( ! $user)
         {
             Flash::error('Account not found.');
+
             return view('site.activate');
         }
 
@@ -279,12 +276,13 @@ class AuthController extends BaseController {
         $input = $request->only('email');
 
         $validator = Validator::make($input, [
-            'email'           => 'required|email',
+            'email' => 'required|email',
         ]);
 
         if ($validator->fails())
         {
             Flash::error($validator);
+
             return view('site.activate');
         }
 
@@ -293,13 +291,12 @@ class AuthController extends BaseController {
         if ( ! $user)
         {
             Flash::error('Account not found.');
+
             return view('site.activate');
         }
 
         $user->activation_code = User::makeActivationCode();
         $user->save();
-
-        Auth::login($user);
 
         Flash::success('An activation code was sent to your email.');
 

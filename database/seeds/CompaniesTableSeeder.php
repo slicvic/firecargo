@@ -18,14 +18,10 @@ class CompaniesTableSeeder extends Seeder {
             [
                 'id' => 1,
                 'name' => 'Lantigua Group',
-                'shortname' => 'LG',
-                'referer_id' => ''
             ],
             [
                 'id' => 1000,
                 'name' => 'Sion Services Group',
-                'shortname' => 'SSG',
-                'referer_id' => 'ssg1000'
             ]
         ]);
     }

@@ -5,7 +5,7 @@
     <div class="ibox-content">
         <h2>Company Info</h2>
         <div class="row">
-            <div class="col-xs-2"><strong>Tel</strong></div>
+            <div class="col-xs-2"><strong>Phone</strong></div>
             <div class="col-xs-10"><p>{{ $company->phone }}</p></div>
         </div>
         <div class="row">

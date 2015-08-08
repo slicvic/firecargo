@@ -26,40 +26,7 @@ class CreateAllTables extends Migration {
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
 		});
-/*
-		// Create company_site_settings
-		Schema::create('company_site_settings', function($table)
-		{
-		    $table->increments('id')->unsigned();
-		    $table->integer('company_id')->unique();
-		    $table->string('site_title', 100);
-		    $table->string('site_heading', 100);
-		    $table->dateTime('created_at');
-		    $table->dateTime('updated_at');
-		});
 
-		// Create company_emails
-		Schema::create('company_emails', function($table)
-		{
-		    $table->increments('id')->unsigned();
-		    $table->integer('company_id')->unique();
-		    $table->string('site_title', 100);
-		    $table->string('site_heading', 100);
-		    $table->dateTime('created_at');
-		    $table->dateTime('updated_at');
-		});
-
-		// Create company_emails
-		Schema::create('company_emails', function($table)
-		{
-		    $table->increments('id')->unsigned();
-		    $table->integer('company_id')->unique();
-		    $table->string('site_title', 100);
-		    $table->string('site_heading', 100);
-		    $table->dateTime('created_at');
-		    $table->dateTime('updated_at');
-		});
-*/
 		// Create roles
 		Schema::create('roles', function($table)
 		{

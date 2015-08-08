@@ -31,10 +31,10 @@ class Upload {
      */
     private static $resources = [
         'user' => [
-            'profile_photo' => 'users/{{ENTITY_ID}}/images/profile/'
+            'profile_photo' => 'users/{{ENTITY_ID}}/profile_photo/'
         ],
         'company' => [
-            'logo'  => 'companies/{{ENTITY_ID}}/images/logo/'
+            'logo'  => 'companies/{{ENTITY_ID}}/logo/'
         ]
     ];
 

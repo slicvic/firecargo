@@ -69,18 +69,12 @@ class CustomerAccountsController extends BaseAuthController {
         // Create account
         $account = new Account;
         $account->name = $input['name'];
-        $account->firstname = $input['firstname'];
-        $account->lastname = $input['lastname'];
         $account->email = $input['email'];
         $account->phone = $input['phone'];
         $account->fax = $input['fax'];
         $account->mobile_phone = $input['mobile_phone'];
         $account->type_id = AccountType::CUSTOMER;
-
-        if ( ! $account->save())
-        {
-            return $this->redirectBackWithError('Customer creation failed, please try again.');
-        }
+        $account->save();
 
         // Create address
         $address = new Address;
@@ -125,8 +119,6 @@ class CustomerAccountsController extends BaseAuthController {
         // Update account
         $account = Account::findMineOrFail($id);
         $account->name = $input['name'];
-        $account->firstname = $input['firstname'];
-        $account->lastname = $input['lastname'];
         $account->email = $input['email'];
         $account->phone = $input['phone'];
         $account->fax = $input['fax'];

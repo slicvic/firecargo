@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Company;
 use App\Models\Address;
+use App\Http\Requests\CompanyFormRequest;
 
 /**
  * CompaniesController
@@ -54,22 +55,21 @@ class CompaniesController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postStore(Request $request)
+    public function postStore(CompanyFormRequest $request)
     {
-        $input = $request->only('name', 'shortname');
-
-        // Validate input
-        $this->validate($input, Company::$rules);
+        $input = $request->all();
 
         // Create company
-        $company = Company::create($input);
-        $company->affiliate_id = sprintf('%s%s', strtolower($company->shortname), $company->id);
+        $company = new Company;
+        $company->name = $input['name'];
+        $company->firstname = $input['firstname'];
+        $company->lastname = $input['lastname'];
+        $company->email = $input['email'];
+        $company->phone = $input['phone'];
+        $company->save();
 
         // Create address
-        if ($company->save())
-        {
-            $company->address()->save(new Address);
-        }
+        $company->address()->save(new Address);
 
         return $this->redirectWithSuccess('companies', 'Company created.');
     }
@@ -94,15 +94,17 @@ class CompaniesController extends BaseAuthController {
      * @param  int      $id
      * @return Redirector
      */
-    public function postUpdate(Request $request, $id)
+    public function postUpdate(CompanyFormRequest $request, $id)
     {
-        $input = $request->only('name', 'shortname');
+        $input = $request->all();
 
-        // Validate input
-        $this->validate($input, Company::$rules);
-
-        // Update company
-        Company::findOrFail($id)->update($input);
+        $company = Company::findOrFail($id);
+        $company->name = $input['name'];
+        $company->firstname = $input['firstname'];
+        $company->lastname = $input['lastname'];
+        $company->email = $input['email'];
+        $company->phone = $input['phone'];
+        $company->save();
 
         return $this->redirectBackWithSuccess('Company updated.');
     }

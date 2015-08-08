@@ -70,11 +70,7 @@ class ShipperAccountsController extends BaseAuthController {
         $account = new Account;
         $account->name = $input['name'];
         $account->type_id = AccountType::SHIPPER;
-
-        if ( ! $account->save())
-        {
-            return $this->redirectBackWithError('Shipper creation failed, please try again.');
-        }
+        $account->save();
 
         // Create address
         $address = new Address;

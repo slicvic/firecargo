@@ -1,13 +1,11 @@
 <?php namespace App\Http\Requests;
 
-use Auth;
-
 /**
- * UserProfileFormRequest
+ * CompanyFormRequest
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class UserProfileFormRequest extends Request {
+class CompanyFormRequest extends Request {
 
     /**
      * Get the validation rules that apply to the request.
@@ -17,9 +15,11 @@ class UserProfileFormRequest extends Request {
     public function rules()
     {
         return [
+            'name' => 'required|min:3|alpha_num_spaces',
             'firstname' => 'required|min:3|alpha_spaces',
             'lastname' => 'required|min:3|alpha_spaces',
-            'email' => 'required|email|unique:users,email,' . Auth::user()->id,
+            'email' => 'required|email',
+            'phone' => 'required|phone'
         ];
     }
 }

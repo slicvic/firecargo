@@ -13,8 +13,8 @@ use App\Models\Address;
 use App\Exceptions\ValidationException;
 use App\Helpers\Upload;
 use App\Http\ToastrJsonResponse;
-use App\Http\Requests\UserProfileFormRequest;
-use App\Http\Requests\CustomerUserProfileFormRequest;
+use App\Http\Requests\UpdateUserProfileFormRequest;
+use App\Http\Requests\UpdateCustomerUserProfileFormRequest;
 
 /**
  * UserProfileController
@@ -32,10 +32,10 @@ class UserProfileController extends BaseAuthController {
     {
         if ($this->user->isCustomer())
         {
-            return view('admin.user_profile.customers.show', ['user' => $this->user]);
+            return view('admin.user_profile.customers.show');
         }
 
-        return view('admin.user_profile.admins.show', ['user' => $this->user]);
+        return view('admin.user_profile.admins.show');
     }
 
     /**
@@ -53,9 +53,7 @@ class UserProfileController extends BaseAuthController {
             ]);
         }
 
-        return view('admin.user_profile.admins.edit', [
-            'user' => $this->user
-        ]);
+        return view('admin.user_profile.admins.edit');
     }
 
     /**
@@ -64,11 +62,10 @@ class UserProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postUpdateProfile(UserProfileFormRequest $request)
+    public function postUpdateProfile(UpdateUserProfileFormRequest $request)
     {
         $input = $request->all();
 
-        // Update user
         $user = $this->user;
         $user->firstname = $input['firstname'];
         $user->lastname = $input['lastname'];
@@ -84,7 +81,7 @@ class UserProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postUpdateCustomerProfile(CustomerUserProfileFormRequest $request)
+    public function postUpdateCustomerProfile(UpdateCustomerUserProfileFormRequest $request)
     {
         $input = $request->all();
 
@@ -135,7 +132,6 @@ class UserProfileController extends BaseAuthController {
     {
         $input = $request->all();
 
-        // Validate input
         $this->validate($input, [
             'current_password' => 'required',
             'new_password'     => 'required|min:8|confirmed'
@@ -146,7 +142,6 @@ class UserProfileController extends BaseAuthController {
             return $this->redirectBackWithError('The password you entered does not match your current one.');
         }
 
-        // Change password
         $this->user->password = $input['new_password'];
         $this->user->save();
 
@@ -163,7 +158,6 @@ class UserProfileController extends BaseAuthController {
     {
         $input = $request->all();
 
-        // Validate file
         $validator = Validator::make($input, [
             'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . Upload::MAX_FILE_SIZE
         ]);
@@ -173,7 +167,6 @@ class UserProfileController extends BaseAuthController {
             return ToastrJsonResponse::error($validator, 404);
         }
 
-        // Save photo
         try
         {
             Upload::saveUserProfilePhoto($input['file'], $this->user->id);

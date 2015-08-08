@@ -4,14 +4,16 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h3>Account Info</h3>
+                    <h3>General Information</h3>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Name *</label>
                         <div class="col-sm-4">
-                            <input required type="text" name="name" placeholder="e.g. Amazon, eBay" class="form-control" value="{{ Input::old('name', $account->name) }}">
+                            <input required type="text" name="name" placeholder="Name" class="form-control" value="{{ Input::old('name', $account->name) }}">
                         </div>
                     </div>
+                    <h3>Address</h3>
+                    <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Address</label>
                         <div class="col-sm-5">
@@ -26,13 +28,13 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">City</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-3">
                             <input type="text" name="city" placeholder="City" class="form-control" value="{{ Input::old('city', $address->city) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">State</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-3">
                             <input type="text" name="state" placeholder="State" class="form-control" value="{{ Input::old('state', $address->state) }}">
                         </div>
                     </div>

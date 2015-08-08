@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use Validator;
+use App;
 
 class AppServiceProvider extends ServiceProvider {
 
@@ -32,7 +33,12 @@ class AppServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
-	}
+        App::bind('flash', function() {
+            return new \App\Session\Flash;
+        });
 
+        App::bind('html', function() {
+            return new \App\Helpers\Html;
+        });
+    }
 }

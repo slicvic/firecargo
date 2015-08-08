@@ -57,10 +57,8 @@ class CarriersController extends BaseAuthController {
     {
         $input = $request->all();
 
-        // Validate input
         $this->validate($input, Carrier::$rules);
 
-        // Create carrier
         Carrier::create($input);
 
         return $this->redirectWithSuccess('carriers', 'Carrier created.');
@@ -90,10 +88,8 @@ class CarriersController extends BaseAuthController {
     {
         $input = $request->only('name');
 
-        // Validate input
         $this->validate($input, Carrier::$rules);
 
-        // Update carrier
         Carrier::findOrFail($id)->update($input);
 
         return $this->redirectBackWithSuccess('Carrier updated.');
@@ -127,13 +123,11 @@ class CarriersController extends BaseAuthController {
     {
         $input = $request->only('term');
 
-        // Validate input
         if (strlen($input['term']) < 2)
         {
             return response()->json([]);
         }
 
-        // Search
         $carriers = Carrier::autocompleteSearch($input['term']);
 
         $json = [];

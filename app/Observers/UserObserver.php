@@ -4,6 +4,7 @@ use Auth;
 
 use App\Models\Account;
 use App\Models\AccountType;
+use App\Models\Address;
 
 /**
  * UserObserver
@@ -22,7 +23,6 @@ class UserObserver {
     {
         if (Auth::check() && ! Auth::user()->isAdmin() && $user->isAdmin())
         {
-            // Sorry, only admins can create "admin" users.
             return FALSE;
         }
     }
@@ -38,7 +38,6 @@ class UserObserver {
         if ($user->isCustomer())
         {
             // Create or update user's customer account
-
             $account = $user->account ?: new Account;
             $account->company_id = $user->company_id;
             $account->name = "{$user->firstname} {$user->lastname}";
@@ -46,7 +45,16 @@ class UserObserver {
             $account->lastname = $user->lastname;
             $account->type_id = AccountType::CUSTOMER;
             $account->email = $user->email;
-            $user->account()->save($account);
+
+            if ( ! $account->exists)
+            {
+                $user->account()->save($account);
+                $account->address()->save(new Address);
+            }
+            else
+            {
+                $account->save();
+            }
         }
     }
 }

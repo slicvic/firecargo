@@ -101,11 +101,7 @@ class WarehousesController extends BaseAuthController {
     {
         $warehouse = new Warehouse;
 
-        // Validate input and save warehouse
-        if ( ! $this->validateAndSave($request, $warehouse))
-        {
-            return ToastrJsonResponse::error('Warehouse creation failed, please try again.', 500);
-        }
+        $this->validateAndSave($request, $warehouse);
 
         Flash::success('Warehouse created.');
 
@@ -137,7 +133,6 @@ class WarehousesController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        // Find warehouse
         $warehouse = Warehouse::findMine($id);
 
         if ( ! $warehouse)
@@ -145,11 +140,7 @@ class WarehousesController extends BaseAuthController {
             return ToastrJsonResponse::error('Warehouse not found.', 404);
         }
 
-        // Validate input and save warehouse
-        if ( ! $this->validateAndSave($request, $warehouse))
-        {
-            return ToastrJsonResponse::error('Warehouse update failed, please try again.', 500);
-        }
+        $this->validateAndSave($request, $warehouse);
 
         Flash::success('Warehouse updated.');
 
@@ -199,7 +190,7 @@ class WarehousesController extends BaseAuthController {
      *
      * @param  Request    $request
      * @param  Warehouse  $warehouse
-     * @return array
+     * @return void
      * @throws ValidationException
      */
     private function validateAndSave(Request $request, Warehouse $warehouse)
@@ -257,18 +248,12 @@ class WarehousesController extends BaseAuthController {
         $warehouse->customer_account_id = $input['warehouse']['customer_account_id'];
         $warehouse->carrier_id = $input['warehouse']['carrier_id'];
         $warehouse->notes = $input['warehouse']['notes'];
-
-        if ( ! $warehouse->save())
-        {
-            return FALSE;
-        }
+        $warehouse->save();
 
         // Save packages
         if ($input['packages'])
         {
             $warehouse->createOrUpdatePackages($input['packages']);
         }
-
-        return TRUE;
     }
 }

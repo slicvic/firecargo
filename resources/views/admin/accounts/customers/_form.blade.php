@@ -4,27 +4,18 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h3>Account Info</h3>
+                    <h3>General Information</h3>
                     <div class="hr-line-dashed"></div>
                       <div class="form-group">
                         <label class="control-label col-sm-2">Name *</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <input type="text" name="name" class="form-control" placeholder="Name" required value="{{ Input::old('name', $account->name) }}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Contact</label>
-                        <div class="col-sm-3">
-                            <input type="text" name="firstname" placeholder="First Name" class="form-control" value="{{ Input::old('firstname', $account->firstname) }}">
-                        </div>
-                        <div class="col-sm-3">
-                            <input type="text" name="lastname" placeholder="Last Name" class="form-control" value="{{ Input::old('lastname', $account->lastname) }}">
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="control-label col-sm-2">Email</label>
-                        <div class="col-sm-6">
-                            <input type="email" name="email" placeholder="Email" class="form-control" value="{{ Input::old('email', $account->email) }}">
+                        <div class="col-sm-4">
+                            <input type="email" name="email" placeholder="Email Address" class="form-control" value="{{ Input::old('email', $account->email) }}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -33,16 +24,16 @@
                             <input type="text" name="phone" placeholder="Phone" class="form-control" value="{{ Input::old('phone', $account->phone) }}">
                         </div>
                     </div>
+                   <div class="form-group">
+                        <label class="control-label col-sm-2">Mobile</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="mobile_phone" placeholder="Mobile" class="form-control" value="{{ Input::old('mobile_phone', $account->mobile_phone) }}">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Fax</label>
                         <div class="col-sm-3">
                             <input type="text" name="fax" placeholder="Fax" class="form-control" value="{{ Input::old('fax', $account->fax) }}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2">Mobile</label>
-                        <div class="col-sm-3">
-                            <input type="text" name="mobile_phone" placeholder="Mobile" class="form-control" value="{{ Input::old('mobile_phone', $account->mobile_phone) }}">
                         </div>
                     </div>
                     <h3>Address</h3>
@@ -61,13 +52,13 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">City *</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-3">
                             <input type="text" name="city" placeholder="City" class="form-control" required value="{{ Input::old('city', $address->city) }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">State *</label>
-                        <div class="col-sm-5">
+                        <div class="col-sm-3">
                             <input type="text" name="state" placeholder="State" class="form-control" required value="{{ Input::old('state', $address->state) }}">
                         </div>
                     </div>

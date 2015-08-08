@@ -59,10 +59,8 @@ class PackageTypesController extends BaseAuthController {
     {
         $input = $request->all();
 
-        // Validate input
         $this->validate($input, PackageType::$rules);
 
-        // Create package type
         PackageType::create($input);
 
         return $this->redirectWithSuccess('package-types', 'Package type created.');
@@ -92,10 +90,8 @@ class PackageTypesController extends BaseAuthController {
     {
         $input = $request->only('name');
 
-        // Validate input
         $this->validate($input, PackageType::$rules);
 
-        // Update package type
         PackageType::findOrFail($id)->update($input);
 
         return $this->redirectBackWithSuccess('Package type updated.');

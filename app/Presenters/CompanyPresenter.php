@@ -11,6 +11,16 @@ use App\Helpers\Upload;
 class CompanyPresenter extends BasePresenter {
 
     /**
+     * Presents the primary contact name.
+     *
+     * @return string
+     */
+    public function contact()
+    {
+        return "{$this->model->firstname} {$this->model->lastname}";
+    }
+
+    /**
      * Presents the address as a string.
      *
      * @return string

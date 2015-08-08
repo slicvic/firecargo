@@ -14,9 +14,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="control-label col-sm-2">Tel</label>
+                <label class="control-label col-sm-2">Phone</label>
                 <div class="col-sm-4">
-                    <input type="text" name="company[phone]" placeholder="Tel" class="form-control" value="{{ Input::old('company.phone', $company->phone) }}">
+                    <input type="text" name="company[phone]" placeholder="Phone" class="form-control" value="{{ Input::old('company.phone', $company->phone) }}">
                 </div>
             </div>
             <div class="form-group">

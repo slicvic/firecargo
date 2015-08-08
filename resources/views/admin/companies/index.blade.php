@@ -10,7 +10,10 @@
 @section('thead')
     <th>ID</th>
     <th>Name</th>
-    <th>Corp Code</th>
+    <th>Primary Contact</th>
+    <th>Phone</th>
+    <th>Email</th>
+    <th>Link Code</th>
     <th>Action</th>
 @stop
 
@@ -19,7 +22,10 @@
        <tr>
             <td>{{ $company->id }}</td>
             <td>{{ $company->name }}</td>
-            <td>{{ $company->shortname }}</td>
+            <td>{{ $company->present()->contact() }}</td>
+            <td>{{ $company->phone }}</td>
+            <td>{{ $company->email }}</td>
+            <td>{{ $company->link_code }}</td>
             <td>
                 <div class="btn-group">
                     <a href="/company/{{ $company->id }}/edit" class="btn-white btn btn-sm"><i class="fa fa-pencil"></i> Edit</a>

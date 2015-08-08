@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Account;
 use App\Models\AccountType;
-//TOOK INTO CONSIDERATION
+
 /**
  * General Purpose Accounts Controller
  *
@@ -37,16 +37,13 @@ class AccountsController extends BaseAuthController {
     {
         $input = $request->only('term', 'type');
 
-        // Validate input
         if (strlen($input['term']) < 2)
         {
             return response()->json([]);
         }
 
-        // Determine account type
         $accountTypeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CUSTOMER;
 
-        // Search
         $accounts = Account::autocompleteSearch($input['term'], $accountTypeId)
             ->mine()
             ->limit(25)

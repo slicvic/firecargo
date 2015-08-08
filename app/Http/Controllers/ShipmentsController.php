@@ -101,11 +101,7 @@ class ShipmentsController extends BaseAuthController {
     {
         $shipment = new Shipment;
 
-        // Validate input and save shipment
-        if ( ! $this->validateAndSave($request, $shipment))
-        {
-            return ToastrJsonResponse::error('Shipment creation failed, please try again.', 500);
-        }
+        $this->validateAndSave($request, $shipment);
 
         Flash::success('Shipment created.');
 
@@ -147,7 +143,6 @@ class ShipmentsController extends BaseAuthController {
      */
     public function postUpdate(Request $request, $id)
     {
-        // Find shipment
         $shipment = Shipment::findMine($id);
 
         if ( ! $shipment)
@@ -155,11 +150,7 @@ class ShipmentsController extends BaseAuthController {
             return ToastrJsonResponse::error('Shipment not found.', 404);
         }
 
-        // Validate input and save shipment
-        if ( ! $this->validateAndSave($request, $shipment))
-        {
-            return ToastrJsonResponse::error('Shipment update failed, please try again.', 500);
-        }
+        $this->validateAndSave($request, $shipment);
 
         Flash::success('Shipment updated.');
 
@@ -171,7 +162,7 @@ class ShipmentsController extends BaseAuthController {
      *
      * @param  Request  $request
      * @param  Shipment $shipment
-     * @return array
+     * @return void
      * @throws ValidationException
      */
     private function validateAndSave(Request $request, Shipment $shipment)
@@ -204,15 +195,9 @@ class ShipmentsController extends BaseAuthController {
         $shipment->reference_number = $input['shipment']['reference_number'];
         $shipment->departed_at = $input['shipment']['departure_date'];
         $shipment->carrier_id = $input['shipment']['carrier_id'];
-
-        if ( ! $shipment->save())
-        {
-            return FALSE;
-        }
+        $shipment->save();
 
         // Save packages
         $shipment->syncPackages($input['pieces'] ? array_keys($input['pieces']) : []);
-
-        return TRUE;
     }
 }

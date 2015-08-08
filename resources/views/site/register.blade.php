@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     <form action="/register" method="post" class="form-horizontal">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="corp_code" value="{{ Request::input('af_id') }}">
+                        <input type="hidden" name="registration_code" value="{{ Request::input('link_code') }}">
                         <h3>Contact Information</h3>
                         <hr>
                         <div class="form-group">
@@ -27,13 +27,13 @@
                         <div class="form-group">
                             <label class="control-label col-md-3">Phone *</label>
                             <div class="col-md-4">
-                                <input type="text" name="phone" class="form-control" value="{{ Input::old('phone') }}" minlength="7" required>
+                                <input type="text" name="phone" class="form-control" value="{{ Input::old('phone') }}" required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-3">Mobile Phone</label>
                             <div class="col-md-4">
-                                <input type="text" name="mobile_phone" class="form-control" value="{{ Input::old('mobile_phone') }}" minlength="7">
+                                <input type="text" name="mobile_phone" class="form-control" value="{{ Input::old('mobile_phone') }}">
                             </div>
                         </div>
                         <br>

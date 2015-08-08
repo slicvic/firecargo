@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Role;
-use App\Http\Requests\UserFormRequest;
+use App\Http\Requests\CreateUserFormRequest;
+use App\Http\Requests\UpdateUserFormRequest;
 
 /**
  * UsersController
@@ -57,7 +58,7 @@ class UsersController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postStore(UserFormRequest $request)
+    public function postStore(CreateUserFormRequest $request)
     {
         $input = $this->prepareInput($request);
 
@@ -87,7 +88,7 @@ class UsersController extends BaseAuthController {
      * @param  int      $id
      * @return Redirector
      */
-    public function postUpdate(UserFormRequest $request, $id)
+    public function postUpdate(UpdateUserFormRequest $request, $id)
     {
         $input = $this->prepareInput($request);
 

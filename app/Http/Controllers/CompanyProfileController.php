@@ -14,7 +14,7 @@ use App\Models\Address;
 use App\Models\Country;
 use App\Helpers\Upload;
 use App\Http\ToastrJsonResponse;
-use App\Http\Requests\CompanyProfileFormRequest;
+use App\Http\Requests\UpdateCompanyProfileFormRequest;
 
 /**
  * CompanyProfileController
@@ -67,7 +67,7 @@ class CompanyProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postUpdateProfile(CompanyProfileFormRequest $request)
+    public function postUpdateProfile(UpdateCompanyProfileFormRequest $request)
     {
         $input = $request->only('company', 'address');
 
@@ -80,14 +80,14 @@ class CompanyProfileController extends BaseAuthController {
         $company->save();
 
         // Update address
-        $address = $company->address;
+        $address = $company->address ?: new Address;
         $address->address1 = $input['address']['address1'];
         $address->address2 = $input['address']['address2'];
         $address->city = $input['address']['city'];
         $address->state = $input['address']['state'];
         $address->postal_code = $input['address']['postal_code'];
         $address->country_id = $input['address']['country_id'];
-        $address->save();
+        $company->address()->save($address);
 
         return $this->redirectWithSuccess('company/profile', 'Your company profile has been updated.');
     }
@@ -102,7 +102,6 @@ class CompanyProfileController extends BaseAuthController {
     {
         $input = $request->all();
 
-        // Validate file
         $validator = Validator::make($input, [
             'file' => 'required|image|mimes:gif,jpg,jpeg,png|max:' . Upload::MAX_FILE_SIZE
         ]);
@@ -112,7 +111,6 @@ class CompanyProfileController extends BaseAuthController {
             return ToastrJsonResponse::error($validator, 404);
         }
 
-        // Save logo
         try
         {
             Upload::saveCompanyLogo($input['file'], $this->user->company->id);
