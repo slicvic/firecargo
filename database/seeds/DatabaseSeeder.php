@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder {
 	{
 		Model::unguard();
 
+		$this->call('AddressesTableSeeder');
+		$this->command->info('Addresses table seeded!');
+
 		$this->call('PackageTypesTableSeeder');
 		$this->command->info('Package types table seeded!');
 

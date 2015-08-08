@@ -51,7 +51,10 @@ class Warehouse extends BaseSearchable implements ISearchable {
         'id',
         'company_id',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'customer_account_id',
+        'shipper_account_id',
+        'carrier_id'
     ];
 
     /**

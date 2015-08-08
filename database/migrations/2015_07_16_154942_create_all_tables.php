@@ -12,6 +12,31 @@ class CreateAllTables extends Migration {
 	 */
 	public function up()
 	{
+		// Create countries
+		Schema::create('countries', function($table)
+		{
+		    $table->increments('id')->unsigned();
+		    $table->string('name', 100);
+		    $table->dateTime('created_at');
+		    $table->dateTime('updated_at');
+		});
+
+		// Create addresses
+		Schema::create('addresses', function($table)
+		{
+		    $table->increments('id')->unsigned();
+		    $table->string('address1', 255);
+		    $table->string('address2', 255);
+		    $table->string('city', 30);
+		    $table->string('state', 30);
+		    $table->string('postal_code', 10);
+		    $table->integer('country_id')->unsigned()->nullable();
+		    $table->dateTime('created_at');
+		    $table->dateTime('updated_at');
+
+		    $table->foreign('country_id')->references('id')->on('countries');
+		});
+
 		// Create companies
 		Schema::create('companies', function($table)
 		{
@@ -21,10 +46,15 @@ class CreateAllTables extends Migration {
 		    $table->string('phone', 30);
 		    $table->string('fax', 30);
 		    $table->string('email', 255);
+		    $table->integer('shipping_address_id')->unsigned()->nullable()->default(NULL);
+		    $table->integer('billing_address_id')->unsigned()->nullable()->default(NULL);
 		    $table->string('referer_id', 30)->nullable()->unique();
 		    $table->tinyInteger('has_logo')->unsigned()->default(0);
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
+
+		    $table->foreign('shipping_address_id')->references('id')->on('addresses');
+		    $table->foreign('billing_address_id')->references('id')->on('addresses');
 		});
 
 		// Create roles
@@ -83,41 +113,16 @@ class CreateAllTables extends Migration {
 		    $table->string('mobile_phone', 30);
 		    $table->string('fax', 30);
 		    $table->tinyInteger('autoship')->unsigned()->default(1);
+		    $table->integer('shipping_address_id')->unsigned()->nullable();
+		    $table->integer('billing_address_id')->unsigned()->nullable();
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
 
 		    $table->foreign('company_id')->references('id')->on('companies');
 		    $table->foreign('type_id')->references('id')->on('account_types');
 		    $table->foreign('user_id')->references('id')->on('users');
-		});
-
-		// Create countries
-		Schema::create('countries', function($table)
-		{
-		    $table->increments('id')->unsigned();
-		    $table->string('name', 100);
-		    $table->dateTime('created_at');
-		    $table->dateTime('updated_at');
-		});
-
-		// Create addresses
-		Schema::create('addresses', function($table)
-		{
-		    $table->increments('id')->unsigned();
-		    $table->integer('company_id')->unsigned()->nullable();
-		    $table->integer('account_id')->unsigned()->nullable();
-		    $table->string('address1', 255);
-		    $table->string('address2', 255);
-		    $table->string('city', 30);
-		    $table->string('state', 30);
-		    $table->string('postal_code', 10);
-		    $table->integer('country_id')->unsigned()->nullable();
-		    $table->dateTime('created_at');
-		    $table->dateTime('updated_at');
-
-		    $table->foreign('company_id')->references('id')->on('companies');
-		    $table->foreign('account_id')->references('id')->on('accounts');
-		    $table->foreign('country_id')->references('id')->on('countries');
+		    $table->foreign('shipping_address_id')->references('id')->on('addresses');
+		    $table->foreign('billing_address_id')->references('id')->on('addresses');
 		});
 
 		// Create carriers

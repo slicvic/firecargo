@@ -74,7 +74,6 @@ class CustomerAccountsController extends BaseAuthController {
         $account->fax = $input['fax'];
         $account->mobile_phone = $input['mobile_phone'];
         $account->type_id = AccountType::CUSTOMER;
-        $account->save();
 
         // Create address
         $address = new Address;
@@ -84,7 +83,11 @@ class CustomerAccountsController extends BaseAuthController {
         $address->state = $input['state'];
         $address->postal_code = $input['postal_code'];
         $address->country_id = $input['country_id'];
-        $account->address()->save($address);
+        $address->save();
+
+        $account->shippingAddress()
+            ->associate($address)
+            ->save();
 
         return $this->redirectWithSuccess('accounts/customers', 'Customer created.');
     }
@@ -101,7 +104,7 @@ class CustomerAccountsController extends BaseAuthController {
 
         return view('admin.accounts.customers.edit', [
             'account' => $account,
-            'address' => $account->address ?: new Address
+            'address' => $account->shippingAddress ?: new Address
         ]);
     }
 
@@ -123,18 +126,20 @@ class CustomerAccountsController extends BaseAuthController {
         $account->phone = $input['phone'];
         $account->fax = $input['fax'];
         $account->mobile_phone = $input['mobile_phone'];
-        $account->save();
 
         // Update address
-        $address = ($account->address) ?: new Address;
+        $address = ($account->shippingAddress) ?: new Address;
         $address->address1 = $input['address1'];
         $address->address2 = $input['address2'];
         $address->city = $input['city'];
         $address->state = $input['state'];
         $address->postal_code = $input['postal_code'];
         $address->country_id = $input['country_id'];
-        $address->account()->associate($account);
         $address->save();
+
+        $account->shippingAddress()
+            ->associate($address)
+            ->save();
 
         return $this->redirectBackWithSuccess('Customer updated.');
     }

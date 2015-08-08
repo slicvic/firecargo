@@ -16,13 +16,13 @@
         <td width="60%">
 {!! $company->has_logo ? '<img src="' . $company->present()->logoUrl('sm', 'jpg') . '"><br>' : '' !!}
 {{ strtoupper($company->name) }}<br>
-{!! strtoupper($company->present()->address()) !!}<br>
+{!! strtoupper($company->present()->address('shipping')) !!}<br>
 TEL: {{ $company->phone }}<br>
 EMAIL: {{ $company->email }}<br><br>
 
 RECEIVED FOR:<br><br>
 {{ strtoupper($customer->name) }}<br>
-{!! strtoupper($customer->present()->address()) !!}<br>
+{!! strtoupper($customer->present()->address('shipping')) !!}<br>
         </td>
         <td width="40%">
             <br><br><br><br><br><img src="data:image/png;base64,{{ $barcodeBase64 }}">

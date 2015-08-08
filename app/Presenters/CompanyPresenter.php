@@ -23,18 +23,24 @@ class CompanyPresenter extends BasePresenter {
     /**
      * Presents the address as a string.
      *
+     * @param  string  $type   shipping|billing
      * @return string
      */
-    public function address()
+    public function address($type = 'shipping')
     {
-        return ($this->model->address) ? $this->model->address->toString() : '';
+        if ($type === 'shipping')
+        {
+            return $this->model->shippingAddress->toString();
+        }
+
+        return $this->model->billingAddress->toString();
     }
 
     /**
      * Presents the logo URL.
      *
-     * @param  string  $size  The possible values are: 'sm'|'md'|'lg'
-     * @param  string  $ext   The possible values are: 'png'|'jpg'
+     * @param  string  $size  sm|md|lg
+     * @param  string  $ext   png|jpg
      * @param  string  $default
      * @return string|NULL
      */

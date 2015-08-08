@@ -64,16 +64,6 @@ class Address extends Base {
     }
 
     /**
-     * Gets the account.
-     *
-     * @return Country
-     */
-    public function account()
-    {
-        return $this->belongsTo('App\Models\Account');
-    }
-
-    /**
      * Converts the address into a friendly string.
      *
      * @param  string  $lineSeparator

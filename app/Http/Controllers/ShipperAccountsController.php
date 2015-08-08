@@ -70,7 +70,6 @@ class ShipperAccountsController extends BaseAuthController {
         $account = new Account;
         $account->name = $input['name'];
         $account->type_id = AccountType::SHIPPER;
-        $account->save();
 
         // Create address
         $address = new Address;
@@ -80,7 +79,11 @@ class ShipperAccountsController extends BaseAuthController {
         $address->state = $input['state'];
         $address->postal_code = $input['postal_code'];
         $address->country_id = $input['country_id'];
-        $account->address()->save($address);
+        $address->save();
+
+        $account->shippingAddress()
+            ->associate($address)
+            ->save();
 
         return $this->redirectWithSuccess('accounts/shippers', 'Shipper created.');
     }
@@ -97,7 +100,7 @@ class ShipperAccountsController extends BaseAuthController {
 
         return view('admin.accounts.shippers.edit', [
             'account' => $account,
-            'address' => $account->address ?: new Address
+            'address' => $account->shippingAddress ?: new Address
         ]);
     }
 
@@ -115,18 +118,20 @@ class ShipperAccountsController extends BaseAuthController {
         // Update account
         $account = Account::findMineOrFail($id);
         $account->name = $input['name'];
-        $account->save();
 
         // Update address
-        $address = ($account->address) ?: new Address;
+        $address = ($account->shippingAddress) ?: new Address;
         $address->address1 = $input['address1'];
         $address->address2 = $input['address2'];
         $address->city = $input['city'];
         $address->state = $input['state'];
         $address->postal_code = $input['postal_code'];
         $address->country_id = $input['country_id'];
-        $address->account()->associate($account);
         $address->save();
+
+        $account->shippingAddress()
+            ->associate($address)
+            ->save();
 
         return $this->redirectBackWithSuccess('Shipper updated.');
     }

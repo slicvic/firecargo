@@ -110,7 +110,7 @@ class AuthController extends BaseController {
 
         $company = Company::where('link_code', $input['registration_code'])->first();
 
-        // Create user
+        // Create user and customer account (See App\Observers\UserObserver)
         $user = new User;
         $user->company_id = $company->id;
         $user->firstname = $input['firstname'];
@@ -121,12 +121,7 @@ class AuthController extends BaseController {
         $user->role_id = Role::CUSTOMER;
         $user->save();
 
-        // Create customer account
-        $account = $user->account()->first();
-        $account->phone = $input['phone'];
-        $account->save();
-
-        // Create customer account address
+        // Create account address
         $address = new Address;
         $address->address1 = $input['address1'];
         $address->address2 = $input['address2'];
@@ -134,8 +129,13 @@ class AuthController extends BaseController {
         $address->state = $input['state'];
         $address->postal_code = $input['postal_code'];
         $address->country_id = $input['country_id'];
+        $address->save();
 
-        $account->address()->save($address);
+        // Update account
+        $account = $user->account()->first();
+        $account->phone = $input['phone'];
+        $account->shippingAddress()->associate($address);
+        $account->save();
 
         Event::fire(new UserRegistered($user));
 

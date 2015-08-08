@@ -1,13 +1,13 @@
 @extends('admin.user_profile.layout')
 
 @section('user_profile_content')
-<form action="/customer/profile/update" method="post" class="form-horizontal">
+<form action="/customer/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="row">
         <div class="col-md-12">
             <div class="ibox">
                 <div class="ibox-content">
-                    <h2>Account Info</h2>
+                    <h2>Edit Profile</h2>
                     <div class="clear hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">First Name</label>
@@ -39,7 +39,8 @@
                             <input type="text" name="mobile_phone" placeholder="Mobile" class="form-control" value="{{ Input::old('mobile_phone', $account->mobile_phone) }}">
                         </div>
                     </div>
-                    <h2>Address</h2>
+                    <div class="clear hr-line-dashed"></div>
+                    <h2>Delivery Address</h2>
                     <div class="clear hr-line-dashed"></div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Address</label>
@@ -77,6 +78,7 @@
                             @include('shared._country_select', ['name' => 'country_id', 'required' => TRUE, 'default' => Input::old('country_id', $address->country_id)])
                         </div>
                     </div>
+                    <div class="clear hr-line-dashed"></div>
                     <h2>Preferences</h2>
                     <div class="clear hr-line-dashed"></div>
                     <div class="form-group">

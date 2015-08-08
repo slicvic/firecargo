@@ -59,7 +59,6 @@ class CompaniesController extends BaseAuthController {
     {
         $input = $request->all();
 
-        // Create company
         $company = new Company;
         $company->name = $input['name'];
         $company->firstname = $input['firstname'];
@@ -67,9 +66,6 @@ class CompaniesController extends BaseAuthController {
         $company->email = $input['email'];
         $company->phone = $input['phone'];
         $company->save();
-
-        // Create address
-        $company->address()->save(new Address);
 
         return $this->redirectWithSuccess('companies', 'Company created.');
     }

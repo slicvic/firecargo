@@ -49,7 +49,9 @@ class Shipment extends BaseSearchable implements ISearchable {
         'company_id',
         'departed_at',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'reference_number',
+        'carrier_id'
     ];
 
     /**

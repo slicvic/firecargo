@@ -17,11 +17,9 @@ class CompaniesTableSeeder extends Seeder {
         DB::table('companies')->insert([
             [
                 'id' => 1,
-                'name' => 'Lantigua Group',
-            ],
-            [
-                'id' => 1000,
-                'name' => 'Sion Services Group',
+                'name' => 'Lantigua Lab',
+                'shipping_address_id' => 1,
+                'billing_address_id' => 2
             ]
         ]);
     }

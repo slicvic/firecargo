@@ -15,7 +15,7 @@ class ShipperAccountFormRequest extends Request {
     public function rules()
     {
         return [
-            'name' => 'required|min:3|alpha_spaces',
+            'name' => 'required|min:3|alpha_num_spaces',
             'city' => 'alpha_spaces',
             'state' => 'alpha_spaces'
         ];

@@ -52,17 +52,48 @@ class Company extends Base {
     {
         parent::boot();
 
-        User::observe(new CompanyObserver);
+        Company::observe(new CompanyObserver);
     }
 
     /**
-     * Gets the address.
+     * Overrides parent method to sanitize attributes.
+     *
+     * @see parent::setAttribute()
+     */
+    public function setAttribute($key, $value)
+    {
+        switch ($key)
+        {
+            case 'firstname':
+            case 'lastname':
+                $value = ucwords(strtolower(trim($value)));
+                break;
+            case 'name':
+                $value = ucwords($value);
+                break;
+        }
+
+        return parent::setAttribute($key, $value);
+    }
+
+    /**
+     * Gets the shipping address.
      *
      * @return Address
      */
-    public function address()
+    public function shippingAddress()
     {
-        return $this->hasOne('App\Models\Address');
+        return $this->belongsTo('App\Models\Address', 'shipping_address_id');
+    }
+
+    /**
+     * Gets the billing address.
+     *
+     * @return Address
+     */
+    public function billingAddress()
+    {
+        return $this->belongsTo('App\Models\Address', 'billing_address_id');
     }
 
     /**

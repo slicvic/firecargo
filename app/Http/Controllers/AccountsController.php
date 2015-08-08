@@ -37,14 +37,13 @@ class AccountsController extends BaseAuthController {
     {
         $input = $request->only('term', 'type');
 
+        // Return nothing if search term is less than 2 characters long.
         if (strlen($input['term']) < 2)
         {
             return response()->json([]);
         }
 
-        $accountTypeId = ($input['type'] === 'shipper') ? AccountType::SHIPPER : AccountType::CUSTOMER;
-
-        $accounts = Account::autocompleteSearch($input['term'], $accountTypeId)
+        $accounts = Account::autocompleteSearch($input['term'], $input['type'])
             ->mine()
             ->limit(25)
             ->get();
@@ -57,7 +56,7 @@ class AccountsController extends BaseAuthController {
                 'id'    => $account->id,
                 'label' => $account->name,
                 'email' => $account->email,
-                'address' => $account->present()->address(' ')
+                'address' => $account->present()->address()
             ];
         }
 

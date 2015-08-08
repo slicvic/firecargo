@@ -10,9 +10,9 @@
                 <th>Pieces</th>
                 <th>Gross Weight</th>
                 <th>Volume</th>
-                <th>Customer</th>
-                <th>Shipper</th>
-                <th>Carrier</th>
+                <th>{!! Html::linkToSort('/warehouses', 'Customer', 'customer_account_id', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/warehouses', 'Shipper', 'shipper_account_id', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/warehouses', 'Carrier', 'carrier_id', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/warehouses', 'Created', 'created_at', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/warehouses', 'Modified', 'updated_at', $params['sort'], $params['order']) !!}</th>
                 <th>Action</th>

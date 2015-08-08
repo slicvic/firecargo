@@ -7,8 +7,8 @@
                     <th>{!! Html::linkToSort('/shipments', 'Company', 'company_id', $params['sort'], $params['order']) !!}</th>
                 @endif                <th>{!! Html::linkToSort('/shipments', 'ID', 'id', $params['sort'], $params['order']) !!}</th>
                 <th>Pieces</th>
-                <th>Reference #</th>
-                <th>Carrier</th>
+                <th>{!! Html::linkToSort('/shipments', 'Reference #', 'reference_number', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/shipments', 'Carrier', 'carrier_id', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/shipments', 'Departed', 'departed_at', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/shipments', 'Created', 'created_at', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/shipments', 'Modified', 'updated_at', $params['sort'], $params['order']) !!}</th>

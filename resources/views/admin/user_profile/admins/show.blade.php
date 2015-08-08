@@ -3,7 +3,7 @@
 @section('user_profile_content')
 <div class="ibox">
     <div class="ibox-content">
-        <h2>Account Info</h2>
+        <h2>Account Information</h2>
         <div class="row">
             <div class="col-xs-2"><strong>Name</strong></div>
             <div class="col-xs-10"><p>{{ $currentUser->present()->fullname() }}</p></div>

@@ -46,14 +46,13 @@ class UserObserver {
             $account->type_id = AccountType::CUSTOMER;
             $account->email = $user->email;
 
-            if ( ! $account->exists)
+            if ($account->exists)
             {
-                $user->account()->save($account);
-                $account->address()->save(new Address);
+                $account->save();
             }
             else
             {
-                $account->save();
+                $user->account()->save($account);
             }
         }
     }

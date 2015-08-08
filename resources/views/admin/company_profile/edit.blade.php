@@ -1,11 +1,11 @@
 @extends('admin.company_profile.layout')
 
 @section('company_profile_content')
-<form action="/company/profile/update" method="post" class="form-horizontal">
+<form action="/company/profile" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="ibox">
         <div class="ibox-content">
-            <h2>Company Info</h2>
+            <h2>General Information</h2>
             <div class="clear hr-line-dashed"></div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Name</label>
@@ -31,7 +31,8 @@
                     <input type="email" name="company[email]" placeholder="Email" class="form-control" value="{{ Input::old('company.email', $company->email) }}">
                 </div>
             </div>
-            <h2>Address</h2>
+            <div class="clear hr-line-dashed"></div>
+            <h2>Billing Address</h2>
             <div class="clear hr-line-dashed"></div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Address</label>

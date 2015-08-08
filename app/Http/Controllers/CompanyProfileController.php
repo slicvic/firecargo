@@ -55,9 +55,11 @@ class CompanyProfileController extends BaseAuthController {
      */
     public function getEditProfile()
     {
+        $company = $this->user->company;
+
         return view('admin.company_profile.edit', [
-            'company' => $this->user->company,
-            'address' => $this->user->company->address ?: new Address
+            'company' => $company,
+            'address' => $company->billingAddress ?: new Address
         ]);
     }
 
@@ -67,7 +69,7 @@ class CompanyProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postUpdateProfile(UpdateCompanyProfileFormRequest $request)
+    public function postProfile(UpdateCompanyProfileFormRequest $request)
     {
         $input = $request->only('company', 'address');
 
@@ -77,17 +79,20 @@ class CompanyProfileController extends BaseAuthController {
         $company->phone = $input['company']['phone'];
         $company->fax = $input['company']['fax'];
         $company->email = $input['company']['email'];
-        $company->save();
 
         // Update address
-        $address = $company->address ?: new Address;
+        $address = $company->billingAddress ?: new Address;
         $address->address1 = $input['address']['address1'];
         $address->address2 = $input['address']['address2'];
         $address->city = $input['address']['city'];
         $address->state = $input['address']['state'];
         $address->postal_code = $input['address']['postal_code'];
         $address->country_id = $input['address']['country_id'];
-        $company->address()->save($address);
+        $address->save();
+
+        $company->billingAddress()
+            ->associate($address)
+            ->save();
 
         return $this->redirectWithSuccess('company/profile', 'Your company profile has been updated.');
     }

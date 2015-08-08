@@ -96,16 +96,16 @@ Route::post('user/store', 'UsersController@postStore');
 // User Profile
 Route::get('user/profile', ['uses' => 'UserProfileController@getProfile']);
 Route::get('user/profile/edit', 'UserProfileController@getEditProfile');
-Route::post('user/profile/update', 'UserProfileController@postUpdateProfile');
+Route::post('user/profile', 'UserProfileController@postProfile');
 Route::get('user/change-password', 'UserProfileController@getChangePassword');
 Route::post('user/change-password', 'UserProfileController@postChangePassword');
 Route::post('user/upload-photo', 'UserProfileController@postUploadPhoto');
-Route::post('customer/profile/update', 'UserProfileController@postUpdateCustomerProfile');
+Route::post('customer/profile', 'UserProfileController@postCustomerProfile');
 
 // Company Profile
 Route::get('company/profile', 'CompanyProfileController@getProfile');
 Route::get('company/profile/edit', 'CompanyProfileController@getEditProfile');
-Route::post('company/profile/update', 'CompanyProfileController@postUpdateProfile');
+Route::post('company/profile', 'CompanyProfileController@postProfile');
 Route::post('company/upload-logo', 'CompanyProfileController@postUploadLogo');
 
 // Dashboard

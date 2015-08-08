@@ -18,8 +18,7 @@
                 </thead>
                 <tbody>
                     @foreach ($packages as $package)
-                        <?php $inShipment = $package->isShipped(); ?>
-                        <tr class="{{ $inShipment ? 'success' : 'default' }}">
+                        <tr class="{{ ($inShipment = $package->isShipped()) ? 'success' : 'default' }}">
                             <td><input type="checkbox" data-status="{{ $inShipment ? 'in' : 'out' }}" class="icheck-green status-icheck" name="pieces[{{ $package->id }}]"{{ $inShipment ? ' checked' : '' }}></td>
                             <td>{{ $package->id }}</td>
                             <td><i>Warehouse:</i> {!! $package->present()->warehouseLink() !!} <i>Customer:</i> {!! $package->present()->customerLink() !!}</td>

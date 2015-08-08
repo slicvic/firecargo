@@ -1,5 +1,7 @@
 <?php namespace App\Observers;
 
+use App\Models\Address;
+
 /**
  * CompanyObserver
  *

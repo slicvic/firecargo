@@ -14,7 +14,8 @@
                 </div>
                 <button type="button" id="edit-logo-btn" class="btn btn-link btn-block"><i class="fa fa-pencil"></i> Upload Logo</button>
                 <div class="list-group">
-                    <a href="/company/profile/edit" class="btn btn-block btn-primary">Edit Company Profile</a>
+                    <a href="/company/profile" class="{{ Request::is('company/profile') ? 'active ' : '' }}list-group-item btn btn-block btn-success">My Company Profile</a>
+                    <a href="/company/profile/edit" class="{{ Request::is('company/profile/edit') ? 'active ' : '' }}list-group-item btn btn-block btn-success">Edit Company Profile</a>
                 </div>
             </div>
         </div>

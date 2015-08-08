@@ -15,7 +15,9 @@ class CustomerAccountFormRequest extends Request {
     public function rules()
     {
         return [
-            'name' => 'required|min:3|alpha_spaces',
+            'name' => 'required|min:3|alpha_num_spaces',
+            'firstname' => 'min:3|alpha_spaces',
+            'lastname' => 'min:3|alpha_spaces',
             'email' => 'email',
             'phone' => 'phone',
             'mobile_phone' => 'phone',

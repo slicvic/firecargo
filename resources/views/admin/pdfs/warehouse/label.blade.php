@@ -8,7 +8,7 @@
         {!! $company->has_logo ? '<td width="23%"><img src="' . $company->present()->logoUrl('sm', 'jpg') . '"></td>' : '' !!}
         <td width="45%">
 <b>{{ strtoupper($company->name) }}</b><br>
-{!! strtoupper($company->present()->address()) !!}<br>
+{!! strtoupper($company->present()->address('shipping')) !!}<br>
 TEL: {{ $company->phone }}<br>
 EMAIL: {{ $company->email }}
         </td>
@@ -30,14 +30,14 @@ EMAIL: {{ $company->email }}
         <td width="20%">FROM:</td>
         <td width="80%">
 <b>{{ strtoupper($warehouse->present()->shipper()) }}</b><br>
-{!! strtoupper($shipper->present()->address()) !!}<br>
+{!! strtoupper($shipper->present()->address('shipping')) !!}<br>
         </td>
     </tr>
     <tr>
         <td width="20%">TO:</td>
         <td width="80%">
 <b>{{ strtoupper($customer->name) }}</b><br>
-{!! strtoupper($customer->present()->address()) !!}<br>
+{!! strtoupper($customer->present()->address('shipping')) !!}<br>
         </td>
     </tr>
 </table>

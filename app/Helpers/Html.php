@@ -32,13 +32,13 @@ class Html {
      */
     public function linkToSort($url, $title, $column, $currentColumn, $currentOrder)
     {
-        $query = sprintf('?sort=%s&order=%s', $column, ($currentOrder === 'asc' ? 'desc' : 'asc'));
+        $queryString = sprintf('?sort=%s&order=%s', $column, ($currentOrder === 'asc' ? 'desc' : 'asc'));
 
         $indicator = ($column === $currentColumn)
             ? ' <i class="fa fa-angle-' . ($currentOrder === 'asc' ? 'up' : 'down') . '"></i>'
             : '';
 
-        return "<a href=\"{$url}{$query}\">{$title}{$indicator}</a>";
+        return "<a href=\"{$url}{$queryString}\">{$title}{$indicator}</a>";
     }
 
     /**

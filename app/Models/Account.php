@@ -21,7 +21,7 @@ class Account extends Base {
      * @var array
      */
     public static $rules = [
-        'name' => 'required|min:3|alpha_spaces'
+        'name' => 'required|min:3|alpha_num_spaces'
     ];
 
     /**
@@ -101,13 +101,23 @@ class Account extends Base {
     }
 
     /**
-     * Gets the account address.
+     * Gets the shipping address.
      *
      * @return Address
      */
-    public function address()
+    public function shippingAddress()
     {
-        return $this->hasOne('App\Models\Address');
+        return $this->belongsTo('App\Models\Address', 'shipping_address_id');
+    }
+
+    /**
+     * Gets the billing address.
+     *
+     * @return Address
+     */
+    public function billingAddress()
+    {
+        return $this->belongsTo('App\Models\Address', 'billing_address_id');
     }
 
     /**
@@ -159,10 +169,10 @@ class Account extends Base {
      * ajax autocomplete field.
      *
      * @param  string  $searchTerm
-     * @param  int     $accountTypeId
+     * @param  int     $typeId
      * @return Builder
      */
-    public static function autocompleteSearch($searchTerm, $accountTypeId)
+    public static function autocompleteSearch($searchTerm, $typeId)
     {
         $query = Account::query();
 
@@ -178,7 +188,7 @@ class Account extends Base {
             OR phone LIKE ?
             OR fax LIKE ?
             OR mobile_phone LIKE ?)', [
-            $accountTypeId,
+            $typeId,
             $searchTerm,
             $searchTerm,
             $searchTerm,

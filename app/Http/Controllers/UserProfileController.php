@@ -47,9 +47,11 @@ class UserProfileController extends BaseAuthController {
     {
         if ($this->user->isCustomer())
         {
+            $account = $this->user->account;
+
             return view('admin.user_profile.customers.edit', [
-                'account' => $this->user->account,
-                'address' => $this->user->account->address
+                'account' => $account,
+                'address' => $account->shippingAddress ?: new Address
             ]);
         }
 
@@ -62,7 +64,7 @@ class UserProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postUpdateProfile(UpdateUserProfileFormRequest $request)
+    public function postProfile(UpdateUserProfileFormRequest $request)
     {
         $input = $request->all();
 
@@ -81,26 +83,25 @@ class UserProfileController extends BaseAuthController {
      * @param  Request  $request
      * @return Redirector
      */
-    public function postUpdateCustomerProfile(UpdateCustomerUserProfileFormRequest $request)
+    public function postCustomerProfile(UpdateCustomerUserProfileFormRequest $request)
     {
         $input = $request->all();
 
-        // Update customer
+        // Update user
         $user = $this->user;
         $user->firstname = $input['firstname'];
         $user->lastname = $input['lastname'];
         $user->email = $input['email'];
         $user->save();
 
-        // Update customer account
-        $account = $this->user->account;
+        // Update account
+        $account = $user->account;
         $account->phone = $input['phone'];
         $account->mobile_phone = $input['mobile_phone'];
         $account->autoship = isset($input['autoship']);
-        $account->save();
 
-        // Update customer account address
-        $address = $account->address;
+        // Update account address
+        $address = $account->shippingAddress ?: new Address;
         $address->address1 = $input['address1'];
         $address->address2 = $input['address2'];
         $address->city = $input['city'];
@@ -108,6 +109,10 @@ class UserProfileController extends BaseAuthController {
         $address->postal_code = $input['postal_code'];
         $address->country_id = $input['country_id'];
         $address->save();
+
+        $account->shippingAddress()
+            ->associate($address)
+            ->save();
 
         return $this->redirectWithSuccess('user/profile', 'Your profile has been updated.');
     }

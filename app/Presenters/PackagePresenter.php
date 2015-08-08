@@ -101,13 +101,10 @@ class PackagePresenter extends BasePresenter {
 
         $shipment = $this->model->shipment;
 
-        $title = sprintf('%s (Reference: %s, Date: %s)',
-            $shipment->id,
-            $shipment->reference_number,
-            $shipment->present()->departedAt()
+        return Html::linkWithIcon(
+            '/shipment/' . $shipment->id,
+            $shipment->reference_number
         );
-
-        return Html::linkWithIcon('/shipment/' . $shipment->id, $title);
     }
 
     /**

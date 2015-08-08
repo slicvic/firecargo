@@ -20,7 +20,7 @@
             @endif
             <td>{{ $account->id }}</td>
             <td>{{ $account->name }}</td>
-            <td>{!! $account->present()->address() !!}</td>
+            <td>{!! $account->present()->address('shipping') !!}</td>
             <td><a href="/accounts/shipper/{{ $account->id }}/edit" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit</a></td>
         </tr>
     @endforeach

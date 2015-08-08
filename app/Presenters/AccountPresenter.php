@@ -14,10 +14,16 @@ class AccountPresenter extends BasePresenter {
     /**
      * Presents the address as a string.
      *
+     * @param  string  $type   shipping|billing
      * @return string
      */
-    public function address()
+    public function address($type = 'shipping')
     {
-        return ($this->model->address) ? $this->model->address->toString() : '';
+        if ($type === 'shipping')
+        {
+            return ($address = $this->model->shippingAddress) ? $address->toString() : '';
+        }
+
+        return ($address = $this->model->billingAddress) ? $address->toString() : '';
     }
 }
