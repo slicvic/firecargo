@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class AccountTypesTableSeeder extends Seeder {
+class AccountTagsTableSeeder extends Seeder {
 
     /**
      * Run the database seeds.
@@ -12,9 +12,9 @@ class AccountTypesTableSeeder extends Seeder {
      */
     public function run()
     {
-        DB::table('account_types')->delete();
+        DB::table('account_tags')->delete();
 
-        DB::table('account_types')->insert([
+        DB::table('account_tags')->insert([
             ['name' => 'Customer'],
             ['name' => 'Shipper'],
         ]);

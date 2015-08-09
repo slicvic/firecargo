@@ -1,4 +1,8 @@
-<form action="/accounts/customer/{{ $action }}" method="post" class="form-horizontal">
+
+<?php
+//dd($account->types->lists('id'));
+?>
+<form action="/account/{{ $action }}" method="post" class="form-horizontal">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="row">
         <div class="col-lg-12">
@@ -6,10 +10,31 @@
                 <div class="ibox-content">
                     <h3>General Information</h3>
                     <div class="hr-line-dashed"></div>
-                      <div class="form-group">
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Type *</label>
+                        <div class="col-sm-10">
+                            <?php $assignedTagIds = $account->tags->lists('id'); ?>
+                            @foreach (\App\Models\AccountTag::all() as $tag)
+                                <input type="checkbox" name="tag_ids[]" class="form-control icheck-green" required value="{{ $tag->id }}"{{ in_array($tag->id, $assignedTagIds) ? ' checked' : '' }}> {{ $tag->name }}
+                            @endforeach
+                        </div>
+                        <label for="tag_ids[]" class="error"></label>
+                    </div>
+
+                    <div class="form-group">
                         <label class="control-label col-sm-2">Name *</label>
                         <div class="col-sm-4">
                             <input type="text" name="name" class="form-control" placeholder="Name" required value="{{ Input::old('name', $account->name) }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Contact</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="firstname" class="form-control" placeholder="First Name" value="{{ Input::old('firstname', $account->firstname) }}">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" name="lastname" class="form-control" placeholder="Last Name" value="{{ Input::old('lastname', $account->lastname) }}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -36,12 +61,12 @@
                             <input type="text" name="fax" placeholder="Fax" class="form-control" value="{{ Input::old('fax', $account->fax) }}">
                         </div>
                     </div>
-                    <h3>Shipping Address</h3>
+                    <h3>Address</h3>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Address *</label>
+                        <label class="control-label col-sm-2">Address</label>
                         <div class="col-sm-5">
-                            <input type="text" name="address1" placeholder="Address Line 1" class="form-control" required value="{{ Input::old('address1', $address->address1) }}">
+                            <input type="text" name="address1" placeholder="Address Line 1" class="form-control" value="{{ Input::old('address1', $address->address1) }}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -51,15 +76,15 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">City *</label>
+                        <label class="control-label col-sm-2">City</label>
                         <div class="col-sm-3">
-                            <input type="text" name="city" placeholder="City" class="form-control" required value="{{ Input::old('city', $address->city) }}">
+                            <input type="text" name="city" placeholder="City" class="form-control" value="{{ Input::old('city', $address->city) }}">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">State *</label>
+                        <label class="control-label col-sm-2">State</label>
                         <div class="col-sm-3">
-                            <input type="text" name="state" placeholder="State" class="form-control" required value="{{ Input::old('state', $address->state) }}">
+                            <input type="text" name="state" placeholder="State" class="form-control" value="{{ Input::old('state', $address->state) }}">
                         </div>
                     </div>
                     <div class="form-group">
@@ -69,16 +94,16 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Country *</label>
+                        <label class="control-label col-sm-2">Country</label>
                         <div class="col-sm-3">
-                            @include('shared._country_select', ['name' => 'country_id', 'required' => TRUE, 'default' => Input::old('country_id', $address->country_id)])
+                            @include('shared._country_select', ['name' => 'country_id', 'required' => FALSE, 'default' => Input::old('country_id', $address->country_id)])
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">
-                            <a class="btn btn-white" href="/accounts/customers">Cancel</a>
-                            <button class="btn btn-primary" type="submit">Save Customer</button>
+                            <a class="btn btn-white" href="/accounts">Cancel</a>
+                            <button class="btn btn-primary" type="submit">Save Account</button>
                         </div>
                     </div>
                 </div>

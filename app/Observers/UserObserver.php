@@ -3,7 +3,7 @@
 use Auth;
 
 use App\Models\Account;
-use App\Models\AccountType;
+use App\Models\AccountTag;
 use App\Models\Address;
 
 /**
@@ -43,7 +43,6 @@ class UserObserver {
             $account->name = "{$user->firstname} {$user->lastname}";
             $account->firstname = $user->firstname;
             $account->lastname = $user->lastname;
-            $account->type_id = AccountType::CUSTOMER;
             $account->email = $user->email;
 
             if ($account->exists)
@@ -53,6 +52,7 @@ class UserObserver {
             else
             {
                 $user->account()->save($account);
+                $account->tags()->attach(AccountTag::CUSTOMER);
             }
         }
     }

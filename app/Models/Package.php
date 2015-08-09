@@ -14,7 +14,7 @@ use App\Observers\PackageObserver;
  */
 class Package extends BaseSearchable {
 
-    use PresentableTrait, SoftDeletes, CompanyTrait;
+    use PresentableTrait, SoftDeletes, CompanyTrait, CreatorUpdaterTrait;
 
     /**
      * The database table name.
@@ -128,26 +128,6 @@ class Package extends BaseSearchable {
     public function shipment()
     {
         return $this->belongsTo('App\Models\Shipment');
-    }
-
-    /**
-     * Gets the creator user.
-     *
-     * @return Carrier
-     */
-    public function creator()
-    {
-        return $this->belongsTo('App\Models\User', 'creator_user_id');
-    }
-
-    /**
-     * Gets the last updater user.
-     *
-     * @return Carrier
-     */
-    public function updater()
-    {
-        return $this->belongsTo('App\Models\User', 'updater_user_id');
     }
 
     /**

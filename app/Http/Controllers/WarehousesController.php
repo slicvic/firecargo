@@ -11,7 +11,7 @@ use App\Models\Warehouse;
 use App\Models\Package;
 use App\Models\PackageType;
 use App\Models\Account;
-use App\Models\AccountType;
+use App\Models\AccountTag;
 use App\Models\Carrier;
 use App\Pdf\WarehousePdf;
 use App\Exceptions\ValidationException;
@@ -46,7 +46,7 @@ class WarehousesController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
-        $params['limit'] = $request->input('limit', 10);
+        $params['limit'] = 10;
         $params['sort'] = $request->input('sort', 'id');
         $params['order'] = $request->input('order', 'desc');
         $params['search'] = $request->input('search');
@@ -86,7 +86,7 @@ class WarehousesController extends BaseAuthController {
     public function getCreate()
     {
         return view('admin.warehouses.form', [
-            'warehouse' => new Warehouse,
+            'warehouse'    => new Warehouse,
             'packageTypes' => PackageType::orderBy('name', 'ASC')->get()
         ]);
     }
@@ -119,7 +119,7 @@ class WarehousesController extends BaseAuthController {
         $warehouse = Warehouse::findMineOrFail($id);
 
         return view('admin.warehouses.form', [
-            'warehouse' => $warehouse,
+            'warehouse'    => $warehouse,
             'packageTypes' => PackageType::orderBy('name', 'ASC')->get()
         ]);
     }
@@ -198,9 +198,9 @@ class WarehousesController extends BaseAuthController {
         $input = $request->only('warehouse', 'packages');
 
         $rules = [
-            'shipper_name' => Account::$rules['name'],
+            'shipper_name'  => Account::$rules['name'],
             'customer_name' => Account::$rules['name'],
-            'carrier_name' => Carrier::$rules['name']
+            'carrier_name'  => Carrier::$rules['name']
         ];
 
         // Validate input
@@ -211,7 +211,7 @@ class WarehousesController extends BaseAuthController {
             throw new ValidationException($validator->messages());
         }
 
-        // Create new carrier if necessary
+        // Create new carrier if no id provided
         if (empty($input['warehouse']['carrier_id']))
         {
             $carrier = Carrier::firstOrCreate(['name' => $input['warehouse']['carrier_name']]);
@@ -219,28 +219,38 @@ class WarehousesController extends BaseAuthController {
             $input['warehouse']['carrier_id'] = $carrier->id;
         }
 
-        // Create new shipper account if necessary
+        // Create new shipper if no id provided
         if (empty($input['warehouse']['shipper_account_id']))
         {
-            $shipper = Account::firstOrCreate([
-                'name' => trim($input['warehouse']['shipper_name']),
-                'company_id' => $this->user->company_id,
-                'type_id' => AccountType::SHIPPER
+            $account = Account::firstOrNew([
+                'name'       => trim($input['warehouse']['shipper_name']),
+                'company_id' => $this->user->company_id
             ]);
 
-            $input['warehouse']['shipper_account_id'] = $shipper->id;
+            if ( ! $account->exists)
+            {
+                $account->save();
+                $account->tags()->attach(AccountTag::SHIPPER);
+            }
+
+            $input['warehouse']['shipper_account_id'] = $account->id;
         }
 
-        // Create new customer account if necessary
+        // Create new customer if no id provided
         if (empty($input['warehouse']['customer_account_id']))
         {
-            $customer = Account::create([
-                'name' => trim($input['warehouse']['customer_name']),
-                'company_id' => $this->user->company_id,
-                'type_id' => AccountType::CUSTOMER
+            $account = Account::firstOrNew([
+                'name'       => trim($input['warehouse']['customer_name']),
+                'company_id' => $this->user->company_id
             ]);
 
-            $input['warehouse']['customer_account_id'] = $customer->id;
+            if ( ! $account->exists)
+            {
+                $account->save();
+                $account->tags()->attach(AccountTag::CUSTOMER);
+            }
+
+            $input['warehouse']['customer_account_id'] = $account->id;
         }
 
         // Save warehouse

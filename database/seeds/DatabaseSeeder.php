@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('WarehouseStatusesTableSeeder');
 		$this->command->info('Warehouse status table seeded!');
 
-		$this->call('AccountTypesTableSeeder');
+		$this->call('AccountTagsTableSeeder');
 		$this->command->info('Account type table seeded!');
 
 		$this->call('CountriesTableSeeder');

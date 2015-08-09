@@ -33,7 +33,7 @@ $(function() {
     });
 
     $('#shipper-name').autocomplete({
-        source: '/accounts/autocomplete-search?type=2',
+        source: '/accounts/autocomplete-search',
         minLength: 2,
         select: function(event, ui) {
             $('#shipper-id').val(ui.item.id);
@@ -60,7 +60,7 @@ $(function() {
     });
 
     $('#customer-name').autocomplete({
-        source: '/accounts/autocomplete-search?type=1',
+        source: '/accounts/autocomplete-search',
         minLength: 2,
         select: function(event, ui) {
             $('#customer-id').val(ui.item.id);

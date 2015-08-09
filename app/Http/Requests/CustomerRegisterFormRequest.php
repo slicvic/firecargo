@@ -15,7 +15,7 @@ class CustomerRegisterFormRequest extends Request {
     public function rules()
     {
         return [
-            'registration_code' => 'required|exists:companies,link_code',
+            'registration_code' => 'required|exists:companies,corp_code',
             'firstname' => 'required|min:3|alpha_spaces',
             'lastname' => 'required|min:3|alpha_spaces',
             'email' => 'required|email|unique:users,email',

@@ -12,7 +12,7 @@ use App\Observers\ShipmentObserver;
  */
 class Shipment extends BaseSearchable implements ISearchable {
 
-    use CompanyTrait, PresentableTrait;
+    use CompanyTrait, PresentableTrait, CreatorUpdaterTrait;
 
     /**
      * The database table name.
@@ -103,26 +103,6 @@ class Shipment extends BaseSearchable implements ISearchable {
     public function carrier()
     {
         return $this->belongsTo('App\Models\Carrier');
-    }
-
-    /**
-     * Gets the creator user.
-     *
-     * @return Carrier
-     */
-    public function creator()
-    {
-        return $this->belongsTo('App\Models\User', 'creator_user_id');
-    }
-
-    /**
-     * Gets the last updater user.
-     *
-     * @return Carrier
-     */
-    public function updater()
-    {
-        return $this->belongsTo('App\Models\User', 'updater_user_id');
     }
 
     /**

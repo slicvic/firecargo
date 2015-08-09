@@ -4,10 +4,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldBeQueued;
 use Auth;
 
-use App\Events\UserLoggedIn;
-use App\Events\UserRegistered;
+use App\Events\UserLoggedInEvent;
+use App\Events\UserRegisteredEvent;
 use App\Helpers\Email;
-use App\Models\LogUserVisit;
 
 class UserEventHandler {
 
@@ -22,11 +21,24 @@ class UserEventHandler {
     }
 
     /**
+     * Register the listeners for the subscriber.
+     *
+     * @param  Illuminate\Events\Dispatcher  $events
+     * @return void
+     */
+    public function subscribe($events)
+    {
+        $events->listen('App\Events\UserLoggedInEvent', 'App\Handlers\Events\UserEventHandler@onUserLogin');
+        $events->listen('App\Events\UserRegisteredEvent', 'App\Handlers\Events\UserEventHandler@onUserRegister');
+    }
+
+    /**
      * Handles user login events.
      */
-    public function onUserLogin(UserLoggedIn $event)
+    public function onUserLogin(UserLoggedInEvent $event)
     {
         Auth::login($event->user);
+
         $event->user->logins += 1;
         $event->user->last_login = date('Y-m-d H:i:s');
         $event->user->save();
@@ -35,21 +47,10 @@ class UserEventHandler {
     /**
      * Handles user register events.
      */
-    public function onUserRegister(UserRegistered $event)
+    public function onUserRegister(UserRegisteredEvent $event)
     {
         Auth::login($event->user);
-        Email::welcome($event->user);
-    }
 
-    /**
-     * Register the listeners for the subscriber.
-     *
-     * @param  Illuminate\Events\Dispatcher  $events
-     * @return void
-     */
-    public function subscribe($events)
-    {
-        $events->listen('App\Events\UserLoggedIn', 'App\Handlers\Events\UserEventHandler@onUserLogin');
-        $events->listen('App\Events\UserRegistered', 'App\Handlers\Events\UserEventHandler@onUserRegister');
+        Email::welcome($event->user);
     }
 }

@@ -41,7 +41,7 @@ class ShipmentsController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
-        $params['limit'] = $request->input('limit', 10);
+        $params['limit'] = 10;
         $params['sort'] = $request->input('sort', 'id');
         $params['order'] = $request->input('order', 'desc');
         $params['search'] = $request->input('search');
@@ -170,9 +170,9 @@ class ShipmentsController extends BaseAuthController {
         $input = $request->only('shipment', 'pieces');
 
         $rules = [
-            'departure_date' => 'required',
+            'departure_date'   => 'required',
             'reference_number' => 'required',
-            'carrier_name' => Carrier::$rules['name']
+            'carrier_name'     => Carrier::$rules['name']
         ];
 
         // Validate input
@@ -183,7 +183,7 @@ class ShipmentsController extends BaseAuthController {
             throw new ValidationException($validator->messages());
         }
 
-        // Create new carrier if necessary
+        // Create new carrier if no id provided
         if (empty($input['shipment']['carrier_id']))
         {
             $carrier = Carrier::firstOrCreate(['name' => $input['shipment']['carrier_name']]);

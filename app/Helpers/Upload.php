@@ -31,10 +31,10 @@ class Upload {
      */
     private static $resources = [
         'user' => [
-            'profile_photo' => 'users/{{ENTITY_ID}}/profile_photo/'
+            'profile_photo' => 'users/{{OWNER_ID}}/profile_photo/'
         ],
         'company' => [
-            'logo'  => 'companies/{{ENTITY_ID}}/logo/'
+            'logo'  => 'companies/{{OWNER_ID}}/logo/'
         ]
     ];
 
@@ -120,12 +120,12 @@ class Upload {
      * @param  string  $filename  A filename e.g. "sm.png"
      * @return string
      */
-    private static function resourcePath($key, $entityId)
+    private static function resourcePath($key, $ownerId)
     {
         $keyParts = explode('.', $key);
 
         $path = public_path() . self::ROOT_PATH;
-        $path .= str_replace('{{ENTITY_ID}}', $entityId, self::$resources[$keyParts[0]][$keyParts[1]]);
+        $path .= str_replace('{{OWNER_ID}}', $ownerId, self::$resources[$keyParts[0]][$keyParts[1]]);
 
         return $path;
     }
@@ -137,15 +137,15 @@ class Upload {
      *
      * @param  string  $key       The resource key e.g. "user.profile_photo"
      * @param  string  $filename  A filename e.g. "sm.png"
-     * @param  int     $entityId  The entity ID to which the resource is attached.
+     * @param  int     $ownerId   The entity ID to which the resource is attached.
      * @return string
      */
-    public static function resourceUrl($key, $filename, $entityId)
+    public static function resourceUrl($key, $filename, $ownerId)
     {
         $keyParts = explode('.', $key);
 
         $path = self::ROOT_PATH;
-        $path .= str_replace('{{ENTITY_ID}}', $entityId, self::$resources[$keyParts[0]][$keyParts[1]]);
+        $path .= str_replace('{{OWNER_ID}}', $ownerId, self::$resources[$keyParts[0]][$keyParts[1]]);
         $path .= $filename . '?cb=' . time();
 
         return url($path);
@@ -158,15 +158,15 @@ class Upload {
      *
      * @param  string  $key       The resource key e.g. "user.profile_photo"
      * @param  string  $filename  A filename e.g. "sm.png"
-     * @param  int     $entityId  A user or company ID.
+     * @param  int     $ownerId   A user or company ID.
      * @return bool
      */
-    public static function resourceExists($key, $filename, $entityId)
+    public static function resourceExists($key, $filename, $ownerId)
     {
         $keyParts = explode('.', $key);
 
         $path = public_path() . self::ROOT_PATH;
-        $path .= str_replace('{{ENTITY_ID}}', $entityId, self::$resources[$keyParts[0]][$keyParts[1]]);
+        $path .= str_replace('{{OWNER_ID}}', $ownerId, self::$resources[$keyParts[0]][$keyParts[1]]);
         $path .= $filename;
 
         return File::exists($path);

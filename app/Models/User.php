@@ -193,48 +193,4 @@ class User extends Base implements AuthenticatableInterface {
 
         return FALSE;
     }
-
-    /**
-     * Finds all users matching the given criteria.
-     *
-     * @param  string   $criteria  List of criterias
-     * @return Builder
-     */
-    public static function search(array $criteria = [])
-    {
-        $query = User::query();
-
-        if (isset($criteria['company_id']))
-        {
-            $query->where('company_id', $criteria['company_id']);
-        }
-
-        if (isset($criteria['role_id']))
-        {
-            $query->whereIn('role_id', $criteria['role_id']);
-        }
-
-        if ( ! empty($criteria['search']))
-        {
-            $searchTerm = '%' . $criteria['search'] . '%';
-
-            $query->whereRaw('(
-                id LIKE ?
-                OR name LIKE ?
-                OR company_name LIKE ?
-                OR email LIKE ?
-                OR phone LIKE ?
-                OR mobile_phone LIKE ?
-                )', [
-                $searchTerm,
-                $searchTerm,
-                $searchTerm,
-                $searchTerm,
-                $searchTerm,
-                $searchTerm
-                ]);
-        }
-
-        return $query;
-    }
 }

@@ -36,7 +36,7 @@ class PackagesController extends BaseAuthController {
      */
     public function getIndex(Request $request)
     {
-        $params['limit'] = $request->input('limit', 10);
+        $params['limit'] = 10;
         $params['sort'] = $request->input('sort', 'id');
         $params['order'] = $request->input('order', 'desc');
         $params['search'] = $request->input('search');

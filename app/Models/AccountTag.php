@@ -1,11 +1,11 @@
 <?php namespace App\Models;
 
 /**
- * AccountType
+ * AccountTag
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class AccountType extends Base {
+class AccountTag extends Base {
 
     /**
      * The different types of accounts.
@@ -20,5 +20,5 @@ class AccountType extends Base {
      *
      * @var string
      */
-    protected $table = 'account_types';
+    protected $table = 'account_tags';
 }

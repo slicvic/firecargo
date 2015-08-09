@@ -115,8 +115,8 @@
                             <a href="/packages"><i class="fa fa-th"></i><span>Pieces</span></a>
                         </li>
 
-                        <li class="{{ (Request::is('customers') || Request::is('customer/*')) ? 'active' : '' }}">
-                            <a href="/accounts/customers"><i class="fa fa-users"></i><span>Accounts</span></a>
+                        <li class="{{ (Request::is('accounts') || Request::is('account/*')) ? 'active' : '' }}">
+                            <a href="/accounts"><i class="fa fa-users"></i><span>Accounts</span></a>
                         </li>
 
                         <li{{ preg_match('/carrier|company|package-type|companies|role|user/', $currentUri) ? ' class=active' : '' }}>

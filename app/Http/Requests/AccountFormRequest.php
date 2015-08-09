@@ -1,11 +1,11 @@
 <?php namespace App\Http\Requests;
 
 /**
- * CustomerAccountFormRequest
+ * AccountFormRequest
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class CustomerAccountFormRequest extends Request {
+class AccountFormRequest extends Request {
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,10 +22,10 @@ class CustomerAccountFormRequest extends Request {
             'phone' => 'phone',
             'mobile_phone' => 'phone',
             'fax' => 'phone',
-            'address1' => 'required',
-            'city' => 'required|alpha_spaces',
-            'state' => 'required|alpha_spaces',
-            'country_id' => 'required'
+            'address1' => '',
+            'city' => 'alpha_spaces',
+            'state' => 'alpha_spaces',
+            'country_id' => ''
         ];
     }
 }

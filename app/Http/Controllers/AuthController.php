@@ -9,12 +9,11 @@ use View;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Account;
-use App\Models\AccountType;
 use App\Models\Address;
 use App\Models\Company;
 use Flash;
-use App\Events\UserLoggedIn;
-use App\Events\UserRegistered;
+use App\Events\UserLoggedInEvent;
+use App\Events\UserRegisteredEvent;
 use App\Http\Requests\CustomerRegisterFormRequest;
 
 /**
@@ -29,8 +28,8 @@ class AuthController extends BaseController {
      */
     public function __construct()
     {
-        $linkCode = ( ! empty($_GET['link_code'])) ? $_GET['link_code'] : NULL;
-        $company = ($linkCode) ? Company::where('link_code', $linkCode)->first() : NULL;
+        $regCode = ( ! empty($_GET['reg'])) ? $_GET['reg'] : NULL;
+        $company = ($regCode) ? Company::where('corp_code', $regCode)->first() : NULL;
         $queryString = ( ! empty($_SERVER['QUERY_STRING'])) ? '/?' . $_SERVER['QUERY_STRING'] : '';
 
         View::share('company', $company);
@@ -83,7 +82,7 @@ class AuthController extends BaseController {
             return $this->redirectBackWithError('The email or password you entered is not valid.');
         }
 
-        Event::fire(new UserLoggedIn($user));
+        Event::fire(new UserLoggedInEvent($user));
 
         return redirect('/dashboard');
     }
@@ -108,7 +107,7 @@ class AuthController extends BaseController {
     {
         $input = $request->all();
 
-        $company = Company::where('link_code', $input['registration_code'])->first();
+        $company = Company::where('corp_code', $input['registration_code'])->first();
 
         // Create user and customer account (See App\Observers\UserObserver)
         $user = new User;
@@ -134,10 +133,11 @@ class AuthController extends BaseController {
         // Update account
         $account = $user->account()->first();
         $account->phone = $input['phone'];
+        $account->mobile_phone = $input['mobile_phone'];
         $account->shippingAddress()->associate($address);
         $account->save();
 
-        Event::fire(new UserRegistered($user));
+        Event::fire(new UserRegisteredEvent($user));
 
         return redirect('dashboard');
     }
@@ -164,11 +164,11 @@ class AuthController extends BaseController {
 
         $this->validate($input, ['email' => 'required|email']);
 
-        $user = User::where('email', $input['email'])->first();
+        $user = User::where(['email', $input['email'], 'active' => TRUE])->first();
 
         if ( ! $user)
         {
-            return $this->redirectBackWithError('This email address is not associated with any account.');
+            return $this->redirectBackWithError('The email address you entered isn\'t associated with an active account.');
         }
 
         // Send password recovery

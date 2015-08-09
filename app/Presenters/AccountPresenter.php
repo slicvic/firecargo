@@ -1,7 +1,7 @@
 <?php namespace App\Presenters;
 
 use App\Presenters\BasePresenter;
-use App\Models\AccountType;
+use App\Models\AccountTag;
 use Html;
 
 /**
@@ -25,5 +25,28 @@ class AccountPresenter extends BasePresenter {
         }
 
         return ($address = $this->model->billingAddress) ? $address->toString() : '';
+    }
+
+    /**
+     * Presents the tags as bootstrap badges.
+     *
+     * @return string
+     */
+    public function tags()
+    {
+        $html = [];
+
+        $tags = $this->model->tags->lists('name', 'id');
+
+        foreach ($tags as $id => $name)
+        {
+            $html[] = sprintf(
+                '<span class="badge badge-%s">%s</span>',
+                ($id === AccountTag::CUSTOMER ? 'primary' : 'default'),
+                $name
+            );
+        }
+
+        return implode('<br>', $html);
     }
 }

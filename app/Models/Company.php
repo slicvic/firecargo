@@ -111,22 +111,22 @@ class Company extends Base {
         {
             $result = parent::save();
 
-            $this->assignLinkCode();
+            $this->assignCorpCode();
 
             return $result;
         }
     }
 
     /**
-     * Generates and assigns a link code.
+     * Generates and assigns a corp code.
      *
      * @return void
      */
-    private function assignLinkCode()
+    private function assignCorpCode()
     {
-        if ( ! $this->exists || $this->link_code)
+        if ( ! $this->exists || $this->corp_code)
         {
-            // Company musts exist and not already have a link code assigned.
+            // Company musts exist and not already have a corp code assigned.
             return FALSE;
         }
 
@@ -134,7 +134,7 @@ class Company extends Base {
 
         if (count($words) === 1)
         {
-            $this->link_code = trim($words[0]);
+            $this->corp_code = trim($words[0]);
         }
         else
         {
@@ -145,10 +145,10 @@ class Company extends Base {
                 $acronym .= $word[0];
             }
 
-            $this->link_code = $acronym;
+            $this->corp_code = $acronym;
         }
 
-        $this->link_code .= $this->id;
+        $this->corp_code .= $this->id;
 
         $this->save();
     }

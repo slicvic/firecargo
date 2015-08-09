@@ -47,7 +47,7 @@ abstract class BasePresenter {
      */
     public function updatedAt($default = 'N/A')
     {
-        if ($this->model->updated_at == $this->model->created_at)
+        if ($this->model->updated_at === $this->model->created_at)
         {
             return $default;
         }

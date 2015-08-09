@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     <form action="/register" method="post" class="form-horizontal">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="registration_code" value="{{ Request::input('link_code') }}">
+                        <input type="hidden" name="registration_code" value="{{ Request::input('reg') }}">
                         <h3>Contact Information</h3>
                         <hr>
                         <div class="form-group">

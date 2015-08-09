@@ -2,16 +2,13 @@
 
 use App\Events\Event;
 use App\Models\User;
-use Illuminate\Queue\SerializesModels;
 
 /**
- * UserLoggedIn
+ * UserLoggedInEvent
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class UserLoggedIn extends Event {
-
-	use SerializesModels;
+class UserLoggedInEvent extends Event {
 
 	public $user;
 

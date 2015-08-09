@@ -42,13 +42,12 @@ class CreateAllTables extends Migration {
 		{
 		    $table->increments('id')->unsigned();
 		    $table->string('name', 50);
-		    $table->string('shortname', 10);
+		    $table->string('corp_code', 30)->nullable()->unique()->default(NULL);
 		    $table->string('phone', 30);
 		    $table->string('fax', 30);
 		    $table->string('email', 255);
 		    $table->integer('shipping_address_id')->unsigned()->nullable()->default(NULL);
 		    $table->integer('billing_address_id')->unsigned()->nullable()->default(NULL);
-		    $table->string('referer_id', 30)->nullable()->unique();
 		    $table->tinyInteger('has_logo')->unsigned()->default(0);
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
@@ -89,8 +88,8 @@ class CreateAllTables extends Migration {
 		    $table->foreign('role_id')->references('id')->on('roles');
 		});
 
-		// Create account_types
-		Schema::create('account_types', function($table)
+		// Create account_tags
+		Schema::create('account_tags', function($table)
 		{
 		    $table->increments('id')->unsigned();
 		    $table->string('name', 30);
@@ -98,13 +97,19 @@ class CreateAllTables extends Migration {
 		    $table->dateTime('updated_at');
 		});
 
+		// Create accounts_tags
+		Schema::create('accounts_tags', function($table)
+		{
+		    $table->integer('account_id')->unsigned();
+		    $table->integer('tag_id')->unsigned();
+		});
+
 		// Create accounts
 		Schema::create('accounts', function($table)
 		{
 		    $table->increments('id')->unsigned();
 		    $table->integer('company_id')->unsigned();
-		    $table->integer('type_id')->unsigned();
-		    $table->integer('user_id')->unsigned()->nullable();
+		    $table->integer('user_id')->unsigned()->nullable()->default(NULL);
 		    $table->string('name', 100);
 		    $table->string('firstname', 50);
 		    $table->string('lastname', 50);
@@ -115,14 +120,17 @@ class CreateAllTables extends Migration {
 		    $table->tinyInteger('autoship')->unsigned()->default(1);
 		    $table->integer('shipping_address_id')->unsigned()->nullable();
 		    $table->integer('billing_address_id')->unsigned()->nullable();
+		    $table->integer('creator_user_id')->unsigned()->nullable();
+		    $table->integer('updater_user_id')->unsigned()->nullable();
 		    $table->dateTime('created_at');
 		    $table->dateTime('updated_at');
 
 		    $table->foreign('company_id')->references('id')->on('companies');
-		    $table->foreign('type_id')->references('id')->on('account_types');
 		    $table->foreign('user_id')->references('id')->on('users');
 		    $table->foreign('shipping_address_id')->references('id')->on('addresses');
 		    $table->foreign('billing_address_id')->references('id')->on('addresses');
+		    $table->foreign('creator_user_id')->references('id')->on('users');
+		    $table->foreign('updater_user_id')->references('id')->on('users');
 		});
 
 		// Create carriers

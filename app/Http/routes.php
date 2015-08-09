@@ -19,18 +19,12 @@
 
 // Accounts
 Route::get('accounts/autocomplete-search', 'AccountsController@getAutocompleteSearch');
-
-Route::get('accounts/customers', 'CustomerAccountsController@getIndex');
-Route::get('accounts/customer/{id}/edit', 'CustomerAccountsController@getEdit')->where('id', '[0-9]+');
-Route::post('accounts/customer/{id}/update', 'CustomerAccountsController@postUpdate')->where('id', '[0-9]+');
-Route::get('accounts/customer/create', 'CustomerAccountsController@getCreate');
-Route::post('accounts/customer/store', 'CustomerAccountsController@postStore');
-
-Route::get('accounts/shippers', 'ShipperAccountsController@getIndex');
-Route::get('accounts/shipper/{id}/edit', 'ShipperAccountsController@getEdit')->where('id', '[0-9]+');
-Route::post('accounts/shipper/{id}/update', 'ShipperAccountsController@postUpdate')->where('id', '[0-9]+');
-Route::get('accounts/shipper/create', 'ShipperAccountsController@getCreate');
-Route::post('accounts/shipper/store', 'ShipperAccountsController@postStore');
+Route::get('accounts', 'AccountsController@getIndex');
+Route::get('account/{id}/edit', 'AccountsController@getEdit')->where('id', '[0-9]+');
+Route::post('account/{id}/update', 'AccountsController@postUpdate')->where('id', '[0-9]+');
+Route::get('account/create', 'AccountsController@getCreate');
+Route::post('account/store', 'AccountsController@postStore');
+Route::get('account/{id}/delete', 'AccountsController@getDelete')->where('id', '[0-9]+');
 
 // Carriers
 Route::get('carriers', 'CarriersController@getIndex');
