@@ -104,12 +104,20 @@ class CarriersController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        if ( ! Carrier::findOrFail($id)->delete())
-        {
-            return $this->redirectBackWithError('Carrier deletion failed.');
-        }
+        $model = Carrier::findOrFail($id);
 
-        return $this->redirectBackWithSuccess('Carrier deleted.');
+        try
+        {
+            $model->delete();
+
+            return $this->redirectBackWithSuccess('Carrier deleted.');
+        }
+        catch(Exception $e)
+        {
+            Log::error($e);
+
+            return $this->redirectBackWithError(trans('messages.error_delete_constraint', ['name' => 'carrier']));
+        }
     }
 
     /**

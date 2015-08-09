@@ -175,22 +175,16 @@ class AccountsController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        $account = Account::findMineOrFail($id);
-
-        if ( ! $account)
-        {
-            return $this->redirectBackWithError('Account not found.');
-        }
+        $model = Account::findMineOrFail($id);
 
         try
         {
-            if ($account->user_id)
+            if ($model->user_id)
             {
-                // This account is associated with a user.
-                throw new Exception;
+                throw new Exception('Integrity constraint violation.');
             }
 
-            $account->delete();
+            $model->delete();
 
             return $this->redirectBackWithSuccess('Account deleted.');
         }
@@ -198,7 +192,7 @@ class AccountsController extends BaseAuthController {
         {
             Log::error($e);
 
-            return $this->redirectBackWithError('The account you are trying to delete is associated with other records.');
+            return $this->redirectBackWithError(trans('messages.error_delete_constraint', ['name' => 'account']));
         }
     }
 

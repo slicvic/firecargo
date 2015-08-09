@@ -1,6 +1,7 @@
 <?php namespace App\Observers;
 
 use Auth;
+use DB;
 
 use App\Models\Package;
 use App\Models\AccountTag;
@@ -34,6 +35,20 @@ class AccountObserver {
     }
 
     /**
+     * After delete event.
+     *
+     * @param  Account  $account
+     * @return void
+     */
+    public function deleted($account)
+    {
+        // Delete relationships
+        $account->shippingAddress()->delete();
+        $account->billingAddress()->delete();
+        $account->tags()->sync([]);
+    }
+
+    /**
      * After save event.
      *
      * @param  Account  $account
@@ -43,7 +58,7 @@ class AccountObserver {
     {
         if ($account->tags->contains(AccountTag::CUSTOMER))
         {
-            // Update customer's packages hold status
+            // Update the customer packages hold status
 
             Package::where('customer_account_id', $account->id)
                 ->whereNull('shipment_id')

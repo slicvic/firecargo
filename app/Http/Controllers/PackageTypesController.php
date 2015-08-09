@@ -74,9 +74,9 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getEdit($id)
     {
-        $type = PackageType::findOrFail($id);
+        $model = PackageType::findOrFail($id);
 
-        return view('admin.package_types.edit', ['type' => $type]);
+        return view('admin.package_types.edit', ['type' => $model]);
     }
 
     /**
@@ -106,12 +106,20 @@ class PackageTypesController extends BaseAuthController {
      */
     public function getDelete(Request $request, $id)
     {
-        if ( ! PackageType::findOrFail($id)->delete())
-        {
-            return $this->redirectBackWithError('Package type deletion failed.');
-        }
+        $model = PackageType::findOrFail($id);
 
-        return $this->redirectBackWithSuccess('Package type deleted.');
+        try
+        {
+            $model->delete();
+
+            return $this->redirectBackWithSuccess('Package type deleted.');
+        }
+        catch(Exception $e)
+        {
+            Log::error($e);
+
+            return $this->redirectBackWithError(trans('messages.error_delete_constraint', ['name' => 'package type']));
+        }
     }
 
     /**
