@@ -1,21 +1,25 @@
 <?php namespace App\Models;
 
+use App\Contracts\SearchableModel;
+
 /**
  * BaseSearchable
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-abstract class BaseSearchable extends Base implements ISearchable {
+abstract class BaseSearchable extends Base implements SearchableModel {
 
     /**
-     * A list of valid sort columns.
+     * A list of allowed sort columns.
      *
      * @var array
      */
-    protected static $sortable = [];
+    protected static $sortable = [
+        'id'
+    ];
 
     /**
-     * Sanitizes the provided sort column.
+     * Sanitize the provided sort column.
      *
      * @param  string  $column
      * @param  string  $default
@@ -29,7 +33,7 @@ abstract class BaseSearchable extends Base implements ISearchable {
     }
 
     /**
-     * Sanitizes the provided sort order.
+     * Sanitize the provided sort order.
      *
      * @param  string  $order
      * @return string

@@ -35,7 +35,7 @@ abstract class BaseController extends Controller {
     }
 
     /**
-     * Validates the given input with the given rules.
+     * Validate the given input with the given rules.
      *
      * @param  array  $input
      * @param  array  $rules
@@ -53,7 +53,7 @@ abstract class BaseController extends Controller {
     }
 
     /**
-     * Redirects to the given path with the given success message.
+     * Redirect to the given path with the given success message.
      *
      * @param  string  $path
      * @param  string  $message
@@ -67,7 +67,7 @@ abstract class BaseController extends Controller {
     }
 
     /**
-     * Redirects to the given path with the given error message.
+     * Redirect to the given path with the given error message.
      *
      * @param  string  $path
      * @param  string  $message
@@ -81,7 +81,7 @@ abstract class BaseController extends Controller {
     }
 
     /**
-     * Redirects back with the given success message.
+     * Redirect back with the given success message.
      *
      * @param  string  $message
      * @return Redirector
@@ -94,7 +94,7 @@ abstract class BaseController extends Controller {
     }
 
     /**
-     * Redirects back with the given error message.
+     * Redirect back with the given error message.
      *
      * @param  string  $message
      * @return Redirector

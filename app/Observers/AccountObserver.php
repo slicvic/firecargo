@@ -14,6 +14,35 @@ use App\Models\AccountTag;
 class AccountObserver {
 
     /**
+     * After delete event.
+     *
+     * @param  Account  $account
+     * @return void
+     */
+    public function deleting($account)
+    {
+        if ($account->user_id)
+        {
+            // Preserve integrity
+            return FALSE;
+        }
+    }
+
+    /**
+     * After delete event.
+     *
+     * @param  Account  $account
+     * @return void
+     */
+    public function deleted($account)
+    {
+        // Delete relationships
+        $account->shippingAddress()->delete();
+        $account->billingAddress()->delete();
+        $account->tags()->detach();
+    }
+
+    /**
      * Before save event.
      *
      * @param  Account  $account
@@ -32,20 +61,6 @@ class AccountObserver {
                 $account->creator_user_id = Auth::user()->id;
             }
         }
-    }
-
-    /**
-     * After delete event.
-     *
-     * @param  Account  $account
-     * @return void
-     */
-    public function deleted($account)
-    {
-        // Delete relationships
-        $account->shippingAddress()->delete();
-        $account->billingAddress()->delete();
-        $account->tags()->sync([]);
     }
 
     /**

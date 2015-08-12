@@ -11,9 +11,9 @@
                             <h3 class="text-center">Warehouses</h3>
                             <div style="height:200px" id="warehouses-morris-donut-chart"></div>
                             <ul class="category-list">
-                                <li><a href="/warehouses?status_id=1" data-toggle="tooltip" data-placement="bottom" title="All pieces in warehouse awaiting shipment."> <i class="fa fa-circle text-danger"></i> Unprocessed ({{ $totals['warehouses']['unprocessed'] }})</a></li>
-                                <li><a href="/warehouses?status_id=2" data-toggle="tooltip" data-placement="bottom" title="Some pieces in warehouse awaiting shipment."> <i class="fa fa-circle text-warning"></i> Pending ({{ $totals['warehouses']['pending'] }})</a></li>
-                                <li><a href="/warehouses?status_id=3" data-toggle="tooltip" data-placement="bottom" title="All pieces in warehouse shipped."> <i class="fa fa-circle text-navy"></i> Complete ({{ $totals['warehouses']['complete'] }})</a></li>
+                                <li><a href="/warehouses?status=1" data-toggle="tooltip" data-placement="bottom" title="All pieces in warehouse awaiting shipment."> <i class="fa fa-circle text-danger"></i> Unprocessed ({{ $totals['warehouses']['unprocessed'] }})</a></li>
+                                <li><a href="/warehouses?status=2" data-toggle="tooltip" data-placement="bottom" title="Some pieces in warehouse awaiting shipment."> <i class="fa fa-circle text-warning"></i> Pending ({{ $totals['warehouses']['pending'] }})</a></li>
+                                <li><a href="/warehouses?status=3" data-toggle="tooltip" data-placement="bottom" title="All pieces in warehouse shipped."> <i class="fa fa-circle text-navy"></i> Complete ({{ $totals['warehouses']['complete'] }})</a></li>
                             </ul>
                         </div>
                     </div>

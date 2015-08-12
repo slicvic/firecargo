@@ -31,9 +31,9 @@ class Address extends Base {
     ];
 
     /**
-     * Overrides parent method to sanitize attributes.
+     * Override parent method to sanitize attributes.
      *
-     * @see parent::setAttribute()
+     * {@inheritdoc}
      */
     public function setAttribute($key, $value)
     {
@@ -54,7 +54,7 @@ class Address extends Base {
     }
 
     /**
-     * Gets the country.
+     * Get the country.
      *
      * @return Country
      */
@@ -64,7 +64,7 @@ class Address extends Base {
     }
 
     /**
-     * Converts the address into a friendly string.
+     * Convert the address into a friendly string.
      *
      * @param  string  $lineSeparator
      * @return string

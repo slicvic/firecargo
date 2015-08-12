@@ -14,9 +14,9 @@ use App\Models\Package;
 class DashboardController extends BaseAuthController {
 
     /**
-     * Shows the dashboard.
+     * Show the dashboard.
      *
-     * @return Response
+     * @return View
      */
     public function getIndex()
     {
@@ -34,6 +34,11 @@ class DashboardController extends BaseAuthController {
         }
     }
 
+    /**
+     * Render customer dashboard.
+     *
+     * @return View
+     */
     private function showCustomerDashboard()
     {
         $criteria['customer_account_id'] = $this->user->account->id;
@@ -43,6 +48,11 @@ class DashboardController extends BaseAuthController {
         return view('admin.dashboard.customers.index', ['packages' => $packages]);
     }
 
+    /**
+     * Render agent dashboard.
+     *
+     * @return View
+     */
     private function showAgentDashboard()
     {
         $totals = [
@@ -61,6 +71,11 @@ class DashboardController extends BaseAuthController {
         return view('admin.dashboard.admins.index', ['totals' => $totals]);
     }
 
+    /**
+     * Render admin dashboard.
+     *
+     * @return View
+     */
     private function showAdminDashboard()
     {
         $totals = [

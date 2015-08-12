@@ -42,13 +42,13 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label">Identificación<span class="required-field">*</span></label>
 							<div class="col-md-2">
-								<input type="text" name="user[id_number]" class="form-control" value="<?php echo Input::old('user.id_number'); ?>" required>
+								<input type="text" name="user[id_number]" class="form-control" value="<?php echo old('user.id_number'); ?>" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label">Nombre de la Empresa</label>
 							<div class="col-md-6">
-								<input type="text" name="user[business_name]" value="<?php echo Input::old('user.business_name'); ?>" class="form-control">
+								<input type="text" name="user[business_name]" value="<?php echo old('user.business_name'); ?>" class="form-control">
 							</div>
 						</div>
 					</fieldset>
@@ -58,25 +58,25 @@
 						<div class="form-group-inline">
 							<label class="col-md-2 control-label">Nombres<span class="required-field">*</span></label>
 							<div class="col-md-2">
-								<input type="text" name="user[firstname]" class="form-control" value="<?php echo Input::old('user.firstname'); ?>" required>
+								<input type="text" name="user[firstname]" class="form-control" value="<?php echo old('user.firstname'); ?>" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label">Apellidos<span class="required-field">*</span></label>
 							<div class="col-md-2">
-								<input type="text" name="user[lastname]" class="form-control" value="<?php echo Input::old('user.lastname'); ?>" required>
+								<input type="text" name="user[lastname]" class="form-control" value="<?php echo old('user.lastname'); ?>" required>
 							</div>
 						</div>
 						<div class="form-group-inline">
 							<label class="col-md-2 control-label">Teléfono Fijo</label>
 							<div class="col-md-2">
-								<input type="text" name="user[phone]" class="form-control" value="<?php echo Input::old('user.phone'); ?>">
+								<input type="text" name="user[phone]" class="form-control" value="<?php echo old('user.phone'); ?>">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label">Teléfono Celular<span class="required-field">*</span></label>
 							<div class="col-md-2">
-								<input type="text" name="user[cellphone]" class="form-control" value="<?php echo Input::old('user.cellphone'); ?>" required>
+								<input type="text" name="user[cellphone]" class="form-control" value="<?php echo old('user.cellphone'); ?>" required>
 							</div>
 						</div>
 					</fieldset>
@@ -86,19 +86,19 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label">Correo Electrónico<span class="required-field">*</span></label>
 							<div class="col-md-6">
-								<input type="text" name="user[email]" class="form-control" value="<?php echo Input::old('user.email'); ?>" required>
+								<input type="text" name="user[email]" class="form-control" value="<?php echo old('user.email'); ?>" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label"><?php echo trans('messages.password'); ?><span class="required-field">*</span></label>
 							<div class="col-md-6">
-								<input id="password" type="password" name="user[password]" class="form-control" value="<?php echo Input::old('user.password'); ?>" data-parsley-minlength="6" required>
+								<input id="password" type="password" name="user[password]" class="form-control" value="<?php echo old('user.password'); ?>" data-parsley-minlength="6" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label"><?php echo trans('messages.password_confirm'); ?><span class="required-field">*</span></label>
 							<div class="col-md-6">
-								<input type="password" name="password_confirm" class="form-control" value="<?php echo Input::old('password_confirm'); ?>" data-parsley-equalto="#password" required>
+								<input type="password" name="password_confirm" class="form-control" value="<?php echo old('password_confirm'); ?>" data-parsley-equalto="#password" required>
 							</div>
 						</div>
 					</fieldset>
@@ -108,19 +108,19 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label">Departamento<span class="required-field">*</span></label>
 							<div class="col-md-6">
-								<input name="user[state]" class="form-control" value="<?php echo Input::old('user.state'); ?>" required>
+								<input name="user[state]" class="form-control" value="<?php echo old('user.state'); ?>" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label">Ciudad<span class="required-field">*</span></label>
 							<div class="col-md-6">
-								<input name="user[city]" class="form-control" value="<?php echo Input::old('user.city'); ?>" required>
+								<input name="user[city]" class="form-control" value="<?php echo old('user.city'); ?>" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-2 control-label">Dirección<span class="required-field">*</span></label>
 							<div class="col-md-6">
-								<input type="text" name="user[address1]" class="form-control" value="<?php echo Input::old('user.address1'); ?>" required>
+								<input type="text" name="user[address1]" class="form-control" value="<?php echo old('user.address1'); ?>" required>
 							</div>
 						</div>
 					</fieldset>

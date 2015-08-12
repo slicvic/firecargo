@@ -33,7 +33,7 @@ class UserEventHandler {
     }
 
     /**
-     * Handles user login events.
+     * Handle user login events.
      */
     public function onUserLogin(UserLoggedInEvent $event)
     {
@@ -45,7 +45,7 @@ class UserEventHandler {
     }
 
     /**
-     * Handles user register events.
+     * Handle user register events.
      */
     public function onUserRegister(UserRegisteredEvent $event)
     {

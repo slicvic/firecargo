@@ -11,7 +11,7 @@ use App\Observers\AccountObserver;
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Account extends BaseSearchable implements ISearchable {
+class Account extends BaseSearchable {
 
     use CompanyTrait, PresentableTrait, CreatorUpdaterTrait;
 
@@ -74,7 +74,7 @@ class Account extends BaseSearchable implements ISearchable {
     ];
 
     /**
-     * Registers model events.
+     * Register model events.
      *
      * @return void
      */
@@ -86,9 +86,9 @@ class Account extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Overrides parent method to sanitize attributes.
+     * Override parent method to sanitize attributes.
      *
-     * @see parent::setAttribute()
+     * {@inheritdoc}
      */
     public function setAttribute($key, $value)
     {
@@ -107,7 +107,7 @@ class Account extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the account types.
+     * Get the account tags.
      *
      * @return Role
      */
@@ -117,7 +117,7 @@ class Account extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the shipping address.
+     * Get the shipping address.
      *
      * @return Address
      */
@@ -127,7 +127,7 @@ class Account extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the billing address.
+     * Get the billing address.
      *
      * @return Address
      */
@@ -137,7 +137,7 @@ class Account extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the account user.
+     * Get the user.
      *
      * NOTE: ONLY "CUSTOMER" ACCOUNTS HAVE A USER.
      *
@@ -149,7 +149,7 @@ class Account extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Finds accounts matching the provided search term and type for an
+     * Find accounts matching the provided search term and type for an
      * ajax autocomplete field.
      *
      * @param  string  $searchTerm
@@ -184,7 +184,7 @@ class Account extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Finds all accounts with the given criteria.
+     * Find all accounts with the given criteria.
      *
      * {@inheritdoc}
      */

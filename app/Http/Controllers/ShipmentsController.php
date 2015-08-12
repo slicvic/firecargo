@@ -11,7 +11,6 @@ use App\Models\Package;
 use App\Models\Warehouse;
 use Flash;
 use App\Exceptions\ValidationException;
-use App\Http\ToastrJsonResponse;
 
 /**
  * ShipmentsController
@@ -34,10 +33,10 @@ class ShipmentsController extends BaseAuthController {
     }
 
     /**
-     * Shows a list of shipments.
+     * Show a list of shipments.
      *
      * @param  Request  $request
-     * @return Response
+     * @return View
      */
     public function getIndex(Request $request)
     {
@@ -58,11 +57,11 @@ class ShipmentsController extends BaseAuthController {
     }
 
     /**
-     * Shows a specific shipment.
+     * Show a specific shipment.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Response
+     * @return View
      */
     public function getShow(Request $request, $id)
     {
@@ -72,9 +71,9 @@ class ShipmentsController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for creating a new shipment.
+     * Show the form for creating a new shipment.
      *
-     * @return Response
+     * @return View
      */
     public function getCreate()
     {
@@ -92,7 +91,7 @@ class ShipmentsController extends BaseAuthController {
     }
 
     /**
-     * Creates a new shipment.
+     * Create a new shipment.
      *
      * @param  Request  $request
      * @return JsonResponse
@@ -109,10 +108,10 @@ class ShipmentsController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for editing a shipment.
+     * Shos the form for editing a shipment.
      *
      * @param  int  $id
-     * @return Response
+     * @return View
      */
     public function getEdit($id)
     {
@@ -135,7 +134,7 @@ class ShipmentsController extends BaseAuthController {
     }
 
     /**
-     * Updates a specific shipment.
+     * Update a specific shipment.
      *
      * @param  Request  $request
      * @param  int      $id
@@ -147,7 +146,7 @@ class ShipmentsController extends BaseAuthController {
 
         if ( ! $shipment)
         {
-            return ToastrJsonResponse::error('Shipment not found.', 404);
+            return response()->jsonFlash('Shipment not found.', 404);
         }
 
         $this->validateAndSave($request, $shipment);
@@ -158,7 +157,7 @@ class ShipmentsController extends BaseAuthController {
     }
 
     /**
-     * Prepares and validates the given input and applies it to the given shipment.
+     * Prepare and validate the given input and apply it to the given shipment.
      *
      * @param  Request  $request
      * @param  Shipment $shipment

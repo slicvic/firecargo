@@ -39,7 +39,7 @@ class Upload {
     ];
 
     /**
-     * Saves a user profile photo.
+     * Save a user profile photo.
      *
      * @param  UploadedFile  $file
      * @param  int           $userId
@@ -73,7 +73,7 @@ class Upload {
     }
 
     /**
-     * Saves a company loho.
+     * Save a company loho.
      *
      * @param  UploadedFile  $file
      * @param  int           $companyId
@@ -112,7 +112,7 @@ class Upload {
     }
 
     /**
-     * Gets the path to a resource folder.
+     * Get the path to a resource folder.
      *
      * @see    Upload::$resources
      *
@@ -131,7 +131,7 @@ class Upload {
     }
 
     /**
-     * Gets the url to a resource.
+     * Get the url to a resource.
      *
      * @see    Upload::$resources
      *
@@ -152,7 +152,7 @@ class Upload {
     }
 
     /**
-     * Checks if a resource exists or not.
+     * Determine if a resource exists.
      *
      * @see    Upload::$resources
      *

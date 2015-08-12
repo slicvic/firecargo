@@ -11,7 +11,7 @@ use Auth;
 abstract class Base extends Model {
 
     /**
-     * Saves the model to the database and logs the transaction.
+     * Save the model to the database and log the transaction.
      *
      * @todo  turn on log write
      * @param  array  $options
@@ -32,7 +32,7 @@ abstract class Base extends Model {
     }
 
     /**
-     * Deletes the model from the database and logs the transaction.
+     * Delete the model from the database and log the transaction.
      *
      * @return bool|null
      * @throws \Exception
@@ -50,7 +50,7 @@ abstract class Base extends Model {
     }
 
     /**
-     * Logs a database transaction.
+     * Log a database transaction.
      *
      * @param  string  $action  create|read|update|delete
      * @return void

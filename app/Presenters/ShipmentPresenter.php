@@ -11,7 +11,7 @@ use App\Helpers\Currency;
 class ShipmentPresenter extends BasePresenter {
 
     /**
-     * Gets the carrier name.
+     * Present the carrier name.
      *
      * @return string
      */
@@ -21,7 +21,7 @@ class ShipmentPresenter extends BasePresenter {
     }
 
     /**
-     * Presents the departure date.
+     * Present the departure date.
      *
      * @return string
      */
@@ -33,11 +33,11 @@ class ShipmentPresenter extends BasePresenter {
     }
 
     /**
-     * Presents the monetary value in dollar format.
+     * Present the total value of the shipment.
      *
      * @return string
      */
-    public function totalValue()
+    public function value()
     {
         return ($this->model->exists) ? (new Currency($this->model->calculateTotalValue()))->asDollar() : '';
     }

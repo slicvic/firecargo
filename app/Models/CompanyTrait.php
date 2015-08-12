@@ -10,7 +10,7 @@ use Auth;
 trait CompanyTrait {
 
     /**
-     * Gets the model's company.
+     * Get the company.
      *
      * @return Company
      */
@@ -20,7 +20,7 @@ trait CompanyTrait {
     }
 
     /**
-     * Finds models belonging to the current user's company.
+     * Find models belonging to the current user's company.
      *
      * @param  Builder  $query
      * @param  int      $companyId
@@ -37,7 +37,7 @@ trait CompanyTrait {
     }
 
     /**
-     * Finds a model belonging to the current user's company.
+     * Find a model belonging to the current user's company.
      *
      * @param  int  $id
      * @return Model|null
@@ -55,7 +55,7 @@ trait CompanyTrait {
     }
 
     /**
-     * Finds a model belonging to the current user's company and throws an
+     * Find a model belonging to the current user's company and throw an
      * exception if not found.
      *
      * @param  int  $id
@@ -75,7 +75,7 @@ trait CompanyTrait {
     }
 
     /**
-     * Saves the model to the database making sure to set the current user's
+     * Save the model to the database making sure to set the current user's
      * company.
      *
      * @param  array  $options

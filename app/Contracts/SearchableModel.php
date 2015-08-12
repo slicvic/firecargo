@@ -1,14 +1,14 @@
-<?php namespace App\Models;
+<?php namespace App\Contracts;
 
 /**
- * ISearchable
+ * SearchableModel
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-interface ISearchable {
+interface SearchableModel {
 
     /**
-     * Finds all models with the given criteria.
+     * Find all models with the given criteria.
      *
      * @param  array|null  $criteria
      * @param  string      $orderBy

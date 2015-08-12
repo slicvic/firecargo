@@ -13,7 +13,6 @@ use App\Models\Company;
 use App\Models\Address;
 use App\Models\Country;
 use App\Helpers\Upload;
-use App\Http\ToastrJsonResponse;
 use App\Http\Requests\UpdateCompanyProfileFormRequest;
 
 /**
@@ -37,9 +36,9 @@ class CompanyProfileController extends BaseAuthController {
     }
 
     /**
-     * Shows the company profile.
+     * Show the company profile.
      *
-     * @return Response
+     * @return View
      */
     public function getProfile()
     {
@@ -49,9 +48,9 @@ class CompanyProfileController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for editing the company profile.
+     * Show the form for editing the company profile.
      *
-     * @return Response
+     * @return View
      */
     public function getEditProfile()
     {
@@ -64,10 +63,10 @@ class CompanyProfileController extends BaseAuthController {
     }
 
     /**
-     * Updates the company profile.
+     * Update the company profile.
      *
      * @param  Request  $request
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postProfile(UpdateCompanyProfileFormRequest $request)
     {
@@ -98,7 +97,7 @@ class CompanyProfileController extends BaseAuthController {
     }
 
     /**
-     * Uploads the company logo.
+     * Upload the company logo.
      *
      * @param  Request  $request
      * @return JsonResponse
@@ -113,7 +112,7 @@ class CompanyProfileController extends BaseAuthController {
 
         if ($validator->fails())
         {
-            return ToastrJsonResponse::error($validator, 404);
+            return response()->jsonFlash($validator, 404);
         }
 
         try
@@ -122,13 +121,13 @@ class CompanyProfileController extends BaseAuthController {
 
             $this->user->company->update(['has_logo' => TRUE]);
 
-            return ToastrJsonResponse::success('Your logo has been uploaded.');
+            return response()->jsonFlash('Your logo has been uploaded.');
         }
         catch(Exception $e)
         {
             Log::error($e);
 
-            return ToastrJsonResponse::error('Upload failed, please try again.', 500);
+            return response()->jsonFlash('Upload failed, please try again.', 500);
         }
     }
 }

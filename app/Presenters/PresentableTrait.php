@@ -17,7 +17,7 @@ trait PresentableTrait {
     protected $presenterInstance;
 
     /**
-     * Gets the presenter instance.
+     * Get the presenter instance.
      *
      * @return BasePresenter
      */

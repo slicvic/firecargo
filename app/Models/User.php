@@ -49,7 +49,7 @@ class User extends Base implements AuthenticatableInterface {
     ];
 
     /**
-     * Registers model events.
+     * Register model events.
      *
      * @return void
      */
@@ -61,9 +61,9 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Overrides parent method to sanitize attributes.
+     * Override parent method to sanitize attributes.
      *
-     * @see parent::setAttribute()
+     * {@inheritdoc}
      */
     public function setAttribute($key, $value)
     {
@@ -83,7 +83,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the user role.
+     * Get the user role.
      *
      * @return Role
      */
@@ -93,7 +93,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Gets the user customer account.
+     * Get the user customer account.
      *
      * NOTE: ONLY "CUSTOMER" USERS HAVE AN ACCOUNT.
      *
@@ -105,7 +105,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Checks if the user is an agent or not.
+     * Determine if the user is an agent.
      *
      * @return bool
      */
@@ -115,7 +115,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Checks if the user is an administrator or not.
+     * Determine if the user is an administrator.
      *
      * @return bool
      */
@@ -125,7 +125,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Checks if the user is a customer or not.
+     * Determine if the user is a customer.
      *
      * @return bool
      */
@@ -135,7 +135,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Generates a password recovery token.
+     * Generate a password recovery token.
      *
      * @return string
      */
@@ -145,17 +145,17 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Generates a plain-text password recovery token.
+     * Generate a plain-text password recovery token.
      *
      * @return string
      */
     private function makePlainPasswordRecoveryToken()
     {
-        return $this->email . '$$$$$' . $this->password . '$$$$$' . $this->created_at;
+        return $this->email . '#####' . $this->password . '#####' . $this->created_at;
     }
 
     /**
-     * Checks if a password recovery token is valid or not.
+     * Determine if a password recovery token is valid.
      *
      * @param  string  $token
      * @return bool
@@ -166,7 +166,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Generates an account activation code for registration.
+     * Generate an account activation code for registration.
      *
      * @return string
      */
@@ -176,7 +176,7 @@ class User extends Base implements AuthenticatableInterface {
     }
 
     /**
-     * Validates the given login credentials.
+     * Validate the given login credentials.
      *
      * @param  string  $email
      * @param  string  $password

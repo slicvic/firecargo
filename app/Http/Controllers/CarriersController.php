@@ -26,9 +26,9 @@ class CarriersController extends BaseAuthController {
     }
 
     /**
-     * Shows a list of carriers.
+     * Display a list of carriers.
      *
-     * @return Response
+     * @return View
      */
     public function getIndex()
     {
@@ -38,9 +38,9 @@ class CarriersController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for creating a new carrier.
+     * Display the form for creating a new carrier.
      *
-     * @return Response
+     * @return View
      */
     public function getCreate()
     {
@@ -48,10 +48,10 @@ class CarriersController extends BaseAuthController {
     }
 
     /**
-     * Creates a new carrier.
+     * Create a new carrier.
      *
      * @param  Request  $request
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postStore(Request $request)
     {
@@ -65,10 +65,10 @@ class CarriersController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for editing a carrier.
+     * Show the form for editing a carrier.
      *
      * @param  int  $id
-     * @return Response
+     * @return View
      */
     public function getEdit($id)
     {
@@ -78,11 +78,11 @@ class CarriersController extends BaseAuthController {
     }
 
     /**
-     * Updates a specific carrier.
+     * Update a specific carrier.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postUpdate(Request $request, $id)
     {
@@ -96,11 +96,11 @@ class CarriersController extends BaseAuthController {
     }
 
     /**
-     * Deletes a specific carrier.
+     * Delete a specific carrier.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function getDelete(Request $request, $id)
     {
@@ -121,7 +121,7 @@ class CarriersController extends BaseAuthController {
     }
 
     /**
-     * Retrieves a list of carriers for an ajax autocomplete field.
+     * Retrieve a list of carriers for an autocomplete field.
      *
      * @param  Request  $request
      * @return JsonResponse

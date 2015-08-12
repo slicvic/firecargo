@@ -47,9 +47,9 @@ class Carrier extends Base {
     ];
 
     /**
-     * Overrides parent method to sanitize attributes.
+     * Override parent method to sanitize attributes.
      *
-     * @see parent::setAttribute()
+     * {@inheritdoc}
      */
     public function setAttribute($key, $value)
     {
@@ -64,7 +64,7 @@ class Carrier extends Base {
     }
 
     /**
-     * Finds carriers matching the provided search term for an ajax
+     * Find carriers matching the provided search term for an ajax
      * autocomplete field.
      *
      * @param  string  $searchTerm

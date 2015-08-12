@@ -31,9 +31,9 @@ class UsersController extends BaseAuthController {
     }
 
     /**
-     * Shows a list of users.
+     * Show a list of users.
      *
-     * @return Response
+     * @return View
      */
     public function getIndex(Request $request)
     {
@@ -43,9 +43,9 @@ class UsersController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for creating a new user.
+     * Show the form for creating a new user.
      *
-     * @return Response
+     * @return View
      */
     public function getCreate()
     {
@@ -53,10 +53,10 @@ class UsersController extends BaseAuthController {
     }
 
     /**
-     * Creates a new user.
+     * Create a new user.
      *
      * @param  Request  $request
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postStore(CreateUserFormRequest $request)
     {
@@ -68,11 +68,11 @@ class UsersController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for editing a user.
+     * Show the form for editing a user.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Response
+     * @return View
      */
     public function getEdit(Request $request, $id)
     {
@@ -82,11 +82,11 @@ class UsersController extends BaseAuthController {
     }
 
     /**
-     * Updates a specific user.
+     * Update a specific user.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postUpdate(UpdateUserFormRequest $request, $id)
     {
@@ -98,7 +98,7 @@ class UsersController extends BaseAuthController {
     }
 
     /**
-     * Prepares the input before saving to database.
+     * Prepare the input for prior to database.
      *
      * @param  Request $request
      * @return array

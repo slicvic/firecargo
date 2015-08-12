@@ -55,7 +55,7 @@
                         </tr>
                         <tr>
                             <th>Total Value</th>
-                            <td><span class="label label-primary">{{ $warehouse->present()->totalValue() }}</span></td>
+                            <td><span class="label label-primary">{{ $warehouse->present()->value() }}</span></td>
                         </tr>
                         <tr>
                             <th>Gross Weight</th>

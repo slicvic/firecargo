@@ -44,7 +44,7 @@ class Company extends Base {
     ];
 
     /**
-     * Registers model events.
+     * Register model events.
      *
      * @return void
      */
@@ -56,9 +56,9 @@ class Company extends Base {
     }
 
     /**
-     * Overrides parent method to sanitize attributes.
+     * Override parent method to sanitize attributes.
      *
-     * @see parent::setAttribute()
+     * {@inheritdoc}
      */
     public function setAttribute($key, $value)
     {
@@ -77,7 +77,7 @@ class Company extends Base {
     }
 
     /**
-     * Gets the shipping address.
+     * Get the shipping address.
      *
      * @return Address
      */
@@ -87,7 +87,7 @@ class Company extends Base {
     }
 
     /**
-     * Gets the billing address.
+     * Get the billing address.
      *
      * @return Address
      */
@@ -97,7 +97,7 @@ class Company extends Base {
     }
 
     /**
-     * Overrides parent method to assign link code.
+     * Override parent method to assign corp code.
      *
      * {@inheritdoc}
      */
@@ -118,7 +118,7 @@ class Company extends Base {
     }
 
     /**
-     * Generates and assigns a corp code.
+     * Generate and assign a corp code.
      *
      * @return void
      */

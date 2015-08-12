@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\Paginator;
 
 use App\Models\Warehouse;
+use App\Models\WarehouseStatus;
 use App\Models\Package;
 use App\Models\PackageType;
 use App\Models\Account;
@@ -16,7 +17,6 @@ use App\Models\Carrier;
 use App\Pdf\WarehousePdf;
 use App\Exceptions\ValidationException;
 use Flash;
-use App\Http\ToastrJsonResponse;
 
 /**
  * WarehousesController
@@ -39,10 +39,10 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Shows a list of warehouses.
+     * Show a list of warehouses.
      *
      * @param  Request  $request
-     * @return Response
+     * @return View
      */
     public function getIndex(Request $request)
     {
@@ -50,9 +50,9 @@ class WarehousesController extends BaseAuthController {
         $params['sort'] = $request->input('sort', 'id');
         $params['order'] = $request->input('order', 'desc');
         $params['search'] = $request->input('search');
-        $params['status_id'] = $request->input('status_id');
+        $params['status'] = $request->input('status');
 
-        $criteria['status_id'] = $params['status_id'];
+        $criteria['status_id'] = $params['status'];
         $criteria['search'] = $params['search'];
         $criteria['company_id'] = $this->user->isAdmin() ? NULL : $this->user->company_id;
 
@@ -60,16 +60,17 @@ class WarehousesController extends BaseAuthController {
 
         return view('admin.warehouses.index', [
             'warehouses' => $warehouses,
-            'params' => $params
+            'params' => $params,
+            'statuses' => WarehouseStatus::all()
         ]);
     }
 
     /**
-     * Shows a specific warehouse.
+     * Show a specific warehouse.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Response
+     * @return View
      */
     public function getShow(Request $request, $id)
     {
@@ -79,9 +80,9 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for creating a new warehouse.
+     * Show the form for creating a new warehouse.
      *
-     * @return Response
+     * @return View
      */
     public function getCreate()
     {
@@ -92,7 +93,7 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Creates a new warehouse.
+     * Create a new warehouse.
      *
      * @param  Request  $request
      * @return JsonResponse
@@ -109,10 +110,10 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for editing a warehouse.
+     * Show the form for editing a warehouse.
      *
      * @param  int  $id
-     * @return Response
+     * @return View
      */
     public function getEdit($id)
     {
@@ -125,7 +126,7 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Updates a specific warehouse.
+     * Update a specific warehouse.
      *
      * @param  Request  $request
      * @param  int      $id
@@ -137,7 +138,7 @@ class WarehousesController extends BaseAuthController {
 
         if ( ! $warehouse)
         {
-            return ToastrJsonResponse::error('Warehouse not found.', 404);
+            return response()->jsonFlash('Warehouse not found.', 404);
         }
 
         $this->validateAndSave($request, $warehouse);
@@ -148,7 +149,7 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Shows the warehouse receipt PDF.
+     * Show the warehouse receipt PDF.
      *
      * @param  Request  $request
      * @param  int      $warehouseId
@@ -167,7 +168,7 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Shows the warehouse shipping label PDF.
+     * Show the warehouse shipping label PDF.
      *
      * @param  Request  $request
      * @param  int      $warehouseId
@@ -186,7 +187,7 @@ class WarehousesController extends BaseAuthController {
     }
 
     /**
-     * Prepares and validates the given input and applies it to the given warehouse.
+     * Prepare and validate the given input and apply it to the given warehouse.
      *
      * @param  Request    $request
      * @param  Warehouse  $warehouse

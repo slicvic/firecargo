@@ -12,7 +12,7 @@ use App\Models\Warehouse;
 class WarehousePdf {
 
     /**
-     * Generates a warehouse receipt.
+     * Generate a warehouse receipt.
      *
      * @param  Warehouse  $warehouse
      * @return PDF
@@ -43,7 +43,7 @@ class WarehousePdf {
     }
 
     /**
-     * Generates a warehouse shipping label.
+     * Generate a warehouse shipping label.
      *
      * @param  Warehouse  $warehouse
      * @return PDF

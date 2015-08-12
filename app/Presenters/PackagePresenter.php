@@ -12,7 +12,7 @@ use Html;
 class PackagePresenter extends BasePresenter {
 
     /**
-     * Presents the arrival date.
+     * Present the arrival date.
      *
      * @return
      */
@@ -22,7 +22,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the package type.
+     * Present the package type.
      *
      * @return string
      */
@@ -32,7 +32,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the dimensions.
+     * Present the dimensions.
      *
      * @return string
      */
@@ -42,7 +42,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the total weight.
+     * Present the total weight.
      *
      * @return string
      */
@@ -52,7 +52,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the customer name.
+     * Present the customer name.
      *
      * @return string
      */
@@ -62,7 +62,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to the customer account page.
+     * Present a link to the customer account page.
      *
      * @return html
      */
@@ -75,7 +75,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to the warehouse page.
+     * Present a link to the warehouse page.
      *
      * @return html
      */
@@ -88,7 +88,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to the shipment page.
+     * Present a link to the shipment page.
      *
      * @return html
      */
@@ -108,7 +108,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Determines the color status CSS class.
+     * Determine the CSS class for the current status.
      *
      * @return string
      */
@@ -128,7 +128,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Determines the color status CSS class.
+     * Present the status text.
      *
      * @return string
      */
@@ -150,7 +150,7 @@ class PackagePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the total invoice amount.
+     * Present the total value of the package.
      *
      * @param  bool  $showSign
      * @return string

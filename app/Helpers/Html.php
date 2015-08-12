@@ -8,7 +8,7 @@
 class Html {
 
     /**
-     * Generates an HTML link with an icon.
+     * Generate an HTML link with an icon.
      *
      * @param  string  $url
      * @param  string  $title
@@ -21,7 +21,7 @@ class Html {
     }
 
     /**
-     * Generates a link for sorting a table column.
+     * Generate a link for sorting a table column.
      *
      * @param  string  $url
      * @param  string  $title
@@ -42,7 +42,7 @@ class Html {
     }
 
     /**
-     * Builds an HTML attribute string from an array.
+     * Build an HTML attribute string from an array.
      *
      * @param  array  $attributes
      * @return string

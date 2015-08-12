@@ -8,7 +8,7 @@
 class Math {
 
     /**
-     * Converts pounds to kilos.
+     * Convert pounds to kilos.
      *
      * @param  int|float  $pounds
      * @param  int        $precision
@@ -20,7 +20,7 @@ class Math {
     }
 
     /**
-     * Calculates the volume weight of a package in pounds.
+     * Calculate the volume weight of a package in pounds.
      *
      * @param  float  $length
      * @param  float  $width
@@ -35,7 +35,7 @@ class Math {
     }
 
     /**
-     * Calculates the cubic feet of a package.
+     * Calculate the cubic feet of a package.
      *
      * @param  float  $length
      * @param  float  $width
@@ -50,7 +50,7 @@ class Math {
     }
 
     /**
-     * Calculates the cubic feet of a package.
+     * Calculate the cubic feet of a package.
      *
      * @param  float  $length
      * @param  float  $width

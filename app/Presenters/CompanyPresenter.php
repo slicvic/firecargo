@@ -11,7 +11,7 @@ use App\Helpers\Upload;
 class CompanyPresenter extends BasePresenter {
 
     /**
-     * Presents the primary contact name.
+     * Present the primary contact name.
      *
      * @return string
      */
@@ -21,7 +21,7 @@ class CompanyPresenter extends BasePresenter {
     }
 
     /**
-     * Presents the address as a string.
+     * Present the address as a string.
      *
      * @param  string  $type   shipping|billing
      * @return string
@@ -37,7 +37,7 @@ class CompanyPresenter extends BasePresenter {
     }
 
     /**
-     * Presents the logo URL.
+     * Present the logo URL.
      *
      * @param  string  $size  sm|md|lg
      * @param  string  $ext   png|jpg

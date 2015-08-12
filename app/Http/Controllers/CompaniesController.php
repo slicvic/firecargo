@@ -28,9 +28,9 @@ class CompaniesController extends BaseAuthController {
     }
 
     /**
-     * Shows a list of companies.
+     * Show a list of companies.
      *
-     * @return Response
+     * @return View
      */
     public function getIndex()
     {
@@ -40,9 +40,9 @@ class CompaniesController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for creating a new company.
+     * Show the form for creating a new company.
      *
-     * @return Response
+     * @return View
      */
     public function getCreate()
     {
@@ -50,10 +50,10 @@ class CompaniesController extends BaseAuthController {
     }
 
     /**
-     * Creates a new company.
+     * Create a new company.
      *
      * @param  Request  $request
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postStore(CompanyFormRequest $request)
     {
@@ -71,10 +71,10 @@ class CompaniesController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for editing a company.
+     * Show the form for editing a company.
      *
      * @param  int  $id
-     * @return Response
+     * @return View
      */
     public function getEdit($id)
     {
@@ -84,11 +84,11 @@ class CompaniesController extends BaseAuthController {
     }
 
     /**
-     * Updates a specific company.
+     * Update a specific company.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postUpdate(CompanyFormRequest $request, $id)
     {

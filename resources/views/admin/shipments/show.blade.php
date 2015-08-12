@@ -48,7 +48,7 @@
                     </tr>
                     <tr>
                         <th>Total Value</th>
-                        <td><span class="label label-primary">{{ $shipment->present()->totalValue() }}</span></td>
+                        <td><span class="label label-primary">{{ $shipment->present()->value() }}</span></td>
                     </tr>
                     <tr>
                         <th>Created</th>

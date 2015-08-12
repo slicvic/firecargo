@@ -9,6 +9,7 @@ use Exception;
 use App\Models\Account;
 use App\Models\Address;
 use App\Http\Requests\AccountFormRequest;
+use App\Exceptions\IntegrityConstraintException;
 
 /**
  * General Purpose Accounts Controller
@@ -31,10 +32,10 @@ class AccountsController extends BaseAuthController {
     }
 
     /**
-     * Shows a list of customer accounts.
+     * Display a list of customer accounts.
      *
      * @param  Request  $request
-     * @return Response
+     * @return View
      */
     public function getIndex(Request $request)
     {
@@ -57,9 +58,9 @@ class AccountsController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for creating a new customer account.
+     * Display the form for creating a new customer account.
      *
-     * @return Response
+     * @return View
      */
     public function getCreate()
     {
@@ -70,10 +71,10 @@ class AccountsController extends BaseAuthController {
     }
 
     /**
-     * Creates a new customer account.
+     * Create a new customer account.
      *
      * @param  Request  $request
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postStore(AccountFormRequest $request)
     {
@@ -111,10 +112,10 @@ class AccountsController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for editing an customer account.
+     * Display the form for editing an customer account.
      *
      * @param  int  $id
-     * @return Response
+     * @return View
      */
     public function getEdit($id)
     {
@@ -127,11 +128,11 @@ class AccountsController extends BaseAuthController {
     }
 
     /**
-     * Updates a specific customer account.
+     * Update a specific customer account.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postUpdate(AccountFormRequest $request, $id)
     {
@@ -167,11 +168,11 @@ class AccountsController extends BaseAuthController {
     }
 
     /**
-     * Deletes the specified account.
+     * Delete the specified account.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function getDelete(Request $request, $id)
     {
@@ -179,12 +180,10 @@ class AccountsController extends BaseAuthController {
 
         try
         {
-            if ($model->user_id)
+            if ( ! $model->delete())
             {
-                throw new Exception('Integrity constraint violation.');
+                throw new IntegrityConstraintException;
             }
-
-            $model->delete();
 
             return $this->redirectBackWithSuccess('Account deleted.');
         }
@@ -197,7 +196,7 @@ class AccountsController extends BaseAuthController {
     }
 
     /**
-     * Retrieves customer or shipper accounts for an ajax autocomplete field.
+     * Retrieve customer or shipper accounts for an autocomplete field.
      *
      * @param  Request  $request
      * @return JsonResponse
@@ -207,7 +206,6 @@ class AccountsController extends BaseAuthController {
     {
         $input = $request->only('term');
 
-        // Return nothing if search term is less than 2 characters long.
         if (strlen($input['term']) < 2)
         {
             return response()->json([]);

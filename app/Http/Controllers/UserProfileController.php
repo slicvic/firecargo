@@ -12,7 +12,6 @@ use App\Models\User;
 use App\Models\Address;
 use App\Exceptions\ValidationException;
 use App\Helpers\Upload;
-use App\Http\ToastrJsonResponse;
 use App\Http\Requests\UpdateUserProfileFormRequest;
 use App\Http\Requests\UpdateCustomerUserProfileFormRequest;
 
@@ -24,9 +23,9 @@ use App\Http\Requests\UpdateCustomerUserProfileFormRequest;
 class UserProfileController extends BaseAuthController {
 
     /**
-     * Displays the user profile.
+     * Display the user profile.
      *
-     * @return Response
+     * @return View
      */
     public function getProfile()
     {
@@ -39,9 +38,9 @@ class UserProfileController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for updating the user profile.
+     * Show the form for updating the user profile.
      *
-     * @return Response
+     * @return View
      */
     public function getEditProfile()
     {
@@ -59,10 +58,10 @@ class UserProfileController extends BaseAuthController {
     }
 
     /**
-     * Updates a user profile.
+     * Update the user profile.
      *
      * @param  Request  $request
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postProfile(UpdateUserProfileFormRequest $request)
     {
@@ -78,10 +77,10 @@ class UserProfileController extends BaseAuthController {
     }
 
     /**
-     * Updates a customer user profile.
+     * Update the user profile for a customer.
      *
      * @param  Request  $request
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postCustomerProfile(UpdateCustomerUserProfileFormRequest $request)
     {
@@ -118,9 +117,9 @@ class UserProfileController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for changing the user password.
+     * Show the form for changing the password.
      *
-     * @return Response
+     * @return View
      */
     public function getChangePassword()
     {
@@ -128,10 +127,10 @@ class UserProfileController extends BaseAuthController {
     }
 
     /**
-     * Updates the user password.
+     * Update the password.
      *
      * @param  Request  $request
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postChangePassword(Request $request)
     {
@@ -154,7 +153,7 @@ class UserProfileController extends BaseAuthController {
     }
 
     /**
-     * Uploads the profile photo.
+     * Upload the profile photo.
      *
      * @param  Request  $request
      * @return JsonResponse
@@ -169,7 +168,7 @@ class UserProfileController extends BaseAuthController {
 
         if ($validator->fails())
         {
-            return ToastrJsonResponse::error($validator, 404);
+            return response()->jsonFlash($validator, 404);
         }
 
         try
@@ -178,13 +177,13 @@ class UserProfileController extends BaseAuthController {
 
             $this->user->update(['has_photo' => TRUE]);
 
-            return ToastrJsonResponse::success('Your photo has been uploaded.');
+            return response()->jsonFlash('Your photo has been uploaded.');
         }
         catch(Exception $e)
         {
             Log::error($e);
 
-            return ToastrJsonResponse::error('Upload failed, please try again.', 500);
+            return response()->jsonFlash('Upload failed, please try again.', 500);
         }
     }
 }

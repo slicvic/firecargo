@@ -79,7 +79,7 @@ class Package extends BaseSearchable {
     ];
 
     /**
-     * Registers model events.
+     * Register model events.
      *
      * @return void
      */
@@ -91,7 +91,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the warehouse.
+     * Get the warehouse.
      *
      * @return Warehouse
      */
@@ -101,7 +101,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the customer.
+     * Get the customer.
      *
      * @return Warehouse
      */
@@ -111,7 +111,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the package type.
+     * Get the package type.
      *
      * @return PackageType
      */
@@ -121,7 +121,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Gets the shipment.
+     * Get the shipment.
      *
      * @return Shipment
      */
@@ -131,7 +131,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Finds unprocessed packages.
+     * Find unprocessed packages.
      *
      * @param  Builder  $query
      * @return Builder
@@ -144,7 +144,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Finds packages on hold.
+     * Find packages on hold.
      *
      * @param  Builder  $query
      * @return Builder
@@ -157,7 +157,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Finds shipped packages.
+     * Find shipped packages.
      *
      * @param  Builder  $query
      * @return Builder
@@ -168,7 +168,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Checks if the package has been assigned to a shipment or not.
+     * Determine if the package has been assigned a shipment.
      *
      * @return bool
      */
@@ -178,7 +178,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Checks if the package is on hold or not.
+     * Determine if the package is on hold.
      *
      * @return bool
      */
@@ -188,7 +188,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Calculates the volume weight of the package in pounds.
+     * Calculate the volume weight of the package in pounds.
      *
      * @param  int  $precision
      * @return float
@@ -199,7 +199,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Calculates the cubic feet of the package.
+     * Calculate the cubic feet of the package.
      *
      * @return float
      */
@@ -209,7 +209,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Calculates the cubic meter of the package.
+     * Calculate the cubic meter of the package.
      *
      * @return float
      */
@@ -219,7 +219,7 @@ class Package extends BaseSearchable {
     }
 
     /**
-     * Finds all packages with the given criteria.
+     * Find all packages with the given criteria.
      *
      * {@inheritdoc}
      */

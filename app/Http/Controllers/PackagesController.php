@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 
 use App\Models\Package;
-use App\Http\ToastrJsonResponse;
 
 /**
  * PackagesController
@@ -29,10 +28,10 @@ class PackagesController extends BaseAuthController {
     }
 
     /**
-     * Shows a list of packages.
+     * Show a list of packages.
      *
      * @param  Request  $request
-     * @return Response
+     * @return View
      */
     public function getIndex(Request $request)
     {
@@ -60,11 +59,11 @@ class PackagesController extends BaseAuthController {
     }
 
     /**
-     * Shows the packages for a specific warehouse.
+     * Show the packages for a specific warehouse.
      *
      * @param  Request  $request
      * @param  int      $warehouseId
-     * @return Response
+     * @return View
      * @uses   Ajax
      */
     public function getWarehousePackages(Request $request, $warehouseId)
@@ -79,11 +78,11 @@ class PackagesController extends BaseAuthController {
     }
 
     /**
-     * Shows the packages for a specific shipment.
+     * Show the packages for a specific shipment.
      *
      * @param  Request  $request
      * @param  int      $warehouseId
-     * @return Response
+     * @return View
      * @uses   Ajax
      */
     public function getShipmentPackages(Request $request, $shipmentId)
@@ -97,11 +96,11 @@ class PackagesController extends BaseAuthController {
     }
 
     /**
-     * Shows a specific package details.
+     * Show the package details.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Response
+     * @return View|JsonResponse
      * @uses   Ajax
      */
     public function getPackageDetails(Request $request, $id)
@@ -110,18 +109,18 @@ class PackagesController extends BaseAuthController {
 
         if ( ! $package)
         {
-            return ToastrJsonResponse::error('Package not found.', 404);
+            return response()->jsonFlash('Package not found.', 404);
         }
 
         return view('admin.packages._package_details', ['package' => $package]);
     }
 
     /**
-     * Shows a specific package details.
+     * Show the package details for a customer.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Response
+     * @return View|JsonResponse
      * @uses   Ajax
      */
     public function getCustomerPackageDetails(Request $request, $id)
@@ -134,14 +133,14 @@ class PackagesController extends BaseAuthController {
 
         if ( ! $package)
         {
-            return ToastrJsonResponse::error('Package not found.', 404);
+            return response()->jsonFlash('Package not found.', 404);
         }
 
         return view('admin.packages._customer_package_details', ['package' => $package]);
     }
 
     /**
-     * Updates a jquery x-editable field.
+     * Update an x-editable field.
      *
      * @param  Request  $request
      * @return JsonResponse

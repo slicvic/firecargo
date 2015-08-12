@@ -13,7 +13,7 @@ use Html;
 class WarehousePresenter extends BasePresenter {
 
     /**
-     * Presents the carrier name.
+     * Present the carrier name.
      *
      * @return string
      */
@@ -23,7 +23,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the customer name.
+     * Present the customer name.
      *
      * @return string
      */
@@ -33,7 +33,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the shipper name.
+     * Present the shipper name.
      *
      * @return string
      */
@@ -43,7 +43,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to the shipper account page.
+     * Present a link to the shipper account page.
      *
      * @return html
      */
@@ -56,7 +56,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents a link to the customer account page.
+     * Present a link to the customer account page.
      *
      * @return html
      */
@@ -69,7 +69,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the status as a CSS class.
+     * Determine the CSS class for the status.
      *
      * @return string
      */
@@ -87,7 +87,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the total volume weight.
+     * Present the total volume weight.
      *
      * @return string
      */
@@ -97,7 +97,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the total gross weight.
+     * Present the total gross weight.
      *
      * @return string
      */
@@ -107,7 +107,7 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the total charge weight.
+     * Present the total charge weight.
      *
      * @return string
      */
@@ -117,11 +117,11 @@ class WarehousePresenter extends BasePresenter {
     }
 
     /**
-     * Presents the monetary value in dollar format.
+     * Present the total value of the warehouse.
      *
      * @return string
      */
-    public function totalValue()
+    public function value()
     {
         return ($this->model->exists) ? (new Currency($this->model->calculateTotalValue()))->asDollar() : '';
     }

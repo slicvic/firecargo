@@ -7,6 +7,19 @@
 @stop
 
 @section('page_content')
+<div class="row">
+    <div class="col-md-12">
+        <div class="btn-group btn-group-lg" role="group" aria-label="Large button group">
+            <a href="/warehouses" class="btn {{ ($params['status'] === NULL) ? 'btn-primary' : 'btn-white' }}">All</a>
+            @foreach ($statuses as $status)
+                <a href="/warehouses?status={{ $status->id }}" class="btn {{ ($params['status'] === $status->id) ? 'btn-primary' : 'btn-white' }}">{{ $status->name }}</a>
+            @endforeach
+        </div>
+    </div>
+</div>
+
+<br>
+
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <div class="row">
@@ -33,7 +46,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="pull-right">
-                    {!! $pagination = $warehouses->appends(['sort' => $params['sort'], 'order' => $params['order']])->render() !!}
+                    {!! $pagination = $warehouses->appends(['status' => $params['status'], 'sort' => $params['sort'], 'order' => $params['order']])->render() !!}
                 </div>
             </div>
         </div>

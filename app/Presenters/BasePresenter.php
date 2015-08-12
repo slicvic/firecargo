@@ -27,7 +27,7 @@ abstract class BasePresenter {
     }
 
     /**
-     * Presents the creator name and date.
+     * Present the creator name and date.
      *
      * @return string
      */
@@ -41,7 +41,7 @@ abstract class BasePresenter {
     }
 
     /**
-     * Presents the updater name and date.
+     * Present the updater name and date.
      *
      * @return string
      */

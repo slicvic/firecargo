@@ -3,6 +3,11 @@
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 
+/**
+ * AdminOrHigherMiddleware
+ *
+ * @author Victor Lantigua <vmlantigua@gmail.com>
+ */
 class AdminOrHigherMiddleware {
 
     /**

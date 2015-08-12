@@ -12,7 +12,7 @@ use Html;
 class AccountPresenter extends BasePresenter {
 
     /**
-     * Presents the address as a string.
+     * Present the address as a string.
      *
      * @param  string  $type   shipping|billing
      * @return string
@@ -28,7 +28,7 @@ class AccountPresenter extends BasePresenter {
     }
 
     /**
-     * Presents the tags as bootstrap badges.
+     * Present the tags as bootstrap badges.
      *
      * @return string
      */

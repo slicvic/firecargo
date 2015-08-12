@@ -13,7 +13,7 @@ use Html;
 class UserPresenter extends BasePresenter {
 
     /**
-     * Presents the full name.
+     * Present the full name.
      *
      * @return string
      */
@@ -23,7 +23,7 @@ class UserPresenter extends BasePresenter {
     }
 
     /**
-     * Presents the last login date.
+     * Present the last login date.
      *
      * @return string
      */
@@ -33,7 +33,7 @@ class UserPresenter extends BasePresenter {
     }
 
     /**
-     * Presents the profile photo URL.
+     * Present the profile photo URL.
      *
      * @param  string  $size  sm|md
      * @param  string  $default
@@ -50,7 +50,7 @@ class UserPresenter extends BasePresenter {
     }
 
     /**
-     * Presents the active status.
+     * Present the active status.
      *
      * @return string
      */
@@ -62,7 +62,7 @@ class UserPresenter extends BasePresenter {
     }
 
     /**
-     * Presents the role as a bootstrap badge.
+     * Present the role as a bootstrap badge.
      *
      * @return html
      */

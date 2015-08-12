@@ -28,9 +28,9 @@ class PackageTypesController extends BaseAuthController {
     }
 
     /**
-     * Shows a list of package types.
+     * Show a list of package types.
      *
-     * @return Response
+     * @return View
      */
     public function getIndex()
     {
@@ -40,9 +40,9 @@ class PackageTypesController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for creating a new package type.
+     * Show the form for creating a new package type.
      *
-     * @return Response
+     * @return View
      */
     public function getCreate()
     {
@@ -50,10 +50,10 @@ class PackageTypesController extends BaseAuthController {
     }
 
     /**
-     * Creates a new package type.
+     * Create a new package type.
      *
      * @param  Request  $request
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postStore(Request $request)
     {
@@ -67,10 +67,10 @@ class PackageTypesController extends BaseAuthController {
     }
 
     /**
-     * Shows the form for editing a package type.
+     * Show the form for editing a package type.
      *
      * @param  int  $id
-     * @return Response
+     * @return View
      */
     public function getEdit($id)
     {
@@ -80,11 +80,11 @@ class PackageTypesController extends BaseAuthController {
     }
 
     /**
-     * Updates a specific package type.
+     * Update a specific package type.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function postUpdate(Request $request, $id)
     {
@@ -98,11 +98,11 @@ class PackageTypesController extends BaseAuthController {
     }
 
     /**
-     * Deletes a specific package type.
+     * Delete a specific package type.
      *
      * @param  Request  $request
      * @param  int      $id
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function getDelete(Request $request, $id)
     {
@@ -123,7 +123,7 @@ class PackageTypesController extends BaseAuthController {
     }
 
     /**
-     * Returns all package types formatted for a jquery x-editable select field.
+     * Return all the package types formatted for an x-editable select field.
      *
      * @return JsonResponse
      * @uses   Ajax

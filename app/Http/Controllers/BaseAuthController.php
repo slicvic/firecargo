@@ -2,7 +2,8 @@
 
 use Illuminate\Contracts\Auth\Guard;
 use View;
-use Request;
+use Request as RequestFacade;
+use Auth;
 
 /**
  * BaseAuthController
@@ -35,13 +36,25 @@ abstract class BaseAuthController extends BaseController {
     {
         $this->middleware('auth');
 
-        $this->auth = $auth;
-        $this->user = $auth->user();
+        if ($auth->check())
+        {
+            $this->auth = $auth;
+            $this->user = $auth->user();
+            $this->initViewGlobals();
+        }
+    }
 
-        View::share('isAdminUser', $this->user->isAdmin());
-        View::share('isAgentUser', $this->user->isAgent());
-        View::share('isCustomerUser', $this->user->isCustomer());
-        View::share('currentUser', $this->user);
-        View::share('currentUri', Request::path());
+    /**
+     * Initialize global view variables.
+     *
+     * @return void
+     */
+    private function initViewGlobals()
+    {
+        view()->share('isAdminUser', $this->user->isAdmin());
+        view()->share('isAgentUser', $this->user->isAgent());
+        view()->share('isCustomerUser', $this->user->isCustomer());
+        view()->share('currentUser', $this->user);
+        view()->share('currentUri', RequestFacade::path());
     }
 }

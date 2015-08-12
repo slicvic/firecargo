@@ -28,9 +28,9 @@ class RolesController extends BaseAuthController {
     }
 
     /**
-     * Shows a list of roles.
+     * Show a list of roles.
      *
-     * @return Response
+     * @return View
      */
     public function getIndex()
     {

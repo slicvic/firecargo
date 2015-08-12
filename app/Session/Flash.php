@@ -25,7 +25,7 @@ class Flash {
     private $sessionKey = 'flash_message';
 
     /**
-     * Emits a success message.
+     * Emit a success message.
      *
      * @param  string  $message
      * @return void
@@ -36,7 +36,7 @@ class Flash {
     }
 
     /**
-     * Emits an info message.
+     * Emit an info message.
      *
      * @param  string  $message
      * @return void
@@ -47,7 +47,7 @@ class Flash {
     }
 
     /**
-     * Emits a warning message.
+     * Emit a warning message.
      *
      * @param  string  $message
      * @return void
@@ -58,27 +58,18 @@ class Flash {
     }
 
     /**
-     * Emits an error message.
+     * Emit an error message.
      *
-     * @param  string|array|Validator|MessageBag  $message
+     * @param  mixed  $message
      * @return void
      */
     public function error($message)
     {
-        if ($message instanceof \Illuminate\Validation\Validator)
-        {
-            $message = $message->messages()->all(':message');
-        }
-        elseif ($message instanceof \Illuminate\Support\MessageBag)
-        {
-            $message = $message->all(':message');
-        }
-
         $this->set(self::ERROR, $message);
     }
 
     /**
-     * Retrieves the message.
+     * Retrieve the message.
      *
      * @return array|NULL
      */
@@ -88,7 +79,7 @@ class Flash {
     }
 
     /**
-     * Renders the message as bootstrap alert.
+     * Render the message as bootstrap alert.
      *
      * @return string|NULL
      */
@@ -105,7 +96,7 @@ class Flash {
     }
 
     /**
-     * Renders the message as a toastr.
+     * Render the message as a toastr.
      *
      * @return string|NULL
      */
@@ -122,21 +113,21 @@ class Flash {
     }
 
     /**
-     * Makes the HTML view for the message.
+     * Build the HTML view for the message.
      *
      * @param  string  $view
      * @param  mixed   $message
      * @return string
      */
-    public function view($view, $message)
+    private function view($view, $message)
     {
         return view("shared.flash.{$view}", [
-            'message' => is_string($message) ? $message : self::tidyMessage($message)
+            'message' => self::normalizeMessage($message)
         ])->render();
     }
 
     /**
-     * Stores the message in the session.
+     * Store the message in the session.
      *
      * @param   string        $level    success|info|warning|error
      * @param   string|array  $message
@@ -144,16 +135,17 @@ class Flash {
      */
     private function set($level, $message)
     {
-        Session::flash($this->sessionKey, ['level' => $level, 'message' => self::tidyMessage($message)]);
+        Session::flash($this->sessionKey, ['level' => $level, 'message' => self::normalizeMessage($message)]);
     }
 
     /**
-     * Normalizes the message before storing in session.
+     * Turn the given message into a normalized representation before storing it in
+     * session.
      *
      * @param  string|array|ValidationException|Validator|MessageBag  $message
      * @return string
      */
-    public static function tidyMessage($message)
+    public static function normalizeMessage($message)
     {
         if (is_string($message))
         {

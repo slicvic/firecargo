@@ -3,7 +3,7 @@
     <div class="form-group">
         <label class="control-label col-sm-2">Name</label>
         <div class="col-sm-4">
-            <input required type="text" name="name" placeholder="e.g. Box" class="form-control" value="{{ Input::old('name', $type->name) }}">
+            <input required type="text" name="name" placeholder="e.g. Box" class="form-control" value="{{ old('name', $type->name) }}">
         </div>
     </div>
     <div class="form-group">

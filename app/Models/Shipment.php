@@ -10,7 +10,7 @@ use App\Observers\ShipmentObserver;
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Shipment extends BaseSearchable implements ISearchable {
+class Shipment extends BaseSearchable {
 
     use CompanyTrait, PresentableTrait, CreatorUpdaterTrait;
 
@@ -55,7 +55,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     ];
 
     /**
-     * Registers model events.
+     * Register model events.
      *
      * @return void
      */
@@ -67,9 +67,9 @@ class Shipment extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Overrides parent method to sanitize attributes.
+     * Override parent method to sanitize attributes.
      *
-     * @see parent::setAttribute()
+     * {@inheritdoc}
      */
     public function setAttribute($key, $value)
     {
@@ -86,7 +86,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the packages.
+     * Get the packages.
      *
      * @return Package[]
      */
@@ -96,7 +96,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the carrier.
+     * Get the carrier.
      *
      * @return Carrier
      */
@@ -106,7 +106,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Attaches the given packages to the shipment.
+     * Attache the given packages to the shipment.
      *
      * WARNING: AFTER THIS OPERATION IS COMPLETE ONLY THE GIVEN PACKAGES
      * WILL REMAIN IN THE SHIPMENT.
@@ -129,7 +129,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Calculates the total cost of the shipment.
+     * Calculate the total cost of the shipment.
      *
      * @return float
      */
@@ -140,7 +140,7 @@ class Shipment extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Finds all shipments with the given criteria.
+     * Find all shipments with the given criteria.
      *
      * {@inheritdoc}
      */

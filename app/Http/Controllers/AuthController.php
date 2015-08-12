@@ -7,14 +7,10 @@ use Illuminate\Http\Request;
 use View;
 
 use App\Models\User;
-use App\Models\Role;
-use App\Models\Account;
-use App\Models\Address;
 use App\Models\Company;
 use Flash;
 use App\Events\UserLoggedInEvent;
-use App\Events\UserRegisteredEvent;
-use App\Http\Requests\CustomerRegisterFormRequest;
+use App\Services\Registrar;
 
 /**
  * AuthController
@@ -30,16 +26,16 @@ class AuthController extends BaseController {
     {
         $regCode = ( ! empty($_GET['reg'])) ? $_GET['reg'] : NULL;
         $company = ($regCode) ? Company::where('corp_code', $regCode)->first() : NULL;
-        $queryString = ( ! empty($_SERVER['QUERY_STRING'])) ? '/?' . $_SERVER['QUERY_STRING'] : '';
+        $queryString = ( ! empty($_SERVER['QUERY_STRING'])) ? '?' . $_SERVER['QUERY_STRING'] : '';
 
         View::share('company', $company);
         View::share('queryString', $queryString);
     }
 
     /**
-     * Logs out the user.
+     * Log the user out of the application.
      *
-     * @return Redirector
+     * @return RedirectResponse
      */
     public function getLogout()
     {
@@ -49,9 +45,9 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Shows the login form.
+     * Display the login form.
      *
-     * @return Response
+     * @return View
      */
     public function getLogin()
     {
@@ -59,10 +55,10 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Logs in a user.
+     * Log a user into the application.
      *
      * @param  Request  $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function postLogin(Request $request)
     {
@@ -84,13 +80,13 @@ class AuthController extends BaseController {
 
         Event::fire(new UserLoggedInEvent($user));
 
-        return redirect('/dashboard');
+        return redirect('dashboard');
     }
 
     /**
-     * Shows the signup form.
+     * Display the signup form.
      *
-     * @return Response
+     * @return View
      */
     public function getRegister()
     {
@@ -98,54 +94,32 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Registers a new user.
+     * Register a new user.
      *
      * @param  Request  $request
-     * @return Response
+     * @return RedirectResponse
      */
-    public function postRegister(CustomerRegisterFormRequest $request)
+    public function postRegister(Request $request)
     {
         $input = $request->all();
 
-        $company = Company::where('corp_code', $input['registration_code'])->first();
+        $registrar = new Registrar();
+        $validator = $registrar->validator($input);
 
-        // Create user and customer account (See App\Observers\UserObserver)
-        $user = new User;
-        $user->company_id = $company->id;
-        $user->firstname = $input['firstname'];
-        $user->lastname = $input['lastname'];
-        $user->email = $input['email'];
-        $user->password = $input['password'];
-        $user->active = TRUE;
-        $user->role_id = Role::CUSTOMER;
-        $user->save();
+        if ($validator->fails())
+        {
+            return $this->redirectBackWithError($validator);
+        }
 
-        // Create account address
-        $address = new Address;
-        $address->address1 = $input['address1'];
-        $address->address2 = $input['address2'];
-        $address->city = $input['city'];
-        $address->state = $input['state'];
-        $address->postal_code = $input['postal_code'];
-        $address->country_id = $input['country_id'];
-        $address->save();
-
-        // Update account
-        $account = $user->account()->first();
-        $account->phone = $input['phone'];
-        $account->mobile_phone = $input['mobile_phone'];
-        $account->shippingAddress()->associate($address);
-        $account->save();
-
-        Event::fire(new UserRegisteredEvent($user));
+        $registrar->create($input);
 
         return redirect('dashboard');
     }
 
     /**
-     * Shows the form for recovering a user's password.
+     * Display the password recovery form.
      *
-     * @return Response
+     * @return View
      */
     public function getForgotPassword()
     {
@@ -153,10 +127,10 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Sends a password recovery token to the user.
+     * Send a password recovery token to the provided email.
      *
      * @param  Request  $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function postForgotPassword(Request $request)
     {
@@ -183,9 +157,9 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Shows the form for resetting a user's password.
+     * Display the password reset form.
      *
-     * @return Response
+     * @return View
      */
     public function getResetPassword()
     {
@@ -193,10 +167,10 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Resets a user's password.
+     * Reset the password of the given user.
      *
      * @param  Request  $request
-     * @return Response
+     * @return RedirectResponse
      */
     public function postResetPassword(Request $request)
     {
@@ -228,10 +202,10 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Activates a customer account.
+     * Activate a user account.
      *
      * @param  Request $request
-     * @return Response
+     * @return View|RedirectResponse
      */
     public function getActivateAccount(Request $request)
     {
@@ -245,6 +219,7 @@ class AuthController extends BaseController {
         if ($validator->fails())
         {
             Flash::error($validator);
+
             return view('site.activate');
         }
 
@@ -266,10 +241,10 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Activates a customer account.
+     * Send account activation code to the given email.
      *
      * @param  Request $request
-     * @return Response
+     * @return View|RedirectResponse
      */
     public function getResendActivationCode(Request $request)
     {

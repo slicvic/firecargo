@@ -11,7 +11,7 @@ use App\Observers\WarehouseObserver;
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-class Warehouse extends BaseSearchable implements ISearchable {
+class Warehouse extends BaseSearchable {
 
     use CompanyTrait, PresentableTrait, CreatorUpdaterTrait;
 
@@ -58,7 +58,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     ];
 
     /**
-     * Registers model events.
+     * Register model events.
      *
      * @return void
      */
@@ -70,7 +70,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the shipper account.
+     * Get the shipper account.
      *
      * @return Account
      */
@@ -80,7 +80,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the customer account.
+     * Get the customer account.
      *
      * @return Account
      */
@@ -90,7 +90,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the carrier.
+     * Get the carrier.
      *
      * @return Carrier
      */
@@ -100,7 +100,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Gets the packages.
+     * Get the packages.
      *
      * @return Package[]
      */
@@ -110,7 +110,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Finds unprocesed warehouses.
+     * Find unprocesed warehouses.
      *
      * @param  Builder  $query
      * @return Builder
@@ -121,7 +121,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Finds pending warehouses.
+     * Find pending warehouses.
      *
      * @param  Builder  $query
      * @return Builder
@@ -132,7 +132,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Finds completed warehouses.
+     * Find completed warehouses.
      *
      * @param  Builder  $query
      * @return Builder
@@ -143,7 +143,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Creates or updates the given packages and attaches them to the warehouse.
+     * Create or update the given packages and attach them to the warehouse.
      *
      * @param  array  $packages
      * @return void
@@ -186,7 +186,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Calculates the actual weight of the warehouse in pounds.
+     * Calculate the actual weight of the warehouse in pounds.
      *
      * @return float
      */
@@ -208,7 +208,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Calculates the volume weight of the warehouse in pounds.
+     * Calculate the volume weight of the warehouse in pounds.
      *
      * @return float
      */
@@ -230,7 +230,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Calculates the cubic feet of the warehouse.
+     * Calculate the cubic feet of the warehouse.
      *
      * @return float
      */
@@ -252,7 +252,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Calculates the cubic meter of the warehouse.
+     * Calculate the cubic meter of the warehouse.
      *
      * @return float
      */
@@ -274,7 +274,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Calculates the charge weight of the warehouse in pounds.
+     * Calculate the charge weight of the warehouse in pounds.
      *
      * @return float
      */
@@ -287,7 +287,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Calculates the total cost of the warehouse.
+     * Calculate the total cost of the warehouse.
      *
      * @return float
      */
@@ -298,7 +298,7 @@ class Warehouse extends BaseSearchable implements ISearchable {
     }
 
     /**
-     * Finds all warehouses with the given criteria.
+     * Find all warehouses with the given criteria.
      *
      * {@inheritdoc}
      */

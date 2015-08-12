@@ -10,7 +10,7 @@ use Auth;
 trait CreatorUpdaterTrait {
 
     /**
-     * Gets the creator user.
+     * Get the creator user.
      *
      * @return Carrier
      */
@@ -20,7 +20,7 @@ trait CreatorUpdaterTrait {
     }
 
     /**
-     * Gets the last updater user.
+     * Get the last updater user.
      *
      * @return Carrier
      */

@@ -25,7 +25,7 @@ class Currency {
     }
 
     /**
-     * Formats amount as a dollar amount.
+     * Format the amount as a dollar amount.
      *
      * @param  bool  $showSign
      * @return string
