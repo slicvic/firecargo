@@ -52,7 +52,7 @@ class Company extends Base {
     {
         parent::boot();
 
-        Company::observe(new CompanyObserver);
+        self::observe(new CompanyObserver);
     }
 
     /**

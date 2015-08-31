@@ -144,7 +144,10 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
-		'App\Providers\ResponseMacroServiceProvider',
+
+		'App\Providers\ResponseServiceProvider',
+		'App\Providers\FlashServiceProvider',
+		'App\Providers\ValidationServiceProvider'
 	],
 
 	/*

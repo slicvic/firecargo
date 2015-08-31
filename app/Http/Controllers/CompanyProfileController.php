@@ -112,7 +112,7 @@ class CompanyProfileController extends BaseAuthController {
 
         if ($validator->fails())
         {
-            return response()->jsonFlash($validator, 404);
+            return response()->jsonError($validator, 404);
         }
 
         try
@@ -121,13 +121,13 @@ class CompanyProfileController extends BaseAuthController {
 
             $this->user->company->update(['has_logo' => TRUE]);
 
-            return response()->jsonFlash('Your logo has been uploaded.');
+            return response()->jsonSuccess('Your logo has been uploaded.');
         }
         catch(Exception $e)
         {
             Log::error($e);
 
-            return response()->jsonFlash('Upload failed, please try again.', 500);
+            return response()->jsonError('Upload failed, please try again.', 500);
         }
     }
 }

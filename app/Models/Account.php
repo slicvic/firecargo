@@ -82,7 +82,7 @@ class Account extends BaseSearchable {
     {
         parent::boot();
 
-        Account::observe(new AccountObserver);
+        self::observe(new AccountObserver);
     }
 
     /**
@@ -99,7 +99,7 @@ class Account extends BaseSearchable {
                 $value = ucwords(strtolower(trim($value)));
                 break;
             case 'name':
-                $value = ucwords($value);
+                $value = ucwords(trim($value));
                 break;
         }
 
@@ -157,7 +157,7 @@ class Account extends BaseSearchable {
      */
     public static function autocompleteSearch($searchTerm)
     {
-        $query = Account::query();
+        $query = self::query();
 
         $searchTerm = '%' . $searchTerm . '%';
 
@@ -190,7 +190,7 @@ class Account extends BaseSearchable {
      */
     public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
-        $query = Account::query()
+        $query = self::query()
             ->orderBy(self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
             ->with('company', 'shippingAddress');
 

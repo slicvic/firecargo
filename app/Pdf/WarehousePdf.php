@@ -17,7 +17,7 @@ class WarehousePdf {
      * @param  Warehouse  $warehouse
      * @return PDF
      */
-    public static function getReceipt(Warehouse $warehouse)
+    public static function makeReceipt(Warehouse $warehouse)
     {
         // Create barcode
         $barcode = new TCPDFBarcode($warehouse->id, 'C128');
@@ -48,7 +48,7 @@ class WarehousePdf {
      * @param  Warehouse  $warehouse
      * @return PDF
      */
-    public static function getLabel(Warehouse $warehouse)
+    public static function makeLabel(Warehouse $warehouse)
     {
         // Retrieve packages
         $packages = $warehouse->packages;

@@ -26,7 +26,7 @@ class CarriersController extends BaseAuthController {
     }
 
     /**
-     * Display a list of carriers.
+     * Show a list of carriers.
      *
      * @return View
      */
@@ -38,7 +38,7 @@ class CarriersController extends BaseAuthController {
     }
 
     /**
-     * Display the form for creating a new carrier.
+     * Show the form for creating a new carrier.
      *
      * @return View
      */

@@ -57,7 +57,7 @@ class User extends Base implements AuthenticatableInterface {
     {
         parent::boot();
 
-        User::observe(new UserObserver);
+        self::observe(new UserObserver);
     }
 
     /**
@@ -184,7 +184,7 @@ class User extends Base implements AuthenticatableInterface {
      */
     public static function validateCredentials($email, $password)
     {
-        $user = User::where(['email' => $email, 'active' => TRUE])->first();
+        $user = self::where(['email' => $email, 'active' => TRUE])->first();
 
         if ($user && Hash::check($password, $user->password))
         {

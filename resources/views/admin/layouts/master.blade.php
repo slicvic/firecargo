@@ -129,7 +129,6 @@
                                     <li class="{{ (Request::is('package-types') || Request::is('package-type/*')) ? 'active' : '' }}"><a href="/package-types">Package Types</a></li>
                                     <li class="{{ (Request::is('carriers') || Request::is('carrier/*')) ? 'active' : '' }}"><a href="/carriers">Carriers</a></li>
                                 @endif
-                                <li class="{{ (Request::is('company') || Request::is('company/*')) ? 'active' : '' }}"><a href="/company/profile">Company Profile</a></li>
                             </ul>
                         </li>
                     @endif
@@ -172,6 +171,6 @@
             <div class="modal-content animated bounceInRight"></div>
         </div>
     </div>
-    {!! Flash::getToastr() !!}
+    {!! Flash::render('toastr') !!}
 </body>
 </html>

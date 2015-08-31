@@ -63,7 +63,7 @@ class Shipment extends BaseSearchable {
     {
         parent::boot();
 
-        Shipment::observe(new ShipmentObserver);
+        self::observe(new ShipmentObserver);
     }
 
     /**
@@ -146,7 +146,7 @@ class Shipment extends BaseSearchable {
      */
     public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
-        $query = Shipment::query()
+        $query = self::query()
             ->select('shipments.*')
             ->orderBy('shipments.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
             ->with('carrier', 'creator', 'updater', 'company');

@@ -29,9 +29,9 @@ abstract class BaseController extends Controller {
      */
     public function callAction($method, $parameters)
     {
-        $result = call_user_func_array(array($this, $method), $parameters);
+        $response = call_user_func_array(array($this, $method), $parameters);
 
-        return $result;
+        return $response;
     }
 
     /**

@@ -74,7 +74,7 @@ class Carrier extends Base {
     {
         $searchTerm = '%' . $searchTerm . '%';
 
-        return Carrier::whereRaw('
+        return self::whereRaw('
                 id LIKE ?
                 OR name LIKE ?
                 OR code LIKE ?

@@ -66,7 +66,7 @@ class Warehouse extends BaseSearchable {
     {
         parent::boot();
 
-        Warehouse::observe(new WarehouseObserver);
+        self::observe(new WarehouseObserver);
     }
 
     /**
@@ -304,7 +304,7 @@ class Warehouse extends BaseSearchable {
      */
     public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
-        $query = Warehouse::query()
+        $query = self::query()
             ->select('warehouses.*')
             ->orderBy('warehouses.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
             ->with('creator', 'updater', 'shipper', 'customer', 'carrier', 'company');

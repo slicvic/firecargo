@@ -6,7 +6,7 @@
         <div class="col-md-12">
             @include('site.layouts._header_logo')
             <br>
-            {!! Flash::getBootstrap() !!}
+            {!! Flash::render('bootstrap') !!}
             @yield('narrow_content')
         </div>
     </div>

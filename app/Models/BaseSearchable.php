@@ -1,13 +1,13 @@
 <?php namespace App\Models;
 
-use App\Contracts\SearchableModel;
+use App\Contracts\Models\SearchableInterface;
 
 /**
  * BaseSearchable
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
-abstract class BaseSearchable extends Base implements SearchableModel {
+abstract class BaseSearchable extends Base implements SearchableInterface {
 
     /**
      * A list of allowed sort columns.

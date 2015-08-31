@@ -146,7 +146,7 @@ class ShipmentsController extends BaseAuthController {
 
         if ( ! $shipment)
         {
-            return response()->jsonFlash('Shipment not found.', 404);
+            return response()->jsonError('Shipment not found.', 404);
         }
 
         $this->validateAndSave($request, $shipment);
@@ -182,7 +182,7 @@ class ShipmentsController extends BaseAuthController {
             throw new ValidationException($validator->messages());
         }
 
-        // Create new carrier if no id provided
+        // Create new carrier if no carrier ID provided
         if (empty($input['shipment']['carrier_id']))
         {
             $carrier = Carrier::firstOrCreate(['name' => $input['shipment']['carrier_name']]);

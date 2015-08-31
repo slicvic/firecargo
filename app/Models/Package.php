@@ -87,7 +87,7 @@ class Package extends BaseSearchable {
     {
         parent::boot();
 
-        Package::observe(new PackageObserver);
+        self::observe(new PackageObserver);
     }
 
     /**
@@ -225,7 +225,7 @@ class Package extends BaseSearchable {
      */
     public static function search(array $criteria = [], $orderBy = 'id', $order = 'desc', $perPage = 15)
     {
-        $query = Package::query()
+        $query = self::query()
             ->select('packages.*')
             ->orderBy('packages.' . self::sanitizeOrderBy($orderBy), self::sanitizeOrder($order))
             ->with('type', 'customer', 'shipment', 'company');

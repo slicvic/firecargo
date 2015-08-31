@@ -63,13 +63,13 @@ class Handler extends ExceptionHandler {
     {
         if ($e instanceof ValidationException)
         {
-            Flash::error($e->errors());
+            Flash::error($e);
 
             return redirect()->back()->withInput();
         }
         elseif ($e instanceof ModelNotFoundException)
         {
-            Flash::error(trans('messages.error_model_not_found'));
+            Flash::error('messages.error_model_not_found');
 
             return redirect()->back();
         }
@@ -90,17 +90,18 @@ class Handler extends ExceptionHandler {
     {
         if ($e instanceof ValidationException)
         {
-            return response()->jsonFlash($e, 400);
+            return response()->jsonError($e, 400);
         }
         elseif ($e instanceof ModelNotFoundException)
         {
-            return response()->jsonFlash(trans('messages.error_model_not_found'), 404);
+            return response()->jsonError('messages.error_model_not_found', 404);
         }
         else
         {
-            $message = env('APP_DEBUG') ? $e->getMessage() : trans('messages.error_500');
-
-            return response()->jsonFlash($message, 500);
+            return response()->jsonError(
+                env('APP_DEBUG') ? $e->getMessage() : 'messages.error_500',
+                500
+            );
         }
     }
 }

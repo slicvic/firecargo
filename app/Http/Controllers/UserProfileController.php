@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Address;
-use App\Exceptions\ValidationException;
 use App\Helpers\Upload;
 use App\Http\Requests\UpdateUserProfileFormRequest;
 use App\Http\Requests\UpdateCustomerUserProfileFormRequest;
@@ -23,7 +22,7 @@ use App\Http\Requests\UpdateCustomerUserProfileFormRequest;
 class UserProfileController extends BaseAuthController {
 
     /**
-     * Display the user profile.
+     * Show the user profile.
      *
      * @return View
      */
@@ -168,7 +167,7 @@ class UserProfileController extends BaseAuthController {
 
         if ($validator->fails())
         {
-            return response()->jsonFlash($validator, 404);
+            return response()->jsonError($validator, 404);
         }
 
         try
@@ -177,13 +176,13 @@ class UserProfileController extends BaseAuthController {
 
             $this->user->update(['has_photo' => TRUE]);
 
-            return response()->jsonFlash('Your photo has been uploaded.');
+            return response()->jsonSuccess('Your photo has been uploaded.');
         }
         catch(Exception $e)
         {
             Log::error($e);
 
-            return response()->jsonFlash('Upload failed, please try again.', 500);
+            return response()->jsonError('Upload failed, please try again.', 500);
         }
     }
 }

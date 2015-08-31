@@ -12,7 +12,7 @@ use App\Http\Requests\AccountFormRequest;
 use App\Exceptions\IntegrityConstraintException;
 
 /**
- * General Purpose Accounts Controller
+ * AccountsController
  *
  * @author Victor Lantigua <vmlantigua@gmail.com>
  */
@@ -32,7 +32,7 @@ class AccountsController extends BaseAuthController {
     }
 
     /**
-     * Display a list of customer accounts.
+     * Show a list of customer accounts.
      *
      * @param  Request  $request
      * @return View
@@ -58,7 +58,7 @@ class AccountsController extends BaseAuthController {
     }
 
     /**
-     * Display the form for creating a new customer account.
+     * Show the form for creating a new customer account.
      *
      * @return View
      */
@@ -112,7 +112,7 @@ class AccountsController extends BaseAuthController {
     }
 
     /**
-     * Display the form for editing an customer account.
+     * Show the form for editing an customer account.
      *
      * @param  int  $id
      * @return View

@@ -109,7 +109,7 @@ class PackagesController extends BaseAuthController {
 
         if ( ! $package)
         {
-            return response()->jsonFlash('Package not found.', 404);
+            return response()->jsonError('Package not found.', 404);
         }
 
         return view('admin.packages._package_details', ['package' => $package]);
@@ -133,7 +133,7 @@ class PackagesController extends BaseAuthController {
 
         if ( ! $package)
         {
-            return response()->jsonFlash('Package not found.', 404);
+            return response()->jsonError('Package not found.', 404);
         }
 
         return view('admin.packages._customer_package_details', ['package' => $package]);

@@ -5,7 +5,7 @@
     <div class="col-md-6 col-md-offset-3">
         @include('site.layouts._header_logo')
         <br>
-        {!! Flash::getBootstrap() !!}
+        {!! Flash::render('bootstrap') !!}
         @yield('wide_content')
         <br>
         @include('site.layouts._footer')

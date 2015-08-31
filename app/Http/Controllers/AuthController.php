@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\Company;
 use Flash;
 use App\Events\UserLoggedInEvent;
-use App\Services\Registrar;
+use App\Services\RegistrarService;
 
 /**
  * AuthController
@@ -24,12 +24,14 @@ class AuthController extends BaseController {
      */
     public function __construct()
     {
-        $regCode = ( ! empty($_GET['reg'])) ? $_GET['reg'] : NULL;
-        $company = ($regCode) ? Company::where('corp_code', $regCode)->first() : NULL;
+        $registrationCode = ( ! empty($_GET['reg'])) ? $_GET['reg'] : NULL;
+
+        $company = ($registrationCode) ? Company::where('corp_code', $registrationCode)->first() : NULL;
+
         $queryString = ( ! empty($_SERVER['QUERY_STRING'])) ? '?' . $_SERVER['QUERY_STRING'] : '';
 
-        View::share('company', $company);
-        View::share('queryString', $queryString);
+        view()->share('company', $company);
+        view()->share('queryString', $queryString);
     }
 
     /**
@@ -45,7 +47,7 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Display the login form.
+     * Show the login form.
      *
      * @return View
      */
@@ -84,7 +86,7 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Display the signup form.
+     * Show the signup form.
      *
      * @return View
      */
@@ -97,13 +99,13 @@ class AuthController extends BaseController {
      * Register a new user.
      *
      * @param  Request  $request
+     * @param  RegistrarService  $registrar
      * @return RedirectResponse
      */
-    public function postRegister(Request $request)
+    public function postRegister(Request $request, RegistrarService $registrar)
     {
         $input = $request->all();
 
-        $registrar = new Registrar();
         $validator = $registrar->validator($input);
 
         if ($validator->fails())
@@ -117,7 +119,7 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Display the password recovery form.
+     * Show the password recovery form.
      *
      * @return View
      */
@@ -157,7 +159,7 @@ class AuthController extends BaseController {
     }
 
     /**
-     * Display the password reset form.
+     * Show the password reset form.
      *
      * @return View
      */

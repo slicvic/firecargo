@@ -9,11 +9,7 @@ use Illuminate\Pagination\Paginator;
 
 use App\Models\Warehouse;
 use App\Models\WarehouseStatus;
-use App\Models\Package;
 use App\Models\PackageType;
-use App\Models\Account;
-use App\Models\AccountTag;
-use App\Models\Carrier;
 use App\Pdf\WarehousePdf;
 use App\Exceptions\ValidationException;
 use Flash;
@@ -138,7 +134,7 @@ class WarehousesController extends BaseAuthController {
 
         if ( ! $warehouse)
         {
-            return response()->jsonFlash('Warehouse not found.', 404);
+            return response()->jsonError('Warehouse not found.', 404);
         }
 
         $this->validateAndSave($request, $warehouse);
@@ -164,7 +160,7 @@ class WarehousesController extends BaseAuthController {
             return $this->redirectBackWithError('Warehouse not found.');
         }
 
-        WarehousePdf::getReceipt($warehouse);
+        WarehousePdf::makeReceipt($warehouse);
     }
 
     /**
@@ -183,7 +179,7 @@ class WarehousesController extends BaseAuthController {
             return $this->redirectBackWithError('Warehouse not found.');
         }
 
-        WarehousePdf::getLabel($warehouse);
+        WarehousePdf::makeLabel($warehouse);
     }
 
     /**
@@ -196,75 +192,6 @@ class WarehousesController extends BaseAuthController {
      */
     private function validateAndSave(Request $request, Warehouse $warehouse)
     {
-        $input = $request->only('warehouse', 'packages');
 
-        $rules = [
-            'shipper_name'  => Account::$rules['name'],
-            'customer_name' => Account::$rules['name'],
-            'carrier_name'  => Carrier::$rules['name']
-        ];
-
-        // Validate input
-        $validator = Validator::make($input['warehouse'], $rules);
-
-        if ($validator->fails())
-        {
-            throw new ValidationException($validator->messages());
-        }
-
-        // Create new carrier if no id provided
-        if (empty($input['warehouse']['carrier_id']))
-        {
-            $carrier = Carrier::firstOrCreate(['name' => $input['warehouse']['carrier_name']]);
-
-            $input['warehouse']['carrier_id'] = $carrier->id;
-        }
-
-        // Create new shipper if no id provided
-        if (empty($input['warehouse']['shipper_account_id']))
-        {
-            $account = Account::firstOrNew([
-                'name'       => trim($input['warehouse']['shipper_name']),
-                'company_id' => $this->user->company_id
-            ]);
-
-            if ( ! $account->exists)
-            {
-                $account->save();
-                $account->tags()->attach(AccountTag::SHIPPER);
-            }
-
-            $input['warehouse']['shipper_account_id'] = $account->id;
-        }
-
-        // Create new customer if no id provided
-        if (empty($input['warehouse']['customer_account_id']))
-        {
-            $account = Account::firstOrNew([
-                'name'       => trim($input['warehouse']['customer_name']),
-                'company_id' => $this->user->company_id
-            ]);
-
-            if ( ! $account->exists)
-            {
-                $account->save();
-                $account->tags()->attach(AccountTag::CUSTOMER);
-            }
-
-            $input['warehouse']['customer_account_id'] = $account->id;
-        }
-
-        // Save warehouse
-        $warehouse->shipper_account_id = $input['warehouse']['shipper_account_id'];
-        $warehouse->customer_account_id = $input['warehouse']['customer_account_id'];
-        $warehouse->carrier_id = $input['warehouse']['carrier_id'];
-        $warehouse->notes = $input['warehouse']['notes'];
-        $warehouse->save();
-
-        // Save packages
-        if ($input['packages'])
-        {
-            $warehouse->createOrUpdatePackages($input['packages']);
-        }
     }
 }
