@@ -1,4 +1,6 @@
-<?php namespace App\Http\Requests;
+<?php
+
+namespace App\Http\Requests;
 
 /**
  * AccountFormRequest
@@ -19,7 +21,7 @@ class AccountFormRequest extends Request {
             'firstname' => 'min:3|alpha_spaces',
             'lastname' => 'min:3|alpha_spaces',
             'email' => 'email',
-            'phone' => 'phone',
+            'home_phone' => 'phone',
             'mobile_phone' => 'phone',
             'fax' => 'phone',
             'address1' => '',

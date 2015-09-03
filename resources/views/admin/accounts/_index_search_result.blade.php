@@ -9,7 +9,7 @@
                 <th>{!! Html::linkToSort('/accounts', 'Name', 'name', $params['sort'], $params['order']) !!}</th>
                 <th>Type</th>
                 <th>{!! Html::linkToSort('/accounts', 'Email', 'email', $params['sort'], $params['order']) !!}</th>
-                <th>{!! Html::linkToSort('/accounts', 'Phone', 'phone', $params['sort'], $params['order']) !!}</th>
+                <th>{!! Html::linkToSort('/accounts', 'Phone', 'home_phone', $params['sort'], $params['order']) !!}</th>
                 <th>{!! Html::linkToSort('/accounts', 'Mobile', 'mobile_phone', $params['sort'], $params['order']) !!}</th>
                 <th>Address</th>
                 <th>{!! Html::linkToSort('/accounts', 'Registered?', 'user_id', $params['sort'], $params['order']) !!}</th>
@@ -28,7 +28,7 @@
                     <td>{{ $account->name }}</td>
                     <td>{!! $account->present()->tags() !!}</td>
                     <td>{{ $account->email }}</td>
-                    <td>{{ $account->phone }}</td>
+                    <td>{{ $account->home_phone }}</td>
                     <td>{{ $account->mobile_phone }}</td>
                     <td>{!! $account->present()->address('shipping') !!}</td>
                     <td>{!! $account->user_id ? '<span class="badge badge-primary">Yes</span>' : '<span class="badge badge-danger">No</span>' !!}</td>

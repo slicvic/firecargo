@@ -1,4 +1,6 @@
-<?php namespace App\Models;
+<?php
+
+namespace App\Models;
 
 use DB;
 use Auth;
@@ -50,7 +52,7 @@ class Account extends BaseSearchable {
         'name',
         'firstname',
         'lastname',
-        'phone',
+        'home_phone',
         'mobile_phone',
         'fax',
         'autoship'
@@ -66,7 +68,7 @@ class Account extends BaseSearchable {
         'company_id',
         'name',
         'email',
-        'phone',
+        'home_phone',
         'mobile_phone',
         'user_id',
         'created_at',
@@ -167,7 +169,7 @@ class Account extends BaseSearchable {
             OR firstname LIKE ?
             OR lastname LIKE ?
             OR email LIKE ?
-            OR phone LIKE ?
+            OR home_phone LIKE ?
             OR fax LIKE ?
             OR mobile_phone LIKE ?)', [
             $searchTerm,
@@ -227,7 +229,7 @@ class Account extends BaseSearchable {
                 OR firstname LIKE ?
                 OR lastname LIKE ?
                 OR email LIKE ?
-                OR phone LIKE ?
+                OR home_phone LIKE ?
                 OR mobile_phone LIKE ?
                 )', [
                 $searchTerm,

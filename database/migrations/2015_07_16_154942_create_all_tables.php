@@ -114,7 +114,7 @@ class CreateAllTables extends Migration {
 		    $table->string('firstname', 50);
 		    $table->string('lastname', 50);
 		    $table->string('email', 255);
-		    $table->string('phone', 30);
+		    $table->string('home_phone', 30);
 		    $table->string('mobile_phone', 30);
 		    $table->string('fax', 30);
 		    $table->tinyInteger('autoship')->unsigned()->default(1);

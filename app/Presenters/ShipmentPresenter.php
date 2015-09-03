@@ -1,4 +1,6 @@
-<?php namespace App\Presenters;
+<?php
+
+namespace App\Presenters;
 
 use App\Presenters\BasePresenter;
 use App\Helpers\Currency;

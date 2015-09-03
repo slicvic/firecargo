@@ -14,7 +14,7 @@
         </div>
         <div class="row">
             <div class="col-xs-2"><strong>Phone</strong></div>
-            <div class="col-xs-10"><p>{{ $currentUser->account->phone }}</p></div>
+            <div class="col-xs-10"><p>{{ $currentUser->account->home_phone }}</p></div>
         </div>
         <div class="row">
             <div class="col-xs-2"><strong>Mobile</strong></div>

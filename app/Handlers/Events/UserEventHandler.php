@@ -1,4 +1,6 @@
-<?php namespace App\Handlers\Events;
+<?php
+
+namespace App\Handlers\Events;
 
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldBeQueued;

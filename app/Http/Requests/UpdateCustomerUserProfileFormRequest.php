@@ -1,4 +1,6 @@
-<?php namespace App\Http\Requests;
+<?php
+
+namespace App\Http\Requests;
 
 use Auth;
 
@@ -20,7 +22,7 @@ class UpdateCustomerUserProfileFormRequest extends Request {
             'firstname' => 'required|min:3|alpha_spaces',
             'lastname' => 'required|min:3|alpha_spaces',
             'email' => 'required|email|unique:users,email,' . Auth::user()->id,
-            'phone' => 'required|phone',
+            'home_phone' => 'required|phone',
             'mobile_phone' => 'phone',
             'address1' => 'required',
             'city' => 'required|alpha_spaces',

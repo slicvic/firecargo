@@ -30,7 +30,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Phone</label>
                         <div class="col-sm-4">
-                            <input type="text" name="phone" placeholder="Phone" required class="form-control" value="{{ old('phone', $account->phone) }}">
+                            <input type="text" name="home_phone" placeholder="Phone" required class="form-control" value="{{ old('home_phone', $account->home_phone) }}">
                         </div>
                     </div>
                     <div class="form-group">
