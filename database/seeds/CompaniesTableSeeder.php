@@ -12,7 +12,7 @@ class CompaniesTableSeeder extends Seeder {
      */
     public function run()
     {
-        $createdAt = date('Y-m-d H:i:s');
+        $timestamp = date('Y-m-d H:i:s');
 
         DB::table('companies')->delete();
 
@@ -25,8 +25,8 @@ class CompaniesTableSeeder extends Seeder {
                 'phone' => '',
                 'fax' => '',
                 'email' => '',
-                'created_at' => $createdAt,
-                'updated_at' => $createdAt
+                'created_at' => $timestamp,
+                'updated_at' => $timestamp
             ]
         ]);
     }

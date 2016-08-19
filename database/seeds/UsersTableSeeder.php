@@ -12,7 +12,7 @@ class UsersTableSeeder extends Seeder {
      */
     public function run()
     {
-        $createdAt = date('Y-m-d H:i:s');
+        $timestamp = date('Y-m-d H:i:s');
 
         DB::table('users')->delete();
 
@@ -29,9 +29,9 @@ class UsersTableSeeder extends Seeder {
                 'activation_code' => '',
                 'remember_token' => '',
                 'logins' => 0,
-                'last_login' => $createdAt,
-                'created_at' => $createdAt,
-                'updated_at' => $createdAt
+                'last_login' => $timestamp,
+                'created_at' => $timestamp,
+                'updated_at' => $timestamp
             ]
         ]);
     }

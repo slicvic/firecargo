@@ -12,13 +12,13 @@ class CountriesTableSeeder extends Seeder {
      */
     public function run()
     {
-        $createdAt = date('Y-m-d H:i:s');
+        $timestamp = date('Y-m-d H:i:s');
 
         DB::table('countries')->delete();
 
         DB::table('countries')->insert([
-            ['name' => 'United States', 'created_at' => $createdAt, 'updated_at' => $createdAt],
-            ['name' => 'Colombia', 'created_at' => $createdAt, 'updated_at' => $createdAt],
+            ['name' => 'United States', 'created_at' => $timestamp, 'updated_at' => $timestamp],
+            ['name' => 'Colombia', 'created_at' => $timestamp, 'updated_at' => $timestamp],
         ]);
     }
 }

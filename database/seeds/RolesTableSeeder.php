@@ -12,16 +12,16 @@ class RolesTableSeeder extends Seeder {
      */
     public function run()
     {
-        $createdAt = date('Y-m-d H:i:s');
+        $timestamp = date('Y-m-d H:i:s');
 
         DB::table('roles')->delete();
 
         DB::table('roles')->insert([
-            ['name' => 'Super Admin', 'description' => 'Administrative user, has access to everything', 'created_at' => $createdAt, 'updated_at' => $createdAt],
-            ['name' => 'Super Agent', 'description' => 'Company owner or primary contact', 'created_at' => $createdAt, 'updated_at' => $createdAt],
-            ['name' => 'Customer', 'description' => 'Company customer or client', 'created_at' => $createdAt, 'updated_at' => $createdAt],
-            ['name' => 'Agent', 'description' => 'Company staff', 'created_at' => $createdAt, 'updated_at' => $createdAt],
-            ['name' => 'Admin', 'description' => 'Administrative user', 'created_at' => $createdAt, 'updated_at' => $createdAt],
+            ['name' => 'Super Admin', 'description' => 'Administrative user, has access to everything', 'created_at' => $timestamp, 'updated_at' => $timestamp],
+            ['name' => 'Super Agent', 'description' => 'Company owner or primary contact', 'created_at' => $timestamp, 'updated_at' => $timestamp],
+            ['name' => 'Customer', 'description' => 'Company customer or client', 'created_at' => $timestamp, 'updated_at' => $timestamp],
+            ['name' => 'Agent', 'description' => 'Company staff', 'created_at' => $timestamp, 'updated_at' => $timestamp],
+            ['name' => 'Admin', 'description' => 'Administrative user', 'created_at' => $timestamp, 'updated_at' => $timestamp],
         ]);
     }
 }
