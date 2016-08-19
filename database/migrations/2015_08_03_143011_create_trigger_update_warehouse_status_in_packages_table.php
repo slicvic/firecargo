@@ -18,25 +18,25 @@ FOR EACH ROW
 BEGIN
 
 	# Total packages in the warehouse
-	DECLARE totalPkgs integer;
+	DECLARE totalPackages integer;
 
 	# Total packages in the warehouse that have been shipped
-	DECLARE totalPkgsShipped integer;
+	DECLARE totalPackagesShipped integer;
 
-	# Difference of: totalPkgs - totalPkgsShipped
-	DECLARE totalPkgsDiff integer;
+	# Total packages in the warehouse that have NOT been shipped
+	DECLARE totalPackagesUnshipped integer;
 
 	# The new warehouse status id
 	DECLARE newStatusId integer;
 
-	SET totalPkgs := (SELECT COUNT(*) FROM packages WHERE warehouse_id = NEW.warehouse_id);
-	SET totalPkgsShipped := (SELECT COUNT(*) FROM packages WHERE warehouse_id = NEW.warehouse_id AND shipment_id IS NOT NULL);
-	SET totalPkgsDiff = totalPkgs - totalPkgsShipped;
+	SET totalPackages := (SELECT COUNT(*) FROM packages WHERE warehouse_id = NEW.warehouse_id);
+	SET totalPackagesShipped := (SELECT COUNT(*) FROM packages WHERE warehouse_id = NEW.warehouse_id AND shipment_id IS NOT NULL);
+	SET totalPackagesUnshipped = totalPackages - totalPackagesShipped;
 
-	IF totalPkgsDiff = 0 THEN
+	IF totalPackagesUnshipped = 0 THEN
 	    # Complete (Green)
 	    SET newStatusId = 3;
-	ELSEIF totalPkgsDiff = totalPkgs THEN
+	ELSEIF totalPackagesUnshipped = totalPackages THEN
 	    # Unprocessed (Red)
 	    SET newStatusId = 1;
 	ELSE
