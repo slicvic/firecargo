@@ -12,6 +12,8 @@ class UsersTableSeeder extends Seeder {
      */
     public function run()
     {
+        $createdAt = date('Y-m-d H:i:s');
+
         DB::table('users')->delete();
 
         DB::table('users')->insert([
@@ -23,7 +25,13 @@ class UsersTableSeeder extends Seeder {
                 'lastname' => 'Vic',
                 'email' => 'vmlantigua@gmail.com',
                 'password' => '$2y$10$F6qNSi3uFaE47opz3UItTuIbuGK53xO2kI7uLLnALfyFlnTE89j.u',
-                'active' => 1
+                'active' => 1,
+                'activation_code' => '',
+                'remember_token' => '',
+                'logins' => 0,
+                'last_login' => $createdAt,
+                'created_at' => $createdAt,
+                'updated_at' => $createdAt
             ]
         ]);
     }

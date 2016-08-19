@@ -11,19 +11,21 @@ class PackageTypesTableSeeder extends Seeder {
      */
     public function run()
     {
+        $createdAt = date('Y-m-d H:i:s');
+
         DB::table('package_types')->delete();
 
         DB::table('package_types')->insert([
-            ['name' => 'Box'],
-            ['name' => 'Piece'],
-            ['name' => 'Bundle'],
-            ['name' => 'Carton'],
-            ['name' => 'Roll'],
-            ['name' => 'Crate'],
-            ['name' => 'Pallet'],
-            ['name' => 'Drum'],
-            ['name' => 'Tube'],
-            ['name' => 'Envolope'],
+            ['name' => 'Box', 'created_at' => $createdAt, 'updated_at' => $createdAt],
+            ['name' => 'Piece', 'created_at' => $createdAt, 'updated_at' => $createdAt],
+            ['name' => 'Bundle', 'created_at' => $createdAt, 'updated_at' => $createdAt],
+            ['name' => 'Carton', 'created_at' => $createdAt, 'updated_at' => $createdAt],
+            ['name' => 'Roll', 'created_at' => $createdAt, 'updated_at' => $createdAt],
+            ['name' => 'Crate', 'created_at' => $createdAt, 'updated_at' => $createdAt],
+            ['name' => 'Pallet', 'created_at' => $createdAt, 'updated_at' => $createdAt],
+            ['name' => 'Drum', 'created_at' => $createdAt, 'updated_at' => $createdAt],
+            ['name' => 'Tube', 'created_at' => $createdAt, 'updated_at' => $createdAt],
+            ['name' => 'Envolope', 'created_at' => $createdAt, 'updated_at' => $createdAt],
         ]);
     }
 }

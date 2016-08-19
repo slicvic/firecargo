@@ -12,12 +12,21 @@ class CompaniesTableSeeder extends Seeder {
      */
     public function run()
     {
+        $createdAt = date('Y-m-d H:i:s');
+
         DB::table('companies')->delete();
 
         DB::table('companies')->insert([
             [
                 'id' => 1,
                 'name' => 'Lantigua Lab',
+                'firstname' => '',
+                'lastname' => '',
+                'phone' => '',
+                'fax' => '',
+                'email' => '',
+                'created_at' => $createdAt,
+                'updated_at' => $createdAt
             ]
         ]);
     }
