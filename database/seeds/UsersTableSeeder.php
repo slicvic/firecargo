@@ -24,7 +24,7 @@ class UsersTableSeeder extends Seeder {
                 'firstname' => 'Slic',
                 'lastname' => 'Vic',
                 'email' => 'vmlantigua@gmail.com',
-                'password' => '$2y$10$F6qNSi3uFaE47opz3UItTuIbuGK53xO2kI7uLLnALfyFlnTE89j.u',
+                'password' => '$2y$10$LZbI1c3hpL2B1IDFSAi/A.0UiYGuMmIwrS3u5kztebuHekJdqM3u6',
                 'active' => 1,
                 'activation_code' => '',
                 'remember_token' => '',
