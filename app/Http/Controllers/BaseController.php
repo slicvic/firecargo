@@ -18,7 +18,7 @@ use Flash;
  */
 abstract class BaseController extends Controller {
 
-	use DispatchesCommands, ValidatesRequests;
+    use DispatchesCommands, ValidatesRequests;
 
     protected $layout;
 
