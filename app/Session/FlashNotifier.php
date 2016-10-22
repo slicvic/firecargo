@@ -23,14 +23,14 @@ class FlashNotifier {
      *
      * @var string
      */
-    private $sessionKey = 'flash_notification';
+    private $sessionKey = 'flash_message';
 
     /**
      * The base view path.
      *
      * @var string
      */
-    protected $view = 'shared.flash';
+    protected $view = 'shared.flash_message';
 
     /**
      * Constructor.
