@@ -1,6 +1,6 @@
 # Fire Cargo
 
-A SaaS web application that enables freight forwarders to manage their cargos, warehouses and customer relationships. Written in Laravel 5.0.
+A CRM that lets freight forwarders run their business, manage and consolidate packages, track shipments, maintain customer relationships, among other things. Technologies used include Laravel 5, PHP, MySQL, Bootstrap, Javascript, jQuery.
 
 
 ## Try it out here...
